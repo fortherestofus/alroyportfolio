@@ -233,6 +233,12 @@ html.lenis body {
   overflow: clip;
 }
 
+/* Holds the page still behind an overlay on the native scroll path. */
+.is-scroll-locked,
+.is-scroll-locked body {
+  overflow: hidden;
+}
+
 /* ============================================================
    REVEALS — the pre-animation state is applied only when JS is
    running (the `.js` class is set synchronously in the head), so a

@@ -212,10 +212,14 @@ Tracked from PRD §14. None of these block the build.
 
 ### Files to drop in
 
-- [ ] **Portfolio shots** — 6-12 per category into the `public/portfolio/*`
-      folders above, ~1600px wide, WebP. Optional `captions.json` per folder
-      (`{"01": "Caption / alt text"}`); otherwise alt text falls back to the
-      filename.
+- [ ] **More portfolio shots.** 19 are in and categorised in
+      `src/data/portfolio.ts`. UX/UI has 3 and Web has 2, against the PRD's
+      6-12 per category, so those two read thin. Drop files into
+      `src/assets/portfolio/`, add an entry with alt text, and run
+      `npm run video` if it is a clip.
+- [ ] **Sanity-check two category calls.** `video_travel` sits in Content but
+      could be Photography, and the two magazine covers sit in Content but
+      could be Branding. One line each in `src/data/portfolio.ts`.
 - [ ] **Case study images** — hero, before/after and supporting shots per study.
       Each case study data file lists the exact filenames it expects.
 - [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
@@ -256,7 +260,7 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
 - [x] **2. Journey shell** — timeline nav, drag-to-scrub, six two-column
       sections, Lenis/ScrollTrigger, mobile pill bar, browser QA harness
 - [x] **3. Sections 01-03** — Who is Alroy, Experience, Education
-- [ ] 4. Section 04 — Portfolio cards + modal carousel
+- [x] **4. Section 04** — Portfolio cards, modal carousel, video pipeline
 - [ ] 5. Section 05 — Stacked case study cards + 4 full pages
 - [ ] 6. Section 06 — Contact + lazy Cal.com embed + footer
 - [ ] 7. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG

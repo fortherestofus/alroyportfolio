@@ -1,0 +1,320 @@
+---
+/**
+ * The portfolio carousel (PRD §6.04, §12b).
+ *
+ * Every category's slides are rendered up front and hidden, rather than
+ * built in JS on open. That keeps the images as astro:assets output
+ * with proper sizes, and because a lazy image inside a hidden container
+ * is never fetched, nothing downloads until a category is opened.
+ *
+ * Video slides carry a poster and `preload="none"`, so a clip costs
+ * nothing until the visitor reaches its slide.
+ */
+import { Image } from "astro:assets";
+import { X, ChevronLeft, ChevronRight } from "@lucide/astro";
+import Placeholder from "./Placeholder.astro";
+import { PORTFOLIO, shotImage } from "../data/portfolio";
+
+const SLIDE_WIDTH = 1600;
+---
+
+<div class="pm" id="portfolio-modal" hidden>
+  <div class="pm__scrim" data-portfolio-close></div>
+
+  <div
+    class="pm__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="portfolio-modal-title"
+    tabindex="-1"
+    data-portfolio-panel
+  >
+    <header class="pm__head">
+      <h3 class="pm__title" id="portfolio-modal-title" data-portfolio-title></h3>
+      <p class="pm__counter" data-portfolio-counter aria-live="polite"></p>
+      <button type="button" class="pm__close" data-portfolio-close aria-label="Close gallery">
+        <X class="pm__close-icon" aria-hidden="true" />
+      </button>
+    </header>
+
+    <div class="pm__stage" data-portfolio-stage>
+      {
+        PORTFOLIO.map((category) => (
+          <div class="pm__group" data-portfolio-group={category.id} hidden>
+            {category.shots.map((shot) => {
+              const image = shotImage(shot.image);
+              return (
+                <figure class="pm__slide" data-portfolio-slide hidden>
+                  <div class="pm__media">
+                    {shot.video ? (
+                      <video
+                        class="pm__video"
+                        src={shot.video}
+                        poster={image?.src}
+                        preload="none"
+                        controls
+                        muted
+                        loop
+                        playsinline
+                        aria-label={shot.alt}
+                      />
+                    ) : image ? (
+                      <Image
+                        src={image}
+                        alt={shot.alt}
+                        width={SLIDE_WIDTH}
+                        densities={[1]}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <Placeholder label={`portfolio/${shot.image}`} ratio="4/3" />
+                    )}
+                  </div>
+                  <figcaption class="pm__caption">{shot.alt}</figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="pm__controls">
+      <button type="button" class="pm__nav" data-portfolio-prev aria-label="Previous shot">
+        <ChevronLeft class="pm__nav-icon" aria-hidden="true" />
+      </button>
+      <div class="pm__dots" data-portfolio-dots></div>
+      <button type="button" class="pm__nav" data-portfolio-next aria-label="Next shot">
+        <ChevronRight class="pm__nav-icon" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pm {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    padding: var(--space-4);
+  }
+
+  .pm[hidden] {
+    display: none;
+  }
+
+  .pm__scrim {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(6px);
+  }
+
+  .pm__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, var(--width-content));
+    /*
+     * A definite height, not just a max. The slide image is taken out
+     * of flow so it can be told to fit, which means it contributes no
+     * height of its own; without this the panel would collapse to the
+     * height of its header and controls and the image would vanish.
+     */
+    height: 100%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-well);
+    overflow: hidden;
+  }
+
+  .pm__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pm__title {
+    font-size: var(--text-h3);
+  }
+
+  .pm__counter {
+    flex: 1;
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pm__close {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: var(--control-md);
+    height: var(--control-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .pm__close:hover,
+  .pm__close:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .pm__close-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 1.5;
+  }
+
+  .pm__stage {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .pm__group,
+  .pm__slide {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .pm__group[hidden],
+  .pm__slide[hidden] {
+    display: none;
+  }
+
+  .pm__slide {
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-5);
+  }
+
+  /*
+   * The media box takes the space left over after the caption, and the
+   * image is absolutely positioned inside it. A percentage max-height
+   * resolves to none against a flex item of indefinite height, which is
+   * what let a tall image push the caption out of the panel entirely.
+   */
+  .pm__media {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .pm__media :global(img),
+  .pm__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+  }
+
+  .pm__caption {
+    flex: none;
+    max-width: var(--measure);
+    margin-inline: auto;
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .pm__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pm__nav {
+    display: grid;
+    place-items: center;
+    width: var(--control-lg);
+    height: var(--control-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .pm__nav:hover:not(:disabled),
+  .pm__nav:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .pm__nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .pm__nav-icon {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    stroke-width: 1.5;
+  }
+
+  .pm__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  /*
+   * :global because the dots are built in JS, so they never receive the
+   * scoping attribute Astro adds to server-rendered markup. Without it
+   * these rules silently do not apply and the dots collapse to nothing.
+   */
+  .pm__dots :global(.pm__dot) {
+    /* 8px visual dot inside a 44px tap target. */
+    display: grid;
+    place-items: center;
+    width: var(--touch-min);
+    height: var(--touch-min);
+  }
+
+  .pm__dots :global(.pm__dot)::before {
+    content: "";
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-border);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .pm__dots :global(.pm__dot[aria-current="true"])::before {
+    background-color: var(--color-accent);
+  }
+
+  .pm__dots :global(.pm__dot):hover::before {
+    background-color: var(--color-text-muted);
+  }
+
+  @media (width >= 768px) {
+    .pm {
+      padding: var(--space-6);
+    }
+
+    .pm__slide {
+      padding: var(--space-6);
+    }
+  }
+</style>

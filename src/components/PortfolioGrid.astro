@@ -1,0 +1,173 @@
+---
+/**
+ * Section 04: five category cards, each opening the shared modal
+ * carousel. The card is a button rather than a link because it opens a
+ * dialog in place; focus returns to it on close.
+ */
+import { Image } from "astro:assets";
+import { ArrowUpRight } from "@lucide/astro";
+import Placeholder from "./Placeholder.astro";
+import PortfolioModal from "./PortfolioModal.astro";
+import { PORTFOLIO, shotImage } from "../data/portfolio";
+import { SOCIAL } from "../data/site";
+
+// Cards render at roughly half the right column; 2x that for retina.
+const COVER_WIDTH = 720;
+---
+
+<div class="work" data-reveal>
+  <ul class="work__grid">
+    {
+      PORTFOLIO.map((category) => {
+        const cover = shotImage(category.cover);
+        const count = category.shots.length;
+        return (
+          <li data-reveal-item>
+            <button
+              type="button"
+              class="work__card"
+              data-open-portfolio={category.id}
+              aria-haspopup="dialog"
+            >
+              <span class="work__cover">
+                {cover ? (
+                  <Image src={cover} alt="" width={COVER_WIDTH} height={480} loading="lazy" />
+                ) : (
+                  <Placeholder label={`portfolio/${category.cover}`} ratio="3/2" />
+                )}
+              </span>
+              <span class="work__meta">
+                <span class="work__name">{category.name}</span>
+                <span class="work__count">
+                  {count} {count === 1 ? "shot" : "shots"}
+                </span>
+              </span>
+            </button>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <p class="work__cta">
+    <a href={SOCIAL.dribbble} target="_blank" rel="noopener noreferrer">
+      See more on Dribbble
+      <ArrowUpRight class="work__cta-icon" aria-hidden="true" />
+    </a>
+  </p>
+</div>
+
+<PortfolioModal />
+
+<style>
+  .work__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .work__card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    text-align: left;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .work__card:hover,
+  .work__card:focus-visible {
+    border-color: var(--color-accent);
+    translate: 0 -2px;
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .work__cover {
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .work__cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale var(--duration-slow) var(--ease-out);
+  }
+
+  .work__card:hover .work__cover :global(img) {
+    scale: 1.03;
+  }
+
+  .work__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .work__name {
+    font-size: var(--text-body);
+    font-weight: var(--weight-heading);
+  }
+
+  .work__count {
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work__cta {
+    margin-top: var(--space-6);
+  }
+
+  .work__cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  .work__cta a:hover,
+  .work__cta a:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .work__cta-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  @media (width >= 640px) {
+    .work__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* The odd card out spans the row rather than leaving a hole. */
+    .work__grid li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
+    .work__grid li:last-child:nth-child(odd) .work__cover {
+      aspect-ratio: 21 / 9;
+    }
+  }
+</style>

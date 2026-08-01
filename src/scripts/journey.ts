@@ -86,6 +86,22 @@ function destroySmoothScroll(): void {
   lenis = null;
 }
 
+/**
+ * Freeze the page behind an overlay. Lenis owns the scroll when it is
+ * running, so telling it to stop is what actually holds the page still;
+ * the class covers the native path (reduced motion, or Lenis dropped by
+ * the watchdog).
+ */
+export function lockScroll(): void {
+  lenis?.stop();
+  document.documentElement.classList.add("is-scroll-locked");
+}
+
+export function unlockScroll(): void {
+  lenis?.start();
+  document.documentElement.classList.remove("is-scroll-locked");
+}
+
 /** Scroll to an absolute document offset, respecting motion settings. */
 function scrollToOffset(top: number, immediate = false): void {
   const target = Math.max(0, top);

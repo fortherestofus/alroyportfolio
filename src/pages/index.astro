@@ -12,11 +12,11 @@ import JourneySection from "../components/JourneySection.astro";
 import WhoIsAlroy from "../components/WhoIsAlroy.astro";
 import ExperienceList from "../components/ExperienceList.astro";
 import EducationGroups from "../components/EducationGroups.astro";
+import PortfolioGrid from "../components/PortfolioGrid.astro";
 import { SITE, SECTIONS } from "../data/site";
 
 /** Right columns still to be filled, and by which phase. */
 const PENDING: Record<string, string> = {
-  portfolio: "Phase 4 — 5 category cards and the modal carousel",
   "case-studies": "Phase 5 — stacked overview cards",
   contact: "Phase 6 — email, phone, Cal.com embed, socials",
 };
@@ -48,6 +48,7 @@ const PENDING: Record<string, string> = {
         {section.id === "who" && <WhoIsAlroy />}
         {section.id === "experience" && <ExperienceList />}
         {section.id === "education" && <EducationGroups />}
+        {section.id === "portfolio" && <PortfolioGrid />}
 
         {PENDING[section.id] && (
           <div class="pending" data-reveal>
@@ -62,6 +63,7 @@ const PENDING: Record<string, string> = {
 
 <script>
   import "../scripts/journey";
+  import "../scripts/portfolio";
 </script>
 
 <style>

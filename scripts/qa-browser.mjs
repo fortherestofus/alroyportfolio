@@ -484,6 +484,187 @@ async function checkDesktop(browser, origin, viewport) {
  * Written against the real computed colours rather than the token
  * table, so a component that pairs two tokens badly is still caught.
  */
+/**
+ * The portfolio modal, against the §12b list: opens, traps focus, Esc
+ * and scrim close, focus returns to the trigger, arrows and keyboard
+ * both work, and background scroll locks.
+ */
+async function checkPortfolioModal(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  const problems = watchConsole(page);
+
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(400);
+
+  const cards = await page.locator("[data-open-portfolio]").count();
+  record("[modal] 5 category cards", cards === 5, `${cards}`);
+
+  // Nothing in the gallery should be fetched before it is opened.
+  const preOpen = await page.evaluate(
+    () =>
+      [...document.querySelectorAll("#portfolio-modal img")].filter(
+        (img) => img.complete && img.naturalWidth > 0,
+      ).length,
+  );
+  record("[modal] gallery images not loaded until opened", preOpen === 0, `${preOpen} preloaded`);
+
+  await page.locator('[data-open-portfolio="branding"]').scrollIntoViewIfNeeded();
+  await page.locator('[data-open-portfolio="branding"]').click();
+  await page.waitForTimeout(500);
+
+  const opened = await page.evaluate(() => {
+    const modal = document.getElementById("portfolio-modal");
+    const slides = [...modal.querySelectorAll("[data-portfolio-slide]")].filter((s) => !s.hidden);
+    return {
+      visible: !modal.hidden,
+      title: modal.querySelector("[data-portfolio-title]").textContent.trim(),
+      counter: modal.querySelector("[data-portfolio-counter]").textContent.trim(),
+      visibleSlides: slides.length,
+      dots: modal.querySelectorAll("[data-dot]").length,
+      // Counting elements is not enough: these are built in JS, so a
+      // scoping mismatch can leave them present but zero-sized.
+      sizedDots: [...modal.querySelectorAll("[data-dot]")].filter((d) => {
+        const r = d.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      }).length,
+      // The caption has to sit inside the panel, not be pushed out by
+      // an unconstrained image.
+      // The image must actually occupy the stage. Constraining it to
+      // fit is easy to get wrong in a way that renders nothing at all.
+      mediaHeight: (() => {
+        const img = slides[0]?.querySelector("img");
+        return img ? Math.round(img.getBoundingClientRect().height) : 0;
+      })(),
+      captionInPanel: (() => {
+        const slide = slides[0];
+        const caption = slide?.querySelector(".pm__caption");
+        const panelBox = modal.querySelector(".pm__panel").getBoundingClientRect();
+        if (!caption) return false;
+        const box = caption.getBoundingClientRect();
+        return box.height > 0 && box.bottom <= panelBox.bottom + 1;
+      })(),
+      focusInside: modal.contains(document.activeElement),
+      locked: document.documentElement.classList.contains("is-scroll-locked"),
+    };
+  });
+
+  record("[modal] opens", opened.visible);
+  record("[modal] shows the right category", opened.title === "Branding", opened.title);
+  record(
+    "[modal] exactly one slide visible",
+    opened.visibleSlides === 1,
+    `${opened.visibleSlides}`,
+  );
+  record("[modal] a dot per shot", opened.dots === 4, `${opened.dots}`);
+  record("[modal] dots are actually visible", opened.sizedDots === 4, `${opened.sizedDots} sized`);
+  record("[modal] caption stays inside the panel", opened.captionInPanel);
+  record(
+    "[modal] the shot actually fills the stage",
+    opened.mediaHeight > 300,
+    `image rendered ${opened.mediaHeight}px tall`,
+  );
+  record("[modal] counter reads correctly", opened.counter === "1 of 4", opened.counter);
+  record("[modal] focus moves into the dialog", opened.focusInside);
+  record("[modal] background scroll locks", opened.locked);
+
+  // Background must not move while the modal is up. Baseline is taken
+  // once the modal is already open, so opening the card's own
+  // scroll-into-view is not mistaken for leakage.
+  const scrollAtOpen = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 800);
+  await page.waitForTimeout(500);
+  const scrollDuring = await page.evaluate(() => window.scrollY);
+  record(
+    "[modal] background does not scroll behind it",
+    Math.abs(scrollDuring - scrollAtOpen) < 8,
+    `scrollY moved ${Math.round(Math.abs(scrollDuring - scrollAtOpen))}px`,
+  );
+
+  // Arrow buttons.
+  await page.locator("[data-portfolio-next]").click();
+  await page.waitForTimeout(250);
+  const afterNext = await page.evaluate(() =>
+    document.querySelector("[data-portfolio-counter]").textContent.trim(),
+  );
+  record("[modal] next advances", afterNext === "2 of 4", afterNext);
+
+  await page.locator("[data-portfolio-prev]").click();
+  await page.waitForTimeout(250);
+  const afterPrev = await page.evaluate(() =>
+    document.querySelector("[data-portfolio-counter]").textContent.trim(),
+  );
+  record("[modal] previous goes back", afterPrev === "1 of 4", afterPrev);
+
+  record(
+    "[modal] previous is disabled on the first shot",
+    await page.locator("[data-portfolio-prev]").isDisabled(),
+  );
+
+  // Keyboard arrows.
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(250);
+  const afterKey = await page.evaluate(() =>
+    document.querySelector("[data-portfolio-counter]").textContent.trim(),
+  );
+  record("[modal] arrow keys navigate", afterKey === "2 of 4", afterKey);
+
+  // Focus trap: tabbing many times must never escape the dialog.
+  let escaped = false;
+  for (let i = 0; i < 14; i++) {
+    await page.keyboard.press("Tab");
+    const inside = await page.evaluate(() =>
+      document.getElementById("portfolio-modal").contains(document.activeElement),
+    );
+    if (!inside) {
+      escaped = true;
+      break;
+    }
+  }
+  record("[modal] focus stays trapped", !escaped);
+
+  // Escape closes and hands focus back to the card that opened it.
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(350);
+  const afterEsc = await page.evaluate(() => ({
+    hidden: document.getElementById("portfolio-modal").hidden,
+    focusedCategory: document.activeElement?.dataset?.openPortfolio ?? null,
+    locked: document.documentElement.classList.contains("is-scroll-locked"),
+  }));
+  record("[modal] Escape closes", afterEsc.hidden);
+  record(
+    "[modal] focus returns to the trigger",
+    afterEsc.focusedCategory === "branding",
+    `focus on ${afterEsc.focusedCategory}`,
+  );
+  record("[modal] scroll unlocks on close", !afterEsc.locked);
+
+  // Scrim closes too.
+  await page.locator('[data-open-portfolio="uxui"]').click();
+  await page.waitForTimeout(350);
+  await page.locator(".pm__scrim").click({ position: { x: 5, y: 5 } });
+  await page.waitForTimeout(350);
+  record(
+    "[modal] clicking the scrim closes",
+    await page.evaluate(() => document.getElementById("portfolio-modal").hidden),
+  );
+
+  // A video slide should carry a poster and preload nothing.
+  await page.locator('[data-open-portfolio="web"]').click();
+  await page.waitForTimeout(500);
+  const video = await page.evaluate(() => {
+    const el = document.querySelector("[data-portfolio-group='web'] video");
+    return el ? { preload: el.preload, hasPoster: Boolean(el.poster), muted: el.muted } : null;
+  });
+  record("[modal] video slides do not preload", video?.preload === "none", JSON.stringify(video));
+  record("[modal] video slides have a poster", Boolean(video?.hasPoster));
+  await page.keyboard.press("Escape");
+
+  record("[modal] no console errors or warnings", problems.length === 0, problems.join(" | "));
+
+  await context.close();
+}
+
 async function checkContrast(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
@@ -859,6 +1040,7 @@ const browser = await chromium.launch();
 try {
   for (const viewport of DESKTOP_VIEWPORTS) await checkDesktop(browser, origin, viewport);
   for (const viewport of MOBILE_VIEWPORTS) await checkMobile(browser, origin, viewport);
+  await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
   await checkReducedMotion(browser, origin);
   await checkBackgroundTabLoad(browser, origin);
