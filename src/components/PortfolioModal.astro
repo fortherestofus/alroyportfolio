@@ -10,12 +10,52 @@
  * Video slides carry a poster and `preload="none"`, so a clip costs
  * nothing until the visitor reaches its slide.
  */
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { X, ChevronLeft, ChevronRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
 import { PORTFOLIO, shotImage } from "../data/portfolio";
 
-const SLIDE_WIDTH = 1600;
+/*
+ * The panel is capped at --width-content (1200px) and the image is
+ * letterboxed inside it, so anything wider than this is bytes nobody
+ * ever sees. Quality is nudged below the default because these are
+ * viewed at fit-to-panel size, not pixel-peeped.
+ */
+const SLIDE_WIDTH = 1200;
+const SLIDE_HEIGHT = 820;
+const SLIDE_QUALITY = 72;
+
+/**
+ * Slides are letterboxed into a box roughly 1200 by 820, so for a
+ * portrait shot it is the height that binds, not the width. Sizing a
+ * tall magazine cover by width alone ships something like three times
+ * the pixels that ever reach the screen.
+ */
+function slideSize(image: { width: number; height: number }) {
+  return image.height > image.width ? { height: SLIDE_HEIGHT } : { width: SLIDE_WIDTH };
+}
+
+/*
+ * Video posters are resolved through getImage rather than read off
+ * `image.src`. Touching `.src` hands back the untransformed original
+ * and makes Astro emit that full-size file into the build, so the
+ * poster shipped at source weight and a dead copy went along with it.
+ */
+const posters = new Map<string, string>();
+for (const category of PORTFOLIO) {
+  for (const shot of category.shots) {
+    if (!shot.video) continue;
+    const image = shotImage(shot.image);
+    if (!image) continue;
+    const optimised = await getImage({
+      src: image,
+      width: SLIDE_WIDTH,
+      quality: SLIDE_QUALITY,
+      format: "webp",
+    });
+    posters.set(shot.image, optimised.src);
+  }
+}
 ---
 
 <div class="pm" id="portfolio-modal" hidden>
@@ -50,7 +90,7 @@ const SLIDE_WIDTH = 1600;
                       <video
                         class="pm__video"
                         src={shot.video}
-                        poster={image?.src}
+                        poster={posters.get(shot.image)}
                         preload="none"
                         controls
                         muted
@@ -62,7 +102,8 @@ const SLIDE_WIDTH = 1600;
                       <Image
                         src={image}
                         alt={shot.alt}
-                        width={SLIDE_WIDTH}
+                        {...slideSize(image)}
+                        quality={SLIDE_QUALITY}
                         densities={[1]}
                         loading="lazy"
                       />

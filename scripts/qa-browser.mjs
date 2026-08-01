@@ -91,6 +91,10 @@ function serveDist() {
       const body = await readFile(filePath);
       res.writeHead(200, {
         "Content-Type": MIME[extname(filePath)] ?? "application/octet-stream",
+        // Explicit, because without it Node falls back to chunked
+        // encoding and the weight checks silently measure every asset
+        // as zero bytes.
+        "Content-Length": body.length,
         // Never let a stale bundle mask a fix.
         "Cache-Control": "no-store",
       });
@@ -489,6 +493,110 @@ async function checkDesktop(browser, origin, viewport) {
  * and scrim close, focus returns to the trigger, arrows and keyboard
  * both work, and background scroll locks.
  */
+/**
+ * Image weight, measured from real network traffic rather than from
+ * what is sitting in dist/ (PRD §10, and Alroy's standing "light but
+ * quality" bar).
+ *
+ * Two separate things matter and they fail differently:
+ *   - what a first visit actually costs, which is a speed problem
+ *   - whether any single asset shipped unoptimised, which is usually a
+ *     file that slipped past astro:assets and is being served raw
+ */
+const IMAGE_BUDGET = {
+  /** Everything fetched before any interaction, in KB. */
+  initialLoadKb: 900,
+  /** No single image should exceed this, in KB. */
+  singleImageKb: 260,
+};
+
+async function checkImageWeight(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+
+  const images = [];
+  page.on("response", async (response) => {
+    const type = response.headers()["content-type"] ?? "";
+    if (!type.startsWith("image/")) return;
+    const length = Number(response.headers()["content-length"] ?? 0);
+    images.push({
+      url: response.url().split("/").pop(),
+      kb: length / 1024,
+      type: type.replace("image/", ""),
+    });
+  });
+
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(600);
+
+  // Everything above and around the fold, before opening any gallery.
+  await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(140);
+    }
+  });
+  await page.waitForTimeout(900);
+
+  const totalKb = images.reduce((sum, i) => sum + i.kb, 0);
+  record(
+    "[images] a full scroll stays inside the weight budget",
+    totalKb <= IMAGE_BUDGET.initialLoadKb,
+    `${Math.round(totalKb)}KB across ${images.length} images (budget ${IMAGE_BUDGET.initialLoadKb}KB)`,
+  );
+
+  /*
+   * Open every gallery too. Slides are lazy, so without this the
+   * per-image budget would only ever see the handful of images on the
+   * page itself and quietly pass over the largest assets on the site.
+   */
+  const scrolledKb = totalKb;
+  for (const id of ["uxui", "web", "branding", "content", "photography"]) {
+    await page.locator(`[data-open-portfolio="${id}"]`).click();
+    await page.waitForTimeout(400);
+    const shots = await page.locator("[data-portfolio-next]").count();
+    if (shots) {
+      for (let i = 0; i < 6; i++) {
+        const disabled = await page.locator("[data-portfolio-next]").isDisabled();
+        if (disabled) break;
+        await page.locator("[data-portfolio-next]").click();
+        await page.waitForTimeout(350);
+      }
+    }
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(250);
+  }
+
+  const heavy = images.filter((i) => i.kb > IMAGE_BUDGET.singleImageKb);
+  record(
+    "[images] no single image is oversized",
+    heavy.length === 0,
+    heavy.map((i) => `${i.url} ${Math.round(i.kb)}KB`).join(", "),
+  );
+  record(
+    "[images] gallery slides were actually measured",
+    images.length > 20,
+    `${images.length} images seen, ${Math.round(scrolledKb)}KB of them before opening a gallery`,
+  );
+
+  // Anything still served as PNG or JPEG has bypassed astro:assets.
+  const unconverted = images.filter(
+    (i) =>
+      ["png", "jpeg", "jpg"].includes(i.type) &&
+      !i.url.includes("favicon") &&
+      !i.url.includes("apple-touch"),
+  );
+  record(
+    "[images] everything is served as a modern format",
+    unconverted.length === 0,
+    unconverted.map((i) => `${i.url} (${i.type})`).join(", "),
+  );
+
+  await context.close();
+}
+
 async function checkPortfolioModal(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
@@ -1040,6 +1148,7 @@ const browser = await chromium.launch();
 try {
   for (const viewport of DESKTOP_VIEWPORTS) await checkDesktop(browser, origin, viewport);
   for (const viewport of MOBILE_VIEWPORTS) await checkMobile(browser, origin, viewport);
+  await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
   await checkReducedMotion(browser, origin);

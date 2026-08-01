@@ -139,6 +139,30 @@ In hPanel → Website → Git: add the repository, set branch to `deploy`, and s
 the install path to your web root (usually `public_html`). If the repo is still
 private, add Hostinger's deploy key to the repo first, or make the repo public.
 
+## Image weight
+
+Standing bar: **light, but still quality.** Three gates enforce it rather than
+relying on care, and they measure real network traffic, not what happens to be
+sitting in `dist/`:
+
+- a full scroll of the page stays under 900KB of images
+- no single image exceeds 260KB, galleries included — the check opens every
+  category, because the slides are lazy and would otherwise never be measured
+- nothing is served as raw PNG or JPEG, which is the signature of a file that
+  slipped past `astro:assets`
+
+Sizing follows what is actually displayed. Gallery slides are capped at 1200px
+wide, and a portrait shot is capped by _height_ instead, since that is what
+binds inside a letterboxed panel — sizing a tall magazine cover by width shipped
+roughly three times the pixels anyone ever saw.
+
+`npm run build` finishes with `scripts/prune-assets.mjs`. The `import.meta.glob`
+lookups are what let you drop a file in a folder and name it in a data file with
+no code change, but Vite emits every globbed file whether or not it is used,
+separately from the optimised copies. The prune deletes anything no HTML, CSS or
+JS references. On the first run that was **3.8MB**, taking shipped images from
+5.0MB to 1.2MB.
+
 ## Portfolio video
 
 Source clips go in `src/assets/portfolio/`. Run:

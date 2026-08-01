@@ -79,6 +79,10 @@ export const PORTFOLIO: PortfolioCategory[] = [
         video: "/portfolio/video/website_video_ecommerce.mp4",
         alt: "A beauty e-commerce homepage scrolling through its product and lifestyle imagery.",
       },
+      {
+        image: "Action_4.png",
+        alt: "Innovatr landing section headlined “Not a report. A direction. Clear. Every single time.”, showing the video-interview analysis view beneath it.",
+      },
     ],
   },
   {
@@ -130,6 +134,14 @@ export const PORTFOLIO: PortfolioCategory[] = [
         image: "video_travel-poster.webp",
         video: "/portfolio/video/video_travel.mp4",
         alt: "Travel reel opening on the word WORLD over an aerial shot of open water.",
+      },
+      {
+        image: "innovatrsocial_trends.png",
+        alt: "Innovatr “Trends & Insights” social graphic promoting a library of bi-monthly signal reports.",
+      },
+      {
+        image: "innovatr_carousel.png",
+        alt: "Slide two of an Innovatr social carousel, “The old way: slow, expensive, unclear”, listing 6-8 week turnarounds and R200K study costs.",
       },
     ],
   },
