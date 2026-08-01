@@ -6,8 +6,9 @@
  * the row falls back to a Lucide glyph in the same frame, so a missing
  * mark never blocks the build.
  *
- * TODO(alroy): one further entry to be added. Adding a row here is all
- * it takes; the section renders straight from this array.
+ * Ordered by start date, newest first, under the standing Independent
+ * Contractor entry. Adding a row here is all it takes; the section
+ * renders straight from this array.
  */
 export interface Role {
   title: string;
@@ -25,6 +26,12 @@ export const EXPERIENCE: Role[] = [
     company: "Various",
     dates: "2018 – Present",
     note: "Consulting across marketing, brand and business technology.",
+  },
+  {
+    title: "Brand & Marketing Manager",
+    company: "Innovatr",
+    dates: "Mar 2026 – Sep 2026",
+    logoFile: "innovatr.jpg",
   },
   {
     title: "Digital Marketing Consultant",

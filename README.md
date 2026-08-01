@@ -191,11 +191,14 @@ Tracked from PRD §14. None of these block the build.
       filename.
 - [ ] **Case study images** — hero, before/after and supporting shots per study.
       Each case study data file lists the exact filenames it expects.
-- [ ] **Missing logos** into `assets-from-alroy/logos/`: Kelly-Anne Mealia,
-      CalArts, Lights Film School, UXCEL, Codecademy, Total Sports, and a proper
-      Meta mark (the one downloaded is the old Facebook primary logo). Until they
-      arrive these fall back to a Lucide `building-2`/`graduation-cap` glyph in
-      the standard 40px logo frame.
+- [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
+      School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
+      downloaded is the old Facebook primary logo). Until they arrive these fall
+      back to a Lucide `building-2`/`graduation-cap` glyph in the same frame.
+      _(Innovatr and CalArts received 1 Aug 2026.)_
+- [ ] **A dark-background Thrifty Adventures mark**, if you have one. The current
+      file is white on transparency, so its frame is flipped to ink to keep it
+      visible while every other frame stays light.
 
 ### Flagged for a decision
 

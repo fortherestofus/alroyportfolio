@@ -25,11 +25,21 @@ export function logo(filename?: string): ImageMetadata | null {
 }
 
 /**
- * There is deliberately no per-logo light/dark handling here. The page
- * is dark but the frames are light, which is the background nearly
- * every one of these marks was drawn for, so they all read without
- * exceptions. See the comment in LogoFrame.astro.
+ * Frames are light, because that is the background almost every mark
+ * here was drawn for. The exception is a mark drawn in white on
+ * transparency, which vanishes on a light frame and needs an ink one
+ * instead.
+ *
+ * Note this is not a logo with a white *background* — most of them —
+ * which is opaque and reads fine. Only fully transparent, light-inked
+ * marks belong in this list. If a logo you drop in disappears, check
+ * which of the two it is before adding it here.
  */
+const LIGHT_ON_TRANSPARENT = new Set(["Thrifty-1.png", "Name-Logo-horizonta-whitel.png"]);
+
+export function needsDarkBacking(filename?: string): boolean {
+  return Boolean(filename && LIGHT_ON_TRANSPARENT.has(filename));
+}
 
 /** Filenames referenced by data files but not yet present on disk. */
 export function missingLogos(filenames: (string | undefined)[]): string[] {

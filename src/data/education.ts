@@ -51,7 +51,7 @@ export const EDUCATION: StudyGroup[] = [
         qualification: "Graphic Design Specialisation",
         institution: "CalArts (Coursera)",
         dates: "2016 – 2017",
-        // TODO(alroy): logo missing, see README.
+        logoFile: "calarts.png",
       },
       {
         qualification: "Film & Photography Studies",

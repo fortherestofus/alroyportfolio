@@ -59,6 +59,21 @@ const MOBILE_VIEWPORTS = [
 
 const SECTION_IDS = ["who", "experience", "education", "portfolio", "case-studies", "contact"];
 
+/**
+ * What the data files should put on the page (PRD §12b "data logic").
+ * These are deliberately hard numbers rather than a count of whatever
+ * rendered: the point is to catch an entry silently dropping out. Update
+ * them in the same commit as the data file that changes.
+ */
+const EXPECTED = {
+  roles: 12, // src/data/experience.ts
+  studyGroups: 4, // src/data/education.ts
+  studyEntries: 10,
+  services: 5, // src/data/services.ts
+  testimonials: 3, // src/data/testimonials.ts
+  clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
+};
+
 const results = [];
 const record = (name, passed, detail = "") => results.push({ name, passed, detail });
 
@@ -345,6 +360,7 @@ async function checkDesktop(browser, origin, viewport) {
     studyRows: document.querySelectorAll(".study__row").length,
     services: document.querySelectorAll("[data-service]").length,
     testimonials: document.querySelectorAll(".who__quote").length,
+    clientLogos: document.querySelectorAll(".strip__item").length,
     brokenImages: [...document.querySelectorAll("img")].filter(
       (img) => img.complete && img.naturalWidth === 0,
     ).length,
@@ -353,13 +369,71 @@ async function checkDesktop(browser, origin, viewport) {
     ).length,
   }));
 
-  record(`[${tag}] 11 experience rows`, content.roles === 11, `${content.roles}`);
-  record(`[${tag}] 4 education groups`, content.studyGroups === 4, `${content.studyGroups}`);
-  record(`[${tag}] 10 education entries`, content.studyRows === 10, `${content.studyRows}`);
-  record(`[${tag}] 5 service pills`, content.services === 5, `${content.services}`);
-  record(`[${tag}] 3 testimonials`, content.testimonials === 3, `${content.testimonials}`);
+  const expect = (label, actual, wanted) =>
+    record(`[${tag}] ${label}`, actual === wanted, `got ${actual}, expected ${wanted}`);
+
+  expect(`${EXPECTED.roles} experience rows`, content.roles, EXPECTED.roles);
+  expect(`${EXPECTED.studyGroups} education groups`, content.studyGroups, EXPECTED.studyGroups);
+  expect(`${EXPECTED.studyEntries} education entries`, content.studyRows, EXPECTED.studyEntries);
+  expect(`${EXPECTED.services} service pills`, content.services, EXPECTED.services);
+  expect(`${EXPECTED.testimonials} testimonials`, content.testimonials, EXPECTED.testimonials);
+  // The marquee renders the list twice so the loop has no seam.
+  expect("client marquee is doubled", content.clientLogos, EXPECTED.clientLogos * 2);
   record(`[${tag}] every date renders`, content.emptyDates === 0, `${content.emptyDates} empty`);
   record(`[${tag}] no broken images`, content.brokenImages === 0, `${content.brokenImages} broken`);
+
+  /*
+   * Every logo must actually be visible against the frame it sits in.
+   * A white-on-transparent mark on a light frame renders as a blank
+   * square: the image loads fine, so no other check notices. This
+   * samples each rendered mark composited over its own frame colour and
+   * fails when there is not enough contrast between the ink and the
+   * backing.
+   */
+  const invisibleLogos = await page.evaluate(async () => {
+    const frames = [...document.querySelectorAll(".frame")].filter((f) => f.querySelector("img"));
+    const offenders = [];
+
+    for (const frame of frames) {
+      const img = frame.querySelector("img");
+      if (!img.complete || img.naturalWidth === 0) continue;
+
+      const backing = getComputedStyle(frame)
+        .backgroundColor.match(/[\d.]+/g)
+        .map(Number);
+      const canvas = document.createElement("canvas");
+      canvas.width = 32;
+      canvas.height = 32;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = `rgb(${backing[0]},${backing[1]},${backing[2]})`;
+      ctx.fillRect(0, 0, 32, 32);
+      try {
+        ctx.drawImage(img, 0, 0, 32, 32);
+      } catch {
+        continue;
+      }
+
+      const data = ctx.getImageData(0, 0, 32, 32).data;
+      let min = 255;
+      let max = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const lum = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+        min = Math.min(min, lum);
+        max = Math.max(max, lum);
+      }
+      // A mark that reads has light and dark pixels. A blank square does not.
+      if (max - min < 40) {
+        offenders.push(`${img.currentSrc.split("/").pop()} (range ${Math.round(max - min)})`);
+      }
+    }
+    return offenders;
+  });
+
+  record(
+    `[${tag}] every logo is visible against its frame`,
+    invisibleLogos.length === 0,
+    invisibleLogos.join(", "),
+  );
 
   // --- Service pills: hovering swaps the shared caption line.
   const pills = await page.evaluate(async () => {

@@ -36,6 +36,7 @@ export const TESTIMONIALS: Testimonial[] = [
 
 /** "I've worked with" strip. Same marks as the experience rows. */
 export const CLIENT_LOGOS = [
+  { name: "Innovatr", logoFile: "innovatr.jpg" },
   { name: "Digify Africa", logoFile: "Digify-Africa.png" },
   { name: "Energy Capital & Power", logoFile: "ECP_logo_internal_1Round-150x150-1.png" },
   { name: "IFC (World Bank Group)", logoFile: "IFC.jpeg" },
