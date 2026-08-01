@@ -93,6 +93,38 @@ const BRAND_LOGO_HEIGHT = 48;
     gap: var(--space-5);
   }
 
+  /*
+   * On desktop the brand steps out of the grid so the timeline can
+   * centre on the page rather than on whatever space the brand leaves.
+   * Below that the two-column grid is right, because the pill bar wants
+   * every pixel it can get.
+   */
+  @media (width >= 1024px) {
+    .jnav__inner {
+      display: block;
+    }
+
+    .jnav__brand {
+      position: absolute;
+      left: var(--space-5);
+      top: 50%;
+      translate: 0 -50%;
+    }
+
+    /*
+     * Centred on the page, and narrowed on demand rather than at a
+     * breakpoint: reserving the brand's width on *both* sides keeps the
+     * timeline symmetrical about the centre line while guaranteeing it
+     * clears the wordmark. At 1024 that pulls it in to ~716px; from
+     * about 1280 up the 860px cap takes over.
+     */
+    .jnav__timeline {
+      width: 100%;
+      max-width: min(var(--nav-timeline-width), calc(100% - 2 * var(--nav-brand-reserve)));
+      margin-inline: auto;
+    }
+  }
+
   /* ---- Brand ------------------------------------------------- */
   .jnav__brand {
     display: inline-flex;
@@ -186,16 +218,6 @@ const BRAND_LOGO_HEIGHT = 48;
       height: var(--nav-height);
     }
 
-    /*
-     * The timeline is deliberately not full-bleed. It shares the bar
-     * with the brand and gives back a further slice on the right, so
-     * the labels sit at a readable rhythm instead of being stretched
-     * across the whole viewport.
-     */
-    .jnav__timeline {
-      padding-right: var(--space-8);
-    }
-
     .jnav__list {
       align-items: flex-end;
       gap: 0;
@@ -224,13 +246,41 @@ const BRAND_LOGO_HEIGHT = 48;
       color: var(--color-accent);
     }
 
+    /*
+     * The number sits in a disc so there is something to light up. The
+     * disc is always there and always the same size — only its fill
+     * changes — so the labels never shift as the active step moves.
+     */
     .jnav__num {
+      display: grid;
+      place-items: center;
+      width: var(--nav-num-circle);
+      height: var(--nav-num-circle);
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
       font-size: var(--text-eyebrow);
       letter-spacing: var(--tracking-eyebrow);
+      transition:
+        background-color var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
     }
 
+    .jnav__link:hover .jnav__num {
+      border-color: var(--color-border);
+    }
+
+    /*
+     * Glass rather than a solid fill: the bar behind it is already
+     * blurred and translucent, so a tinted disc with a lit rim reads as
+     * a pane of glass sitting on the page, where a solid green dot would
+     * read as a button and compete with the pendant below.
+     */
     .jnav__link[aria-current="true"] .jnav__num {
       color: var(--color-accent);
+      background-color: var(--color-accent-soft);
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 8%, transparent);
     }
 
     .jnav__label {

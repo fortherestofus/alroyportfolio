@@ -1086,6 +1086,55 @@ async function checkMobile(browser, origin, viewport) {
   );
   record(`[${tag}] no horizontal overflow`, !layout.overflow);
   record(`[${tag}] nav touch targets >= 44px`, layout.minTouch >= 44, `${layout.minTouch}px`);
+
+  /*
+   * Every interactive element, not just the nav pills. The old check
+   * measured [data-nav-link] alone, which passed happily while the
+   * email address, the phone number and a booking link sat at 35px, 35px
+   * and 23px on a phone — the three things a reader on a phone is most
+   * likely to tap.
+   *
+   * The page is scrolled through first so lazily-revealed content is
+   * actually in the DOM to be measured.
+   */
+  await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(60);
+    }
+    window.scrollTo(0, 0);
+    await wait(120);
+  });
+
+  const undersized = await page.evaluate(() => {
+    const MIN = 44;
+    const seen = new Map();
+    for (const el of document.querySelectorAll("a, button, [role='button'], summary, input")) {
+      const box = el.getBoundingClientRect();
+      // Not rendered, or inside something hidden: nothing to tap.
+      if (box.width === 0 || box.height === 0) continue;
+      // Half a pixel of slack for sub-pixel layout.
+      if (box.height >= MIN - 0.5) continue;
+      const name =
+        el.tagName.toLowerCase() +
+        (el.className ? `.${el.className.toString().trim().split(/\s+/)[0]}` : "");
+      if (!seen.has(name)) {
+        seen.set(
+          name,
+          `${name} ${Math.round(box.height)}px "${(el.textContent ?? "").trim().slice(0, 24)}"`,
+        );
+      }
+    }
+    return [...seen.values()];
+  });
+  record(
+    `[${tag}] every tap target >= 44px`,
+    undersized.length === 0,
+    undersized.slice(0, 5).join(" | "),
+  );
+
   record(`[${tag}] no console errors or warnings`, problems.length === 0, problems.join(" | "));
 
   await context.close();

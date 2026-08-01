@@ -47,12 +47,23 @@ import { CLIENT_LOGOS } from "../data/testimonials";
     );
   }
 
+  /*
+   * Spacing lives on the items, not as a flex `gap`, and that is load
+   * bearing. With `gap`, a track of 2N items is 2N·w + (2N−1)·g wide, so
+   * translating -50% travels N·w + (N−0.5)·g — half a gap short of the
+   * N·(w+g) that lands copy two exactly where copy one began. It snapped
+   * back 16px every cycle. Margin makes each repetition unit exactly
+   * w + g, so -50% is precisely one copy.
+   */
   .strip__track {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
     width: max-content;
     animation: strip-scroll 42s linear infinite;
+  }
+
+  .strip__item {
+    margin-inline-end: var(--space-6);
   }
 
   .strip__viewport:hover .strip__track {
@@ -63,6 +74,7 @@ import { CLIENT_LOGOS } from "../data/testimonials";
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
+    flex: none;
     filter: grayscale(1);
     opacity: 0.65;
     transition:

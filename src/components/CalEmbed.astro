@@ -248,6 +248,7 @@ const FRAME_ID = "cal-booking";
    * the iframe reports its real height.
    */
   .cal__frame {
+    position: relative;
     width: 100%;
     min-height: var(--cal-min-height);
     margin-top: var(--space-5);
@@ -282,7 +283,16 @@ const FRAME_ID = "cal-booking";
     display: none;
   }
 
+  /*
+   * Absolutely positioned so it contributes no height. In flow it did:
+   * Cal inserts its iframe as a sibling and only fires linkReady once
+   * the booker is up, so for that window the container held both and
+   * measured 1,162px before snapping back to 570 — a 600px jolt at the
+   * end of the page.
+   */
   .cal__fallback {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -332,6 +342,8 @@ const FRAME_ID = "cal-booking";
   .cal__alt a {
     display: inline-flex;
     align-items: center;
+    /* 23px of link text is not a tap target on a phone. */
+    min-height: var(--control-md);
     gap: var(--space-1);
     color: var(--color-text-muted);
     border-bottom: 1px solid transparent;

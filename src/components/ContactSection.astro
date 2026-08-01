@@ -136,7 +136,15 @@ const LINKS = [
     color: var(--color-accent);
   }
 
+  /*
+   * A link sized by its own line height, which on the phone left the
+   * email and the phone number at 35px — under the 44px minimum, and
+   * they are the two things a reader on a phone is most likely to tap.
+   */
   .contact__value {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-md);
     font-size: var(--text-h3);
     border-bottom: 1px solid transparent;
     transition: border-color var(--duration-base) var(--ease-out);

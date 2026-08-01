@@ -96,6 +96,15 @@
   --wire-base-y: 8px; /* where the wire rests when undisturbed */
   --wire-sag: 14px; /* how far the handle drags the wire down */
   --wire-sag-ease: 60px; /* distance over which sag eases in from the ends */
+  /*
+   * The timeline is narrower than the page. Stretched to the full 1200px
+   * the seven labels sat so far apart they stopped reading as one
+   * object; pulled in and centred they read as a single control.
+   */
+  --nav-timeline-width: 860px;
+  /* Space kept clear either side so the centred timeline misses the brand. */
+  --nav-brand-reserve: 130px;
+  --nav-num-circle: 30px; /* the glass disc behind the active step number */
   --brand-mark-height: 48px; /* Alroy's signature wordmark; it is a script, and below this it stops reading */
 
   /* Smallest a card may get before an auto-fill grid drops a column. */
