@@ -71,16 +71,17 @@ export const CASE_STUDIES: CaseStudy[] = [
     name: "Innovatr",
     dates: "Mar 2026 – Sep 2026",
     summary:
-      "Took a research business with no paid presence to 52 qualified leads in four months, at roughly a third of the market's cost per lead.",
+      "Took a research business with no paid presence to a 3,172-contact pipeline and 52 inbound leads, at roughly a third of the market's cost per lead.",
     description:
       "Innovatr is a consumer research and growth consultancy. I joined as Brand & Marketing Manager and rebuilt the front of the business: the positioning, the website, the content engine that turns research into demand, and the paid programme underneath it.",
-    tags: ["Rebranding", "Content", "Paid media", "Marketing automation"],
+    tags: ["Rebranding", "Content", "Paid media", "Lead sourcing", "Marketing automation"],
     meta: ["Client · Innovatr", "Brand & Marketing Manager", "Mar – Sep 2026"],
     chapters: [
       { id: "start", label: "The starting point" },
       { id: "branding", label: "Brand & website" },
       { id: "content", label: "Reports into content" },
       { id: "ads", label: "Ad creative" },
+      { id: "pipeline", label: "The pipeline" },
       { id: "results", label: "Results" },
       { id: "product", label: "The product" },
     ],
@@ -186,15 +187,56 @@ export const CASE_STUDIES: CaseStudy[] = [
         ],
       },
       {
+        id: "pipeline",
+        kind: "metrics",
+        heading: "Building the pipeline",
+        intro:
+          "Paid was one channel into a much bigger audience-building effort. Alongside the ads I sourced, enriched and de-duplicated the addressable market itself: partner databases, ICP prospecting, the network, and inbound signups. Those lists then fed back into the ads as matched audiences, so targeting was built from real firmographics rather than LinkedIn's interest guesses.",
+        items: [
+          {
+            value: "3,172",
+            label: "Unique contacts sourced",
+            context: "Across every channel, de-duplicated by email. 1,940 distinct organisations.",
+          },
+          {
+            value: "1,739",
+            label: "From partner databases",
+            context: "Workshop17 member organisations, matched to LinkedIn for audience targeting.",
+          },
+          {
+            value: "666",
+            label: "ICP prospects via Apollo",
+            context: "Enriched and segmented by vertical, including hospitality and real estate.",
+          },
+          {
+            value: "687",
+            label: "LinkedIn and CRM contacts",
+            context: "Company page followers and engaged contacts, exported and cleaned.",
+          },
+          {
+            value: "79",
+            label: "IAN network",
+            context: "Innovatr's own channel, brought into the CRM.",
+          },
+          {
+            value: "43",
+            label: "Inbound members",
+            context: "Signups to the membership tiers, free and paid.",
+          },
+        ],
+        footnote:
+          "Counted by unique email address across all sources, so nobody is counted twice. Partner and prospecting lists are sourced audience, not inbound enquiries; the 52 below is the separate, stricter count of people who raised their hand through a paid lead form.",
+      },
+      {
         id: "results",
         kind: "metrics",
         heading: "Results",
         intro:
-          "Four months, from no paid presence at all. Every figure below is from the July 2026 account report and is measured against published B2B benchmarks rather than against itself.",
+          "Four months, from no paid presence at all. These are the paid numbers specifically, taken from the July 2026 account report and measured against published B2B benchmarks rather than against themselves.",
         items: [
           {
             value: "52",
-            label: "Qualified leads",
+            label: "Inbound leads from paid",
             context: "From zero. 28 of them in July, the strongest month on record.",
           },
           {
@@ -248,7 +290,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Innovatr case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu took Innovatr from no paid presence to 52 qualified leads in four months, at roughly a third of the market's cost per lead.",
+        "How Alroy Ndhlovu took Innovatr from no paid presence to a 3,172-contact pipeline and 52 inbound leads, at roughly a third of the market's cost per lead.",
     },
   },
 ];
