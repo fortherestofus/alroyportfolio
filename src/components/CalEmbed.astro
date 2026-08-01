@@ -1,0 +1,294 @@
+---
+/**
+ * The Cal.com inline booking embed (PRD §6.06).
+ *
+ * Deferred on purpose, and by a wide margin the most expensive thing on
+ * the page: embed.js is ~23KB on the parent, and the iframe behind it
+ * pulls roughly a megabyte of Next.js chunks and fonts. None of that is
+ * requested until the section is nearly in view.
+ *
+ * The link in the container is the real fallback, not a placeholder: a
+ * plain anchor to the booking page, in the HTML, working with no JS,
+ * with the script blocked, or if Cal is down. It is retired only once
+ * Cal reports the booker actually ready.
+ */
+import { CalendarDays, ArrowUpRight } from "@lucide/astro";
+import { SOCIAL } from "../data/site";
+
+/** Everything after cal.com/ — what Cal calls the calLink. */
+const CAL_LINK = new URL(SOCIAL.cal).pathname.replace(/^\/|\/$/g, "");
+const FRAME_ID = "cal-booking";
+---
+
+<section class="cal" data-reveal>
+  <h3 class="cal__heading" data-reveal-item>Book a time</h3>
+
+  <div id={FRAME_ID} class="cal__frame" data-cal-link={CAL_LINK} data-reveal-item>
+    <div class="cal__fallback">
+      <CalendarDays class="cal__fallback-icon" aria-hidden="true" />
+      <p class="cal__fallback-note">
+        Pick a slot that suits you — the calendar loads as you reach it.
+      </p>
+      <a class="cal__fallback-link" href={SOCIAL.cal} target="_blank" rel="noopener noreferrer">
+        Book a 15 min session
+        <ArrowUpRight class="cal__fallback-icon-sm" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  /*
+   * Cal's loader snippet, transcribed rather than pasted as an inline
+   * <script> so Astro bundles it as a module. That keeps the page CSP
+   * free of script-src 'unsafe-inline'; only app.cal.com has to be
+   * allowed, for the script it injects and the frame it opens.
+   *
+   * The snippet itself only defines a queueing shim. embed.js is not
+   * requested until the first Cal(...) call, which is what makes
+   * deferring this genuinely free rather than cosmetic.
+   */
+  type CalFn = ((...args: unknown[]) => void) & {
+    loaded?: boolean;
+    ns?: Record<string, CalFn>;
+    q?: unknown[][];
+  };
+
+  declare global {
+    interface Window {
+      Cal?: CalFn;
+    }
+  }
+
+  const EMBED_SCRIPT = "https://app.cal.com/embed/embed.js";
+  /** A namespace isolates this embed from any popup CTA added later. */
+  const NAMESPACE = "booking";
+
+  /** Design values belong in the token layer, including the ones the iframe is told. */
+  function token(name: string): string {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function loader(): CalFn {
+    if (window.Cal) return window.Cal;
+
+    const queue = (target: CalFn, args: unknown[]) => {
+      target.q = target.q ?? [];
+      target.q.push(args);
+    };
+
+    const cal = function (...args: unknown[]) {
+      const self = window.Cal as CalFn;
+
+      if (!self.loaded) {
+        self.ns = {};
+        self.q = self.q ?? [];
+        document.head.appendChild(document.createElement("script")).src = EMBED_SCRIPT;
+        self.loaded = true;
+      }
+
+      if (args[0] === "init") {
+        const namespace = args[1];
+        if (typeof namespace === "string") {
+          const api = function (...inner: unknown[]) {
+            queue(api as CalFn, inner);
+          } as CalFn;
+          self.ns![namespace] = self.ns![namespace] ?? api;
+          queue(self.ns![namespace], args);
+          queue(self, ["initNamespace", namespace]);
+          return;
+        }
+      }
+
+      queue(self, args);
+    } as CalFn;
+
+    window.Cal = cal;
+    return cal;
+  }
+
+  let started = false;
+
+  function mount(frame: HTMLElement): void {
+    const calLink = frame.dataset.calLink;
+    if (started || !calLink) return;
+    started = true;
+
+    const Cal = loader();
+    Cal("init", NAMESPACE, { origin: "https://cal.com" });
+
+    const booking = window.Cal!.ns![NAMESPACE];
+
+    booking("inline", {
+      elementOrSelector: `#${frame.id}`,
+      calLink,
+      /*
+       * These become query parameters on the iframe URL, so the booker
+       * boots dark. Passing the theme only through the `ui` call below
+       * delivers it by postMessage *after* load, which is where the
+       * white flash everyone reports comes from. `ui.color-scheme` is
+       * separate and also needed: without it the iframe canvas itself
+       * stays opaque white behind a dark booker.
+       */
+      config: {
+        layout: "month_view",
+        theme: "dark",
+        "ui.color-scheme": "dark",
+        /*
+         * Cal scrolls itself into view when the booker advances a step.
+         * On a page this long that yanks the reader around.
+         */
+        "ui.autoscroll": "false",
+      },
+    });
+
+    /*
+     * Colours are handed over explicitly, read from the same tokens the
+     * rest of the site uses. The booker renders in its own iframe, so
+     * nothing here can reach inside it: unstyled, a white calendar lands
+     * in the middle of a black page. Fonts are not themeable at all —
+     * the booker keeps Cal Sans, and the section is designed around
+     * that rather than pretending otherwise.
+     */
+    const dark = {
+      "cal-brand": token("--color-accent"),
+      "cal-brand-text": token("--color-invert-text"),
+      "cal-bg": token("--color-bg"),
+      "cal-bg-subtle": token("--color-surface"),
+      "cal-bg-emphasis": token("--color-surface"),
+      "cal-bg-muted": token("--color-surface-sunken"),
+      "cal-text": token("--color-text"),
+      "cal-text-emphasis": token("--color-text"),
+      "cal-text-subtle": token("--color-text-muted"),
+      "cal-text-muted": token("--color-text-faint"),
+      "cal-border": token("--color-border"),
+      "cal-border-subtle": token("--color-border"),
+      // Unitless zero: a length, and not a design value the linter should police.
+      "cal-border-booker-width": "0",
+    };
+
+    booking("ui", {
+      theme: "dark",
+      layout: "month_view",
+      hideEventTypeDetails: false,
+      disableAutoScroll: true,
+      // Both themes carry the same palette, so a theme flip cannot unbrand it.
+      cssVarsPerTheme: { light: dark, dark },
+    });
+
+    /*
+     * Cal's own readiness event, rather than watching for an iframe to
+     * appear. If the script is blocked or fails this never fires, the
+     * fallback link stays exactly where it is, and the section still
+     * does its job.
+     */
+    booking("on", {
+      action: "linkReady",
+      callback: () => frame.setAttribute("data-cal-state", "ready"),
+    });
+  }
+
+  const frame = document.querySelector<HTMLElement>("[data-cal-link]");
+
+  if (frame) {
+    if (!("IntersectionObserver" in window)) {
+      mount(frame);
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            observer.disconnect();
+            mount(frame);
+          }
+        },
+        { rootMargin: token("--cal-preload-margin") },
+      );
+      observer.observe(frame);
+    }
+  }
+</script>
+
+<style>
+  .cal {
+    margin-top: var(--space-7);
+  }
+
+  .cal__heading {
+    font-size: var(--text-h3);
+  }
+
+  /*
+   * Deliberately no `height` and no `overflow`. Cal's own generator
+   * emits `height:100%;overflow:scroll`, which in normal page flow
+   * resolves the height to auto and then hides the overflow behind
+   * their scrollbar-suppressing CSS — that pairing is the cause of most
+   * "the embed collapsed" and "the calendar is cut off" reports.
+   *
+   * min-height is the right lever: Cal's <cal-inline> wrapper sets
+   * `min-height: inherit`, so this both reserves the space before load
+   * and holds the skeleton open, then the container grows freely once
+   * the iframe reports its real height.
+   */
+  .cal__frame {
+    width: 100%;
+    min-height: var(--cal-min-height);
+    margin-top: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    /* Cal reads this off the container to set the iframe's canvas. */
+    color-scheme: dark;
+  }
+
+  .cal__frame[data-cal-state="ready"] .cal__fallback {
+    display: none;
+  }
+
+  .cal__fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    min-height: var(--cal-min-height);
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .cal__fallback-icon {
+    width: var(--icon-xl);
+    height: var(--icon-xl);
+    stroke-width: 1.5;
+    color: var(--color-accent);
+  }
+
+  .cal__fallback-note {
+    max-width: var(--measure);
+    color: var(--color-text-muted);
+  }
+
+  .cal__fallback-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    padding-inline: var(--space-5);
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+    border-radius: var(--radius-pill);
+    font-weight: var(--weight-heading);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  .cal__fallback-link:hover,
+  .cal__fallback-link:focus-visible {
+    background-color: var(--color-accent-olive);
+  }
+
+  .cal__fallback-icon-sm {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 2;
+  }
+</style>

@@ -16,6 +16,7 @@ import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Placeholder from "../../components/Placeholder.astro";
 import LogoFrame from "../../components/LogoFrame.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
 import { CASE_STUDIES, caseImage, type CaseStudy } from "../../data/case-studies";
 import { SITE } from "../../data/site";
 
@@ -284,6 +285,8 @@ const schema = [
       </p>
     </footer>
   </article>
+
+  <SiteFooter slot="footer" />
 </BaseLayout>
 
 <script>

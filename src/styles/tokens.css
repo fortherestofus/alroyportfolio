@@ -113,6 +113,11 @@
   --shot-panel-ratio: 3 / 4;
   --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
 
+  /* Reserved height for the booking embed, so it cannot shift the page. */
+  --cal-min-height: 560px;
+  /* How far ahead of the viewport the booking embed starts loading. */
+  --cal-preload-margin: 600px;
+
   /* Case study trend chart: a table with a drawn bar per row. */
   --trend-bar-height: 10px;
   --trend-bar-track: 200px; /* the column the longest bar has to fit */

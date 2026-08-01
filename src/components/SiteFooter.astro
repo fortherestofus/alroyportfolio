@@ -1,0 +1,70 @@
+---
+/**
+ * Site footer (PRD §6.06): copyright line and a mini nav.
+ *
+ * The mini nav points at the journey sections with plain hash links, so
+ * it works from the case study pages as absolute paths back to the home
+ * page and not only as in-page anchors.
+ */
+import { SITE, SECTIONS } from "../data/site";
+
+const year = 2026;
+---
+
+<footer class="foot">
+  <div class="foot__inner">
+    <p class="foot__line">
+      © {year}
+      {SITE.name}
+    </p>
+
+    <nav class="foot__nav" aria-label="Footer">
+      {SECTIONS.map((section) => <a href={`/#${section.id}`}>{section.short}</a>)}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-6);
+  }
+
+  .foot__inner {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .foot__line {
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .foot__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .foot__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-md);
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    transition: color var(--duration-base) var(--ease-out);
+  }
+
+  .foot__nav a:hover,
+  .foot__nav a:focus-visible {
+    color: var(--color-accent);
+  }
+</style>

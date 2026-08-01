@@ -361,6 +361,16 @@ function initJourneyNav(): void {
 
   /** Index of the section the reader is currently in. */
   function currentIndex(scrollY: number): number {
+    /*
+     * At the very bottom of the document the last section is current by
+     * definition, whether or not its anchor line was ever reached. A
+     * short final section on a tall viewport cannot scroll far enough to
+     * cross its own anchor, so without this the nav sticks on the
+     * second-to-last item for the entire end of the page.
+     */
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll > 0 && scrollY >= maxScroll - 2) return stops.length - 1;
+
     let index = 0;
     stops.forEach((stop, i) => {
       // A small tolerance keeps the active state from flickering when a

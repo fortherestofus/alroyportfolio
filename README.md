@@ -259,6 +259,14 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
+- **What the booking embed offers.** `cal.com/mralroyndhlovu` is a profile with
+  two event types, so the embed shows both: **Quick chat (15m, free)** and
+  **Billed consultation (60m, $60)**. That means a price tag appears on the
+  contact section of a portfolio, which is a positioning call rather than a
+  build one. To show a single calendar instead, put the event slug in
+  `SOCIAL.cal` (`https://cal.com/mralroyndhlovu/<event-slug>`) — the component
+  derives Cal's `calLink` from that URL and needs no other change.
+
 - **Logo.** The nav currently uses a typographic lockup: an `AN` monogram in
   deep green plus the wordmark (which drops off below 1280px to keep the
   timeline readable). The only logo on the live WordPress site is
@@ -289,6 +297,7 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
   as being written; each becomes a card automatically when its entry lands
   in `src/data/case-studies.ts`, and the product cards in section 05 link
   through the moment a matching page exists.
-- [ ] 7. Section 07 — Contact + lazy Cal.com embed + footer
+- [x] **7. Section 07** — Contact: email with copy-to-clipboard, phone, the
+      lazy Cal.com embed, social links and the footer
 - [ ] 8. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG
 - [ ] 9. Polish & QA — Lighthouse, a11y, reduced-motion, cross-browser

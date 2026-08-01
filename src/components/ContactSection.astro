@@ -1,0 +1,237 @@
+---
+/**
+ * Section 07: contact (PRD §6.06).
+ *
+ * Three ways to make contact, in the order most people want them:
+ * book a time, send an email, or pick up the phone. The booking embed
+ * is the heaviest of the three by a wide margin, so it is deferred
+ * (see CalEmbed) and every other route works with no JS at all.
+ */
+import { Mail, Phone, Copy, Check, ArrowUpRight } from "@lucide/astro";
+import CalEmbed from "./CalEmbed.astro";
+import { SITE, SOCIAL } from "../data/site";
+
+/*
+ * No brand marks: Lucide 1.x ships none, and Simple Icons has dropped
+ * LinkedIn. The name does the identifying, the arrow says it leaves the
+ * site — the same pattern section 01 already uses.
+ */
+const LINKS = [
+  { href: SOCIAL.linkedin, label: "LinkedIn" },
+  { href: SOCIAL.dribbble, label: "Dribbble" },
+  { href: SOCIAL.instagram, label: "Instagram" },
+  { href: SOCIAL.github, label: "GitHub" },
+];
+---
+
+<div class="contact">
+  <ul class="contact__direct" data-reveal>
+    <li class="contact__row" data-reveal-item>
+      <Mail class="contact__icon" aria-hidden="true" />
+      <a class="contact__value" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      {
+        /*
+         * Copy is an enhancement, not the route: the address next to it is
+         * a real mailto link. Hidden until the script confirms the
+         * clipboard API is there, so a button that cannot work is never
+         * shown.
+         */
+      }
+      <button class="contact__copy" type="button" data-copy={SITE.email} hidden>
+        <Copy class="contact__copy-icon" data-copy-idle aria-hidden="true" />
+        <Check
+          class="contact__copy-icon contact__copy-icon--done"
+          data-copy-done
+          aria-hidden="true"
+        />
+        <span class="visually-hidden" data-copy-label>Copy email address</span>
+      </button>
+      <span class="contact__status" role="status" aria-live="polite"></span>
+    </li>
+
+    <li class="contact__row" data-reveal-item>
+      <Phone class="contact__icon" aria-hidden="true" />
+      <a class="contact__value" href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+    </li>
+  </ul>
+
+  <CalEmbed />
+
+  <nav class="contact__social" aria-label="Alroy Ndhlovu elsewhere" data-reveal>
+    {
+      LINKS.map(({ href, label }) => (
+        <a
+          class="contact__link"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-reveal-item
+        >
+          {label}
+          <ArrowUpRight class="contact__link-icon" aria-hidden="true" />
+        </a>
+      ))
+    }
+  </nav>
+</div>
+
+<script>
+  /*
+   * Clipboard, with the button revealed only once we know it can work.
+   * navigator.clipboard is undefined on insecure origins, so this is a
+   * real condition rather than defensive noise.
+   */
+  const RESET_AFTER = 2000;
+
+  if (navigator.clipboard) {
+    for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy]")) {
+      const value = button.dataset.copy ?? "";
+      const label = button.querySelector<HTMLElement>("[data-copy-label]");
+      const status = button.parentElement?.querySelector<HTMLElement>(".contact__status");
+      let timer: number | undefined;
+
+      button.hidden = false;
+      if (label) label.textContent = "Copy email address";
+
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(value);
+        } catch {
+          // Denied or unavailable. The mailto link beside it still works,
+          // so say nothing rather than raise an error the user cannot act on.
+          return;
+        }
+
+        button.dataset.copied = "true";
+        if (status) status.textContent = "Email address copied";
+
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          delete button.dataset.copied;
+          if (status) status.textContent = "";
+        }, RESET_AFTER);
+      });
+    }
+  }
+</script>
+
+<style>
+  .contact__direct {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .contact__icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 1.5;
+    flex: none;
+    color: var(--color-accent);
+  }
+
+  .contact__value {
+    font-size: var(--text-h3);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-base) var(--ease-out);
+    overflow-wrap: anywhere;
+  }
+
+  .contact__value:hover,
+  .contact__value:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .contact__copy {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: var(--control-md);
+    height: var(--control-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-chip);
+    color: var(--color-text-muted);
+    background: none;
+    cursor: pointer;
+    transition:
+      color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out);
+  }
+
+  .contact__copy:hover,
+  .contact__copy:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /*
+   * Both icons occupy the same grid cell, so swapping them cannot
+   * resize the button. Visibility is driven off a data attribute rather
+   * than the hidden attribute, which Astro's icon components do not
+   * forward.
+   */
+  .contact__copy-icon {
+    grid-area: 1 / 1;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .contact__copy-icon--done,
+  .contact__copy[data-copied] .contact__copy-icon:not(.contact__copy-icon--done) {
+    display: none;
+  }
+
+  .contact__copy[data-copied] .contact__copy-icon--done {
+    display: block;
+    color: var(--color-accent);
+  }
+
+  .contact__status {
+    font-size: var(--text-small);
+    color: var(--color-accent);
+  }
+
+  .contact__social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+  }
+
+  .contact__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    transition:
+      color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out);
+  }
+
+  .contact__link:hover,
+  .contact__link:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .contact__link-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+</style>

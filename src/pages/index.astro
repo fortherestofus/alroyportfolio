@@ -15,12 +15,9 @@ import EducationGroups from "../components/EducationGroups.astro";
 import PortfolioGrid from "../components/PortfolioGrid.astro";
 import ProductShowcase from "../components/ProductShowcase.astro";
 import CaseStudyStack from "../components/CaseStudyStack.astro";
+import ContactSection from "../components/ContactSection.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import { SITE, SECTIONS } from "../data/site";
-
-/** Right columns still to be filled, and by which phase. */
-const PENDING: Record<string, string> = {
-  contact: "Phase 6 — email, phone, Cal.com embed, socials",
-};
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description} path="/">
@@ -52,16 +49,12 @@ const PENDING: Record<string, string> = {
         {section.id === "portfolio" && <PortfolioGrid />}
         {section.id === "products" && <ProductShowcase />}
         {section.id === "case-studies" && <CaseStudyStack />}
-
-        {PENDING[section.id] && (
-          <div class="pending" data-reveal>
-            <p class="eyebrow">Coming next</p>
-            <p class="pending__note">{PENDING[section.id]}</p>
-          </div>
-        )}
+        {section.id === "contact" && <ContactSection />}
       </JourneySection>
     ))
   }
+
+  <SiteFooter slot="footer" />
 </BaseLayout>
 
 <script>
@@ -91,34 +84,10 @@ const PENDING: Record<string, string> = {
     color: var(--color-text-muted);
   }
 
-  /*
-   * Scaffolding for Phase 2 only. The min-height gives each right
-   * column enough length to prove the left column pins and releases
-   * correctly; it comes out as real content lands.
-   */
-  .pending {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    min-height: 70vh;
-    padding: var(--space-6);
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius-card);
-    background-color: var(--color-surface);
-  }
-
-  .pending__note {
-    color: var(--color-text-faint);
-  }
-
   @media (width >= 1024px) {
     .hero {
       padding-top: calc(var(--nav-height) + var(--space-9));
       padding-bottom: var(--space-9);
-    }
-
-    .pending {
-      min-height: 120vh;
     }
   }
 </style>

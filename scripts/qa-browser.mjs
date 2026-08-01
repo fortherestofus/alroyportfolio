@@ -125,13 +125,26 @@ function serveDist() {
   });
 }
 
+/**
+ * Origins whose console output is not ours to fix. The booking embed
+ * runs a third-party application inside an iframe and warns about its
+ * own font preloading; failing our build on that would mean either
+ * dropping the embed or dropping the gate, and the gate is worth more
+ * pointed only at code we wrote. Anything from our own origin, and any
+ * page error at all, still fails.
+ */
+const THIRD_PARTY = [/\bapp\.cal\.com\b/, /\bcal\.com\b/];
+
+const isThirdParty = (text) => THIRD_PARTY.some((pattern) => pattern.test(text));
+
 /** Collect console errors/warnings and page exceptions for one page. */
 function watchConsole(page) {
   const problems = [];
   page.on("console", (msg) => {
-    if (msg.type() === "error" || msg.type() === "warning") {
-      problems.push(`${msg.type()}: ${msg.text()}`);
-    }
+    if (msg.type() !== "error" && msg.type() !== "warning") return;
+    const location = msg.location()?.url ?? "";
+    if (isThirdParty(location) || isThirdParty(msg.text())) return;
+    problems.push(`${msg.type()}: ${msg.text()}`);
   });
   page.on("pageerror", (error) => problems.push(`pageerror: ${error.message}`));
   return problems;
@@ -654,6 +667,13 @@ async function checkImageWeight(browser, origin) {
   page.on("response", async (response) => {
     const type = response.headers()["content-type"] ?? "";
     if (!type.startsWith("image/")) return;
+    /*
+     * Only our own assets. The booking embed serves its own avatars and
+     * icons from Cal's CDN; those are neither in our weight budget nor
+     * ours to convert, and counting them made this gate fail on an
+     * account profile picture.
+     */
+    if (!response.url().startsWith(origin)) return;
     const length = Number(response.headers()["content-length"] ?? 0);
     images.push({
       url: response.url().split("/").pop(),
