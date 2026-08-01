@@ -148,6 +148,58 @@ function check(file) {
 
 walk(SRC);
 
+/**
+ * Every var(--x) must resolve to a custom property declared somewhere.
+ * A reference to a token that does not exist is not an error in CSS:
+ * the declaration is simply thrown away at computed-value time, so a
+ * renamed token leaves an element silently unstyled and nothing
+ * complains. That is exactly how `--color-ink-surface` survived the
+ * dark-mode rename and left a label with no background on it.
+ *
+ * Declarations are collected from anywhere in src/, not just the token
+ * layer, because components legitimately define their own locals and
+ * pass them in through inline styles (`--bar`, `--card-index`).
+ */
+const DECLARATION = /(--[\w-]+)\s*:/g;
+const USAGE = /var\(\s*(--[\w-]+)/g;
+
+const declared = new Set();
+const used = new Map();
+
+function collect(dir) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) {
+      collect(full);
+      continue;
+    }
+    if (!/\.(astro|css|ts|tsx|js|mjs)$/.test(entry)) continue;
+
+    const source = readFileSync(full, "utf8");
+    for (const match of source.matchAll(DECLARATION)) declared.add(match[1]);
+
+    const rel = relative(ROOT, full);
+    source.split("\n").forEach((line, index) => {
+      for (const match of line.matchAll(USAGE)) {
+        if (!used.has(match[1])) used.set(match[1], `${rel}:${index + 1}`);
+      }
+    });
+  }
+}
+
+collect(SRC);
+
+for (const [token, where] of used) {
+  if (declared.has(token)) continue;
+  const [rel, lineNumber] = where.split(/:(?=\d+$)/);
+  violations.push({
+    rel,
+    lineNumber,
+    value: `var(${token})`,
+    rule: "undefined custom property (renamed or never declared)",
+  });
+}
+
 if (violations.length > 0) {
   console.error(`\n✖ Token lint failed: ${violations.length} violation(s)\n`);
   for (const v of violations) {

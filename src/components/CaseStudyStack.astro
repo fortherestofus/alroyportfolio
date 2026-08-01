@@ -18,6 +18,7 @@
 import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
+import LogoFrame from "./LogoFrame.astro";
 import { CASE_STUDIES, UPCOMING_STUDIES, caseImage } from "../data/case-studies";
 
 /* Strip shots are small and never shown large. */
@@ -30,7 +31,10 @@ const STRIP_QUALITY = 70;
     CASE_STUDIES.map((study, index) => (
       <article class="stack__card" style={`--card-index:${index}`} data-reveal>
         <header class="stack__head">
-          <p class="stack__project">[ {study.name} ]</p>
+          <p class="stack__project">
+            {study.logoFile && <LogoFrame file={study.logoFile} round />}
+            <span>[ {study.name} ]</span>
+          </p>
           <p class="stack__dates">[ {study.dates} ]</p>
         </header>
 
@@ -62,10 +66,10 @@ const STRIP_QUALITY = 70;
          * hidden from assistive tech rather than read out as sixteen
          * unlabelled images between the summary and the link.
          */}
-        <div class="stack__viewport" aria-hidden="true">
+        <div class="stack__viewport" aria-hidden="true" hidden={!study.strip?.length}>
           <div class="stack__track">
             {[0, 1].map((copy) =>
-              study.strip.map((shot) => {
+              (study.strip ?? []).map((shot) => {
                 const image = caseImage(shot.image);
                 return (
                   <span class="stack__shot" data-copy={copy}>
@@ -131,10 +135,17 @@ const STRIP_QUALITY = 70;
   .stack__head {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
     font-size: var(--text-small);
     color: var(--color-text-faint);
+  }
+
+  .stack__project {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
 
   .stack__body {

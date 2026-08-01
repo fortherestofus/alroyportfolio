@@ -15,6 +15,7 @@ import { Image } from "astro:assets";
 import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Placeholder from "../../components/Placeholder.astro";
+import LogoFrame from "../../components/LogoFrame.astro";
 import { CASE_STUDIES, caseImage, type CaseStudy } from "../../data/case-studies";
 import { SITE } from "../../data/site";
 
@@ -72,7 +73,10 @@ const schema = [
         Back to case studies
       </a>
 
-      <h1 class="cs__title">{study.name}</h1>
+      <h1 class="cs__title">
+        {study.logoFile && <LogoFrame file={study.logoFile} round size="lg" />}
+        {study.name}
+      </h1>
       <p class="cs__summary">{study.summary}</p>
 
       <p class="cs__meta">{study.meta.join(" · ")}</p>
@@ -154,6 +158,43 @@ const schema = [
                   </li>
                 ))}
               </ul>
+            )}
+
+            {block.kind === "trend" && (
+              <div class="cs__trend" data-reveal-item>
+                <table class="cs__trend-table">
+                  {/* The heading above says this too, but a table needs its own. */}
+                  <caption class="visually-hidden">{block.measure} by month</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Month</th>
+                      <th scope="col">{block.measure}</th>
+                      <th scope="col">What changed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.rows.map((row) => {
+                      const peak = Math.max(...block.rows.map((r) => r.value));
+                      /* Percentage of the tallest bar, floored so a real
+                         but tiny month is still a visible mark. */
+                      const pct = peak > 0 ? Math.max(1.5, (row.value / peak) * 100) : 0;
+                      return (
+                        <tr>
+                          <th scope="row" class="cs__trend-label">
+                            {row.label}
+                          </th>
+                          <td class="cs__trend-cell">
+                            <span class="cs__trend-bar" style={`--bar:${pct.toFixed(2)}%`} />
+                            <span class="cs__trend-value">{row.display}</span>
+                          </td>
+                          <td class="cs__trend-note">{row.note}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                {block.footnote && <p class="cs__footnote">{block.footnote}</p>}
+              </div>
             )}
 
             {block.kind === "beforeAfter" &&
@@ -280,7 +321,12 @@ const schema = [
     stroke-width: 2;
   }
 
+  /* The client's mark sits on the baseline of their name. */
   .cs__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
     margin-top: var(--space-5);
   }
 
@@ -487,8 +533,18 @@ const schema = [
     gap: var(--space-3);
   }
 
+  /*
+   * Before and after are captures of the same page at two different
+   * window sizes, so their ratios never match. Grid stretches the two
+   * frames level with each other regardless, which leaves a band of
+   * empty card under whichever image is shorter. Fixing the frame and
+   * fitting the image inside it is what actually makes them comparable
+   * — and `contain`, because cropping a page you are asking someone to
+   * compare defeats the point.
+   */
   .cs__compare-side {
     position: relative;
+    aspect-ratio: var(--shot-screen-ratio);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
     overflow: hidden;
@@ -497,8 +553,13 @@ const schema = [
 
   .cs__compare-side :global(img) {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     display: block;
+  }
+
+  .cs__compare-side :global(.placeholder) {
+    height: 100%;
   }
 
   .cs__compare-tag {
@@ -511,7 +572,9 @@ const schema = [
     min-height: var(--control-sm);
     padding-inline: var(--space-3);
     border-radius: var(--radius-pill);
-    background-color: var(--color-ink-surface);
+    /* Was --color-ink-surface, which stopped existing in the dark-mode
+       rename and left this tag with no background at all. */
+    background-color: var(--color-surface);
     color: var(--color-text);
     font-size: var(--text-chip);
     font-weight: var(--weight-heading);
@@ -533,6 +596,79 @@ const schema = [
   .cs__caption-label {
     color: var(--color-text);
     font-weight: var(--weight-heading);
+  }
+
+  /* --- Trend ------------------------------------------------------- */
+  .cs__trend {
+    margin-top: var(--space-6);
+    overflow-x: auto;
+  }
+
+  .cs__trend-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+  }
+
+  .cs__trend-table thead th {
+    padding-bottom: var(--space-3);
+    text-align: left;
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cs__trend-table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cs__trend-table th,
+  .cs__trend-table td {
+    padding-block: var(--space-3);
+    padding-right: var(--space-4);
+    vertical-align: middle;
+  }
+
+  .cs__trend-label {
+    text-align: left;
+    font-weight: var(--weight-heading);
+    white-space: nowrap;
+  }
+
+  .cs__trend-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /*
+   * A fixed track filled to --bar, which is computed from the data, so
+   * the shape of the column can never disagree with the number printed
+   * next to it. Filled with a gradient rather than a nested element
+   * because there is nothing for that element to be.
+   */
+  .cs__trend-bar {
+    flex: none;
+    width: var(--trend-bar-track);
+    height: var(--trend-bar-height);
+    background-color: var(--color-accent-soft);
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-size: var(--bar) 100%;
+    background-repeat: no-repeat;
+    border-radius: var(--radius-pill);
+  }
+
+  .cs__trend-value {
+    color: var(--color-text);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cs__trend-note {
+    color: var(--color-text-muted);
   }
 
   /* --- Gallery ----------------------------------------------------- */

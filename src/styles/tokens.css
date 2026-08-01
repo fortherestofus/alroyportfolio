@@ -85,6 +85,8 @@
   --nav-height: 96px; /* desktop: numbers + labels + track */
   --nav-height-mobile: 64px; /* mobile: single pill row */
   --hairline: 1px; /* the timeline rule, drawn as a height not a border */
+  /* The collapsed box that keeps visually-hidden text in the a11y tree. */
+  --visually-hidden-size: 1px;
   --knob-size: 12px; /* the pin that rides the line */
   --knob-dot: 4px; /* gold inner dot, one of the few gold moments */
   --knob-pendant: 40px; /* the grabbable disc hanging below the line */
@@ -110,6 +112,11 @@
   --shot-panel-width: 240px; /* a browser-extension popup */
   --shot-panel-ratio: 3 / 4;
   --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
+
+  /* Case study trend chart: a table with a drawn bar per row. */
+  --trend-bar-height: 10px;
+  --trend-bar-track: 200px; /* the column the longest bar has to fit */
+
   --shot-screen-width: 360px; /* a web capture */
   --shot-screen-ratio: 16 / 10; /* the middle of the browser-window spread */
 

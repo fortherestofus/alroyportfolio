@@ -14,9 +14,12 @@ import { logo, needsDarkBacking } from "../data/logos";
 interface Props {
   file?: string;
   kind?: "company" | "institution";
+  /** Case studies badge the client as a circular mark. */
+  round?: boolean;
+  size?: "md" | "lg";
 }
 
-const { file, kind = "company" } = Astro.props;
+const { file, kind = "company", round = false, size = "md" } = Astro.props;
 const source = logo(file);
 const onDark = needsDarkBacking(file);
 
@@ -24,7 +27,11 @@ const onDark = needsDarkBacking(file);
 const RENDER_SIZE = 80;
 ---
 
-<span class="frame" data-on-dark={onDark ? "true" : undefined} aria-hidden="true">
+<span
+  class:list={["frame", round && "frame--round", size === "lg" && "frame--lg"]}
+  data-on-dark={onDark ? "true" : undefined}
+  aria-hidden="true"
+>
   {
     source ? (
       <Image src={source} alt="" width={RENDER_SIZE} height={RENDER_SIZE} loading="lazy" />
@@ -56,6 +63,21 @@ const RENDER_SIZE = 80;
     border-radius: var(--radius-sm);
     overflow: hidden;
     color: var(--color-invert-muted);
+  }
+
+  /*
+   * Case studies badge the client as a circle. A round frame crops the
+   * corners off a square mark, so it also gets more padding to pull the
+   * artwork inside the circle rather than letting it touch the edge.
+   */
+  .frame--round {
+    border-radius: var(--radius-pill);
+    padding: var(--space-2);
+  }
+
+  .frame--lg {
+    width: var(--frame-logo-lg);
+    height: var(--frame-logo-lg);
   }
 
   .frame[data-on-dark="true"] {
