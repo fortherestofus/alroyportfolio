@@ -538,9 +538,9 @@ const schema = [
    * window sizes, so their ratios never match. Grid stretches the two
    * frames level with each other regardless, which leaves a band of
    * empty card under whichever image is shorter. Fixing the frame and
-   * fitting the image inside it is what actually makes them comparable
-   * — and `contain`, because cropping a page you are asking someone to
-   * compare defeats the point.
+   * filling it is what makes the two actually comparable: both are
+   * cropped the same way, from the top, which is where the header and
+   * the hero of a page are.
    */
   .cs__compare-side {
     position: relative;
@@ -554,7 +554,8 @@ const schema = [
   .cs__compare-side :global(img) {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center top;
     display: block;
   }
 
@@ -715,7 +716,8 @@ const schema = [
 
   .cs__gallery--wide .cs__shot :global(img) {
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .cs__gallery--wide .cs__shot :global(.placeholder) {

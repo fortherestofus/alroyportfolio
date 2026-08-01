@@ -300,9 +300,10 @@ const slug = (name: string) =>
 
   /*
    * Web captures arrive at whatever the window was, anywhere from 4:3
-   * to 2:1, so cropping them to a common frame cuts headlines in half.
-   * `contain` on the sunken backing letterboxes instead, which on a
-   * screenshot just reads as the screen it was taken from.
+   * to 2:1. Letterboxing them inside a common frame keeps every pixel
+   * but leaves bands of dead backing, which Alroy read — fairly — as
+   * the image failing to fill its frame. So they fill it, anchored to
+   * the top, where the header and the headline of a UI capture are.
    */
   .product__rail--screen .product__shot {
     width: var(--shot-screen-width);
@@ -310,7 +311,8 @@ const slug = (name: string) =>
   }
 
   .product__rail--screen :global(img) {
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center top;
   }
 
   /* A missing capture leaves a hole the exact size of the real one. */

@@ -29,7 +29,11 @@ const STRIP_QUALITY = 70;
 <div class="stack">
   {
     CASE_STUDIES.map((study, index) => (
-      <article class="stack__card" style={`--card-index:${index}`} data-reveal>
+      <article
+        class:list={["stack__card", !study.strip?.length && "stack__card--no-strip"]}
+        style={`--card-index:${index}`}
+        data-reveal
+      >
         <header class="stack__head">
           <p class="stack__project">
             {study.logoFile && <LogoFrame file={study.logoFile} round />}
@@ -128,8 +132,18 @@ const STRIP_QUALITY = 70;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-block);
     box-shadow: var(--shadow-card);
+    /*
+     * No bottom padding: the strip runs to the card's edge on purpose.
+     * A card with no strip has to put it back, or the last thing in the
+     * card — the tags, or the case study button — sits flush against
+     * the rounded corner.
+     */
     padding: var(--space-5) var(--space-5) 0;
     overflow: hidden;
+  }
+
+  .stack__card--no-strip {
+    padding-bottom: var(--space-5);
   }
 
   .stack__head {
@@ -331,6 +345,10 @@ const STRIP_QUALITY = 70;
   @media (width >= 640px) {
     .stack__card {
       padding: var(--space-6) var(--space-6) 0;
+    }
+
+    .stack__card--no-strip {
+      padding-bottom: var(--space-6);
     }
 
     .stack__viewport {
