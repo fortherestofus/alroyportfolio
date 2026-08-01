@@ -82,6 +82,9 @@ const EXPECTED = {
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
   products: 4, // src/data/products.ts
   productShots: 18,
+  caseStudyCards: 1, // CASE_STUDIES — one written, three still to come
+  upcomingStudies: 3, // UPCOMING_STUDIES
+  stripShots: 8, // CASE_STUDIES[0].strip, rendered twice for the marquee
 };
 
 const results = [];
@@ -383,6 +386,13 @@ async function checkDesktop(browser, origin, viewport) {
     testimonials: document.querySelectorAll(".who__quote").length,
     products: document.querySelectorAll(".product").length,
     productShots: document.querySelectorAll(".product__shot").length,
+    caseStudyCards: document.querySelectorAll(".stack__card").length,
+    upcomingStudies: document.querySelectorAll(".stack__upcoming-item").length,
+    stripShots: document.querySelectorAll(".stack__shot").length,
+    /* Every overview card must reach the page it promises. */
+    deadCaseLinks: [...document.querySelectorAll(".stack__cta")].filter(
+      (a) => !a.getAttribute("href")?.startsWith("/case-studies/"),
+    ).length,
     clientLogos: document.querySelectorAll(".strip__item").length,
     brokenImages: [...document.querySelectorAll("img")].filter(
       (img) => img.complete && img.naturalWidth === 0,
@@ -415,9 +425,16 @@ async function checkDesktop(browser, origin, viewport) {
    */
   const shotGaps = await page.evaluate(() => {
     const problems = [];
-    for (const rail of document.querySelectorAll(".product__rail")) {
-      const name = rail.getAttribute("aria-label") ?? "rail";
-      const shots = [...rail.querySelectorAll(".product__shot")];
+    const RAILS = [
+      [".product__rail", ".product__shot"],
+      [".stack__track", ".stack__shot"],
+    ];
+    const rails = RAILS.flatMap(([container, item]) =>
+      [...document.querySelectorAll(container)].map((el) => [el, item]),
+    );
+    for (const [rail, itemSelector] of rails) {
+      const name = rail.getAttribute("aria-label") ?? rail.className;
+      const shots = [...rail.querySelectorAll(itemSelector)];
       if (shots.length === 0) continue;
 
       const boxes = shots.map((s) => s.getBoundingClientRect());
@@ -449,6 +466,48 @@ async function checkDesktop(browser, origin, viewport) {
     shotGaps.length === 0,
     shotGaps.slice(0, 4).join("; "),
   );
+
+  expect(
+    `${EXPECTED.caseStudyCards} case study card(s)`,
+    content.caseStudyCards,
+    EXPECTED.caseStudyCards,
+  );
+  expect(
+    `${EXPECTED.upcomingStudies} upcoming studies`,
+    content.upcomingStudies,
+    EXPECTED.upcomingStudies,
+  );
+  // The strip renders the list twice so the marquee loop has no seam.
+  expect("case study strip is doubled", content.stripShots, EXPECTED.stripShots * 2);
+  record(
+    `[${tag}] every case study card links to its page`,
+    content.deadCaseLinks === 0,
+    `${content.deadCaseLinks} card(s) point elsewhere`,
+  );
+
+  /*
+   * The peel only works if the cards are opaque. A translucent card
+   * shows the one it is covering straight through, which reads as a
+   * rendering fault rather than as depth.
+   */
+  const seeThrough = await page.evaluate(() =>
+    [...document.querySelectorAll(".stack__card, .stack__upcoming")]
+      .filter((el) => {
+        const bg = getComputedStyle(el).backgroundColor;
+        if (bg === "transparent") return true;
+        /*
+         * An element with no background computes to "rgba(0, 0, 0, 0)",
+         * so the alpha has to be read properly. Splitting on the comma
+         * leaves a trailing ")" that turns Number() into NaN, and every
+         * comparison against NaN is false — which is how this check
+         * passed against a panel that had no background at all.
+         */
+        const alpha = bg.match(/^rgba?\([^)]*?,\s*([\d.]+)\s*\)$/);
+        return alpha !== null && Number(alpha[1]) < 1;
+      })
+      .map((el) => el.className),
+  );
+  record(`[${tag}] stacking panels are opaque`, seeThrough.length === 0, seeThrough.join(", "));
 
   const missingStacks = await page.evaluate(() =>
     [...document.querySelectorAll(".product")]

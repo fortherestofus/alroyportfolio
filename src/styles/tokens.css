@@ -109,6 +109,7 @@
   --shot-phone-ratio: 9 / 19.5; /* a modern handset */
   --shot-panel-width: 240px; /* a browser-extension popup */
   --shot-panel-ratio: 3 / 4;
+  --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
   --shot-screen-width: 360px; /* a web capture */
   --shot-screen-ratio: 16 / 10; /* the middle of the browser-window spread */
 

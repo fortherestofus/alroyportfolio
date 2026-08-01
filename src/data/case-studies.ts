@@ -66,6 +66,12 @@ export interface CaseStudy {
   tags: string[];
   meta: string[];
   website?: string;
+  /**
+   * The moving image strip on the section 06 overview card (PRD §6.05).
+   * A spread of the work rather than the best six shots: a reader
+   * scanning the card should see the range before they see the detail.
+   */
+  strip: { image: string; alt: string }[];
   /** Anchored sub-navigation, in page order. */
   chapters: { id: string; label: string }[];
   blocks: (Block & { id?: string })[];
@@ -90,6 +96,25 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Product build",
     ],
     meta: ["Client · Innovatr", "Brand & Marketing Manager", "Mar – Sep 2026"],
+    strip: [
+      { image: "innovatr/web-home-after.jpg", alt: "The rebuilt Innovatr home page." },
+      { image: "innovatr/carousel-way-1.png", alt: "“Old research is dead” ad carousel cover." },
+      { image: "innovatr/social_sweep_report.jpg", alt: "A finished Social Sweep report." },
+      {
+        image: "innovatr/carousel-drinking-1.png",
+        alt: "Research carousel on generational drinking habits.",
+      },
+      { image: "innovatr/web-tools-after.jpg", alt: "The rebuilt tools section." },
+      {
+        image: "innovatr/carousel-research-3.png",
+        alt: "“Fast. Smart. Affordable.” positioning slide.",
+      },
+      {
+        image: "innovatr/social_sweep_landing.jpg",
+        alt: "Social Sweep's question screen.",
+      },
+      { image: "innovatr/web-casestudy-after.jpg", alt: "The rebuilt case study section." },
+    ],
     chapters: [
       { id: "start", label: "The starting point" },
       { id: "branding", label: "Brand & website" },
@@ -334,15 +359,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         wide: true,
         shots: [
           {
-            image: "innovatr/socialsweep-ask.png",
+            image: "innovatr/social_sweep_landing.jpg",
             alt: "Social Sweep's question screen: one plain-language box, a time range, an option to enrich with web search, and the eight platforms it listens across, with a trends radar below.",
           },
           {
-            image: "innovatr/socialsweep-report.png",
+            image: "innovatr/social_sweep_report.jpg",
             alt: "A finished Social Sweep report on Chinese versus German car brands in South Africa, leading with net sentiment, comments analysed, loudest emotion and an executive summary with key takeaways.",
           },
           {
-            image: "innovatr/socialsweep-evidence.png",
+            image: "innovatr/social_sweep_charts.jpg",
             alt: "The evidence view: overall sentiment split, which platform carries the conversation, sentiment over time with spikes flagged, and a ranked emotion mix.",
           },
         ],
@@ -355,6 +380,18 @@ export const CASE_STUDIES: CaseStudy[] = [
         "How Alroy Ndhlovu took Innovatr from no paid presence to a 3,172-contact pipeline and 52 inbound leads, at roughly a third of the market's cost per lead.",
     },
   },
+];
+
+/**
+ * Studies that are planned but not written. Named on the overview so
+ * the section reads as a body of work in progress rather than as one
+ * case study, but deliberately not rendered as cards: a card that looks
+ * clickable and is not is worse than an honest line of text.
+ */
+export const UPCOMING_STUDIES: { name: string; note: string }[] = [
+  { name: "Thrifty Adventures", note: "Social design, ad design, ad results" },
+  { name: "Hakkan", note: "Research-first AI writing, built end to end" },
+  { name: "InSpiritInTruth", note: "A devotional app, design through release" },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

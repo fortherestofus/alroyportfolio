@@ -11,7 +11,7 @@
 import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
-import { PRODUCTS, productImage, CASE_STUDY_PAGES_LIVE } from "../data/products";
+import { PRODUCTS, productImage, hasCaseStudyPage } from "../data/products";
 
 /*
  * Phone screenshots are tall and only ever shown small, so they are
@@ -64,7 +64,7 @@ const slug = (name: string) =>
           </ul>
         </div>
 
-        {CASE_STUDY_PAGES_LIVE && product.caseStudy && (
+        {hasCaseStudyPage(product.caseStudy) && (
           <p class="product__link" data-reveal-item>
             <a href={`/case-studies/${product.caseStudy}/`}>
               Read the case study

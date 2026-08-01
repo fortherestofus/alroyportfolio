@@ -1,0 +1,379 @@
+---
+/**
+ * Section 06: the case study overview cards (PRD §6.05).
+ *
+ * Cards stack and peel as you scroll, matching
+ * `screenshots/case study overview (must be scrollable stacked cards).jpg`.
+ *
+ * The peel is `position: sticky`, not a ScrollTrigger pin, for the same
+ * reasons the two-column pin is (see JourneySection): no pin-spacer, so
+ * no jump at the section boundary, no refresh needed on resize, and it
+ * still works with JS off. Each card sticks a little lower than the one
+ * before it, so the stack builds a visible edge rather than hiding the
+ * cards underneath it completely.
+ *
+ * Cards must be opaque for this to read at all — a translucent card
+ * would show the one it is covering straight through.
+ */
+import { Image } from "astro:assets";
+import { ArrowUpRight } from "@lucide/astro";
+import Placeholder from "./Placeholder.astro";
+import { CASE_STUDIES, UPCOMING_STUDIES, caseImage } from "../data/case-studies";
+
+/* Strip shots are small and never shown large. */
+const STRIP_HEIGHT = 320;
+const STRIP_QUALITY = 70;
+---
+
+<div class="stack">
+  {
+    CASE_STUDIES.map((study, index) => (
+      <article class="stack__card" style={`--card-index:${index}`} data-reveal>
+        <header class="stack__head">
+          <p class="stack__project">[ {study.name} ]</p>
+          <p class="stack__dates">[ {study.dates} ]</p>
+        </header>
+
+        <div class="stack__body">
+          <div class="stack__lead">
+            <h3 class="stack__summary" data-reveal-item>
+              {study.summary}
+            </h3>
+            <ul class="stack__tags" data-reveal-item>
+              {study.tags.map((tag) => (
+                <li class="stack__tag">{tag}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="stack__side" data-reveal-item>
+            <p class="stack__descriptor">{study.description}</p>
+            <a class="stack__cta" href={`/case-studies/${study.slug}/`}>
+              case study
+              <ArrowUpRight class="stack__cta-icon" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+
+        {/*
+         * The strip is decorative: every shot on it appears again, with
+         * a real caption, on the case study page it links to. Rendering
+         * it twice makes the loop seamless, and the whole thing is
+         * hidden from assistive tech rather than read out as sixteen
+         * unlabelled images between the summary and the link.
+         */}
+        <div class="stack__viewport" aria-hidden="true">
+          <div class="stack__track">
+            {[0, 1].map((copy) =>
+              study.strip.map((shot) => {
+                const image = caseImage(shot.image);
+                return (
+                  <span class="stack__shot" data-copy={copy}>
+                    {image ? (
+                      <Image
+                        src={image}
+                        alt=""
+                        height={STRIP_HEIGHT}
+                        quality={STRIP_QUALITY}
+                        densities={[1]}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <Placeholder label={shot.image} ratio="16/10" />
+                    )}
+                  </span>
+                );
+              }),
+            )}
+          </div>
+        </div>
+      </article>
+    ))
+  }
+
+  {
+    UPCOMING_STUDIES.length > 0 && (
+      <aside class="stack__upcoming" data-reveal>
+        <p class="eyebrow">Being written</p>
+        <ul class="stack__upcoming-list">
+          {UPCOMING_STUDIES.map((study) => (
+            <li class="stack__upcoming-item">
+              <span class="stack__upcoming-name">{study.name}</span>
+              <span class="stack__upcoming-note">{study.note}</span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )
+  }
+</div>
+
+<style>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .stack__card {
+    /*
+     * Opaque, and raised off the page, so a card visibly covers the one
+     * it is peeling over.
+     */
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-block);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-5) var(--space-5) 0;
+    overflow: hidden;
+  }
+
+  .stack__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .stack__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    margin-top: var(--space-7);
+  }
+
+  /*
+   * The card lives in the 7/12 column, not the full page width, so the
+   * summary is sized against the column it is actually in. At --text-h2
+   * this line ran to nine lines and swallowed the card.
+   */
+  .stack__summary {
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+  }
+
+  .stack__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack__tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    background-color: var(--color-accent-soft);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .stack__descriptor {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .stack__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    margin-top: var(--space-4);
+    padding-inline: var(--space-5);
+    background-color: var(--color-invert-surface);
+    color: var(--color-invert-text);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out);
+  }
+
+  .stack__cta:hover,
+  .stack__cta:focus-visible {
+    background-color: var(--color-accent);
+    color: var(--color-accent-deep);
+  }
+
+  .stack__cta-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 2;
+  }
+
+  /* --- Moving strip -------------------------------------------- */
+  .stack__viewport {
+    margin-top: var(--space-6);
+    overflow: hidden;
+    /*
+     * The strip runs off both edges of the card rather than stopping
+     * inside it, which is what makes it read as moving rather than as a
+     * row of thumbnails.
+     */
+    margin-inline: calc(-1 * var(--space-5));
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black var(--space-6),
+      black calc(100% - var(--space-6)),
+      transparent
+    );
+  }
+
+  .stack__track {
+    display: flex;
+    gap: var(--space-3);
+    width: max-content;
+    padding-inline: var(--space-3);
+    padding-bottom: var(--space-5);
+    animation: stack-scroll 60s linear infinite;
+  }
+
+  .stack__viewport:hover .stack__track {
+    animation-play-state: paused;
+  }
+
+  .stack__shot {
+    display: block;
+    flex: none;
+    width: var(--shot-strip-width);
+    aspect-ratio: var(--shot-screen-ratio);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+    border: 1px solid var(--color-border);
+  }
+
+  /*
+   * Same rule as the product rails: a fixed frame, and the image fills
+   * it. `cover` here rather than `contain` because a strip of
+   * letterboxed thumbnails at this size is mostly background.
+   */
+  .stack__shot :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .stack__shot :global(.placeholder) {
+    height: 100%;
+  }
+
+  @keyframes stack-scroll {
+    to {
+      /* Exactly one copy of the list, so the seam is invisible. */
+      translate: -50% 0;
+    }
+  }
+
+  /* --- Studies still being written ----------------------------- */
+  .stack__upcoming {
+    /*
+     * Opaque for the same reason the cards are: this scrolls up over
+     * the last pinned card, and a transparent panel would let that
+     * card's summary read straight through this one's text.
+     */
+    position: relative;
+    background-color: var(--color-bg);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .stack__upcoming-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack__upcoming-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    font-size: var(--text-small);
+  }
+
+  .stack__upcoming-name {
+    font-weight: var(--weight-heading);
+  }
+
+  .stack__upcoming-note {
+    color: var(--color-text-faint);
+  }
+
+  @media (width >= 640px) {
+    .stack__card {
+      padding: var(--space-6) var(--space-6) 0;
+    }
+
+    .stack__viewport {
+      margin-inline: calc(-1 * var(--space-6));
+    }
+
+    .stack__body {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-6);
+      align-items: end;
+    }
+
+    .stack__side {
+      text-align: right;
+    }
+  }
+
+  /*
+   * The peel. Only above 1024px, where the two-column layout means
+   * there is a tall enough column for a stack to build; on a phone the
+   * cards are nearly viewport-height already and pinning them would
+   * trap the reader in the section.
+   */
+  @media (width >= 1024px) {
+    .stack {
+      gap: var(--space-7);
+    }
+
+    .stack__card {
+      position: sticky;
+      /*
+       * Each card rests slightly lower than the one before it, so the
+       * top edge of every card underneath stays visible.
+       */
+      top: calc(var(--nav-height) + var(--space-5) + var(--card-index) * var(--space-4));
+    }
+  }
+
+  /*
+   * Reduced motion: no marquee, and no stacking either. Cards that pin
+   * and slide over each other are exactly the kind of scroll-coupled
+   * movement the preference is asking us not to do.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .stack__track {
+      animation: none;
+    }
+
+    .stack__viewport {
+      overflow-x: auto;
+    }
+
+    .stack__card {
+      position: static;
+    }
+  }
+</style>

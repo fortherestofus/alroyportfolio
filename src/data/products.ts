@@ -1,4 +1,5 @@
 import type { ImageMetadata } from "astro";
+import { CASE_STUDIES } from "./case-studies";
 
 /**
  * Products Alroy has built and shipped (section 05).
@@ -67,12 +68,15 @@ export interface Product {
 }
 
 /**
- * The case study pages land in the next phase. Until they exist, the
- * cards keep their `caseStudy` slug (it is correct) but do not render a
- * link, because pointing at a page that 404s is worse than not
- * mentioning it. Flip this when /case-studies/* ships.
+ * A product keeps its `caseStudy` slug whether or not the page has been
+ * written yet, because the slug is correct either way. The link only
+ * renders once a page actually exists — pointing at a 404 is worse than
+ * not mentioning it. Asking CASE_STUDIES directly rather than keeping a
+ * manual flag means a new study wires itself up when it lands.
  */
-export const CASE_STUDY_PAGES_LIVE = false;
+export function hasCaseStudyPage(slug?: string): boolean {
+  return slug !== undefined && CASE_STUDIES.some((study) => study.slug === slug);
+}
 
 export const PRODUCTS: Product[] = [
   {

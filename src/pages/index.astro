@@ -14,11 +14,11 @@ import ExperienceList from "../components/ExperienceList.astro";
 import EducationGroups from "../components/EducationGroups.astro";
 import PortfolioGrid from "../components/PortfolioGrid.astro";
 import ProductShowcase from "../components/ProductShowcase.astro";
+import CaseStudyStack from "../components/CaseStudyStack.astro";
 import { SITE, SECTIONS } from "../data/site";
 
 /** Right columns still to be filled, and by which phase. */
 const PENDING: Record<string, string> = {
-  "case-studies": "Phase 5 — stacked overview cards",
   contact: "Phase 6 — email, phone, Cal.com embed, socials",
 };
 ---
@@ -51,6 +51,7 @@ const PENDING: Record<string, string> = {
         {section.id === "education" && <EducationGroups />}
         {section.id === "portfolio" && <PortfolioGrid />}
         {section.id === "products" && <ProductShowcase />}
+        {section.id === "case-studies" && <CaseStudyStack />}
 
         {PENDING[section.id] && (
           <div class="pending" data-reveal>

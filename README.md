@@ -245,15 +245,9 @@ Tracked from PRD §14. None of these block the build.
       `src/data/portfolio.ts`. _(Magazine covers moved to Branding 1 Aug.)_
 - [ ] **Case study images** — hero, before/after and supporting shots per study.
       Each case study data file lists the exact filenames it expects.
-- [ ] **Social Sweep screenshots** into `src/assets/case-studies/innovatr/`, named
-      `socialsweep-ask.png`, `socialsweep-report.png` and
-      `socialsweep-evidence.png`. The three captures were sent in chat on 1 Aug
-      2026 (the ask screen, the Chinese-vs-German-cars report, and the evidence
-      view) but arrived as chat attachments with no path on disk, so they could
-      not be saved automatically. The section is written and live; each shot
-      currently renders as a labelled placeholder in the right-sized frame and
-      will appear the moment the files land. Save them from the chat to that
-      folder under those exact names and rebuild.
+- [x] **Social Sweep screenshots** — received 1 Aug 2026 as
+      `social_sweep_landing.jpg`, `social_sweep_report.jpg` and
+      `social_sweep_charts.jpg`.
 - [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
       School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
       downloaded is the old Facebook primary logo). Until they arrive these fall
@@ -290,7 +284,11 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
 - [x] **3. Sections 01-03** — Who is Alroy, Experience, Education
 - [x] **4. Section 04** — Portfolio cards, modal carousel, video pipeline
 - [x] **5. Section 05** — Products: Hakkan, InSpiritInTruth, tapa., CaughtSlipping
-- [ ] 6. Section 06 — Stacked case study cards + 4 full pages
+- [~] **6. Section 06** — Stacked peel cards and the Innovatr page are live.
+  Thrifty Adventures, Hakkan and InSpiritInTruth are named on the overview
+  as being written; each becomes a card automatically when its entry lands
+  in `src/data/case-studies.ts`, and the product cards in section 05 link
+  through the moment a matching page exists.
 - [ ] 7. Section 07 — Contact + lazy Cal.com embed + footer
 - [ ] 8. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG
 - [ ] 9. Polish & QA — Lighthouse, a11y, reduced-motion, cross-browser

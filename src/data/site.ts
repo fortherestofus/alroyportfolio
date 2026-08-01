@@ -87,7 +87,7 @@ export const SECTIONS = [
     short: "Cases",
     heading: "Case studies",
     blurb:
-      "Four projects in depth. The starting point, the thinking, the work, and what changed as a result.",
+      "The long version. The starting point, the thinking, the work, and what changed as a result.",
   },
   {
     id: "contact",
