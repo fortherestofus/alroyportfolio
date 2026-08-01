@@ -49,7 +49,7 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Only the two cuts used above the fold are preloaded. -->
+    <!-- Both shipped cuts are used above the fold, so both are preloaded. -->
     <link
       rel="preload"
       href="/fonts/ApfelGrotezk-Regular.woff2"
@@ -59,7 +59,7 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     />
     <link
       rel="preload"
-      href="/fonts/ApfelGrotezk-Fett.woff2"
+      href="/fonts/ApfelGrotezk-Mittel.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -106,7 +106,7 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     color: var(--color-ink-text);
     border-radius: var(--radius-pill);
     font-size: var(--text-small);
-    font-weight: 500;
+    font-weight: var(--weight-heading);
     transform: translateY(calc(-1 * var(--space-10)));
   }
 

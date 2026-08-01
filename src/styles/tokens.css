@@ -88,6 +88,14 @@
   --text-chip: 13px;
   --text-section-number: clamp(96px, 11vw, 160px);
 
+  /**
+   * Weights. Only two cuts ship (Regular 400, Mittel 500), so these
+   * are the only legal font-weight values on the site. Emphasis comes
+   * from size, color and space rather than a heavier cut.
+   */
+  --weight-body: 400;
+  --weight-heading: 500;
+
   --leading-display: 1.1;
   --leading-heading: 1.2;
   --leading-body: 1.55;

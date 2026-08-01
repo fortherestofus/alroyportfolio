@@ -13,12 +13,13 @@ still outstanding.
 npm install
 ```
 
-| Command           | What it does                               |
-| ----------------- | ------------------------------------------ |
-| `npm run dev`     | Dev server at `localhost:4321`             |
-| `npm run build`   | Static build into `dist/`                  |
-| `npm run preview` | Serve the built output                     |
-| `npm run qa`      | **All PRD §12b automated gates, in order** |
+| Command           | What it does                                    |
+| ----------------- | ----------------------------------------------- |
+| `npm run dev`     | Dev server at `localhost:4321`                  |
+| `npm run build`   | Static build into `dist/`                       |
+| `npm run preview` | Serve the built output                          |
+| `npm run qa`      | **All PRD §12b automated gates, in order**      |
+| `npm run deploy`  | QA, then publish `dist/` to the `deploy` branch |
 
 `npm run qa` runs: `astro check` → ESLint → token lint → Prettier → build → link
 check. It is the same sequence CI runs, so a green local `qa` means a green
@@ -30,17 +31,29 @@ Individual gates: `npm run check`, `npm run lint`, `npm run lint:tokens`,
 ## Design tokens
 
 Everything visual comes from `src/styles/tokens.css` — colors, the 8pt spacing
-scale, icon stops, control heights, radii, shadows, type scale, motion. Those
-tokens are re-exported to Tailwind in the `@theme` block of
+scale, icon stops, control heights, radii, shadows, type scale, weights, motion.
+Those tokens are re-exported to Tailwind in the `@theme` block of
 `src/styles/global.css`.
 
-`npm run lint:tokens` fails the build on any hardcoded hex, raw `px`, or Tailwind
-arbitrary value (`p-[13px]`) outside the token layer — including a component that
-tries to invent its own `--local: 13px`. Two deliberate exemptions, both because
-CSS gives no alternative: media-query conditions cannot read `var()`, and
-structural properties like `border`/`outline`/`stroke-width` take 1px hairlines.
+`npm run lint:tokens` fails the build on any hardcoded hex, raw `px`, literal
+`font-weight`, or Tailwind arbitrary value (`p-[13px]`) outside the token layer —
+including a component that tries to invent its own `--local: 13px`. Two
+deliberate exemptions, both because CSS gives no alternative: media-query
+conditions cannot read `var()`, and structural properties like
+`border`/`outline`/`stroke-width` take 1px hairlines.
 
 **Adding a new value means adding a token, not an inline value.**
+
+### Typography
+
+Two cuts only: **Regular 400** for body, **Mittel 500** for everything else —
+headings, UI, labels and the giant section numbers. Fett, Satt and Brukt are not
+loaded.
+
+That means emphasis comes from size, color and space, never a heavier cut. Two
+guards keep it that way: `font-synthesis: none` stops the browser faking a bold,
+and the token linter rejects any literal `font-weight`. Use `--weight-body` and
+`--weight-heading`.
 
 ### Touch targets
 
@@ -52,20 +65,36 @@ sized by `--control-md` (icon-only buttons, carousel arrows).
 
 ## Deployment
 
-`.github/workflows/deploy.yml` runs the QA gates on every push to `main`, uploads
-`dist/` as an artifact, then FTPs it to Hostinger.
+Hostinger pulls from git, and the build happens locally.
 
-**The FTP step is inert until these repo secrets exist** (Settings → Secrets and
-variables → Actions). Without them the job logs a warning and skips the upload
-rather than failing:
+```bash
+npm run deploy
+```
 
-- `FTP_SERVER`
-- `FTP_USERNAME`
-- `FTP_PASSWORD`
-- `FTP_REMOTE_DIR` (usually `/public_html/`)
+That runs the full QA suite, then publishes `dist/` to the **`deploy` branch**.
+Point Hostinger's Git integration at that branch and it serves the built site.
+
+**Why a separate branch rather than `main`:** Hostinger clones a branch straight
+into the web root. Pointing it at `main` would put `src/`, `package.json` and the
+whole toolchain under your document root. The `deploy` branch contains the built
+site and nothing else, so the web root holds exactly what should be public.
+
+The script refuses to publish from a dirty working tree, so whatever is live is
+always traceable to a commit on `main`. It rebuilds the branch from scratch each
+time, so files deleted from the build disappear from the deployed site too.
+
+`.github/workflows/ci.yml` runs the same QA gates on every push. It does not
+deploy — it is there to catch anything that slipped through locally.
 
 `public/.htaccess` handles the HTTPS redirect, compression, cache headers and the
-404 document. Legacy 301s from the old WordPress URLs land in Phase 7.
+404 document, and ships with the build. Legacy 301s from the old WordPress URLs
+land in Phase 7.
+
+### One-time Hostinger setup
+
+In hPanel → Website → Git: add the repository, set branch to `deploy`, and set
+the install path to your web root (usually `public_html`). If the repo is still
+private, add Hostinger's deploy key to the repo first, or make the repo public.
 
 ## Assets
 
@@ -120,6 +149,8 @@ Tracked from PRD §14. None of these block the build.
   orange/green gradient. It does not match the pthalo-green palette the rest of
   the site uses. Worth a redesign in brand green — say the word and I will
   regenerate all sizes.
+- **Hostinger Git setup** is a one-time manual step in hPanel (see Deployment
+  above). Nothing is live until that is pointed at the `deploy` branch.
 - **OG image.** `public/og-default.png` is generated from brand tokens but set in
   Helvetica, because the render step has no access to the Apfel webfonts. Fine to
   ship; can be upgraded to a proper per-page design in Phase 7.

@@ -63,6 +63,13 @@ const PX = /(-?\d*\.?\d+)px/g;
  * ordinary JS arrays in `class:list={[...]}` from tripping the rule.
  */
 const ARBITRARY = /(?:^|[\s"'`])-?[a-z][a-z0-9]*(?:-[a-z0-9]+)*-\[[^\]\s]+\]/g;
+/**
+ * Only the Regular (400) and Mittel (500) cuts ship. A literal weight
+ * anywhere else means either a faux-bold render or a request for a
+ * font file that does not exist, so weights must come from
+ * --weight-body / --weight-heading.
+ */
+const RAW_FONT_WEIGHT = /font-weight\s*:\s*(?!var\()([a-z0-9]+)/g;
 
 const violations = [];
 
@@ -119,6 +126,15 @@ function check(file) {
         lineNumber,
         value: match[0].slice(0, 60),
         rule: "Tailwind arbitrary value",
+      });
+    }
+
+    for (const match of line.matchAll(RAW_FONT_WEIGHT)) {
+      violations.push({
+        rel,
+        lineNumber,
+        value: match[0],
+        rule: "raw font-weight (use --weight-body / --weight-heading)",
       });
     }
   });

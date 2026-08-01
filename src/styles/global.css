@@ -28,7 +28,7 @@
   --color-ink-muted: var(--color-ink-muted);
   --color-ink-accent: var(--color-ink-accent);
 
-  /* Fonts: one family, four cuts */
+  /* Fonts: one family, two cuts (Regular 400, Mittel 500) */
   --font-sans: "Apfel Grotezk", system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -125,9 +125,12 @@
     color: var(--color-text);
     font-family: "Apfel Grotezk", system-ui, sans-serif;
     font-size: var(--text-body);
+    font-weight: var(--weight-body);
     line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Only Regular and Mittel ship; never let the browser fake the rest. */
+    font-synthesis: none;
   }
 
   h1,
@@ -136,7 +139,7 @@
   h4 {
     margin: 0;
     font-family: "Apfel Grotezk", system-ui, sans-serif;
-    font-weight: 700; /* maps to the Fett cut */
+    font-weight: var(--weight-heading); /* Mittel */
     line-height: var(--leading-heading);
   }
 
@@ -226,7 +229,7 @@
   line-height: var(--leading-small);
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: var(--weight-heading);
   color: var(--color-text-muted);
 }
 

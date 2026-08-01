@@ -1,11 +1,12 @@
 /* ============================================================
    APFEL GROTEZK — the only family on the site.
-   Four cuts mapped onto numeric weights so `font-weight` alone
-   selects the right file:
-     Regular 400 (body) · Mittel 500 (UI/labels)
-     Fett    700 (headings) · Satt 800 (giant section numbers)
-   woff2 only, font-display: swap. Regular + Fett are preloaded
-   in BaseLayout.
+   Two cuts, per Alroy's preference:
+     Regular 400 (body)
+     Mittel  500 (headings, UI, labels, section numbers)
+   Fett and Satt are deliberately not loaded. Nothing may request
+   a weight above 500, and font-synthesis is off in global.css so
+   a stray `font-weight: 700` can never render as faux bold.
+   woff2 only, font-display: swap, both preloaded in BaseLayout.
    ============================================================ */
 
 @font-face {
@@ -20,22 +21,6 @@
   font-family: "Apfel Grotezk";
   src: url("/fonts/ApfelGrotezk-Mittel.woff2") format("woff2");
   font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Apfel Grotezk";
-  src: url("/fonts/ApfelGrotezk-Fett.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Apfel Grotezk";
-  src: url("/fonts/ApfelGrotezk-Satt.woff2") format("woff2");
-  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
