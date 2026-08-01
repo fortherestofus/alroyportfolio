@@ -46,8 +46,21 @@ export interface Product {
   /** Shipping state, shown as a chip. */
   status: string;
   platform: string;
-  /** Phone screenshots get a narrow frame; web ones a wide frame. */
-  shape: "phone" | "screen";
+  /**
+   * What it is actually built with, read off each repo's package.json
+   * or manifest rather than recalled. Kept to the choices that say
+   * something — the framework, the data layer, the hard parts — not
+   * every transitive dependency. The last entry is the dev tooling,
+   * because how these get built this fast is part of the point.
+   */
+  stack: string[];
+  /**
+   * The frame the screenshots are shown in, which has to match the
+   * thing they are pictures of. A browser-extension popup is not a
+   * phone: forcing one into a handset-shaped frame crops a third of it
+   * away.
+   */
+  shape: "phone" | "panel" | "screen";
   /** Slug of the matching case study, where one exists. */
   caseStudy?: string;
   shots: ProductShot[];
@@ -70,6 +83,19 @@ export const PRODUCTS: Product[] = [
       "Most AI writing tools start with a blank page and guess. Hakkan starts with research: it reads the conversation where it actually happens, returns a report where every claim carries receipts, then turns that into publishable work in a voice learned from your own samples.",
     status: "Beta",
     platform: "Web",
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind v4",
+      "Supabase",
+      "Vercel AI SDK",
+      "Claude + Grok",
+      "Paddle",
+      "Recharts",
+      "Sentry",
+      "Claude Code",
+    ],
     shape: "screen",
     caseStudy: "hakkan",
     shots: [
@@ -99,6 +125,18 @@ export const PRODUCTS: Product[] = [
       "A weekly devotional written to be read slowly, AI-written ones for whatever you are carrying right now, and the whole Bible in the app. Built for people who cannot always make it to church but still want to stay close to it. No algorithm, no ads.",
     status: "In development",
     platform: "iOS and Android",
+    stack: [
+      "React Native",
+      "Expo 56",
+      "TypeScript",
+      "Expo Router",
+      "NativeWind",
+      "Supabase",
+      "TanStack Query",
+      "Reanimated + Skia",
+      "RevenueCat",
+      "Claude Code",
+    ],
     shape: "phone",
     caseStudy: "inspiritintruth",
     shots: [
@@ -136,6 +174,18 @@ export const PRODUCTS: Product[] = [
       "Deletes one very specific kind of mental load: deciding what to eat. Tell it what is in the fridge by typing, talking or photographing it, and get back a real recipe built around your tastes. Dietary needs are set once and enforced as hard rules.",
     status: "In development",
     platform: "iOS and Android",
+    stack: [
+      "React Native",
+      "Expo 56",
+      "TypeScript",
+      "NativeWind",
+      "Supabase",
+      "SQLite offline cache",
+      "Zustand",
+      "Vision + voice input",
+      "RevenueCat",
+      "Claude Code",
+    ],
     shape: "phone",
     shots: [
       { image: "tapa-home.jpg", alt: "tapa. home screen with the day's recipe suggestion." },
@@ -155,7 +205,17 @@ export const PRODUCTS: Product[] = [
       "Your phone nags you about screen time, but the real damage happens on the computer you sit at all day. It tracks where the hours go and reports back without mercy. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.",
     status: "In development",
     platform: "Chrome extension",
-    shape: "phone",
+    stack: [
+      "Manifest V3",
+      "Vanilla JS, no framework",
+      "Service worker",
+      "declarativeNetRequest",
+      "Offscreen documents",
+      "chrome.storage, local only",
+      "Chart.js",
+      "Claude Code",
+    ],
+    shape: "panel",
     shots: [
       {
         image: "caught-today.jpg",

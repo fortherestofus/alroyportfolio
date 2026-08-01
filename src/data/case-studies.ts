@@ -45,7 +45,14 @@ export type Block =
       intro?: string;
       pairs: { before: string; after: string; label: string; alt: string }[];
     }
-  | { kind: "gallery"; heading: string; intro?: string; shots: { image: string; alt: string }[] }
+  | {
+      kind: "gallery";
+      heading: string;
+      intro?: string;
+      /** Web captures rather than square social slides: fewer, larger. */
+      wide?: boolean;
+      shots: { image: string; alt: string }[];
+    }
   | { kind: "checklist"; heading: string; intro?: string; items: string[] }
   | { kind: "pending"; heading: string; note: string };
 
@@ -73,8 +80,15 @@ export const CASE_STUDIES: CaseStudy[] = [
     summary:
       "Took a research business with no paid presence to a 3,172-contact pipeline and 52 inbound leads, at roughly a third of the market's cost per lead.",
     description:
-      "Innovatr is a consumer research and growth consultancy. I joined as Brand & Marketing Manager and rebuilt the front of the business: the positioning, the website, the content engine that turns research into demand, and the paid programme underneath it.",
-    tags: ["Rebranding", "Content", "Paid media", "Lead sourcing", "Marketing automation"],
+      "Innovatr is a consumer research and growth consultancy. I joined as Brand & Marketing Manager and rebuilt the front of the business: the positioning, the website, the content engine that turns research into demand, and the paid programme underneath it. I also built the social listening product the business now sells.",
+    tags: [
+      "Rebranding",
+      "Content",
+      "Paid media",
+      "Lead sourcing",
+      "Marketing automation",
+      "Product build",
+    ],
     meta: ["Client · Innovatr", "Brand & Marketing Manager", "Mar – Sep 2026"],
     chapters: [
       { id: "start", label: "The starting point" },
@@ -282,9 +296,57 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
       {
         id: "product",
-        kind: "pending",
-        heading: "The product",
-        note: "Social Sweep, the social listening tool built during the engagement. Screenshots to come from Alroy.",
+        kind: "prose",
+        heading: "The product: Social Sweep",
+        body: [
+          "Innovatr was about to licence a social listening platform at US$8,000 a year. I built the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
+          "Social Sweep takes a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — listens across Facebook, X, TikTok, Reddit, YouTube, Instagram, LinkedIn and Threads, and returns an organised report in which every claim resolves to a real comment. Net sentiment, emotion mix, where the conversation lives, what is spiking, and the quotes underneath all of it.",
+          "That turned a line of annual cost into a line of product. The same engine Innovatr would have rented became something it could sell, positioned at R20,000 a study.",
+        ],
+      },
+      {
+        id: "product",
+        kind: "metrics",
+        heading: "What building it instead of buying it was worth",
+        items: [
+          {
+            value: "US$8,000/yr",
+            label: "Licence cost replaced",
+            context: "The quoted annual price of the third-party tool it stood in for.",
+          },
+          {
+            value: "R20,000",
+            label: "Priced per study",
+            context: "Positioned as a billable Innovatr product, not internal tooling.",
+          },
+          {
+            value: "8",
+            label: "Platforms listened to",
+            context: "Facebook, X, TikTok, Reddit, YouTube, Instagram, LinkedIn and Threads.",
+          },
+        ],
+        footnote:
+          "R20,000 is the price the product was positioned at, not revenue booked. The licence figure is the quote Innovatr was working from at the time.",
+      },
+      {
+        id: "product",
+        kind: "gallery",
+        wide: true,
+        shots: [
+          {
+            image: "innovatr/socialsweep-ask.png",
+            alt: "Social Sweep's question screen: one plain-language box, a time range, an option to enrich with web search, and the eight platforms it listens across, with a trends radar below.",
+          },
+          {
+            image: "innovatr/socialsweep-report.png",
+            alt: "A finished Social Sweep report on Chinese versus German car brands in South Africa, leading with net sentiment, comments analysed, loudest emotion and an executive summary with key takeaways.",
+          },
+          {
+            image: "innovatr/socialsweep-evidence.png",
+            alt: "The evidence view: overall sentiment split, which platform carries the conversation, sentiment over time with spikes flagged, and a ranked emotion mix.",
+          },
+        ],
+        heading: "Inside the tool",
       },
     ],
     seo: {

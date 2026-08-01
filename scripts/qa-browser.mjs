@@ -404,6 +404,62 @@ async function checkDesktop(browser, origin, viewport) {
   expect("client marquee is doubled", content.clientLogos, EXPECTED.clientLogos * 2);
   expect(`${EXPECTED.products} products`, content.products, EXPECTED.products);
   expect(`${EXPECTED.productShots} product shots`, content.productShots, EXPECTED.productShots);
+
+  /*
+   * Screenshots arrive at whatever size the device or window happened
+   * to be, so a rail of them will only look deliberate if every frame
+   * is the same size and every image fills the frame it is in. Flex
+   * stretches the frames to match on its own, which is exactly what
+   * hides the bug: the boxes line up while the images inside them stop
+   * short, leaving a band of card behind. So this checks both.
+   */
+  const shotGaps = await page.evaluate(() => {
+    const problems = [];
+    for (const rail of document.querySelectorAll(".product__rail")) {
+      const name = rail.getAttribute("aria-label") ?? "rail";
+      const shots = [...rail.querySelectorAll(".product__shot")];
+      if (shots.length === 0) continue;
+
+      const boxes = shots.map((s) => s.getBoundingClientRect());
+      const [first] = boxes;
+      for (const [i, box] of boxes.entries()) {
+        if (Math.abs(box.width - first.width) > 1 || Math.abs(box.height - first.height) > 1) {
+          problems.push(
+            `${name} #${i + 1} is ${Math.round(box.width)}×${Math.round(box.height)}, ` +
+              `first is ${Math.round(first.width)}×${Math.round(first.height)}`,
+          );
+        }
+      }
+
+      for (const [i, shot] of shots.entries()) {
+        const img = shot.querySelector("img");
+        if (!img) continue;
+        // clientHeight, not the bounding rect: the frame's hairline
+        // border is outside the box the image is asked to fill.
+        const short = shot.clientHeight - img.getBoundingClientRect().height;
+        if (short > 1) {
+          problems.push(`${name} #${i + 1} leaves a ${Math.round(short)}px gap under the image`);
+        }
+      }
+    }
+    return problems;
+  });
+  record(
+    `[${tag}] product shots fill uniform frames`,
+    shotGaps.length === 0,
+    shotGaps.slice(0, 4).join("; "),
+  );
+
+  const missingStacks = await page.evaluate(() =>
+    [...document.querySelectorAll(".product")]
+      .filter((p) => p.querySelectorAll(".product__tech").length === 0)
+      .map((p) => p.querySelector(".product__name")?.textContent?.trim() ?? "?"),
+  );
+  record(
+    `[${tag}] every product lists its stack`,
+    missingStacks.length === 0,
+    missingStacks.join(", "),
+  );
   record(`[${tag}] every date renders`, content.emptyDates === 0, `${content.emptyDates} empty`);
   record(`[${tag}] no broken images`, content.brokenImages === 0, `${content.brokenImages} broken`);
 

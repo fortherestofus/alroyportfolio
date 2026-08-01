@@ -245,6 +245,15 @@ Tracked from PRD §14. None of these block the build.
       `src/data/portfolio.ts`. _(Magazine covers moved to Branding 1 Aug.)_
 - [ ] **Case study images** — hero, before/after and supporting shots per study.
       Each case study data file lists the exact filenames it expects.
+- [ ] **Social Sweep screenshots** into `src/assets/case-studies/innovatr/`, named
+      `socialsweep-ask.png`, `socialsweep-report.png` and
+      `socialsweep-evidence.png`. The three captures were sent in chat on 1 Aug
+      2026 (the ask screen, the Chinese-vs-German-cars report, and the evidence
+      view) but arrived as chat attachments with no path on disk, so they could
+      not be saved automatically. The section is written and live; each shot
+      currently renders as a labelled placeholder in the right-sized frame and
+      will appear the moment the files land. Save them from the chat to that
+      folder under those exact names and rebuild.
 - [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
       School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
       downloaded is the old Facebook primary logo). Until they arrive these fall

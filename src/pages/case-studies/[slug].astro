@@ -33,6 +33,8 @@ const { study } = Astro.props;
 const path = `/case-studies/${study.slug}/`;
 
 const SHOT_WIDTH = 900;
+/** Wide galleries run two-up at most, so each one is shown larger. */
+const WIDE_SHOT_WIDTH = 1100;
 const SHOT_QUALITY = 74;
 
 const schema = [
@@ -200,7 +202,7 @@ const schema = [
               })}
 
             {block.kind === "gallery" && (
-              <ul class="cs__gallery">
+              <ul class:list={["cs__gallery", block.wide && "cs__gallery--wide"]}>
                 {block.shots.map((shot) => {
                   const image = caseImage(shot.image);
                   return (
@@ -209,13 +211,13 @@ const schema = [
                         <Image
                           src={image}
                           alt={shot.alt}
-                          width={SHOT_WIDTH}
+                          width={block.wide ? WIDE_SHOT_WIDTH : SHOT_WIDTH}
                           quality={SHOT_QUALITY}
                           densities={[1]}
                           loading="lazy"
                         />
                       ) : (
-                        <Placeholder label={shot.image} ratio="1/1" />
+                        <Placeholder label={shot.image} ratio={block.wide ? "16/10" : "1/1"} />
                       )}
                     </li>
                   );
@@ -543,6 +545,16 @@ const schema = [
     list-style: none;
   }
 
+  /*
+   * Web captures are wider than they are tall and arrive at whatever
+   * size the window happened to be, so they get their own track and a
+   * fixed frame. Square social slides keep the auto-fill grid above.
+   */
+  .cs__gallery--wide {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
   .cs__shot {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
@@ -554,6 +566,24 @@ const schema = [
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  /*
+   * Fixed frames, filled from the top. Grid stretches the frames to
+   * match each other regardless; without this the images inside them
+   * stop at different heights and leave bands of empty card.
+   */
+  .cs__gallery--wide .cs__shot {
+    aspect-ratio: var(--shot-screen-ratio);
+  }
+
+  .cs__gallery--wide .cs__shot :global(img) {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cs__gallery--wide .cs__shot :global(.placeholder) {
+    height: 100%;
   }
 
   /* --- Footer ------------------------------------------------------- */

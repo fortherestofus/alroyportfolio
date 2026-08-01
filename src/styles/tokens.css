@@ -99,9 +99,18 @@
   /* Smallest a card may get before an auto-fill grid drops a column. */
   --card-min: 240px;
 
-  /* Product screenshot rail (§05) */
+  /*
+   * Product screenshot rail (§05). Captures arrive at whatever size the
+   * device or window happened to be, so the frame fixes both dimensions
+   * and the image fills it. Without a ratio here every shot in a rail is
+   * a different height and the row looks broken.
+   */
   --shot-phone-width: 200px; /* a phone capture, shown device-sized */
+  --shot-phone-ratio: 9 / 19.5; /* a modern handset */
+  --shot-panel-width: 240px; /* a browser-extension popup */
+  --shot-panel-ratio: 3 / 4;
   --shot-screen-width: 360px; /* a web capture */
+  --shot-screen-ratio: 16 / 10; /* the middle of the browser-window spread */
 
   /* --- Radii: fixed set ------------------------------------ */
   --radius-chip: 8px;

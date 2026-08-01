@@ -21,6 +21,16 @@ import { PRODUCTS, productImage, CASE_STUDY_PAGES_LIVE } from "../data/products"
 const PHONE_HEIGHT = 560;
 const SCREEN_WIDTH = 720;
 const SHOT_QUALITY = 74;
+
+/** Mirrors --shot-*-ratio, so a missing capture leaves the right hole. */
+const SHAPE_RATIO = { phone: "9/19.5", panel: "3/4", screen: "16/10" } as const;
+
+/** Product names carry punctuation ("tapa."), ids should not. */
+const slug = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-$/, "");
 ---
 
 <div class="products">
@@ -42,6 +52,17 @@ const SHOT_QUALITY = 74;
         <p class="product__description" data-reveal-item>
           {product.description}
         </p>
+
+        <div class="product__stack" data-reveal-item>
+          <h4 class="product__stack-label" id={`stack-${slug(product.name)}`}>
+            Built with
+          </h4>
+          <ul class="product__stack-list" aria-labelledby={`stack-${slug(product.name)}`}>
+            {product.stack.map((tech) => (
+              <li class="product__tech">{tech}</li>
+            ))}
+          </ul>
+        </div>
 
         {CASE_STUDY_PAGES_LIVE && product.caseStudy && (
           <p class="product__link" data-reveal-item>
@@ -66,9 +87,9 @@ const SHOT_QUALITY = 74;
                   <Image
                     src={image}
                     alt={shot.alt}
-                    {...(product.shape === "phone"
-                      ? { height: PHONE_HEIGHT }
-                      : { width: SCREEN_WIDTH })}
+                    {...(product.shape === "screen"
+                      ? { width: SCREEN_WIDTH }
+                      : { height: PHONE_HEIGHT })}
                     quality={SHOT_QUALITY}
                     densities={[1]}
                     loading="lazy"
@@ -76,7 +97,7 @@ const SHOT_QUALITY = 74;
                 ) : (
                   <Placeholder
                     label={`products/${shot.image}`}
-                    ratio={product.shape === "phone" ? "9/19.5" : "16/10"}
+                    ratio={SHAPE_RATIO[product.shape]}
                   />
                 )}
               </li>
@@ -147,6 +168,50 @@ const SHOT_QUALITY = 74;
     color: var(--color-text-muted);
   }
 
+  /* --- Stack ---------------------------------------------------
+   * Deliberately quieter than the status chips above: those are the
+   * headline facts, this is the receipt. Outlined rather than filled
+   * so ten of them in a row do not out-shout the description.
+   */
+  .product__stack {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .product__stack-label {
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .product__stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product__tech {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-chip);
+    font-size: var(--text-chip);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
   .product__link {
     margin-top: var(--space-4);
   }
@@ -196,27 +261,61 @@ const SHOT_QUALITY = 74;
     border: 1px solid var(--color-border);
   }
 
+  /*
+   * Every frame in a rail is identical and every capture fills it.
+   * How it fills depends on what it is a picture of.
+   */
   .product__rail :global(img) {
     display: block;
-    height: auto;
+    width: 100%;
+    height: 100%;
   }
 
-  /* Phone captures read as devices: narrow, tall, rounded. */
+  /*
+   * Phone captures read as devices: narrow, tall, rounded. They already
+   * arrive at roughly the frame's ratio, so `cover` trims a few percent
+   * and buys an edge-to-edge screen.
+   */
   .product__rail--phone .product__shot {
     width: var(--shot-phone-width);
+    aspect-ratio: var(--shot-phone-ratio);
     border-radius: var(--radius-card);
   }
 
   .product__rail--phone :global(img) {
-    width: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
 
+  /* An extension popup: roughly 3:4, and shown at its own size. */
+  .product__rail--panel .product__shot {
+    width: var(--shot-panel-width);
+    aspect-ratio: var(--shot-panel-ratio);
+  }
+
+  .product__rail--panel :global(img) {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /*
+   * Web captures arrive at whatever the window was, anywhere from 4:3
+   * to 2:1, so cropping them to a common frame cuts headlines in half.
+   * `contain` on the sunken backing letterboxes instead, which on a
+   * screenshot just reads as the screen it was taken from.
+   */
   .product__rail--screen .product__shot {
     width: var(--shot-screen-width);
+    aspect-ratio: var(--shot-screen-ratio);
   }
 
   .product__rail--screen :global(img) {
-    width: 100%;
+    object-fit: contain;
+  }
+
+  /* A missing capture leaves a hole the exact size of the real one. */
+  .product__shot :global(.placeholder) {
+    height: 100%;
   }
 
   @media (width >= 640px) {
