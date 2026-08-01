@@ -56,16 +56,28 @@ function initSmoothScroll(): void {
   /*
    * Lenis swallows wheel and touch input and then applies the movement
    * itself on each frame, so if its loop never runs the page becomes
-   * completely unscrollable. That is the worst failure this page has,
-   * and it is invisible in testing whenever rAF is throttled (a
-   * background tab, for instance). This watchdog runs on a timer rather
-   * than a frame, so it still fires in exactly that situation: if no
-   * frame has been stepped shortly after init, drop Lenis and hand
-   * scrolling back to the browser.
+   * completely unscrollable. This watchdog runs on a timer rather than
+   * a frame so it can still fire in exactly that situation: if no frame
+   * has been stepped shortly after init, drop Lenis and hand scrolling
+   * back to the browser.
+   *
+   * A hidden tab has no frames by design, which is not a fault, so the
+   * check waits for the page to actually be visible before judging.
+   * Otherwise loading in a background tab would permanently downgrade
+   * the page to native scrolling.
    */
-  window.setTimeout(() => {
-    if (lenis && stepCount === 0) destroySmoothScroll();
-  }, 1200);
+  const verifyRunning = () => {
+    if (document.hidden) return;
+    window.setTimeout(() => {
+      if (lenis && stepCount === 0) destroySmoothScroll();
+    }, 1200);
+  };
+
+  if (document.hidden) {
+    document.addEventListener("visibilitychange", verifyRunning, { once: true });
+  } else {
+    verifyRunning();
+  }
 }
 
 function destroySmoothScroll(): void {
@@ -162,16 +174,18 @@ interface Stop {
   /** Where this section's label sits along the track, 0-1. */
   frac: number;
   link: HTMLAnchorElement;
-  peg: HTMLElement | null;
+  peg: SVGCircleElement | null;
   section: HTMLElement;
 }
 
 function initJourneyNav(): void {
   const nav = document.getElementById("journey-nav");
   const track = document.getElementById("journey-track");
-  const fill = document.getElementById("journey-fill");
+  const wire = document.getElementById("journey-wire");
+  const wireBase = document.getElementById("journey-wire-base");
+  const wireProgress = document.getElementById("journey-wire-progress");
   const knob = document.getElementById("journey-knob");
-  if (!nav || !track || !fill || !knob) return;
+  if (!nav || !track || !wire || !wireBase || !wireProgress || !knob) return;
 
   const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
   if (links.length === 0) return;
@@ -179,6 +193,17 @@ function initJourneyNav(): void {
   let stops: Stop[] = [];
   let dragging = false;
   let activeIndex = -1;
+
+  // Wire geometry, refreshed on every measure.
+  let trackWidth = 1;
+  let baseY = 0;
+  let sagMax = 0;
+  let sagEase = 1;
+
+  // Handle position: where it is now, where it is heading.
+  let currentFrac = 0;
+  let targetFrac = 0;
+  let followId = 0;
 
   /** True once the viewport is wide enough for the track to be visible. */
   const trackVisible = () => track.offsetParent !== null;
@@ -191,6 +216,16 @@ function initJourneyNav(): void {
   function measure(): void {
     const trackRect = track!.getBoundingClientRect();
     const width = trackRect.width || 1;
+
+    trackWidth = width;
+
+    // Wire geometry comes from the token layer, not from magic numbers.
+    const styles = getComputedStyle(track!);
+    baseY = parseFloat(styles.getPropertyValue("--wire-base-y")) || 0;
+    sagMax = parseFloat(styles.getPropertyValue("--wire-sag")) || 0;
+    sagEase = parseFloat(styles.getPropertyValue("--wire-sag-ease")) || 1;
+
+    wire!.setAttribute("viewBox", `0 0 ${width} ${trackRect.height || 1}`);
 
     stops = links
       .map((link) => {
@@ -205,15 +240,55 @@ function initJourneyNav(): void {
           top: anchorFor(section),
           frac: Math.min(1, Math.max(0, centre / width)),
           link,
-          peg: track!.querySelector<HTMLElement>(`[data-peg="${id}"]`),
+          peg: track!.querySelector<SVGCircleElement>(`[data-peg="${id}"]`),
           section,
         };
       })
       .filter((stop): stop is Stop => stop !== null);
 
     stops.forEach((stop) => {
-      if (stop.peg) stop.peg.style.left = `${stop.frac * 100}%`;
+      if (stop.peg) {
+        stop.peg.setAttribute("cx", String(stop.frac * width));
+        stop.peg.setAttribute("cy", String(baseY));
+      }
     });
+  }
+
+  /**
+   * The wire as a pair of cubic curves meeting under the handle. The
+   * handle pulls its own point down by `sag`, and the control points
+   * either side ease the bend back to level, so the line behaves like
+   * something being physically dragged rather than a bar being filled.
+   * `endAtHand` returns just the travelled half, drawn in accent green.
+   */
+  function wirePath(handX: number, endAtHand = false): string {
+    const firstX = (stops[0]?.frac ?? 0) * trackWidth;
+    const lastX = (stops[stops.length - 1]?.frac ?? 1) * trackWidth;
+
+    // Sag fades out near the ends, where the wire is anchored.
+    const distanceFromEnd = Math.max(0, Math.min(handX - firstX, lastX - handX));
+    const sag = sagMax * Math.min(1, distanceFromEnd / sagEase);
+    const handY = baseY + sag;
+
+    const lead =
+      `M ${firstX} ${baseY} ` +
+      `C ${firstX + (handX - firstX) * 0.5} ${baseY}, ` +
+      `${firstX + (handX - firstX) * 0.92} ${handY}, ${handX} ${handY}`;
+
+    if (endAtHand) return lead;
+
+    return (
+      `${lead} C ${handX + (lastX - handX) * 0.08} ${handY}, ` +
+      `${handX + (lastX - handX) * 0.5} ${baseY}, ${lastX} ${baseY}`
+    );
+  }
+
+  /** Vertical position of the wire under the handle, for placing the knob. */
+  function handYFor(handX: number): number {
+    const firstX = (stops[0]?.frac ?? 0) * trackWidth;
+    const lastX = (stops[stops.length - 1]?.frac ?? 1) * trackWidth;
+    const distanceFromEnd = Math.max(0, Math.min(handX - firstX, lastX - handX));
+    return baseY + sagMax * Math.min(1, distanceFromEnd / sagEase);
   }
 
   /** Scroll position → position along the track, interpolating between stops. */
@@ -303,15 +378,53 @@ function initJourneyNav(): void {
     }
   }
 
+  /** Draw the wire and place the handle at a given position along it. */
   function render(frac: number): void {
-    knob!.style.left = `${frac * 100}%`;
-    fill!.style.width = `${frac * 100}%`;
+    currentFrac = frac;
+    const handX = frac * trackWidth;
+
+    wireBase!.setAttribute("d", wirePath(handX));
+    wireProgress!.setAttribute("d", wirePath(handX, true));
+
+    knob!.style.left = `${handX}px`;
+    knob!.style.top = `${handYFor(handX)}px`;
+  }
+
+  /**
+   * Ease the handle toward its target instead of snapping, so the wire
+   * visibly trails and settles. Dragging bypasses this: under the
+   * pointer the handle must sit exactly where the finger is.
+   */
+  function renderTowards(target: number): void {
+    targetFrac = target;
+
+    if (prefersReducedMotion() || dragging) {
+      render(target);
+      return;
+    }
+
+    if (followId !== 0) return;
+
+    const follow = () => {
+      const difference = targetFrac - currentFrac;
+      if (Math.abs(difference) > 0.0004) {
+        render(currentFrac + difference * 0.18);
+        followId = requestAnimationFrame(follow);
+      } else {
+        render(targetFrac);
+        followId = 0;
+      }
+    };
+    followId = requestAnimationFrame(follow);
   }
 
   function update(): void {
     const scrollY = window.scrollY;
     setActive(currentIndex(scrollY));
-    if (!dragging) render(scrollToFrac(scrollY));
+    if (!dragging) renderTowards(scrollToFrac(scrollY));
+    // Reaching the second section is proof enough that the reader can
+    // move around without being told about the scrub handle.
+    if (stops.length > 1 && scrollY >= stops[1].top) markTaught();
   }
 
   /* ---- Click a label -------------------------------------------- */
@@ -335,6 +448,15 @@ function initJourneyNav(): void {
     return Math.min(1, Math.max(0, (clientX - rect.left) / (rect.width || 1)));
   }
 
+  /**
+   * Retire the "drag to scrub" prompt once the reader has demonstrably
+   * got the idea, either by scrubbing or just by moving down the page.
+   */
+  function markTaught(): void {
+    if (knob!.dataset.taught === "true") return;
+    knob!.dataset.taught = "true";
+  }
+
   knob.addEventListener("pointerdown", (event) => {
     // Scrub is a pointer affordance only; with reduced motion the
     // labels remain the way to move (PRD §8).
@@ -342,6 +464,7 @@ function initJourneyNav(): void {
 
     dragging = true;
     knob.dataset.dragging = "true";
+    markTaught();
     knob.setPointerCapture(event.pointerId);
     event.preventDefault();
   });
@@ -349,6 +472,9 @@ function initJourneyNav(): void {
   knob.addEventListener("pointermove", (event) => {
     if (!dragging) return;
     const frac = pointerFrac(event.clientX);
+    // Straight to the pointer, no easing: under the finger the handle
+    // must not lag, and the wire bends with it.
+    targetFrac = frac;
     render(frac);
     scrollToOffset(fracToScroll(frac), true);
   });

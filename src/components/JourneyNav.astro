@@ -10,33 +10,48 @@
  * Below 1024px the track is dropped entirely and the same list becomes
  * a horizontally scrollable pill bar (no drag, tap to jump).
  */
-import { SECTIONS } from "../data/site";
+import { MoveHorizontal } from "@lucide/astro";
+import { SECTIONS, SITE } from "../data/site";
 ---
 
 <nav class="jnav" id="journey-nav" aria-label="Journey sections">
   <div class="jnav__inner">
-    <ol class="jnav__list" id="journey-list">
-      {
-        SECTIONS.map((section, index) => (
-          <li class="jnav__item">
-            <a class="jnav__link" href={`#${section.id}`} data-nav-link data-index={index}>
-              <span class="jnav__num">{section.number}</span>
-              <span class="jnav__label">{section.label}</span>
-              <span class="jnav__short">{section.short}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ol>
+    <a class="jnav__brand" href="#top" aria-label={`${SITE.name}, back to top`}>
+      <span class="jnav__mark" aria-hidden="true">AN</span>
+      <span class="jnav__wordmark" aria-hidden="true">{SITE.name}</span>
+    </a>
 
-    <div class="jnav__track" id="journey-track" aria-hidden="true">
-      <span class="jnav__line"></span>
-      <span class="jnav__fill" id="journey-fill"></span>
-      {SECTIONS.map((section) => <span class="jnav__peg" data-peg={section.id} />)}
-      <span class="jnav__knob" id="journey-knob">
-        <span class="jnav__knob-dot"></span>
-        <span class="jnav__knob-hint">Drag to scrub</span>
-      </span>
+    <div class="jnav__timeline">
+      <ol class="jnav__list" id="journey-list">
+        {
+          SECTIONS.map((section, index) => (
+            <li class="jnav__item">
+              <a class="jnav__link" href={`#${section.id}`} data-nav-link data-index={index}>
+                <span class="jnav__num">{section.number}</span>
+                <span class="jnav__label">{section.label}</span>
+                <span class="jnav__short">{section.short}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="jnav__track" id="journey-track" aria-hidden="true">
+        <svg class="jnav__wire" id="journey-wire" preserveAspectRatio="none" aria-hidden="true">
+          <path class="jnav__wire-base" id="journey-wire-base" fill="none"></path>
+          <path class="jnav__wire-progress" id="journey-wire-progress" fill="none"></path>
+          {SECTIONS.map((section) => <circle class="jnav__peg" data-peg={section.id} r="2.5" />)}
+        </svg>
+
+        <span class="jnav__knob" id="journey-knob">
+          <span class="jnav__knob-pin"></span>
+          <span class="jnav__knob-stem"></span>
+          <span class="jnav__knob-pendant">
+            <MoveHorizontal class="jnav__knob-icon" />
+          </span>
+          <span class="jnav__knob-hint">Drag to scrub</span>
+        </span>
+      </div>
     </div>
   </div>
 </nav>
@@ -58,6 +73,37 @@ import { SECTIONS } from "../data/site";
     max-width: var(--width-content);
     margin-inline: auto;
     padding-inline: var(--space-5);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  /* ---- Brand ------------------------------------------------- */
+  .jnav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .jnav__mark {
+    display: grid;
+    place-items: center;
+    width: var(--brand-mark);
+    height: var(--brand-mark);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-accent);
+    color: var(--color-ink-text);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .jnav__wordmark {
+    display: none;
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    white-space: nowrap;
   }
 
   /* ---- Mobile: horizontally scrollable pill bar -------------- */
@@ -140,6 +186,16 @@ import { SECTIONS } from "../data/site";
       height: var(--nav-height);
     }
 
+    /*
+     * The timeline is deliberately not full-bleed. It shares the bar
+     * with the brand and gives back a further slice on the right, so
+     * the labels sit at a readable rhythm instead of being stretched
+     * across the whole viewport.
+     */
+    .jnav__timeline {
+      padding-right: var(--space-8);
+    }
+
     .jnav__list {
       align-items: flex-end;
       gap: 0;
@@ -188,97 +244,196 @@ import { SECTIONS } from "../data/site";
     .jnav__track {
       display: block;
       position: relative;
-      height: var(--space-2);
+      height: var(--track-height);
     }
 
-    .jnav__line,
-    .jnav__fill {
+    /*
+     * The rule is drawn as an SVG path rather than a div so it can bend.
+     * The handle pulls the wire down with it, easing back to straight at
+     * either end, which makes the timeline read as something physically
+     * connected to the page rather than a progress bar.
+     */
+    .jnav__wire {
       position: absolute;
-      top: 50%;
-      height: var(--hairline);
-      translate: 0 -50%;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
     }
 
-    .jnav__line {
-      left: 0;
-      right: 0;
-      background-color: var(--color-border);
+    .jnav__wire-base {
+      stroke: var(--color-text-faint);
+      stroke-width: var(--hairline);
+      opacity: 0.5;
     }
 
-    .jnav__fill {
-      left: 0;
-      width: 0;
-      background-color: var(--color-accent-lively);
+    .jnav__wire-progress {
+      stroke: var(--color-accent-lively);
+      stroke-width: 1.5;
+      stroke-linecap: round;
     }
 
     .jnav__peg {
-      position: absolute;
-      top: 50%;
-      width: var(--peg-size);
-      height: var(--peg-size);
-      border-radius: var(--radius-pill);
-      background-color: var(--color-border);
-      translate: -50% -50%;
-      transition: background-color var(--duration-fast) var(--ease-out);
+      fill: var(--color-border);
+      transition: fill var(--duration-fast) var(--ease-out);
     }
 
     .jnav__peg[data-passed="true"] {
-      background-color: var(--color-accent-lively);
+      fill: var(--color-accent-lively);
     }
 
     .jnav__peg[data-active="true"] {
-      background-color: var(--color-accent);
+      fill: var(--color-accent);
     }
 
+    /*
+     * The scrub control hangs below the line as a pendant, so it reads
+     * as a physical thing to grab rather than a dot to look at. It is
+     * deliberately the largest element in the bar. The whole assembly
+     * is a single positioned wrapper; only the pin and the disc take
+     * pointer events, so the label and the empty space beside it never
+     * intercept clicks meant for the page underneath.
+     */
+    /* `top` and `left` are set per frame in journey.ts so the handle
+       stays on the sagging wire rather than on a straight line. */
     .jnav__knob {
       position: absolute;
-      top: 50%;
+      top: 0;
       left: 0;
-      display: grid;
-      place-items: center;
+      translate: -50% 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      touch-action: none;
+    }
+
+    .jnav__knob-pin {
       width: var(--knob-size);
       height: var(--knob-size);
       border-radius: var(--radius-pill);
       background-color: var(--color-accent);
-      translate: -50% -50%;
+      /* Sits centred on the 1px line. */
+      margin-top: calc(-1 * var(--knob-size) / 2);
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
       cursor: grab;
-      touch-action: none;
     }
 
-    .jnav__knob[data-dragging="true"] {
-      cursor: grabbing;
-      scale: 1.15;
-    }
-
-    .jnav__knob-dot {
+    .jnav__knob-pin::after {
+      content: "";
       width: var(--knob-dot);
       height: var(--knob-dot);
       border-radius: var(--radius-pill);
       background-color: var(--color-gold);
     }
 
+    .jnav__knob-stem {
+      width: var(--hairline);
+      height: var(--knob-stem);
+      background-color: var(--color-accent);
+      opacity: 0.4;
+    }
+
+    .jnav__knob-pendant {
+      display: grid;
+      place-items: center;
+      width: var(--knob-pendant);
+      height: var(--knob-pendant);
+      border-radius: var(--radius-pill);
+      background-color: var(--color-accent);
+      color: var(--color-ink-text);
+      box-shadow: var(--shadow-pill);
+      pointer-events: auto;
+      cursor: grab;
+      transition:
+        scale var(--duration-fast) var(--ease-out),
+        background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .jnav__knob-pendant:hover {
+      scale: 1.08;
+    }
+
+    .jnav__knob-icon {
+      width: var(--icon-md);
+      height: var(--icon-md);
+      stroke-width: 1.5;
+    }
+
+    /* Take pointer events for the whole assembly while a drag is live,
+       so pointer capture keeps delivering moves to the wrapper. */
+    .jnav__knob[data-dragging="true"] {
+      pointer-events: auto;
+    }
+
+    .jnav__knob[data-dragging="true"] .jnav__knob-pendant {
+      scale: 1.12;
+      background-color: var(--color-ink-surface);
+      cursor: grabbing;
+    }
+
+    .jnav__knob[data-dragging="true"] .jnav__knob-pin {
+      cursor: grabbing;
+    }
+
     .jnav__knob-hint {
-      position: absolute;
-      top: 100%;
-      left: 50%;
       margin-top: var(--space-2);
       padding: var(--space-1) var(--space-3);
       border-radius: var(--radius-pill);
       background-color: var(--color-ink-surface);
       color: var(--color-ink-text);
       font-size: var(--text-eyebrow);
+      font-weight: var(--weight-heading);
       letter-spacing: var(--tracking-eyebrow);
       text-transform: uppercase;
       white-space: nowrap;
-      translate: -50% 0;
-      opacity: 0;
-      transition: opacity var(--duration-fast) var(--ease-out);
+      transition: opacity var(--duration-base) var(--ease-out);
       pointer-events: none;
     }
 
-    .jnav__knob:hover .jnav__knob-hint,
+    /*
+     * The label is shown up front because a drag affordance nobody
+     * notices is the same as not having one. Once the reader has
+     * actually scrubbed or moved down the page they have learnt it, so
+     * it steps back and only returns on hover.
+     */
+    .jnav__knob[data-taught="true"] .jnav__knob-hint {
+      opacity: 0;
+    }
+
+    .jnav__knob[data-taught="true"]:hover .jnav__knob-hint,
     .jnav__knob[data-dragging="true"] .jnav__knob-hint {
       opacity: 1;
+    }
+
+    /* A slow nudge to catch the eye, only until the reader gets it. */
+    @media not (prefers-reduced-motion: reduce) {
+      .jnav__knob:not([data-taught="true"]) .jnav__knob-pendant {
+        animation: knob-nudge 2.6s var(--ease-out) infinite;
+      }
+    }
+
+    @keyframes knob-nudge {
+      0%,
+      70%,
+      100% {
+        translate: 0 0;
+      }
+      80% {
+        translate: var(--space-2) 0;
+      }
+      90% {
+        translate: calc(-1 * var(--space-2)) 0;
+      }
+    }
+  }
+
+  /* The wordmark only earns its space once the bar is comfortably wide. */
+  @media (width >= 1280px) {
+    .jnav__wordmark {
+      display: block;
     }
   }
 

@@ -239,17 +239,57 @@ async function checkDesktop(browser, origin, viewport) {
       `scrollY ${Math.round(before)} → ${Math.round(during)}`,
     );
 
-    const knobFollowed = await page.evaluate(
-      () => parseFloat(document.getElementById("journey-knob").style.left) || 0,
-    );
+    const knobFollowed = await page.evaluate(() => {
+      const knob = document.getElementById("journey-knob");
+      const trackEl = document.getElementById("journey-track");
+      // The handle is placed in pixels along the wire, so compare it to
+      // the track width rather than reading a percentage.
+      return (
+        ((parseFloat(knob.style.left) || 0) / (trackEl.getBoundingClientRect().width || 1)) * 100
+      );
+    });
     record(
       `[${tag}] knob sits mid-track after drag`,
       knobFollowed > 35 && knobFollowed < 75,
-      `${knobFollowed.toFixed(1)}%`,
+      `${knobFollowed.toFixed(1)}% along the track`,
     );
   } else {
     record(`[${tag}] dragging the knob scrubs the page`, false, "knob or track not visible");
   }
+
+  // --- The wire bends toward the handle rather than staying straight.
+  const sag = await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const knob = document.getElementById("journey-knob");
+    const base = document.getElementById("journey-wire-base");
+    const nav = document.getElementById("journey-nav");
+
+    const read = () => ({ top: parseFloat(knob.style.top) || 0, d: base.getAttribute("d") });
+
+    window.scrollTo({ top: 0, behavior: "instant" });
+    await wait(700);
+    const atStart = read();
+
+    const middle = document.getElementById("portfolio");
+    window.scrollTo({
+      top: middle.getBoundingClientRect().top + window.scrollY - nav.offsetHeight,
+      behavior: "instant",
+    });
+    await wait(900);
+    const atMiddle = read();
+
+    return { atStart, atMiddle };
+  });
+
+  record(
+    `[${tag}] wire sags toward the handle mid-track`,
+    sag.atMiddle.top > sag.atStart.top + 4,
+    `handle y ${sag.atStart.top.toFixed(1)} at the start → ${sag.atMiddle.top.toFixed(1)} mid-track`,
+  );
+  record(
+    `[${tag}] wire path redraws as the handle moves`,
+    Boolean(sag.atStart.d) && sag.atStart.d !== sag.atMiddle.d,
+  );
 
   /*
    * Pinning. The left column is expected to do three things in order:
@@ -423,6 +463,89 @@ async function checkReducedMotion(browser, origin) {
   await context.close();
 }
 
+/**
+ * Loading in a background tab must not permanently cost the visitor
+ * smooth scrolling: a hidden tab gets no frames by design, and the
+ * watchdog has to tell that apart from a genuinely stalled loop.
+ */
+async function checkBackgroundTabLoad(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+
+  /*
+   * Playwright cannot genuinely background a page in headless Chromium,
+   * so the condition is reproduced directly: report the document as
+   * hidden and stop delivering frames, which is exactly what a
+   * background tab looks like from the page's point of view. Without
+   * the visibility guard the watchdog reads this as a stalled loop and
+   * tears smooth scrolling down for good.
+   */
+  await page.addInitScript(() => {
+    let hidden = true;
+    Object.defineProperty(document, "hidden", { get: () => hidden, configurable: true });
+    Object.defineProperty(document, "visibilityState", {
+      get: () => (hidden ? "hidden" : "visible"),
+      configurable: true,
+    });
+
+    const realRaf = window.requestAnimationFrame.bind(window);
+    // Every requester is queued, not just the most recent one: dropping
+    // all but the last would silently kill whichever loop asked first.
+    const pending = [];
+
+    /*
+     * A hidden tab does not drop frame callbacks, it defers them and
+     * runs them on becoming visible, which is what lets an animation
+     * loop resume. Simply no-oping would permanently break the
+     * reference libraries captured at startup and test a failure real
+     * browsers never produce.
+     */
+    window.requestAnimationFrame = (callback) => {
+      if (!hidden) return realRaf(callback);
+      pending.push(callback);
+      return 0;
+    };
+
+    window.__becomeVisible = () => {
+      hidden = false;
+      document.dispatchEvent(new Event("visibilitychange"));
+      const queued = pending.splice(0, pending.length);
+      for (const callback of queued) realRaf(callback);
+    };
+  });
+
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  // Longer than the watchdog's own delay, so a naive one would have fired.
+  await page.waitForTimeout(2000);
+
+  const survivedHidden = await page.evaluate(() =>
+    document.documentElement.classList.contains("lenis"),
+  );
+  record("[background tab] smooth scroll is not torn down while hidden", survivedHidden);
+
+  await page.evaluate(() => window.__becomeVisible());
+  await page.waitForTimeout(2000);
+
+  const aliveAfter = await page.evaluate(() =>
+    document.documentElement.classList.contains("lenis"),
+  );
+  record("[background tab] smooth scroll still active once visible", aliveAfter);
+
+  const scrolls = await page.evaluate(async () => {
+    const before = window.scrollY;
+    window.scrollTo({ top: 1500, behavior: "instant" });
+    await new Promise((r) => setTimeout(r, 500));
+    return { before, after: window.scrollY };
+  });
+  record(
+    "[background tab] page scrolls after being brought forward",
+    scrolls.after > scrolls.before + 100,
+    `scrollY ${Math.round(scrolls.before)} → ${Math.round(scrolls.after)}`,
+  );
+
+  await context.close();
+}
+
 async function checkNoScript(browser, origin) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
@@ -457,6 +580,7 @@ try {
   for (const viewport of DESKTOP_VIEWPORTS) await checkDesktop(browser, origin, viewport);
   for (const viewport of MOBILE_VIEWPORTS) await checkMobile(browser, origin, viewport);
   await checkReducedMotion(browser, origin);
+  await checkBackgroundTabLoad(browser, origin);
   await checkNoScript(browser, origin);
 } finally {
   await browser.close();

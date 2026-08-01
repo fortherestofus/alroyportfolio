@@ -70,6 +70,19 @@ guards keep it that way: `font-synthesis: none` stops the browser faking a bold,
 and the token linter rejects any literal `font-weight`. Use `--weight-body` and
 `--weight-heading`.
 
+### The timeline nav
+
+The rule is an SVG path, not a div, so it can bend: the handle pulls the wire
+down with it and the sag eases back to level at either end, the same technique
+the Allgood reference uses. Geometry comes from tokens (`--wire-sag`,
+`--wire-base-y`, `--wire-sag-ease`), and the handle eases toward its target
+rather than snapping, so the wire visibly trails and settles.
+
+The scrub handle is a pendant hanging below the line with a "Drag to scrub"
+label shown up front, because a drag affordance nobody notices may as well not
+exist. Once the reader has scrubbed or simply reached section 02 they have
+learnt it, so the label steps back and only returns on hover.
+
 ### Touch targets
 
 The design system specifies 40px pills; accessibility requires 44px touch
@@ -160,6 +173,12 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
+- **Logo.** The nav currently uses a typographic lockup: an `AN` monogram in
+  deep green plus the wordmark (which drops off below 1280px to keep the
+  timeline readable). The only logo on the live WordPress site is
+  `Name-Logo-horizonta-whitel.png`, which is white on transparent and therefore
+  invisible on the warm-white base, and there is no dark or SVG variant.
+  **Send a dark or vector version and I will swap it straight in.**
 - **Favicon.** Regenerated from your existing `AN-Favicon.png`, which is an
   orange/green gradient. It does not match the pthalo-green palette the rest of
   the site uses. Worth a redesign in brand green — say the word and I will

@@ -67,9 +67,16 @@
   --nav-height: 96px; /* desktop: numbers + labels + track */
   --nav-height-mobile: 64px; /* mobile: single pill row */
   --hairline: 1px; /* the timeline rule, drawn as a height not a border */
-  --knob-size: 12px; /* deep green scrub knob */
+  --knob-size: 12px; /* the pin that rides the line */
   --knob-dot: 4px; /* gold inner dot, one of the few gold moments */
+  --knob-pendant: 40px; /* the grabbable disc hanging below the line */
+  --knob-stem: 12px; /* drop from the line to the pendant */
   --peg-size: 4px; /* section marker on the line */
+  --track-height: 32px; /* room for the wire plus its sag */
+  --wire-base-y: 8px; /* where the wire rests when undisturbed */
+  --wire-sag: 14px; /* how far the handle drags the wire down */
+  --wire-sag-ease: 60px; /* distance over which sag eases in from the ends */
+  --brand-mark: 40px; /* the AN monogram square */
 
   /* --- Radii: fixed set ------------------------------------ */
   --radius-chip: 8px;
