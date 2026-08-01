@@ -20,6 +20,7 @@ npm install
 | `npm run preview`    | Serve the built output                          |
 | `npm run qa`         | **All PRD §12b gates, in order**                |
 | `npm run qa:browser` | Just the behavioural gates in a real browser    |
+| `npm run video`      | Re-encode portfolio video and cut poster frames |
 | `npm run deploy`     | QA, then publish `dist/` to the `deploy` branch |
 
 `npm run qa` runs: `astro check` → ESLint → token lint → Prettier → build → link
@@ -137,6 +138,32 @@ land in Phase 7.
 In hPanel → Website → Git: add the repository, set branch to `deploy`, and set
 the install path to your web root (usually `public_html`). If the repo is still
 private, add Hostinger's deploy key to the repo first, or make the repo public.
+
+## Portfolio video
+
+Source clips go in `src/assets/portfolio/`. Run:
+
+```bash
+npm run video
+```
+
+That re-encodes each one to 720p H.264 at CRF 28, strips the audio track,
+moves it into an mp4 container, and cuts a poster frame. Output goes to
+`public/portfolio/video/` and posters land beside the source as
+`<name>-poster.webp`. It skips anything already up to date, so it is cheap to
+re-run.
+
+The first pass took **45.6MB of source down to 5.0MB** — the clips were 6-7 Mbps,
+which is broadcast bitrate for what is mostly slow-panning screen capture. One
+clip dropped 97% with no visible difference at playback size.
+
+Two things matter beyond the file size. The `.mov` had to become `.mp4` because
+Firefox will not reliably play a QuickTime container. And nothing is preloaded:
+tiles show the poster image and only fetch video when the visitor asks for it,
+so video weight never touches page load or Lighthouse.
+
+The encoder is `ffmpeg-static`, a devDependency — it does not ship, and nothing
+was installed on your machine.
 
 ## Assets
 

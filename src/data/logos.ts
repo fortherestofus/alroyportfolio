@@ -35,7 +35,7 @@ export function logo(filename?: string): ImageMetadata | null {
  * marks belong in this list. If a logo you drop in disappears, check
  * which of the two it is before adding it here.
  */
-const LIGHT_ON_TRANSPARENT = new Set(["Thrifty-1.png", "Name-Logo-horizonta-whitel.png"]);
+const LIGHT_ON_TRANSPARENT = new Set(["Name-Logo-horizonta-whitel.png"]);
 
 export function needsDarkBacking(filename?: string): boolean {
   return Boolean(filename && LIGHT_ON_TRANSPARENT.has(filename));

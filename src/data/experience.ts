@@ -37,7 +37,7 @@ export const EXPERIENCE: Role[] = [
     title: "Digital Marketing Consultant",
     company: "Thrifty Adventures",
     dates: "Jul 2025 – Present",
-    logoFile: "Thrifty-1.png",
+    logoFile: "thrifty.jpeg",
   },
   {
     title: "Web Design Specialist",
