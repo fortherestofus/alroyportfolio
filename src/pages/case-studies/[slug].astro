@@ -1,0 +1,613 @@
+---
+/**
+ * A case study page, rendered from the typed block list in
+ * src/data/case-studies.ts. Structure follows the template in
+ * prd/03-case-studies.md.
+ *
+ * One deliberate change: the PRD calls for a tab bar on Innovatr, but
+ * the story Alroy described is sequential — brand, then content, then
+ * ads, then results. Tabs would hide four fifths of that behind a click
+ * and break the through-line. The chapters render as a sticky anchor
+ * bar instead: the same quick access, nothing hidden, and it still
+ * works with JS off.
+ */
+import { Image } from "astro:assets";
+import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import { CASE_STUDIES, caseImage, type CaseStudy } from "../../data/case-studies";
+import { SITE } from "../../data/site";
+
+export function getStaticPaths() {
+  return CASE_STUDIES.map((study) => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+interface Props {
+  study: CaseStudy;
+}
+
+const { study } = Astro.props;
+const path = `/case-studies/${study.slug}/`;
+
+const SHOT_WIDTH = 900;
+const SHOT_QUALITY = 74;
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: `${study.name} case study`,
+    abstract: study.summary,
+    author: { "@type": "Person", name: SITE.name, url: SITE.url },
+    url: new URL(path, SITE.url).href,
+    datePublished: "2026-08-01",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Case studies",
+        item: new URL("/#case-studies", SITE.url).href,
+      },
+      { "@type": "ListItem", position: 3, name: study.name },
+    ],
+  },
+];
+---
+
+<BaseLayout title={study.seo.title} description={study.seo.description} path={path} schema={schema}>
+  <article class="cs">
+    <header class="cs__head">
+      <a class="cs__back" href="/#case-studies">
+        <ArrowLeft class="cs__back-icon" aria-hidden="true" />
+        Back to case studies
+      </a>
+
+      <h1 class="cs__title">{study.name}</h1>
+      <p class="cs__summary">{study.summary}</p>
+
+      <p class="cs__meta">{study.meta.join(" · ")}</p>
+
+      <ul class="cs__tags">
+        {study.tags.map((tag) => <li class="cs__tag">{tag}</li>)}
+      </ul>
+
+      {
+        study.website && (
+          <p class="cs__visit">
+            <a href={study.website} target="_blank" rel="noopener noreferrer">
+              Visit the site
+              <ArrowUpRight class="cs__visit-icon" aria-hidden="true" />
+            </a>
+          </p>
+        )
+      }
+
+      <p class="cs__intro">{study.description}</p>
+    </header>
+
+    <nav class="cs__chapters" aria-label="Sections of this case study">
+      <ul>
+        {
+          study.chapters.map((chapter) => (
+            <li>
+              <a href={`#${chapter.id}`}>{chapter.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="cs__body">
+      {
+        study.blocks.map((block) => (
+          <section class="cs__block" id={block.id} data-reveal>
+            <h2 class="cs__heading" data-reveal-item>
+              {block.heading}
+            </h2>
+
+            {block.kind === "prose" &&
+              block.body.map((paragraph) => (
+                <p class="cs__prose" data-reveal-item>
+                  {paragraph}
+                </p>
+              ))}
+
+            {"intro" in block && block.intro && (
+              <p class="cs__prose" data-reveal-item>
+                {block.intro}
+              </p>
+            )}
+
+            {block.kind === "metrics" && (
+              <>
+                <dl class="cs__metrics">
+                  {block.items.map((metric) => (
+                    <div class="cs__metric" data-reveal-item>
+                      <dt class="cs__metric-value">{metric.value}</dt>
+                      <dd class="cs__metric-label">
+                        <span class="cs__metric-name">{metric.label}</span>
+                        {metric.context && <span class="cs__metric-context">{metric.context}</span>}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                {block.footnote && <p class="cs__footnote">{block.footnote}</p>}
+              </>
+            )}
+
+            {block.kind === "checklist" && (
+              <ul class="cs__checklist">
+                {block.items.map((item) => (
+                  <li class="cs__check" data-reveal-item>
+                    <CircleCheck class="cs__check-icon" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {block.kind === "beforeAfter" &&
+              block.pairs.map((pair) => {
+                const before = caseImage(pair.before);
+                const after = caseImage(pair.after);
+                return (
+                  <figure class="cs__compare" data-reveal-item>
+                    <div class="cs__compare-pair">
+                      <div class="cs__compare-side">
+                        <span class="cs__compare-tag">Before</span>
+                        {before ? (
+                          <Image
+                            src={before}
+                            alt=""
+                            width={SHOT_WIDTH}
+                            quality={SHOT_QUALITY}
+                            densities={[1]}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Placeholder label={pair.before} ratio="16/10" />
+                        )}
+                      </div>
+                      <div class="cs__compare-side">
+                        <span class="cs__compare-tag cs__compare-tag--after">After</span>
+                        {after ? (
+                          <Image
+                            src={after}
+                            alt=""
+                            width={SHOT_WIDTH}
+                            quality={SHOT_QUALITY}
+                            densities={[1]}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Placeholder label={pair.after} ratio="16/10" />
+                        )}
+                      </div>
+                    </div>
+                    <figcaption class="cs__caption">
+                      <span class="cs__caption-label">{pair.label}</span> {pair.alt}
+                    </figcaption>
+                  </figure>
+                );
+              })}
+
+            {block.kind === "gallery" && (
+              <ul class="cs__gallery">
+                {block.shots.map((shot) => {
+                  const image = caseImage(shot.image);
+                  return (
+                    <li class="cs__shot" data-reveal-item>
+                      {image ? (
+                        <Image
+                          src={image}
+                          alt={shot.alt}
+                          width={SHOT_WIDTH}
+                          quality={SHOT_QUALITY}
+                          densities={[1]}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Placeholder label={shot.image} ratio="1/1" />
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {block.kind === "pending" && (
+              <p class="cs__pending" data-reveal-item>
+                {block.note}
+              </p>
+            )}
+          </section>
+        ))
+      }
+    </div>
+
+    <footer class="cs__foot">
+      <p class="cs__foot-line">Want something like this for your business?</p>
+      <p class="cs__foot-links">
+        <a class="cs__foot-cta" href="/#contact">Start a conversation</a>
+        <a class="cs__foot-back" href="/#case-studies">All case studies</a>
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
+
+<script>
+  import "../../scripts/journey";
+</script>
+
+<style>
+  .cs {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-5) var(--space-10);
+  }
+
+  /* --- Header --------------------------------------------------- */
+  .cs__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .cs__back:hover,
+  .cs__back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .cs__back-icon,
+  .cs__visit-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .cs__title {
+    margin-top: var(--space-5);
+  }
+
+  .cs__summary {
+    margin-top: var(--space-5);
+    max-width: var(--measure);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__meta {
+    margin-top: var(--space-5);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .cs__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs__tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    background-color: var(--color-accent-soft);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__visit {
+    margin-top: var(--space-5);
+  }
+
+  .cs__visit a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__intro {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  /* --- Chapter bar ---------------------------------------------- */
+  .cs__chapters {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-top: var(--space-8);
+    padding-block: var(--space-3);
+    background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .cs__chapters ul {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .cs__chapters ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cs__chapters a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-nav);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .cs__chapters a:hover,
+  .cs__chapters a:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* --- Blocks ---------------------------------------------------- */
+  .cs__block {
+    padding-top: var(--space-9);
+    scroll-margin-top: var(--space-9);
+  }
+
+  .cs__heading {
+    font-size: var(--text-h2);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .cs__prose {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  /* --- Metrics --------------------------------------------------- */
+  .cs__metrics {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+  }
+
+  .cs__metric {
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .cs__metric-value {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-accent);
+  }
+
+  .cs__metric-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+  }
+
+  .cs__metric-name {
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__metric-context {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .cs__footnote {
+    margin-top: var(--space-5);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  /* --- Checklist -------------------------------------------------- */
+  .cs__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs__check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    max-width: var(--measure);
+    color: var(--color-text-muted);
+  }
+
+  .cs__check-icon {
+    flex: none;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    margin-top: var(--space-1);
+    stroke-width: 1.5;
+    color: var(--color-accent);
+  }
+
+  /* --- Before / after --------------------------------------------- */
+  .cs__compare {
+    margin: var(--space-6) 0 0;
+  }
+
+  .cs__compare-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .cs__compare-side {
+    position: relative;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__compare-side :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .cs__compare-tag {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-ink-surface);
+    color: var(--color-text);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__compare-tag--after {
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+  }
+
+  .cs__caption,
+  .cs__pending {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .cs__caption-label {
+    color: var(--color-text);
+    font-weight: var(--weight-heading);
+  }
+
+  /* --- Gallery ----------------------------------------------------- */
+  .cs__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs__shot {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__shot :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* --- Footer ------------------------------------------------------- */
+  .cs__foot {
+    margin-top: var(--space-10);
+    padding-top: var(--space-7);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cs__foot-line {
+    font-size: var(--text-h3);
+  }
+
+  .cs__foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .cs__foot-cta,
+  .cs__foot-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-lg);
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__foot-cta {
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+  }
+
+  .cs__foot-back {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  @media (width >= 768px) {
+    .cs__metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cs__compare-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 1024px) {
+    .cs__metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

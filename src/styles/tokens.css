@@ -96,6 +96,9 @@
   --wire-sag-ease: 60px; /* distance over which sag eases in from the ends */
   --brand-mark-height: 48px; /* Alroy's signature wordmark; it is a script, and below this it stops reading */
 
+  /* Smallest a card may get before an auto-fill grid drops a column. */
+  --card-min: 240px;
+
   /* Product screenshot rail (§05) */
   --shot-phone-width: 200px; /* a phone capture, shown device-sized */
   --shot-screen-width: 360px; /* a web capture */
