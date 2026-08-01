@@ -36,6 +36,10 @@ export default [
         setTimeout: "readonly",
         PointerEvent: "readonly",
         Event: "readonly",
+        // Used by the hero contrast gate, which decodes a screenshot
+        // into a canvas inside the page to read real pixels.
+        createImageBitmap: "readonly",
+        fetch: "readonly",
       },
     },
     rules: {

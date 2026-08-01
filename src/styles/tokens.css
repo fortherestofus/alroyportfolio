@@ -123,6 +123,17 @@
   --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
 
   /*
+   * Hero collage. The opacity is a contrast budget, not a taste call:
+   * composited over the page base, an image layer at or below 0.44
+   * keeps even a pure-white pixel under the luminance white text needs
+   * for 4.5:1. 0.35 leaves margin for the muted blurb as well.
+   */
+  --collage-opacity: 0.35;
+  --collage-tile-width: 300px;
+  --collage-tilt: -8deg;
+  --collage-bleed: 160px; /* how far the columns run past the hero's edges */
+
+  /*
    * Reserved height for the booking embed. Cal lays its month view out
    * in three columns above roughly 900px of container width and stacks
    * it below, so the two are nowhere near the same height and one

@@ -1,0 +1,381 @@
+---
+/**
+ * The hero background: two slow vertical columns of work drifting in
+ * opposite directions behind the hero copy.
+ *
+ * Vertical rather than horizontal, which is what the reference does,
+ * because JourneyNav is a fixed *horizontal* timeline pinned directly
+ * above this. Horizontal rows underneath it would put two competing
+ * horizontal motion axes in the same band of screen, and the nav's whole
+ * job is to be the one horizontal thing that moves. Vertical columns
+ * also fill a 375px viewport, where rows mostly waste it.
+ *
+ * Two columns rather than the reference's four dense rows: that site is
+ * a directory, where density is the product. Here the imagery is texture
+ * behind a name, and four fast rows would make this look like the sort
+ * of template the work is meant to argue against.
+ *
+ * Pure CSS. No JS runs for the motion at all, so it cannot stutter when
+ * the main thread is busy — which, during initial load, it is.
+ */
+import { Image } from "astro:assets";
+import { Pause, Play } from "@lucide/astro";
+import { COLLAGE_COLUMNS, collageImage } from "../data/hero-collage";
+
+/*
+ * Sized for display, not for inspection. At 35% opacity behind a scrim
+ * nobody can resolve detail, so these are encoded far cheaper than the
+ * portfolio's own derivatives of the same files.
+ */
+const TILE_WIDTH = 300;
+const TILE_QUALITY = 52;
+
+/*
+ * Deliberately not round multiples of each other: two columns whose
+ * cycles share a factor visibly re-sync into a marching pattern.
+ */
+const DURATIONS = ["83s", "101s", "71s"];
+---
+
+<div class="collage" data-collage>
+  <div class="collage__cols" aria-hidden="true">
+    {
+      COLLAGE_COLUMNS.map((column, columnIndex) => (
+        <div
+          class:list={["collage__col", columnIndex % 2 === 1 && "collage__col--reverse"]}
+          style={`--dur:${DURATIONS[columnIndex % DURATIONS.length]}`}
+        >
+          {/*
+           * Rendered twice so the loop has no seam. Spacing sits on the
+           * tiles rather than as a flex gap: with a gap, translating
+           * -50% travels half a gap short of one copy and the column
+           * snaps back every cycle — the exact bug the logo marquee had.
+           */}
+          <div class="collage__track">
+            {[0, 1].map((copy) =>
+              column.map((file) => {
+                const image = collageImage(file);
+                if (!image) return null;
+                return (
+                  <span class="collage__tile" data-copy={copy}>
+                    <Image
+                      src={image}
+                      alt=""
+                      width={TILE_WIDTH}
+                      quality={TILE_QUALITY}
+                      densities={[1]}
+                      loading="eager"
+                      decoding="async"
+                      fetchpriority="low"
+                    />
+                  </span>
+                );
+              }),
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    /*
+     * The scrim is a plain overlay, not a mask on the imagery. A
+     * full-viewport mask forces an offscreen compositing pass on every
+     * frame; an overlay is just another layer and looks identical.
+     */
+  }
+  <div class="collage__scrim" aria-hidden="true"></div>
+
+  {
+    /*
+     * WCAG 2.2 SC 2.2.2 (Pause, Stop, Hide): this moves automatically,
+     * runs longer than five seconds, and sits behind other content, so it
+     * needs a real control. Pausing on hover does not count — it is not
+     * keyboard operable and does not exist on touch.
+     */
+  }
+  <button class="collage__toggle" type="button" data-collage-toggle aria-pressed="false">
+    <Pause class="collage__toggle-icon" data-toggle-pause aria-hidden="true" />
+    <Play
+      class="collage__toggle-icon collage__toggle-icon--play"
+      data-toggle-play
+      aria-hidden="true"
+    />
+    <span class="visually-hidden" data-toggle-label>Pause background animation</span>
+  </button>
+</div>
+
+<script>
+  /*
+   * The only JS here is the pause control, which is a conformance
+   * requirement rather than an enhancement. The motion itself is CSS and
+   * runs whether or not this executes.
+   */
+  const collage = document.querySelector<HTMLElement>("[data-collage]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-collage-toggle]");
+  const label = toggle?.querySelector<HTMLElement>("[data-toggle-label]");
+  const KEY = "collage-motion";
+
+  function apply(paused: boolean): void {
+    if (!collage || !toggle) return;
+    collage.dataset.motion = paused ? "paused" : "running";
+    toggle.setAttribute("aria-pressed", String(paused));
+    if (label)
+      label.textContent = paused ? "Play background animation" : "Pause background animation";
+  }
+
+  if (collage && toggle) {
+    // A reader who paused it once should not have to do it again.
+    apply(sessionStorage.getItem(KEY) === "paused");
+
+    toggle.addEventListener("click", () => {
+      const paused = collage.dataset.motion !== "paused";
+      apply(paused);
+      try {
+        sessionStorage.setItem(KEY, paused ? "paused" : "running");
+      } catch {
+        // Private mode with storage denied. The toggle still works for
+        // this page view, which is all the criterion asks for.
+      }
+    });
+  }
+</script>
+
+<style>
+  .collage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    /* Never intercepts a click meant for the hero copy. */
+    pointer-events: none;
+  }
+
+  /*
+   * Anchored to the right, not centred. The hero copy is left-aligned,
+   * so centred columns sat directly behind the headline and read as a
+   * smudge — dimmed enough to be unreadable, present enough to be
+   * noise. Pushed right, the composition is text on clean ink with the
+   * work drifting past beside it, and the scrim can fade one into the
+   * other rather than having to flatten everything.
+   *
+   * Taller than the hero at both ends so the columns run off the edges
+   * instead of starting and stopping inside it. The tilt is what keeps
+   * three vertical columns from reading as a filing cabinet.
+   */
+  .collage__cols {
+    position: absolute;
+    top: calc(-1 * var(--collage-bleed));
+    bottom: calc(-1 * var(--collage-bleed));
+    right: calc(-1 * var(--space-7));
+    display: flex;
+    gap: var(--space-5);
+    rotate: var(--collage-tilt);
+    opacity: var(--collage-opacity);
+  }
+
+  /* Only the first column fits a phone. */
+  .collage__col:nth-child(n + 2) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .collage__col:nth-child(2) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1280px) {
+    .collage__col:nth-child(3) {
+      display: block;
+    }
+  }
+
+  .collage__col {
+    flex: none;
+    width: var(--collage-tile-width);
+    overflow: hidden;
+  }
+
+  .collage__track {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    /*
+     * `translate` of a percentage, on a promoted element, is a
+     * compositor-only property — the animation runs off the main thread.
+     */
+    animation: collage-drift var(--dur) linear infinite;
+    will-change: transform;
+  }
+
+  .collage__col--reverse .collage__track {
+    animation-direction: reverse;
+  }
+
+  /* Spacing on the tile, not as a gap. See the note in the markup. */
+  .collage__tile {
+    display: block;
+    flex: none;
+    margin-block-end: var(--space-5);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+
+  .collage__tile :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @keyframes collage-drift {
+    to {
+      /* Exactly one copy of the column. */
+      translate: 0 -50%;
+    }
+  }
+
+  [data-motion="paused"] .collage__track {
+    animation-play-state: paused;
+  }
+
+  /* Hover pause is a courtesy; the button is the actual mechanism. */
+  .collage:hover .collage__track {
+    animation-play-state: paused;
+  }
+
+  /*
+   * Dimming is not taste, it is the contrast budget. Composited over the
+   * page base, an image layer at or below 0.44 opacity keeps any pixel —
+   * including pure white — under the luminance that white text needs for
+   * 4.5:1. 0.35 leaves margin, and at that level a screenshot has
+   * already stopped being a picture and become a texture, which is the
+   * right register for a background.
+   */
+  .collage__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      /* Solid behind the copy, clearing as it moves right. */
+      linear-gradient(
+        to right,
+        var(--color-bg) 0%,
+        var(--color-bg) 32%,
+        color-mix(in srgb, var(--color-bg) 70%, transparent) 58%,
+        color-mix(in srgb, var(--color-bg) 40%, transparent) 100%
+      ),
+      /* And into the nav above and the section below. */
+      linear-gradient(
+          to bottom,
+          var(--color-bg) 0%,
+          transparent 22%,
+          transparent 72%,
+          var(--color-bg) 100%
+        );
+  }
+
+  /*
+   * On a phone the copy fills the width, so there is no clear side to
+   * push the work to. It goes back to a wash behind everything, dimmer,
+   * with the scrim covering the whole area rather than a slice of it.
+   */
+  @media (width < 768px) {
+    .collage__cols {
+      opacity: calc(var(--collage-opacity) * 0.7);
+    }
+
+    .collage__scrim {
+      background:
+        linear-gradient(
+          to right,
+          var(--color-bg) 0%,
+          color-mix(in srgb, var(--color-bg) 80%, transparent) 60%,
+          color-mix(in srgb, var(--color-bg) 62%, transparent) 100%
+        ),
+        linear-gradient(
+          to bottom,
+          var(--color-bg) 0%,
+          transparent 25%,
+          transparent 70%,
+          var(--color-bg) 100%
+        );
+    }
+  }
+
+  .collage__toggle {
+    position: absolute;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    z-index: 1;
+    pointer-events: auto;
+    display: grid;
+    place-items: center;
+    width: var(--control-md);
+    height: var(--control-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    opacity: 0.5;
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out);
+  }
+
+  .collage__toggle:hover,
+  .collage__toggle:focus-visible {
+    opacity: 1;
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .collage__toggle-icon {
+    grid-area: 1 / 1;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .collage__toggle-icon--play,
+  [data-motion="paused"] .collage__toggle-icon:not(.collage__toggle-icon--play) {
+    display: none;
+  }
+
+  [data-motion="paused"] .collage__toggle-icon--play {
+    display: block;
+  }
+
+  @media (width >= 768px) {
+    .collage__cols {
+      gap: var(--space-6);
+    }
+  }
+
+  /*
+   * Reduced motion: freeze, keep the imagery. The composition is the
+   * point and the movement is decoration, so a gentler alternative
+   * animation would be more distracting than none. The toggle goes with
+   * it — there is no longer anything to pause.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .collage__track {
+      animation: none;
+      will-change: auto;
+    }
+
+    .collage__toggle {
+      display: none;
+    }
+  }
+
+  /* Someone who has asked for more contrast gets a quieter background. */
+  @media (prefers-contrast: more) {
+    .collage__cols {
+      opacity: 0.12;
+    }
+  }
+</style>

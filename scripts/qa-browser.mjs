@@ -137,6 +137,31 @@ const THIRD_PARTY = [/\bapp\.cal\.com\b/, /\bcal\.com\b/];
 
 const isThirdParty = (text) => THIRD_PARTY.some((pattern) => pattern.test(text));
 
+/**
+ * Wait until the document stops changing height.
+ *
+ * Anything that measures scroll position has to do this first. The
+ * booking embed swaps a reserved box for a real iframe when it loads,
+ * and the page is at its full height only after that settles — so a
+ * check that reads scrollY, waits, and reads again can see the page
+ * shrink underneath it and blame whatever it was testing. That is
+ * exactly what made the reduced-motion drag test look like a failure
+ * while the drag itself moved nothing.
+ */
+async function settleHeight(page, timeout = 8000) {
+  const deadline = Date.now() + timeout;
+  let previous = -1;
+  let stable = 0;
+  while (Date.now() < deadline) {
+    const height = await page.evaluate(() => document.documentElement.scrollHeight);
+    stable = height === previous ? stable + 1 : 0;
+    previous = height;
+    if (stable >= 3) return height;
+    await page.waitForTimeout(150);
+  }
+  return previous;
+}
+
 /** Collect console errors/warnings and page exceptions for one page. */
 function watchConsole(page) {
   const problems = [];
@@ -389,6 +414,34 @@ async function checkDesktop(browser, origin, viewport) {
     jumps.length === 0,
     jumps.map((j) => `${j.from.offset}→${j.to.offset}: moved ${j.delta}px`).join(", "),
   );
+
+  /*
+   * The hero must not fill the viewport exactly.
+   *
+   * NN/g's "illusion of completeness" study found readers who did not
+   * realise a page scrolled at all, because a full-screen hero ended
+   * precisely at the fold and nothing hinted at more. A sparse dark
+   * hero is the textbook case, so the next section has to be visibly
+   * intruding before the reader touches anything.
+   */
+  const fold = await page.evaluate(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    const hero = document.querySelector(".hero");
+    const next = document.querySelector(".jsection");
+    if (!hero || !next) return null;
+    return {
+      heroBottom: Math.round(hero.getBoundingClientRect().bottom),
+      viewport: window.innerHeight,
+      peek: Math.round(window.innerHeight - next.getBoundingClientRect().top),
+    };
+  });
+  if (fold) {
+    record(
+      `[${tag}] the next section peeks above the fold`,
+      fold.peek >= 24,
+      `${fold.peek}px of section 01 visible (hero ends at ${fold.heroBottom} of ${fold.viewport})`,
+    );
+  }
 
   // --- Data logic (§12b): the content actually rendered, not the source.
   const content = await page.evaluate(() => ({
@@ -1140,6 +1193,112 @@ async function checkMobile(browser, origin, viewport) {
   await context.close();
 }
 
+/**
+ * Contrast of the hero copy against the pixels actually rendered behind
+ * it, rather than against the background colour it inherits.
+ *
+ * The main contrast gate walks the DOM and composites declared colours.
+ * That is the right check almost everywhere, and useless over the hero
+ * collage, where the background is a moving photograph. The dimming
+ * there is chosen from the WCAG formula — an image layer at or below
+ * 0.44 opacity over the page base keeps even a pure-white source pixel
+ * under the luminance white text needs — but that is an argument, not a
+ * measurement. This measures.
+ *
+ * Method: hide the copy, screenshot the exact box it occupied, and find
+ * the brightest pixel that was sitting behind it. Then compute the real
+ * ratio against the text's own colour.
+ */
+async function checkHeroContrast(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(1200);
+
+  const targets = await page.evaluate(() => {
+    const pick = [
+      ["headline", ".hero h1"],
+      ["eyebrow", ".hero .eyebrow"],
+      ["blurb", ".hero__blurb"],
+    ];
+    return pick
+      .map(([name, selector]) => {
+        const el = document.querySelector(selector);
+        if (!el) return null;
+        const box = el.getBoundingClientRect();
+        return {
+          name,
+          selector,
+          color: getComputedStyle(el).color,
+          box: { x: box.x, y: box.y, width: box.width, height: box.height },
+        };
+      })
+      .filter(Boolean);
+  });
+
+  // Hide the copy so the screenshot captures only what is behind it.
+  await page.evaluate(() => {
+    document.querySelector(".hero__inner")?.style.setProperty("visibility", "hidden");
+  });
+  await page.waitForTimeout(200);
+
+  for (const target of targets) {
+    const shot = await page.screenshot({
+      clip: {
+        x: Math.max(0, Math.floor(target.box.x)),
+        y: Math.max(0, Math.floor(target.box.y)),
+        width: Math.max(1, Math.ceil(target.box.width)),
+        height: Math.max(1, Math.ceil(target.box.height)),
+      },
+    });
+
+    const worst = await page.evaluate(
+      async ({ dataUrl, color }) => {
+        const channel = (v) => {
+          const c = v / 255;
+          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        };
+        const luminance = (r, g, b) =>
+          0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+
+        const bitmap = await createImageBitmap(await (await fetch(dataUrl)).blob());
+        const canvas = document.createElement("canvas");
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(bitmap, 0, 0);
+        const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        let brightest = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          const l = luminance(data[i], data[i + 1], data[i + 2]);
+          if (l > brightest) brightest = l;
+        }
+
+        const [tr, tg, tb] = color.match(/\d+/g).map(Number);
+        const text = luminance(tr, tg, tb);
+        const hi = Math.max(text, brightest);
+        const lo = Math.min(text, brightest);
+        return { ratio: (hi + 0.05) / (lo + 0.05), brightest };
+      },
+      { dataUrl: `data:image/png;base64,${shot.toString("base64")}`, color: target.color },
+    );
+
+    /*
+     * 4.5:1 for everything, including the headline, which would only
+     * need 3:1 as large text. If the display type cannot clear the body
+     * threshold over its own background the background is too bright.
+     */
+    record(
+      `[hero] ${target.name} clears 4.5:1 over the collage`,
+      worst.ratio >= 4.5,
+      `${worst.ratio.toFixed(2)}:1 against the brightest pixel behind it`,
+    );
+  }
+
+  await context.close();
+}
+
 async function checkReducedMotion(browser, origin) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
@@ -1194,7 +1353,22 @@ async function checkReducedMotion(browser, origin) {
     `${nothingStuck} item(s) still hidden`,
   );
 
-  // Drag must be inert; the labels remain the way to move.
+  /*
+   * Drag must be inert; the labels remain the way to move.
+   *
+   * Tested from the middle of the page, not the bottom. At the bottom,
+   * scrollY is pinned to the document height — and the booking embed
+   * re-measures its own iframe asynchronously, so the document can
+   * shrink at any moment and clamp scrollY down with it. That looked
+   * exactly like a scrub. Mid-page there is nothing to clamp against,
+   * so any movement here is really the drag.
+   */
+  await settleHeight(page);
+  await page.evaluate(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: Math.round(max / 2), behavior: "instant" });
+  });
+  await page.waitForTimeout(250);
   const knobBox = await page.locator(".jnav__knob-pendant").boundingBox();
   const trackBox = await page.locator("#journey-track").boundingBox();
   const before = await page.evaluate(() => window.scrollY);
@@ -1356,6 +1530,7 @@ try {
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
+  await checkHeroContrast(browser, origin);
   await checkReducedMotion(browser, origin);
   await checkBackgroundTabLoad(browser, origin);
   await checkNoScript(browser, origin);

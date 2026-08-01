@@ -17,6 +17,7 @@ import ProductShowcase from "../components/ProductShowcase.astro";
 import CaseStudyStack from "../components/CaseStudyStack.astro";
 import ContactSection from "../components/ContactSection.astro";
 import CalEmbed from "../components/CalEmbed.astro";
+import HeroCollage from "../components/HeroCollage.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITE, SECTIONS } from "../data/site";
 ---
@@ -25,6 +26,8 @@ import { SITE, SECTIONS } from "../data/site";
   <JourneyNav slot="nav" />
 
   <header class="hero" id="top">
+    <HeroCollage />
+
     <div class="hero__inner" data-reveal>
       <p class="eyebrow" data-reveal-item>Full-stack marketing, branding and business tech</p>
       <h1 data-reveal-item>Alroy Ndhlovu</h1>
@@ -65,12 +68,47 @@ import { SITE, SECTIONS } from "../data/site";
 </script>
 
 <style>
+  /*
+   * Tall, but deliberately not a full viewport.
+   *
+   * `svh`, not `vh`: the unprefixed unit is defined against the *large*
+   * viewport, so on a phone with the toolbar showing — which is its
+   * state on first paint — 100vh is taller than what you can see and
+   * the bottom of the hero sits behind the browser chrome. `svh` sizes
+   * against the toolbar being out, and unlike `dvh` it does not resize
+   * mid-scroll.
+   *
+   * `min-height`, not `height`, so the box grows rather than overflows
+   * when text is resized to 200% or the blurb wraps to five lines.
+   *
+   * And short of the full viewport on purpose. NN/g's "illusion of
+   * completeness" work found readers who did not realise a page
+   * scrolled at all when a full-screen hero ended exactly at the fold —
+   * a sparse dark hero with a clean bottom edge is the textbook case.
+   * Holding back one space step leaves the next section visibly
+   * intruding, which is their prescribed fix and reads better than an
+   * arrow telling people to scroll.
+   *
+   * The nav gap is not subtracted again: box-sizing is border-box
+   * globally and the padding below already carries it.
+   */
   .hero {
+    position: relative;
+    /* The collage is absolutely positioned to this box. */
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100svh - var(--space-8));
     padding-top: calc(var(--nav-height-mobile) + var(--space-8));
     padding-bottom: var(--space-8);
   }
 
   .hero__inner {
+    /* Above the collage, which is absolutely positioned behind it. */
+    position: relative;
+    z-index: 1;
+    width: 100%;
     max-width: var(--width-content);
     margin-inline: auto;
     padding-inline: var(--space-5);
@@ -88,6 +126,7 @@ import { SITE, SECTIONS } from "../data/site";
 
   @media (width >= 1024px) {
     .hero {
+      min-height: calc(100svh - var(--space-9));
       padding-top: calc(var(--nav-height) + var(--space-9));
       padding-bottom: var(--space-9);
     }
