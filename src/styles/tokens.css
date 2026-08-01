@@ -113,8 +113,15 @@
   --shot-panel-ratio: 3 / 4;
   --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
 
-  /* Reserved height for the booking embed, so it cannot shift the page. */
-  --cal-min-height: 560px;
+  /*
+   * Reserved height for the booking embed. Cal lays its month view out
+   * in three columns above roughly 900px of container width and stacks
+   * it below, so the two are nowhere near the same height and one
+   * reserved value cannot serve both. The narrow figure is deliberately
+   * not the full stacked height: reserving 2,000px of empty box on a
+   * phone is worse than the reflow it would prevent.
+   */
+  --cal-min-height: 620px;
   /* How far ahead of the viewport the booking embed starts loading. */
   --cal-preload-margin: 600px;
 
@@ -194,5 +201,12 @@
 @media (pointer: coarse), (width <= 768px) {
   :root {
     --control-md: 44px;
+  }
+}
+
+/* Wide enough for Cal's three-column month view, which measures ~570px. */
+@media (width >= 1024px) {
+  :root {
+    --cal-min-height: 580px;
   }
 }

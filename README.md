@@ -259,13 +259,13 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
-- **What the booking embed offers.** `cal.com/mralroyndhlovu` is a profile with
-  two event types, so the embed shows both: **Quick chat (15m, free)** and
-  **Billed consultation (60m, $60)**. That means a price tag appears on the
-  contact section of a portfolio, which is a positioning call rather than a
-  build one. To show a single calendar instead, put the event slug in
-  `SOCIAL.cal` (`https://cal.com/mralroyndhlovu/<event-slug>`) — the component
-  derives Cal's `calLink` from that URL and needs no other change.
+- **The booking embed points at one event, not the profile.** `SOCIAL.cal` is
+  `cal.com/mralroyndhlovu/quick`, so the section shows the 15-minute chat's
+  calendar directly. The paid consultation is linked underneath rather than
+  dropped (`SOCIAL.calConsultation`), because the rate is a signal worth
+  keeping when the audience is employers and clients at once. Swapping either
+  is a one-line change in `src/data/site.ts`; the component derives Cal's
+  `calLink` from the URL.
 
 - **Logo.** The nav currently uses a typographic lockup: an `AN` monogram in
   deep green plus the wordmark (which drops off below 1280px to keep the

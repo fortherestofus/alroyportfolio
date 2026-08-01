@@ -38,6 +38,22 @@ const { id, number, label, heading, blurb } = Astro.props;
       <slot />
     </div>
   </div>
+
+  {
+    /*
+     * A full-width band under the two columns, for the rare thing that
+     * genuinely cannot live in a 7/12 column. The booking calendar is
+     * the case that forced it: Cal renders its month view as three
+     * columns above roughly 900px and collapses to a 2,000px stack
+     * below, so in the right-hand column it was four times taller than
+     * it needed to be.
+     */
+    Astro.slots.has("wide") && (
+      <div class="jsection__wide">
+        <slot name="wide" />
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -79,6 +95,13 @@ const { id, number, label, heading, blurb } = Astro.props;
   .jsection__blurb {
     margin-top: var(--space-4);
     color: var(--color-text-muted);
+  }
+
+  .jsection__wide {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+    margin-top: var(--space-7);
   }
 
   @media (width >= 1024px) {

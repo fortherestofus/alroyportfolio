@@ -16,6 +16,7 @@ import PortfolioGrid from "../components/PortfolioGrid.astro";
 import ProductShowcase from "../components/ProductShowcase.astro";
 import CaseStudyStack from "../components/CaseStudyStack.astro";
 import ContactSection from "../components/ContactSection.astro";
+import CalEmbed from "../components/CalEmbed.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITE, SECTIONS } from "../data/site";
 ---
@@ -50,6 +51,7 @@ import { SITE, SECTIONS } from "../data/site";
         {section.id === "products" && <ProductShowcase />}
         {section.id === "case-studies" && <CaseStudyStack />}
         {section.id === "contact" && <ContactSection />}
+        {section.id === "contact" && <CalEmbed slot="wide" />}
       </JourneySection>
     ))
   }

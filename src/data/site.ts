@@ -23,7 +23,16 @@ export const SOCIAL = {
   dribbble: "https://dribbble.com/mralroyndhlovu",
   instagram: "https://www.instagram.com/mralroyndhlovu",
   github: "https://github.com/fortherestofus",
-  cal: "https://cal.com/mralroyndhlovu",
+  /*
+   * A specific event, not the profile. The profile URL renders as a menu
+   * of meeting types that has to be clicked through before any
+   * availability shows; pointing at the event drops the reader straight
+   * onto a calendar. The paid consultation is linked beneath the embed
+   * rather than lost — Alroy is talking to employers and clients at the
+   * same time, and the rate is a signal he wants kept.
+   */
+  cal: "https://cal.com/mralroyndhlovu/quick",
+  calConsultation: "https://cal.com/mralroyndhlovu/consultation",
 } as const;
 
 /**

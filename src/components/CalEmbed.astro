@@ -35,6 +35,23 @@ const FRAME_ID = "cal-booking";
       </a>
     </div>
   </div>
+
+  {
+    /*
+     * The embedded calendar is the free 15-minute chat, so the paid
+     * consultation would otherwise disappear entirely when we stopped
+     * embedding the profile menu. Alroy is talking to employers and
+     * clients at once and wants the rate visible, so it stays — as a
+     * secondary line, which is the right weight for it.
+     */
+  }
+  <p class="cal__alt" data-reveal-item>
+    <span>Something more involved? </span>
+    <a href={SOCIAL.calConsultation} target="_blank" rel="noopener noreferrer">
+      Book a paid consultation
+      <ArrowUpRight class="cal__alt-icon" aria-hidden="true" />
+    </a>
+  </p>
 </section>
 
 <script>
@@ -304,6 +321,35 @@ const FRAME_ID = "cal-booking";
   .cal__fallback-link:hover,
   .cal__fallback-link:focus-visible {
     background-color: var(--color-accent-olive);
+  }
+
+  .cal__alt {
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .cal__alt a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-text-muted);
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out);
+  }
+
+  .cal__alt a:hover,
+  .cal__alt a:focus-visible {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .cal__alt-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
   }
 
   .cal__fallback-icon-sm {

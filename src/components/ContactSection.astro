@@ -8,7 +8,6 @@
  * (see CalEmbed) and every other route works with no JS at all.
  */
 import { Mail, Phone, Copy, Check, ArrowUpRight } from "@lucide/astro";
-import CalEmbed from "./CalEmbed.astro";
 import { SITE, SOCIAL } from "../data/site";
 
 /*
@@ -54,8 +53,6 @@ const LINKS = [
       <a class="contact__value" href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
     </li>
   </ul>
-
-  <CalEmbed />
 
   <nav class="contact__social" aria-label="Alroy Ndhlovu elsewhere" data-reveal>
     {
