@@ -1,0 +1,227 @@
+---
+/**
+ * Section 05: the products, one card each.
+ *
+ * Screenshots sit in a scroll-snapping rail rather than a carousel.
+ * These are supporting evidence for the description, not the main
+ * event, so a native scroll container gives keyboard, trackpad, touch
+ * and screen-reader behaviour for free with no JS to get wrong.
+ * The portfolio modal stays the one place with a real carousel.
+ */
+import { Image } from "astro:assets";
+import { ArrowUpRight } from "@lucide/astro";
+import Placeholder from "./Placeholder.astro";
+import { PRODUCTS, productImage, CASE_STUDY_PAGES_LIVE } from "../data/products";
+
+/*
+ * Phone screenshots are tall and only ever shown small, so they are
+ * sized by height. Web captures are sized by width. Both well under
+ * what the rail displays at 2x.
+ */
+const PHONE_HEIGHT = 560;
+const SCREEN_WIDTH = 720;
+const SHOT_QUALITY = 74;
+---
+
+<div class="products">
+  {
+    PRODUCTS.map((product) => (
+      <article class="product" data-reveal>
+        <header class="product__head" data-reveal-item>
+          <div class="product__naming">
+            <h3 class="product__name">{product.name}</h3>
+            <p class="product__tagline">{product.tagline}</p>
+          </div>
+          <ul class="product__meta">
+            <li class="product__chip">{product.status}</li>
+            <li class="product__chip">{product.platform}</li>
+            <li class="product__chip">{product.category}</li>
+          </ul>
+        </header>
+
+        <p class="product__description" data-reveal-item>
+          {product.description}
+        </p>
+
+        {CASE_STUDY_PAGES_LIVE && product.caseStudy && (
+          <p class="product__link" data-reveal-item>
+            <a href={`/case-studies/${product.caseStudy}/`}>
+              Read the case study
+              <ArrowUpRight class="product__link-icon" aria-hidden="true" />
+            </a>
+          </p>
+        )}
+
+        <ul
+          class:list={["product__rail", `product__rail--${product.shape}`]}
+          tabindex="0"
+          aria-label={`${product.name} screenshots`}
+          data-reveal-item
+        >
+          {product.shots.map((shot) => {
+            const image = productImage(shot.image);
+            return (
+              <li class="product__shot">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={shot.alt}
+                    {...(product.shape === "phone"
+                      ? { height: PHONE_HEIGHT }
+                      : { width: SCREEN_WIDTH })}
+                    quality={SHOT_QUALITY}
+                    densities={[1]}
+                    loading="lazy"
+                  />
+                ) : (
+                  <Placeholder
+                    label={`products/${shot.image}`}
+                    ratio={product.shape === "phone" ? "9/19.5" : "16/10"}
+                  />
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .products {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .product {
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .product__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .product__name {
+    font-size: var(--text-h3);
+  }
+
+  .product__tagline {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-accent);
+  }
+
+  .product__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    background-color: var(--color-accent-soft);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .product__description {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .product__link {
+    margin-top: var(--space-4);
+  }
+
+  .product__link a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  .product__link a:hover,
+  .product__link a:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .product__link-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  /* --- Screenshot rail ---------------------------------------- */
+  .product__rail {
+    display: flex;
+    gap: var(--space-4);
+    margin: var(--space-5) 0 0;
+    padding: 0 0 var(--space-3);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .product__shot {
+    flex: none;
+    scroll-snap-align: start;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+    border: 1px solid var(--color-border);
+  }
+
+  .product__rail :global(img) {
+    display: block;
+    height: auto;
+  }
+
+  /* Phone captures read as devices: narrow, tall, rounded. */
+  .product__rail--phone .product__shot {
+    width: var(--shot-phone-width);
+    border-radius: var(--radius-card);
+  }
+
+  .product__rail--phone :global(img) {
+    width: 100%;
+  }
+
+  .product__rail--screen .product__shot {
+    width: var(--shot-screen-width);
+  }
+
+  .product__rail--screen :global(img) {
+    width: 100%;
+  }
+
+  @media (width >= 640px) {
+    .product {
+      padding: var(--space-6);
+    }
+  }
+</style>

@@ -57,7 +57,15 @@ const MOBILE_VIEWPORTS = [
   { width: 768, height: 1024, label: "768x1024" },
 ];
 
-const SECTION_IDS = ["who", "experience", "education", "portfolio", "case-studies", "contact"];
+const SECTION_IDS = [
+  "who",
+  "experience",
+  "education",
+  "portfolio",
+  "products",
+  "case-studies",
+  "contact",
+];
 
 /**
  * What the data files should put on the page (PRD §12b "data logic").
@@ -72,6 +80,8 @@ const EXPECTED = {
   services: 5, // src/data/services.ts
   testimonials: 3, // src/data/testimonials.ts
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
+  products: 4, // src/data/products.ts
+  productShots: 18,
 };
 
 const results = [];
@@ -238,7 +248,14 @@ async function checkDesktop(browser, origin, viewport) {
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   await page.waitForTimeout(400);
 
-  const knobBox = await page.locator("#journey-knob").boundingBox();
+  /*
+   * Press the pendant, not the knob wrapper. The wrapper also contains
+   * the "Drag to scrub" label, which is pointer-events: none, so its
+   * centre sometimes lands on dead space and no drag begins — the test
+   * was passing or failing depending on whether that label happened to
+   * be showing. The pendant is what a hand actually grabs.
+   */
+  const knobBox = await page.locator(".jnav__knob-pendant").boundingBox();
   const trackBox = await page.locator("#journey-track").boundingBox();
   if (knobBox && trackBox) {
     const before = await page.evaluate(() => window.scrollY);
@@ -364,6 +381,8 @@ async function checkDesktop(browser, origin, viewport) {
     studyRows: document.querySelectorAll(".study__row").length,
     services: document.querySelectorAll("[data-service]").length,
     testimonials: document.querySelectorAll(".who__quote").length,
+    products: document.querySelectorAll(".product").length,
+    productShots: document.querySelectorAll(".product__shot").length,
     clientLogos: document.querySelectorAll(".strip__item").length,
     brokenImages: [...document.querySelectorAll("img")].filter(
       (img) => img.complete && img.naturalWidth === 0,
@@ -383,6 +402,8 @@ async function checkDesktop(browser, origin, viewport) {
   expect(`${EXPECTED.testimonials} testimonials`, content.testimonials, EXPECTED.testimonials);
   // The marquee renders the list twice so the loop has no seam.
   expect("client marquee is doubled", content.clientLogos, EXPECTED.clientLogos * 2);
+  expect(`${EXPECTED.products} products`, content.products, EXPECTED.products);
+  expect(`${EXPECTED.productShots} product shots`, content.productShots, EXPECTED.productShots);
   record(`[${tag}] every date renders`, content.emptyDates === 0, `${content.emptyDates} empty`);
   record(`[${tag}] no broken images`, content.brokenImages === 0, `${content.brokenImages} broken`);
 
@@ -664,15 +685,15 @@ async function checkPortfolioModal(browser, origin) {
     opened.visibleSlides === 1,
     `${opened.visibleSlides}`,
   );
-  record("[modal] a dot per shot", opened.dots === 4, `${opened.dots}`);
-  record("[modal] dots are actually visible", opened.sizedDots === 4, `${opened.sizedDots} sized`);
+  record("[modal] a dot per shot", opened.dots === 6, `${opened.dots}`);
+  record("[modal] dots are actually visible", opened.sizedDots === 6, `${opened.sizedDots} sized`);
   record("[modal] caption stays inside the panel", opened.captionInPanel);
   record(
     "[modal] the shot actually fills the stage",
     opened.mediaHeight > 300,
     `image rendered ${opened.mediaHeight}px tall`,
   );
-  record("[modal] counter reads correctly", opened.counter === "1 of 4", opened.counter);
+  record("[modal] counter reads correctly", opened.counter === "1 of 6", opened.counter);
   record("[modal] focus moves into the dialog", opened.focusInside);
   record("[modal] background scroll locks", opened.locked);
 
@@ -695,14 +716,14 @@ async function checkPortfolioModal(browser, origin) {
   const afterNext = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] next advances", afterNext === "2 of 4", afterNext);
+  record("[modal] next advances", afterNext === "2 of 6", afterNext);
 
   await page.locator("[data-portfolio-prev]").click();
   await page.waitForTimeout(250);
   const afterPrev = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] previous goes back", afterPrev === "1 of 4", afterPrev);
+  record("[modal] previous goes back", afterPrev === "1 of 6", afterPrev);
 
   record(
     "[modal] previous is disabled on the first shot",
@@ -715,7 +736,7 @@ async function checkPortfolioModal(browser, origin) {
   const afterKey = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] arrow keys navigate", afterKey === "2 of 4", afterKey);
+  record("[modal] arrow keys navigate", afterKey === "2 of 6", afterKey);
 
   // Focus trap: tabbing many times must never escape the dialog.
   let escaped = false;
@@ -990,7 +1011,7 @@ async function checkReducedMotion(browser, origin) {
   );
 
   // Drag must be inert; the labels remain the way to move.
-  const knobBox = await page.locator("#journey-knob").boundingBox();
+  const knobBox = await page.locator(".jnav__knob-pendant").boundingBox();
   const trackBox = await page.locator("#journey-track").boundingBox();
   const before = await page.evaluate(() => window.scrollY);
   await page.mouse.move(knobBox.x + knobBox.width / 2, knobBox.y + knobBox.height / 2);

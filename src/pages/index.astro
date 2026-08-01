@@ -13,6 +13,7 @@ import WhoIsAlroy from "../components/WhoIsAlroy.astro";
 import ExperienceList from "../components/ExperienceList.astro";
 import EducationGroups from "../components/EducationGroups.astro";
 import PortfolioGrid from "../components/PortfolioGrid.astro";
+import ProductShowcase from "../components/ProductShowcase.astro";
 import { SITE, SECTIONS } from "../data/site";
 
 /** Right columns still to be filled, and by which phase. */
@@ -49,6 +50,7 @@ const PENDING: Record<string, string> = {
         {section.id === "experience" && <ExperienceList />}
         {section.id === "education" && <EducationGroups />}
         {section.id === "portfolio" && <PortfolioGrid />}
+        {section.id === "products" && <ProductShowcase />}
 
         {PENDING[section.id] && (
           <div class="pending" data-reveal>

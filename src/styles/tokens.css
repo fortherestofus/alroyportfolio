@@ -94,7 +94,11 @@
   --wire-base-y: 8px; /* where the wire rests when undisturbed */
   --wire-sag: 14px; /* how far the handle drags the wire down */
   --wire-sag-ease: 60px; /* distance over which sag eases in from the ends */
-  --brand-mark: 40px; /* the AN monogram square */
+  --brand-mark-height: 48px; /* Alroy's signature wordmark; it is a script, and below this it stops reading */
+
+  /* Product screenshot rail (§05) */
+  --shot-phone-width: 200px; /* a phone capture, shown device-sized */
+  --shot-screen-width: 360px; /* a web capture */
 
   /* --- Radii: fixed set ------------------------------------ */
   --radius-chip: 8px;

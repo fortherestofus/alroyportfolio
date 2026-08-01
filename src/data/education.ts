@@ -45,7 +45,7 @@ export const EDUCATION: StudyGroup[] = [
         qualification: "UX/UI & Design",
         institution: "Interaction Design Foundation, UXCEL",
         dates: "2023 – 2024",
-        logoFile: "idf.jpg",
+        logoFile: "uxcel.jpg",
       },
       {
         qualification: "Graphic Design Specialisation",
@@ -74,7 +74,7 @@ export const EDUCATION: StudyGroup[] = [
         qualification: "AI & Cybersecurity Technology Certifications",
         institution: "Google, Codecademy, CISCO Networking Academy",
         dates: "2025 – Ongoing",
-        logoFile: "cisco.png",
+        logoFile: "codecademy.png",
       },
       {
         qualification: "Full-Stack Web Development",

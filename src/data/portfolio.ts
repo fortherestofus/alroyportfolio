@@ -79,16 +79,12 @@ export const PORTFOLIO: PortfolioCategory[] = [
         video: "/portfolio/video/website_video_ecommerce.mp4",
         alt: "A beauty e-commerce homepage scrolling through its product and lifestyle imagery.",
       },
-      {
-        image: "Action_4.png",
-        alt: "Innovatr landing section headlined “Not a report. A direction. Clear. Every single time.”, showing the video-interview analysis view beneath it.",
-      },
     ],
   },
   {
     id: "branding",
     name: "Branding",
-    cover: "branding_packaging.webp",
+    cover: "design_print_digital_2.webp",
     shots: [
       {
         image: "branding_packaging.webp",
@@ -103,6 +99,14 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "Deja Media business cards in gold foil, fanned on a dark surface.",
       },
       {
+        image: "design_print_digital_2.webp",
+        alt: "LE'CONTENT winter fashion cover, cover lines wrapped around a portrait of Tammie Mashau.",
+      },
+      {
+        image: "design_print_digital.webp",
+        alt: "MODELME magazine cover, cover lines arranged around a beauty portrait.",
+      },
+      {
         image: "filosofee_design.webp",
         alt: "Black t-shirt printed with a red speech bubble reading “indoda must what?”.",
       },
@@ -111,16 +115,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
   {
     id: "content",
     name: "Content",
-    cover: "design_print_digital_2.webp",
+    cover: "thrifty_socialmedia.webp",
     shots: [
-      {
-        image: "design_print_digital_2.webp",
-        alt: "LE'CONTENT winter fashion cover, cover lines wrapped around a portrait of Tammie Mashau.",
-      },
-      {
-        image: "design_print_digital.webp",
-        alt: "MODELME magazine cover, cover lines arranged around a beauty portrait.",
-      },
       {
         image: "thrifty_socialmedia.webp",
         alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe and Zanzibar.",
@@ -134,6 +130,10 @@ export const PORTFOLIO: PortfolioCategory[] = [
         image: "video_travel-poster.webp",
         video: "/portfolio/video/video_travel.mp4",
         alt: "Travel reel opening on the word WORLD over an aerial shot of open water.",
+      },
+      {
+        image: "Action_4.png",
+        alt: "Innovatr landing section headlined “Not a report. A direction. Clear. Every single time.”, showing the video-interview analysis view beneath it.",
       },
       {
         image: "innovatrsocial_trends.png",

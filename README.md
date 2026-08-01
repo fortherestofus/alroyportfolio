@@ -241,9 +241,8 @@ Tracked from PRD §14. None of these block the build.
       6-12 per category, so those two read thin. Drop files into
       `src/assets/portfolio/`, add an entry with alt text, and run
       `npm run video` if it is a clip.
-- [ ] **Sanity-check two category calls.** `video_travel` sits in Content but
-      could be Photography, and the two magazine covers sit in Content but
-      could be Branding. One line each in `src/data/portfolio.ts`.
+- [ ] `video_travel` sits in Content but could be Photography. One line in
+      `src/data/portfolio.ts`. _(Magazine covers moved to Branding 1 Aug.)_
 - [ ] **Case study images** — hero, before/after and supporting shots per study.
       Each case study data file lists the exact filenames it expects.
 - [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
@@ -263,10 +262,6 @@ Tracked from PRD §14. None of these block the build.
   `Name-Logo-horizonta-whitel.png`, which is white on transparent and therefore
   invisible on the warm-white base, and there is no dark or SVG variant.
   **Send a dark or vector version and I will swap it straight in.**
-- **Favicon.** Regenerated from your existing `AN-Favicon.png`, which is an
-  orange/green gradient. It does not match the pthalo-green palette the rest of
-  the site uses. Worth a redesign in brand green — say the word and I will
-  regenerate all sizes.
 - **Hostinger Git setup** is a one-time manual step in hPanel (see Deployment
   above). Nothing is live until that is pointed at the `deploy` branch.
 - **OG image.** `public/og-default.png` is generated from brand tokens (now dark)
@@ -285,7 +280,8 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
       sections, Lenis/ScrollTrigger, mobile pill bar, browser QA harness
 - [x] **3. Sections 01-03** — Who is Alroy, Experience, Education
 - [x] **4. Section 04** — Portfolio cards, modal carousel, video pipeline
-- [ ] 5. Section 05 — Stacked case study cards + 4 full pages
-- [ ] 6. Section 06 — Contact + lazy Cal.com embed + footer
-- [ ] 7. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG
-- [ ] 8. Polish & QA — Lighthouse, a11y, reduced-motion, cross-browser
+- [x] **5. Section 05** — Products: Hakkan, InSpiritInTruth, tapa., CaughtSlipping
+- [ ] 6. Section 06 — Stacked case study cards + 4 full pages
+- [ ] 7. Section 07 — Contact + lazy Cal.com embed + footer
+- [ ] 8. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG
+- [ ] 9. Polish & QA — Lighthouse, a11y, reduced-motion, cross-browser

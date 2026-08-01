@@ -41,6 +41,6 @@ export const CLIENT_LOGOS = [
   { name: "Energy Capital & Power", logoFile: "ECP_logo_internal_1Round-150x150-1.png" },
   { name: "IFC (World Bank Group)", logoFile: "IFC.jpeg" },
   { name: "African Agri Council", logoFile: "aac.png" },
-  { name: "Meta", logoFile: "Facebook_Logo_Primary.png" },
+  { name: "Meta", logoFile: "meta_logo.png" },
   { name: "Jenna Clifford", logoFile: "Jenna-C.jpg" },
 ] as const;

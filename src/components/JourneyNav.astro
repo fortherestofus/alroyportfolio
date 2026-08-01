@@ -10,15 +10,29 @@
  * Below 1024px the track is dropped entirely and the same list becomes
  * a horizontally scrollable pill bar (no drag, tap to jump).
  */
+import { Image } from "astro:assets";
 import { MoveHorizontal } from "@lucide/astro";
+import wordmark from "../assets/brand/alroy-wordmark-white.png";
 import { SECTIONS, SITE } from "../data/site";
+
+/*
+ * Alroy's own wordmark, white on transparency. It was unusable on the
+ * light draft and is exactly right now the site is dark.
+ */
+const BRAND_LOGO_HEIGHT = 48;
 ---
 
 <nav class="jnav" id="journey-nav" aria-label="Journey sections">
   <div class="jnav__inner">
     <a class="jnav__brand" href="#top" aria-label={`${SITE.name}, back to top`}>
-      <span class="jnav__mark" aria-hidden="true">AN</span>
-      <span class="jnav__wordmark" aria-hidden="true">{SITE.name}</span>
+      <Image
+        class="jnav__logo"
+        src={wordmark}
+        alt=""
+        height={BRAND_LOGO_HEIGHT}
+        densities={[1, 2]}
+        loading="eager"
+      />
     </a>
 
     <div class="jnav__timeline">
@@ -86,24 +100,10 @@ import { SECTIONS, SITE } from "../data/site";
     gap: var(--space-3);
   }
 
-  .jnav__mark {
-    display: grid;
-    place-items: center;
-    width: var(--brand-mark);
-    height: var(--brand-mark);
-    border-radius: var(--radius-sm);
-    background-color: var(--color-accent);
-    color: var(--color-invert-text);
-    font-size: var(--text-small);
-    font-weight: var(--weight-heading);
-    letter-spacing: var(--tracking-eyebrow);
-  }
-
-  .jnav__wordmark {
-    display: none;
-    font-size: var(--text-small);
-    font-weight: var(--weight-heading);
-    white-space: nowrap;
+  .jnav__logo {
+    width: auto;
+    height: var(--brand-mark-height);
+    object-fit: contain;
   }
 
   /* ---- Mobile: horizontally scrollable pill bar -------------- */
@@ -427,13 +427,6 @@ import { SECTIONS, SITE } from "../data/site";
       90% {
         translate: calc(-1 * var(--space-2)) 0;
       }
-    }
-  }
-
-  /* The wordmark only earns its space once the bar is comfortably wide. */
-  @media (width >= 1280px) {
-    .jnav__wordmark {
-      display: block;
     }
   }
 

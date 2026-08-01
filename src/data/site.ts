@@ -72,8 +72,17 @@ export const SECTIONS = [
       "Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
   },
   {
-    id: "case-studies",
+    id: "products",
     number: "05",
+    label: "Products",
+    short: "Products",
+    heading: "Products I've built",
+    blurb:
+      "Business technology is not just advice. These are shipped products, built end to end with modern AI-assisted speed.",
+  },
+  {
+    id: "case-studies",
+    number: "06",
     label: "Case studies",
     short: "Cases",
     heading: "Case studies",
@@ -82,7 +91,7 @@ export const SECTIONS = [
   },
   {
     id: "contact",
-    number: "06",
+    number: "07",
     label: "Contact",
     short: "Contact",
     heading: "Contact",
