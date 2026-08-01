@@ -17,16 +17,16 @@
   --color-faint: var(--color-text-faint);
 
   --color-accent: var(--color-accent);
-  --color-accent-lively: var(--color-accent-lively);
+  --color-accent-deep: var(--color-accent-deep);
   --color-accent-soft: var(--color-accent-soft);
   --color-accent-olive: var(--color-accent-olive);
   --color-gold: var(--color-gold);
 
-  --color-ink-surface: var(--color-ink-surface);
-  --color-ink-raised: var(--color-ink-raised);
-  --color-ink-text: var(--color-ink-text);
-  --color-ink-muted: var(--color-ink-muted);
-  --color-ink-accent: var(--color-ink-accent);
+  --color-invert-surface: var(--color-invert-surface);
+  --color-invert-raised: var(--color-invert-raised);
+  --color-invert-text: var(--color-invert-text);
+  --color-invert-muted: var(--color-invert-muted);
+  --color-invert-accent: var(--color-invert-accent);
 
   /* Fonts: one family, two cuts (Regular 400, Mittel 500) */
   --font-sans: "Apfel Grotezk", system-ui, sans-serif;
@@ -201,7 +201,7 @@
 
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-ink-text);
+    color: var(--color-invert-text);
   }
 
   :focus-visible {

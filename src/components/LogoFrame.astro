@@ -9,7 +9,7 @@
  */
 import { Image } from "astro:assets";
 import { Building2, GraduationCap } from "@lucide/astro";
-import { logo, needsDarkBacking } from "../data/logos";
+import { logo } from "../data/logos";
 
 interface Props {
   file?: string;
@@ -18,13 +18,12 @@ interface Props {
 
 const { file, kind = "company" } = Astro.props;
 const source = logo(file);
-const onDark = needsDarkBacking(file);
 
 // Rendered at 2x the 40px frame so the mark stays crisp on retina.
 const RENDER_SIZE = 80;
 ---
 
-<span class="frame" data-on-dark={onDark ? "true" : undefined} aria-hidden="true">
+<span class="frame" aria-hidden="true">
   {
     source ? (
       <Image src={source} alt="" width={RENDER_SIZE} height={RENDER_SIZE} loading="lazy" />
@@ -44,17 +43,19 @@ const RENDER_SIZE = 80;
     width: var(--frame-logo);
     height: var(--frame-logo);
     padding: var(--space-1);
-    background-color: var(--color-surface);
+    /*
+     * Frames stay light on the dark page. Nearly every mark Alroy has
+     * was drawn for a white background: some are dark ink on
+     * transparency, some are opaque with white behind them, one is
+     * white on transparency. Giving them all the background they were
+     * designed for is what makes the whole set legible at once, rather
+     * than maintaining a list of exceptions in both directions.
+     */
+    background-color: var(--color-invert-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     overflow: hidden;
-    color: var(--color-text-faint);
-  }
-
-  /* A white mark needs something to sit against. */
-  .frame[data-on-dark="true"] {
-    background-color: var(--color-ink-surface);
-    border-color: var(--color-ink-surface);
+    color: var(--color-invert-muted);
   }
 
   .frame :global(img) {

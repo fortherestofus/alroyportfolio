@@ -34,7 +34,8 @@ Individual gates: `npm run check`, `npm run lint`, `npm run lint:tokens`,
 `scripts/qa-browser.mjs` serves `dist/` and drives it with Playwright, checking
 the §12b behavioural list: nav tracking in both directions, click-to-jump,
 drag-to-scrub, sticky pinning, console cleanliness, mobile stacking, touch target
-sizes, reduced motion, and the no-JS fallback. It runs at 1280, 1440, 1920, a
+sizes, WCAG AA contrast on every rendered text/background pair, reduced motion,
+and the no-JS fallback. It runs at 1280, 1440, 1920, a
 short 1440x700 viewport, and 375/768 for mobile.
 
 This is scripted rather than done by hand for a specific reason: interactive
@@ -44,6 +45,19 @@ scroll-driven looks broken whether or not it is. The harness asserts the browser
 is genuinely painting before it trusts any other result.
 
 ## Design tokens
+
+**The site is dark-first** (decided 1 Aug 2026, replacing the original light-first
+plan). Base `#0d0d0d`, warm-white `#F9F6F2` text, and the lively pthalo green
+`#90A842` as the accent — on ink it can finally be the accent rather than the
+decorative-only role it had on white. The brand palette did not change; which end
+of it carries the page did.
+
+The warm-white palette survives as `--color-invert-*`, used for deliberate bright
+blocks and for every logo frame. That last one is deliberate: nearly all of
+Alroy's company marks were drawn for a white background — some dark ink on
+transparency, some opaque with white behind, one white on transparency — so a
+light frame makes the whole set legible at once instead of maintaining exception
+lists in both directions.
 
 Everything visual comes from `src/styles/tokens.css` — colors, the 8pt spacing
 scale, icon stops, control heights, radii, shadows, type scale, weights, motion.
@@ -197,9 +211,9 @@ Tracked from PRD §14. None of these block the build.
   regenerate all sizes.
 - **Hostinger Git setup** is a one-time manual step in hPanel (see Deployment
   above). Nothing is live until that is pointed at the `deploy` branch.
-- **OG image.** `public/og-default.png` is generated from brand tokens but set in
-  Helvetica, because the render step has no access to the Apfel webfonts. Fine to
-  ship; can be upgraded to a proper per-page design in Phase 7.
+- **OG image.** `public/og-default.png` is generated from brand tokens (now dark)
+  but set in Helvetica, because the render step has no access to the Apfel
+  webfonts. Fine to ship; upgradable to a proper per-page design in Phase 7.
 
 ---
 

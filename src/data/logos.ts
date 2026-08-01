@@ -25,18 +25,11 @@ export function logo(filename?: string): ImageMetadata | null {
 }
 
 /**
- * Marks drawn in white on a transparent background, which would be
- * invisible against the warm-white frame. These get an ink backing
- * instead. Add a filename here if a newly dropped-in logo disappears.
- *
- * Note this is not the same as a logo with a white *background* (most
- * of them): those are opaque and read fine in the standard frame.
+ * There is deliberately no per-logo light/dark handling here. The page
+ * is dark but the frames are light, which is the background nearly
+ * every one of these marks was drawn for, so they all read without
+ * exceptions. See the comment in LogoFrame.astro.
  */
-const LIGHT_ON_TRANSPARENT = new Set(["Thrifty-1.png", "Name-Logo-horizonta-whitel.png"]);
-
-export function needsDarkBacking(filename?: string): boolean {
-  return Boolean(filename && LIGHT_ON_TRANSPARENT.has(filename));
-}
 
 /** Filenames referenced by data files but not yet present on disk. */
 export function missingLogos(filenames: (string | undefined)[]): string[] {

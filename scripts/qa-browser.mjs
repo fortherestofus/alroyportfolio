@@ -405,6 +405,123 @@ async function checkDesktop(browser, origin, viewport) {
   await context.close();
 }
 
+/**
+ * WCAG AA contrast across everything actually rendered (PRD §12).
+ * Written against the real computed colours rather than the token
+ * table, so a component that pairs two tokens badly is still caught.
+ */
+async function checkContrast(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+
+  // Reveal everything, so hidden-then-faded text is measured too.
+  await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight / 2) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(80);
+    }
+    await wait(500);
+  });
+
+  const failures = await page.evaluate(() => {
+    const parse = (value) => {
+      const nums = value.match(/[\d.]+/g)?.map(Number) ?? [];
+      return { r: nums[0] ?? 0, g: nums[1] ?? 0, b: nums[2] ?? 0, a: nums[3] ?? 1 };
+    };
+
+    const channel = (c) => {
+      const s = c / 255;
+      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    };
+    const luminance = ({ r, g, b }) =>
+      0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+
+    const over = (fg, bg) => ({
+      r: fg.r * fg.a + bg.r * (1 - fg.a),
+      g: fg.g * fg.a + bg.g * (1 - fg.a),
+      b: fg.b * fg.a + bg.b * (1 - fg.a),
+      a: 1,
+    });
+
+    /** Walk up for the first non-transparent background. */
+    const backgroundOf = (el) => {
+      let node = el;
+      while (node && node !== document.documentElement) {
+        const bg = parse(getComputedStyle(node).backgroundColor);
+        if (bg.a > 0.95) return bg;
+        if (bg.a > 0) {
+          const parent = backgroundOf(node.parentElement);
+          return over(bg, parent);
+        }
+        node = node.parentElement;
+      }
+      return parse(getComputedStyle(document.body).backgroundColor);
+    };
+
+    const ratio = (a, b) => {
+      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    };
+
+    const results = [];
+    const seen = new Set();
+
+    document
+      .querySelectorAll("p, h1, h2, h3, h4, a, span, li, dt, dd, button, time")
+      .forEach((el) => {
+        // Only elements with their own visible text.
+        const text = [...el.childNodes]
+          .filter((n) => n.nodeType === 3)
+          .map((n) => n.textContent.trim())
+          .join("");
+        if (!text) return;
+
+        const style = getComputedStyle(el);
+        if (style.visibility === "hidden" || style.display === "none") return;
+        if (parseFloat(style.opacity) < 0.5) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+
+        const fg = parse(style.color);
+        const bg = backgroundOf(el);
+        const contrast = ratio(over(fg, bg), bg);
+
+        const size = parseFloat(style.fontSize);
+        const bold = parseInt(style.fontWeight, 10) >= 700;
+        const isLarge = size >= 24 || (size >= 18.66 && bold);
+        const required = isLarge ? 3 : 4.5;
+
+        if (contrast < required) {
+          const key = `${style.color}|${size}|${text.slice(0, 20)}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          results.push({
+            text: text.slice(0, 34),
+            color: style.color,
+            size: Math.round(size),
+            contrast: contrast.toFixed(2),
+            required,
+          });
+        }
+      });
+
+    return results;
+  });
+
+  record(
+    "[contrast] all text meets WCAG AA",
+    failures.length === 0,
+    failures
+      .map((f) => `"${f.text}" ${f.color} ${f.size}px = ${f.contrast}:1 (need ${f.required})`)
+      .join(" | "),
+  );
+
+  await context.close();
+}
+
 async function checkMobile(browser, origin, viewport) {
   const context = await browser.newContext({
     viewport,
@@ -668,6 +785,7 @@ const browser = await chromium.launch();
 try {
   for (const viewport of DESKTOP_VIEWPORTS) await checkDesktop(browser, origin, viewport);
   for (const viewport of MOBILE_VIEWPORTS) await checkMobile(browser, origin, viewport);
+  await checkContrast(browser, origin);
   await checkReducedMotion(browser, origin);
   await checkBackgroundTabLoad(browser, origin);
   await checkNoScript(browser, origin);

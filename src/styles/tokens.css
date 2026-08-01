@@ -7,33 +7,51 @@
    ============================================================ */
 
 :root {
-  /* --- Surfaces -------------------------------------------- */
-  --color-bg: #f9f6f2; /* warm white page base */
-  --color-surface: #fdfbf7; /* cards */
-  --color-surface-sunken: #f1ede6;
-  --color-border: rgba(13, 13, 13, 0.08);
+  /*
+   * DARK-FIRST (decided with Alroy, 1 Aug 2026, replacing the original
+   * light-first direction). His previous site was dark, his portrait is
+   * shot on black, and the lively pthalo green only truly comes alive
+   * against ink. The brand palette is unchanged; what swapped is which
+   * end of it carries the page.
+   *
+   * Every value below is checked against #0d0d0d for WCAG AA by the
+   * contrast gate in scripts/qa-browser.mjs. Changing one without
+   * running that gate is how contrast regressions get shipped.
+   */
 
-  /* --- Ink ------------------------------------------------- */
-  --color-text: #0d0d0d;
-  --color-text-muted: #4d4d4d;
-  --color-text-faint: #8a8578;
+  /* --- Surfaces -------------------------------------------- */
+  --color-bg: #0d0d0d; /* Blackish, the brand base */
+  --color-surface: #1a1a1a; /* cards, pills, frames */
+  --color-surface-sunken: #080808; /* wells, recessed areas */
+  --color-border: rgba(249, 246, 242, 0.14);
+
+  /* --- Text: warm whites, never pure grey ------------------ */
+  --color-text: #f9f6f2; /* the brand's warm white */
+  --color-text-muted: #a8a49b; /* 7.6:1 on the base */
+  --color-text-faint: #8a857b; /* 5.3:1, still AA at small sizes */
 
   /* --- Accent: pthalo green family ------------------------- */
-  --color-accent: #123524; /* deep pthalo: accent text, buttons, active nav */
-  --color-accent-lively: #90a842; /* progress fill, knob, decorative only on light */
-  --color-accent-soft: #e9eedd; /* tinted chip/card backgrounds */
+  --color-accent: #90a842; /* lively pthalo: the accent on dark, 7.3:1 */
+  --color-accent-deep: #123524; /* deep pthalo: filled blocks, not text */
+  --color-accent-soft: rgba(144, 168, 66, 0.14); /* tinted chip backgrounds */
   --color-accent-olive: #b5b325; /* rare gradient partner */
 
   /* --- Gold: micro-accents only ---------------------------- */
   --color-gold: #f0b331;
 
-  /* --- Ink blocks (dark sections, footer) ------------------ */
-  --color-ink-surface: #0d0d0d;
-  --color-ink-raised: #1c1c1c;
-  --color-ink-text: #f9f6f2;
-  --color-ink-muted: #9c9c9c;
-  --color-ink-accent: #90a842; /* lively green pops on dark */
-  --color-ink-border: rgba(249, 246, 242, 0.12);
+  /*
+   * Inverted blocks. The light palette survives as a deliberate accent
+   * for the occasional bright section, and for logo frames: nearly
+   * every mark Alroy has was drawn for a white background, so giving
+   * the frames a warm-white backing makes all of them legible at once
+   * instead of special-casing the light ones and the dark ones.
+   */
+  --color-invert-surface: #f9f6f2;
+  --color-invert-raised: #fdfbf7;
+  --color-invert-text: #0d0d0d;
+  --color-invert-muted: #4d4d4d;
+  --color-invert-accent: #123524; /* deep green reads as the accent on light */
+  --color-invert-border: rgba(13, 13, 13, 0.08);
 
   /* --- Spacing: 8pt grid (4pt half-steps) ------------------ */
   --space-1: 4px;
@@ -86,11 +104,15 @@
   --radius-block: 32px;
   --radius-pill: 999px;
 
-  /* --- Shadows (fortherestofus DNA) ------------------------ */
-  --shadow-card: 0 1px 2px rgba(22, 21, 15, 0.04), 0 6px 20px rgba(22, 21, 15, 0.06);
-  --shadow-card-hover: 0 2px 6px rgba(22, 21, 15, 0.06), 0 14px 36px rgba(22, 21, 15, 0.1);
-  --shadow-pill: 0 1px 2px rgba(22, 21, 15, 0.1), 0 8px 20px rgba(22, 21, 15, 0.14);
-  --shadow-nav: 0 1px 2px rgba(22, 21, 15, 0.04), 0 8px 30px rgba(22, 21, 15, 0.08);
+  /*
+   * Shadows, retuned for ink. A soft grey shadow is invisible on a dark
+   * page, so depth comes from a deeper drop plus a faint light hairline
+   * along the top edge, which is what actually reads as "raised" here.
+   */
+  --shadow-card: 0 1px 0 rgba(249, 246, 242, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 1px 0 rgba(249, 246, 242, 0.07) inset, 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-nav: 0 8px 30px rgba(0, 0, 0, 0.5);
 
   /* --- Typography scale (desktop / mobile via clamp) ------- */
   --text-display: clamp(44px, 6vw, 72px);
