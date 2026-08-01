@@ -241,6 +241,26 @@ const FRAME_ID = "cal-booking";
     color-scheme: dark;
   }
 
+  /*
+   * Once the booker is in, this frame gets out of its way. Cal's own
+   * layout already draws bordered cards and pads them by 48px top and
+   * bottom, so keeping a border and a surface here stacks three frames
+   * inside each other and makes the whole thing look boxed in. The
+   * border earns its place only around the fallback, which is a single
+   * centred CTA that does need framing.
+   */
+  .cal__frame[data-cal-state="ready"] {
+    min-height: 0;
+    border-color: transparent;
+    background-color: transparent;
+    /*
+     * Cal pads its own layout by 48px, so this margin stops paying for
+     * itself the moment the booker arrives — together they left a gap
+     * under the heading half again as big as anywhere else on the page.
+     */
+    margin-top: var(--space-1);
+  }
+
   .cal__frame[data-cal-state="ready"] .cal__fallback {
     display: none;
   }
