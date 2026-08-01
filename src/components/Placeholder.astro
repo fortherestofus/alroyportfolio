@@ -1,0 +1,59 @@
+---
+/**
+ * Stand-in for any image Alroy has not supplied yet (PRD §11).
+ * Renders the expected path so it is obvious what to drop in and
+ * where. Never ship a broken <img> in its place.
+ */
+import { Image as ImageIcon } from "@lucide/astro";
+
+interface Props {
+  /** Expected file path, e.g. "portfolio/uxui/03.webp". Shown to the user. */
+  label: string;
+  /** CSS aspect-ratio value, e.g. "4/3" or "16/9". */
+  ratio?: string;
+  class?: string;
+}
+
+const { label, ratio = "4/3", class: className } = Astro.props;
+---
+
+<div
+  class:list={["placeholder", className]}
+  style={`aspect-ratio: ${ratio};`}
+  role="img"
+  aria-label={`Placeholder for ${label}`}
+>
+  <ImageIcon class="placeholder__icon" aria-hidden="true" />
+  <span class="placeholder__label">{label}</span>
+</div>
+
+<style>
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-5);
+    background-color: var(--color-accent-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    color: var(--color-accent);
+    text-align: center;
+  }
+
+  .placeholder__icon {
+    width: var(--icon-xl);
+    height: var(--icon-xl);
+    stroke-width: 1.5;
+    flex-shrink: 0;
+  }
+
+  .placeholder__label {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: var(--text-eyebrow);
+    line-height: var(--leading-small);
+    overflow-wrap: anywhere;
+  }
+</style>

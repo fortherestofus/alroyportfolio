@@ -1,0 +1,93 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & QA
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+
+      # The PRD §12b automated gates, in the same order as `npm run qa`.
+      - name: TypeScript check
+        run: npm run check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Token lint (no hardcoded colors/sizes)
+        run: npm run lint:tokens
+
+      - name: Prettier
+        run: npm run format:check
+
+      - name: Build
+        run: npm run build
+
+      - name: Link check
+        run: npm run check:links
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: site/dist
+          retention-days: 14
+
+  deploy:
+    name: Deploy to Hostinger
+    needs: build
+    runs-on: ubuntu-latest
+    # Skipped until the FTP secrets are added in repo Settings → Secrets.
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Check deploy credentials
+        id: creds
+        run: |
+          if [ -n "${{ secrets.FTP_SERVER }}" ] && [ -n "${{ secrets.FTP_USERNAME }}" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::FTP secrets not set — skipping upload. Add FTP_SERVER, FTP_USERNAME, FTP_PASSWORD and FTP_REMOTE_DIR in repo settings."
+          fi
+
+      - name: Upload to Hostinger via FTP
+        if: steps.creds.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          # Keep files Hostinger manages itself out of the sync.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .htaccess.bak

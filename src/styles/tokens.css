@@ -1,0 +1,123 @@
+/* ============================================================
+   DESIGN TOKENS — alroyndhlovu.com
+   Source of truth: prd/02-design-system.md
+   Nothing in a component may use a raw hex, px size or spacing
+   value. Everything routes through the tokens declared here and
+   re-exported to Tailwind via the @theme block in global.css.
+   ============================================================ */
+
+:root {
+  /* --- Surfaces -------------------------------------------- */
+  --color-bg: #f9f6f2; /* warm white page base */
+  --color-surface: #fdfbf7; /* cards */
+  --color-surface-sunken: #f1ede6;
+  --color-border: rgba(13, 13, 13, 0.08);
+
+  /* --- Ink ------------------------------------------------- */
+  --color-text: #0d0d0d;
+  --color-text-muted: #4d4d4d;
+  --color-text-faint: #8a8578;
+
+  /* --- Accent: pthalo green family ------------------------- */
+  --color-accent: #123524; /* deep pthalo: accent text, buttons, active nav */
+  --color-accent-lively: #90a842; /* progress fill, knob, decorative only on light */
+  --color-accent-soft: #e9eedd; /* tinted chip/card backgrounds */
+  --color-accent-olive: #b5b325; /* rare gradient partner */
+
+  /* --- Gold: micro-accents only ---------------------------- */
+  --color-gold: #f0b331;
+
+  /* --- Ink blocks (dark sections, footer) ------------------ */
+  --color-ink-surface: #0d0d0d;
+  --color-ink-raised: #1c1c1c;
+  --color-ink-text: #f9f6f2;
+  --color-ink-muted: #9c9c9c;
+  --color-ink-accent: #90a842; /* lively green pops on dark */
+  --color-ink-border: rgba(249, 246, 242, 0.12);
+
+  /* --- Spacing: 8pt grid (4pt half-steps) ------------------ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 120px;
+
+  /* --- Icon sizes: fixed stops only ------------------------ */
+  --icon-sm: 16px; /* inside pills/labels, 2px stroke */
+  --icon-md: 20px; /* inline with text, buttons */
+  --icon-lg: 24px; /* standalone UI, default Lucide */
+  --icon-xl: 32px; /* feature / empty states */
+
+  /* --- Frames & control heights ---------------------------- */
+  --frame-logo: 40px; /* list-row logo square */
+  --frame-logo-lg: 48px; /* featured logo square */
+  --avatar-profile: 160px; /* profile photo, desktop */
+  --avatar-profile-sm: 120px; /* profile photo, mobile */
+  --control-lg: 48px; /* primary button, input */
+  --control-md: 40px; /* secondary button, pill */
+  --control-sm: 28px; /* chip (decorative tags; not a tap target) */
+  --touch-min: 44px; /* minimum touch target */
+
+  /* --- Radii: fixed set ------------------------------------ */
+  --radius-chip: 8px;
+  --radius-sm: 12px;
+  --radius-card: 16px;
+  --radius-well: 24px;
+  --radius-block: 32px;
+  --radius-pill: 999px;
+
+  /* --- Shadows (fortherestofus DNA) ------------------------ */
+  --shadow-card: 0 1px 2px rgba(22, 21, 15, 0.04), 0 6px 20px rgba(22, 21, 15, 0.06);
+  --shadow-card-hover: 0 2px 6px rgba(22, 21, 15, 0.06), 0 14px 36px rgba(22, 21, 15, 0.1);
+  --shadow-pill: 0 1px 2px rgba(22, 21, 15, 0.1), 0 8px 20px rgba(22, 21, 15, 0.14);
+  --shadow-nav: 0 1px 2px rgba(22, 21, 15, 0.04), 0 8px 30px rgba(22, 21, 15, 0.08);
+
+  /* --- Typography scale (desktop / mobile via clamp) ------- */
+  --text-display: clamp(44px, 6vw, 72px);
+  --text-h2: clamp(32px, 3.6vw, 44px);
+  --text-h3: clamp(22px, 2.2vw, 28px);
+  --text-body: 17px;
+  --text-body-sm: 16px;
+  --text-small: 14px;
+  --text-eyebrow: 12px;
+  --text-chip: 13px;
+  --text-section-number: clamp(96px, 11vw, 160px);
+
+  --leading-display: 1.1;
+  --leading-heading: 1.2;
+  --leading-body: 1.55;
+  --leading-small: 1.4;
+
+  --tracking-display: -0.02em;
+  --tracking-eyebrow: 0.08em;
+
+  /* --- Layout ---------------------------------------------- */
+  --width-content: 1200px;
+  --width-reading: 720px;
+  --measure: 65ch;
+
+  /* --- Motion ---------------------------------------------- */
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* power2.out equivalent */
+  --duration-fast: 0.2s;
+  --duration-base: 0.25s;
+  --duration-slow: 0.4s;
+  --duration-reveal: 0.5s;
+}
+
+/**
+ * Touch reconciliation (PRD §12 vs the 40px pill in the design system).
+ * Where a finger is the input, the interactive control height grows to
+ * the 44px minimum. Driving this from the token rather than a utility
+ * means every component picks it up with no per-component override and
+ * no specificity conflicts.
+ */
+@media (pointer: coarse), (width <= 768px) {
+  :root {
+    --control-md: 44px;
+  }
+}

@@ -1,0 +1,79 @@
+---
+/** Branded 404 that routes back into the journey (PRD §4). */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE, SECTIONS } from "../data/site";
+---
+
+<BaseLayout
+  title={`Page not found | ${SITE.name}`}
+  description="That page does not exist. Jump back into the journey."
+  path="/404/"
+  noindex
+>
+  <section class="notfound">
+    <p class="eyebrow">Error 404</p>
+    <h1>This page took a detour.</h1>
+    <p class="notfound__blurb">
+      The link is broken or the page has moved. Pick up the journey wherever you like.
+    </p>
+    <ul class="notfound__nav">
+      {
+        SECTIONS.map((section) => (
+          <li>
+            <a href={`/#${section.id}`}>
+              <span class="notfound__number">{section.number}</span>
+              {section.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: var(--width-reading);
+    margin-inline: auto;
+    padding: var(--space-10) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .notfound__blurb {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+  }
+
+  .notfound__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .notfound__nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: 500;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .notfound__nav a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .notfound__number {
+    color: var(--color-text-faint);
+  }
+</style>
