@@ -70,8 +70,13 @@ if (branchExists) {
 }
 
 try {
-  // Clear everything the branch currently tracks, then lay down the build.
-  execFileSync("git", ["rm", "-rq", "--ignore-unmatch", "."], { cwd: WORKTREE });
+  /*
+   * Clear the index before touching the disk. A fresh orphan branch
+   * inherits the parent's staged index, so `git rm` would refuse with
+   * "changes staged in the index"; an unstage first makes the orphan
+   * and existing-branch cases behave identically.
+   */
+  execFileSync("git", ["reset", "-q"], { cwd: WORKTREE });
   for (const entry of readdirSync(WORKTREE)) {
     if (entry === ".git") continue;
     rmSync(join(WORKTREE, entry), { recursive: true, force: true });
