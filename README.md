@@ -13,20 +13,35 @@ still outstanding.
 npm install
 ```
 
-| Command           | What it does                                    |
-| ----------------- | ----------------------------------------------- |
-| `npm run dev`     | Dev server at `localhost:4321`                  |
-| `npm run build`   | Static build into `dist/`                       |
-| `npm run preview` | Serve the built output                          |
-| `npm run qa`      | **All PRD §12b automated gates, in order**      |
-| `npm run deploy`  | QA, then publish `dist/` to the `deploy` branch |
+| Command              | What it does                                    |
+| -------------------- | ----------------------------------------------- |
+| `npm run dev`        | Dev server at `localhost:4321`                  |
+| `npm run build`      | Static build into `dist/`                       |
+| `npm run preview`    | Serve the built output                          |
+| `npm run qa`         | **All PRD §12b gates, in order**                |
+| `npm run qa:browser` | Just the behavioural gates in a real browser    |
+| `npm run deploy`     | QA, then publish `dist/` to the `deploy` branch |
 
 `npm run qa` runs: `astro check` → ESLint → token lint → Prettier → build → link
-check. It is the same sequence CI runs, so a green local `qa` means a green
-pipeline. Run it before every commit.
+check → browser behaviour. It is the same sequence CI runs, so a green local `qa`
+means a green pipeline. Run it before every commit.
 
 Individual gates: `npm run check`, `npm run lint`, `npm run lint:tokens`,
-`npm run format:check`, `npm run check:links`.
+`npm run format:check`, `npm run check:links`, `npm run qa:browser`.
+
+### Browser QA
+
+`scripts/qa-browser.mjs` serves `dist/` and drives it with Playwright, checking
+the §12b behavioural list: nav tracking in both directions, click-to-jump,
+drag-to-scrub, sticky pinning, console cleanliness, mobile stacking, touch target
+sizes, reduced motion, and the no-JS fallback. It runs at 1280, 1440, 1920, a
+short 1440x700 viewport, and 375/768 for mobile.
+
+This is scripted rather than done by hand for a specific reason: interactive
+browser tooling runs its tab in the background, where Chrome suspends the
+rendering loop. With no `requestAnimationFrame` and no scroll events, everything
+scroll-driven looks broken whether or not it is. The harness asserts the browser
+is genuinely painting before it trusts any other result.
 
 ## Design tokens
 
@@ -163,8 +178,8 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
 
 - [x] **1. Scaffold** — Astro, Tailwind, fonts, tokens, base layout, placeholder
       system, QA gates, deploy pipeline
-- [ ] 2. Journey shell — timeline nav, drag-to-scrub, six two-column sections,
-      Lenis/ScrollTrigger
+- [x] **2. Journey shell** — timeline nav, drag-to-scrub, six two-column
+      sections, Lenis/ScrollTrigger, mobile pill bar, browser QA harness
 - [ ] 3. Sections 01-03 — Who is Alroy, Experience, Education
 - [ ] 4. Section 04 — Portfolio cards + modal carousel
 - [ ] 5. Section 05 — Stacked case study cards + 4 full pages

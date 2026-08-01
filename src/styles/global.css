@@ -202,6 +202,45 @@
 }
 
 /* ============================================================
+   LENIS — smooth scroll. Only active when the library has
+   initialised, so the no-JS and reduced-motion paths keep native
+   scrolling.
+   ============================================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================================
+   REVEALS — the pre-animation state is applied only when JS is
+   running (the `.js` class is set synchronously in the head), so a
+   visitor whose JS never executes still sees all the content.
+   ============================================================ */
+.js [data-reveal]:not(:has([data-reveal-item])),
+.js [data-reveal-item] {
+  opacity: 0;
+}
+
+@media not (prefers-reduced-motion: reduce) {
+  .js [data-reveal]:not(:has([data-reveal-item])),
+  .js [data-reveal-item] {
+    translate: 0 var(--space-5);
+  }
+}
+
+/* ============================================================
    REDUCED MOTION — PRD §8. Lenis is disabled in JS; this covers
    CSS-driven motion and any GSAP tween that slipped through.
    ============================================================ */

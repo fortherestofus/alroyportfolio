@@ -1,0 +1,117 @@
+---
+/**
+ * A two-column journey section (PRD §5.2).
+ *
+ * Left column (5/12) holds the giant number, eyebrow, heading and
+ * blurb, and stays put while the right column (7/12) scrolls past it.
+ *
+ * The pin is CSS `position: sticky` rather than a ScrollTrigger pin.
+ * Sticky needs no pin-spacer, so it cannot produce the jump, overlap
+ * or flicker at section boundaries that §12b tests for, it survives
+ * resize with no refresh, and it still works with JS off or reduced
+ * motion. ScrollTrigger is still what drives the crossfade and reveals.
+ *
+ * Below 1024px the columns stack and the left column becomes a plain
+ * section header, with no sticky behaviour.
+ */
+interface Props {
+  id: string;
+  number: string;
+  label: string;
+  heading: string;
+  blurb: string;
+}
+
+const { id, number, label, heading, blurb } = Astro.props;
+---
+
+<section class="jsection" id={id} aria-labelledby={`${id}-heading`}>
+  <div class="jsection__grid">
+    <div class="jsection__aside" data-section-aside>
+      <p class="jsection__number" aria-hidden="true">{number}</p>
+      <p class="eyebrow jsection__eyebrow">{label}</p>
+      <h2 id={`${id}-heading`} class="jsection__heading">{heading}</h2>
+      <p class="jsection__blurb">{blurb}</p>
+    </div>
+
+    <div class="jsection__content">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .jsection {
+    /* Anchor jumps must clear the fixed nav. */
+    scroll-margin-top: var(--nav-height-mobile);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .jsection__grid {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .jsection__number {
+    font-size: var(--text-number);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .jsection__eyebrow {
+    margin-top: var(--space-3);
+  }
+
+  .jsection__heading {
+    margin-top: var(--space-2);
+  }
+
+  .jsection__blurb {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 1024px) {
+    .jsection {
+      scroll-margin-top: var(--nav-height);
+      padding-block: var(--space-10);
+    }
+
+    .jsection__grid {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+
+    .jsection__aside {
+      position: sticky;
+      /* Clear the nav, then breathe. */
+      top: calc(var(--nav-height) + var(--space-7));
+      /* Required for sticky to engage inside a grid track. */
+      align-self: start;
+    }
+
+    .jsection__blurb {
+      max-width: var(--measure);
+    }
+  }
+
+  /*
+   * Short viewports: the giant number plus heading and blurb can exceed
+   * the space under the nav, which would strand the bottom of the
+   * sticky column off-screen. Shrink the number rather than let that
+   * happen.
+   */
+  @media (width >= 1024px) and (height <= 760px) {
+    .jsection__number {
+      font-size: var(--text-h2);
+    }
+  }
+</style>

@@ -29,6 +29,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
       # The PRD §12b automated gates, same order as `npm run qa`.
       - name: TypeScript check
         run: npm run check
@@ -47,6 +50,9 @@ jobs:
 
       - name: Link check
         run: npm run check:links
+
+      - name: Browser behaviour (§12b)
+        run: npm run qa:browser
 
       # Deployment is a local step: `npm run deploy` publishes dist/ to
       # the `deploy` branch, which Hostinger pulls. This artifact is just

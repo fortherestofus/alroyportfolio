@@ -26,14 +26,69 @@ export const SOCIAL = {
   cal: "https://cal.com/mralroyndhlovu",
 } as const;
 
-/** The six journey sections. Drives the timeline nav and page order. */
+/**
+ * The six journey sections. Single source for the timeline nav, the
+ * page order and each section's left column.
+ *
+ * `label` is the nav label, `short` the mobile pill, `heading` the h2.
+ * Blurbs for 02, 03 and 06 are verbatim from 01-content.md; 01 is the
+ * tightened hero line; 04 and 05 describe what the section contains.
+ */
 export const SECTIONS = [
-  { id: "who", number: "01", label: "Who is Alroy", short: "Who" },
-  { id: "experience", number: "02", label: "Work experience", short: "Work" },
-  { id: "education", number: "03", label: "Education", short: "Study" },
-  { id: "portfolio", number: "04", label: "Portfolio", short: "Portfolio" },
-  { id: "case-studies", number: "05", label: "Case studies", short: "Cases" },
-  { id: "contact", number: "06", label: "Contact", short: "Contact" },
+  {
+    id: "who",
+    number: "01",
+    label: "Who is Alroy",
+    short: "Who",
+    heading: "Who is Alroy Ndhlovu",
+    blurb:
+      "Full-stack digital marketing, business technology and branding strategy. I help businesses grow by designing high-impact solutions through data, automation, AI and creative strategy.",
+  },
+  {
+    id: "experience",
+    number: "02",
+    label: "Work experience",
+    short: "Work",
+    heading: "Work experience",
+    blurb:
+      "Ten plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.",
+  },
+  {
+    id: "education",
+    number: "03",
+    label: "Education",
+    short: "Study",
+    heading: "Education",
+    blurb:
+      "Always learning. Formal certificates and specialisations across marketing, product, design and engineering.",
+  },
+  {
+    id: "portfolio",
+    number: "04",
+    label: "Portfolio",
+    short: "Portfolio",
+    heading: "Portfolio",
+    blurb:
+      "Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
+  },
+  {
+    id: "case-studies",
+    number: "05",
+    label: "Case studies",
+    short: "Cases",
+    heading: "Case studies",
+    blurb:
+      "Four projects in depth. The starting point, the thinking, the work, and what changed as a result.",
+  },
+  {
+    id: "contact",
+    number: "06",
+    label: "Contact",
+    short: "Contact",
+    heading: "Contact",
+    blurb:
+      "I'm open for work. If you like what I do and want me on your team or project, reach out.",
+  },
 ] as const;
 
 export type SectionId = (typeof SECTIONS)[number]["id"];

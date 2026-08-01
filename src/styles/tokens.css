@@ -63,6 +63,14 @@
   --control-sm: 28px; /* chip (decorative tags; not a tap target) */
   --touch-min: 44px; /* minimum touch target */
 
+  /* --- Journey timeline nav (§5.1) ------------------------- */
+  --nav-height: 96px; /* desktop: numbers + labels + track */
+  --nav-height-mobile: 64px; /* mobile: single pill row */
+  --hairline: 1px; /* the timeline rule, drawn as a height not a border */
+  --knob-size: 12px; /* deep green scrub knob */
+  --knob-dot: 4px; /* gold inner dot, one of the few gold moments */
+  --peg-size: 4px; /* section marker on the line */
+
   /* --- Radii: fixed set ------------------------------------ */
   --radius-chip: 8px;
   --radius-sm: 12px;
@@ -86,6 +94,7 @@
   --text-small: 14px;
   --text-eyebrow: 12px;
   --text-chip: 13px;
+  --text-nav: 13px; /* timeline nav labels */
   --text-section-number: clamp(96px, 11vw, 160px);
 
   /**

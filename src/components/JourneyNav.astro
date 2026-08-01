@@ -1,0 +1,295 @@
+---
+/**
+ * The journey timeline nav (PRD §5.1).
+ *
+ * Underneath it is a plain ordered list of anchor links, so keyboard
+ * and screen reader users get the whole nav without any JS. The line,
+ * pegs and drag knob are decorative enhancements layered on top and
+ * are hidden from assistive tech; `journey.ts` positions them.
+ *
+ * Below 1024px the track is dropped entirely and the same list becomes
+ * a horizontally scrollable pill bar (no drag, tap to jump).
+ */
+import { SECTIONS } from "../data/site";
+---
+
+<nav class="jnav" id="journey-nav" aria-label="Journey sections">
+  <div class="jnav__inner">
+    <ol class="jnav__list" id="journey-list">
+      {
+        SECTIONS.map((section, index) => (
+          <li class="jnav__item">
+            <a class="jnav__link" href={`#${section.id}`} data-nav-link data-index={index}>
+              <span class="jnav__num">{section.number}</span>
+              <span class="jnav__label">{section.label}</span>
+              <span class="jnav__short">{section.short}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="jnav__track" id="journey-track" aria-hidden="true">
+      <span class="jnav__line"></span>
+      <span class="jnav__fill" id="journey-fill"></span>
+      {SECTIONS.map((section) => <span class="jnav__peg" data-peg={section.id} />)}
+      <span class="jnav__knob" id="journey-knob">
+        <span class="jnav__knob-dot"></span>
+        <span class="jnav__knob-hint">Drag to scrub</span>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .jnav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--nav-height-mobile);
+    background-color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .jnav__inner {
+    position: relative;
+    height: 100%;
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+  }
+
+  /* ---- Mobile: horizontally scrollable pill bar -------------- */
+  .jnav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* Let pills run to the screen edge rather than stopping short. */
+    margin-inline: calc(-1 * var(--space-5));
+    padding-inline: var(--space-5);
+  }
+
+  .jnav__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jnav__item {
+    flex: none;
+  }
+
+  .jnav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    font-size: var(--text-nav);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .jnav__link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .jnav__link[aria-current="true"] {
+    color: var(--color-ink-text);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .jnav__num {
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .jnav__link[aria-current="true"] .jnav__num {
+    color: var(--color-ink-accent);
+  }
+
+  /* The full label is desktop-only; the pill shows the short form. */
+  .jnav__label {
+    display: none;
+  }
+
+  .jnav__track {
+    display: none;
+  }
+
+  /* ---- Desktop: the timeline ---------------------------------- */
+  @media (width >= 1024px) {
+    .jnav {
+      height: var(--nav-height);
+    }
+
+    .jnav__list {
+      align-items: flex-end;
+      gap: 0;
+      height: auto;
+      padding-block: var(--space-5) var(--space-3);
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+      justify-content: space-between;
+    }
+
+    .jnav__link {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-1);
+      min-height: 0;
+      padding-inline: var(--space-2);
+      border: none;
+      background: none;
+      border-radius: 0;
+    }
+
+    .jnav__link:hover,
+    .jnav__link[aria-current="true"] {
+      background: none;
+      color: var(--color-accent);
+    }
+
+    .jnav__num {
+      font-size: var(--text-eyebrow);
+      letter-spacing: var(--tracking-eyebrow);
+    }
+
+    .jnav__link[aria-current="true"] .jnav__num {
+      color: var(--color-accent);
+    }
+
+    .jnav__label {
+      display: block;
+    }
+
+    .jnav__short {
+      display: none;
+    }
+
+    .jnav__track {
+      display: block;
+      position: relative;
+      height: var(--space-2);
+    }
+
+    .jnav__line,
+    .jnav__fill {
+      position: absolute;
+      top: 50%;
+      height: var(--hairline);
+      translate: 0 -50%;
+    }
+
+    .jnav__line {
+      left: 0;
+      right: 0;
+      background-color: var(--color-border);
+    }
+
+    .jnav__fill {
+      left: 0;
+      width: 0;
+      background-color: var(--color-accent-lively);
+    }
+
+    .jnav__peg {
+      position: absolute;
+      top: 50%;
+      width: var(--peg-size);
+      height: var(--peg-size);
+      border-radius: var(--radius-pill);
+      background-color: var(--color-border);
+      translate: -50% -50%;
+      transition: background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .jnav__peg[data-passed="true"] {
+      background-color: var(--color-accent-lively);
+    }
+
+    .jnav__peg[data-active="true"] {
+      background-color: var(--color-accent);
+    }
+
+    .jnav__knob {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      display: grid;
+      place-items: center;
+      width: var(--knob-size);
+      height: var(--knob-size);
+      border-radius: var(--radius-pill);
+      background-color: var(--color-accent);
+      translate: -50% -50%;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .jnav__knob[data-dragging="true"] {
+      cursor: grabbing;
+      scale: 1.15;
+    }
+
+    .jnav__knob-dot {
+      width: var(--knob-dot);
+      height: var(--knob-dot);
+      border-radius: var(--radius-pill);
+      background-color: var(--color-gold);
+    }
+
+    .jnav__knob-hint {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-top: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-pill);
+      background-color: var(--color-ink-surface);
+      color: var(--color-ink-text);
+      font-size: var(--text-eyebrow);
+      letter-spacing: var(--tracking-eyebrow);
+      text-transform: uppercase;
+      white-space: nowrap;
+      translate: -50% 0;
+      opacity: 0;
+      transition: opacity var(--duration-fast) var(--ease-out);
+      pointer-events: none;
+    }
+
+    .jnav__knob:hover .jnav__knob-hint,
+    .jnav__knob[data-dragging="true"] .jnav__knob-hint {
+      opacity: 1;
+    }
+  }
+
+  /* No drag affordance where there is no pointer to drag with. */
+  @media (pointer: coarse) {
+    .jnav__knob {
+      cursor: default;
+    }
+
+    .jnav__knob-hint {
+      display: none;
+    }
+  }
+</style>
