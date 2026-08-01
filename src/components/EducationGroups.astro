@@ -1,0 +1,108 @@
+---
+/**
+ * Section 03: the same row pattern as experience, bundled into the four
+ * themes decided in 01-content.md.
+ */
+import LogoFrame from "./LogoFrame.astro";
+import { EDUCATION } from "../data/education";
+---
+
+<div class="study">
+  {
+    EDUCATION.map((group) => (
+      <section class="study__group" data-reveal>
+        <h3 class="study__heading" data-reveal-item>
+          {group.title}
+        </h3>
+
+        <ul class="study__list">
+          {group.entries.map((entry) => (
+            <li class="study__row" data-reveal-item>
+              <LogoFrame file={entry.logoFile} kind="institution" />
+
+              <div class="study__body">
+                <p class="study__qualification">{entry.qualification}</p>
+                <p class="study__institution">{entry.institution}</p>
+              </div>
+
+              <p class="study__dates">{entry.dates}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .study {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .study__heading {
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .study__list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .study__row {
+    display: grid;
+    grid-template-columns: var(--frame-logo) minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .study__row:last-child {
+    border-bottom: none;
+  }
+
+  .study__qualification {
+    font-size: var(--text-body);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-small);
+  }
+
+  .study__institution {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .study__dates {
+    grid-column: 2;
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  @media (width >= 640px) {
+    .study__row {
+      grid-template-columns: var(--frame-logo) minmax(0, 1fr) auto;
+      align-items: start;
+      gap: var(--space-5);
+    }
+
+    .study__dates {
+      grid-column: 3;
+      margin-top: 0;
+      text-align: right;
+    }
+  }
+</style>

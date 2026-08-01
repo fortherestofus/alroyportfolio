@@ -1,0 +1,94 @@
+---
+/**
+ * Section 02: the roles as a vertical timeline, most recent first.
+ * Rows stagger in on scroll via the shared reveal mechanism.
+ */
+import LogoFrame from "./LogoFrame.astro";
+import { EXPERIENCE } from "../data/experience";
+---
+
+<ol class="roles" data-reveal>
+  {
+    EXPERIENCE.map((role) => (
+      <li class="roles__row" data-reveal-item>
+        <LogoFrame file={role.logoFile} kind="company" />
+
+        <div class="roles__body">
+          <h3 class="roles__title">{role.title}</h3>
+          <p class="roles__company">{role.company}</p>
+          {role.note && <p class="roles__note">{role.note}</p>}
+        </div>
+
+        <p class="roles__dates">{role.dates}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .roles {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles__row {
+    display: grid;
+    grid-template-columns: var(--frame-logo) minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .roles__row:first-child {
+    padding-top: 0;
+  }
+
+  .roles__row:last-child {
+    border-bottom: none;
+  }
+
+  .roles__title {
+    font-size: var(--text-body);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-small);
+  }
+
+  .roles__company {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-accent);
+  }
+
+  .roles__note {
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .roles__dates {
+    /* Under the text on narrow screens, in its own column when there is room. */
+    grid-column: 2;
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  @media (width >= 640px) {
+    .roles__row {
+      grid-template-columns: var(--frame-logo) minmax(0, 1fr) auto;
+      align-items: start;
+      gap: var(--space-5);
+    }
+
+    .roles__dates {
+      grid-column: 3;
+      margin-top: 0;
+      text-align: right;
+    }
+  }
+</style>

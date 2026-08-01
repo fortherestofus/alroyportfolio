@@ -1,0 +1,100 @@
+---
+/**
+ * "I've worked with" — a slow grayscale marquee that pauses on hover
+ * (design system, Motion). The list is rendered twice so the loop has
+ * no seam; the duplicate is hidden from assistive tech.
+ */
+import LogoFrame from "./LogoFrame.astro";
+import { CLIENT_LOGOS } from "../data/testimonials";
+---
+
+<section class="strip" aria-label="Organisations Alroy Ndhlovu has worked with">
+  <p class="eyebrow">I've worked with</p>
+
+  <div class="strip__viewport">
+    <div class="strip__track">
+      {
+        CLIENT_LOGOS.map((client) => (
+          <span class="strip__item">
+            <LogoFrame file={client.logoFile} />
+            <span class="strip__name">{client.name}</span>
+          </span>
+        ))
+      }
+      {
+        CLIENT_LOGOS.map((client) => (
+          <span class="strip__item" aria-hidden="true">
+            <LogoFrame file={client.logoFile} />
+            <span class="strip__name">{client.name}</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .strip__viewport {
+    margin-top: var(--space-4);
+    overflow: hidden;
+    /* Fade the marquee out at both edges instead of cutting it dead. */
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black var(--space-6),
+      black calc(100% - var(--space-6)),
+      transparent
+    );
+  }
+
+  .strip__track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    width: max-content;
+    animation: strip-scroll 42s linear infinite;
+  }
+
+  .strip__viewport:hover .strip__track {
+    animation-play-state: paused;
+  }
+
+  .strip__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    filter: grayscale(1);
+    opacity: 0.65;
+    transition:
+      filter var(--duration-base) var(--ease-out),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  .strip__item:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  .strip__name {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  @keyframes strip-scroll {
+    to {
+      /* Exactly one copy of the list, so the seam is invisible. */
+      translate: -50% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip__track {
+      animation: none;
+    }
+
+    .strip__viewport {
+      overflow-x: auto;
+    }
+  }
+</style>

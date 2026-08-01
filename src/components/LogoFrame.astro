@@ -1,0 +1,71 @@
+---
+/**
+ * A company or institution mark in the standard rounded frame.
+ * Where no file exists yet, a Lucide glyph stands in at the same size,
+ * so a row never shows a broken image or collapses.
+ *
+ * The mark is decorative: the name is always written next to it, so
+ * repeating it as alt text would just make screen readers say it twice.
+ */
+import { Image } from "astro:assets";
+import { Building2, GraduationCap } from "@lucide/astro";
+import { logo, needsDarkBacking } from "../data/logos";
+
+interface Props {
+  file?: string;
+  kind?: "company" | "institution";
+}
+
+const { file, kind = "company" } = Astro.props;
+const source = logo(file);
+const onDark = needsDarkBacking(file);
+
+// Rendered at 2x the 40px frame so the mark stays crisp on retina.
+const RENDER_SIZE = 80;
+---
+
+<span class="frame" data-on-dark={onDark ? "true" : undefined} aria-hidden="true">
+  {
+    source ? (
+      <Image src={source} alt="" width={RENDER_SIZE} height={RENDER_SIZE} loading="lazy" />
+    ) : kind === "institution" ? (
+      <GraduationCap class="frame__glyph" />
+    ) : (
+      <Building2 class="frame__glyph" />
+    )
+  }
+</span>
+
+<style>
+  .frame {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: var(--frame-logo);
+    height: var(--frame-logo);
+    padding: var(--space-1);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    color: var(--color-text-faint);
+  }
+
+  /* A white mark needs something to sit against. */
+  .frame[data-on-dark="true"] {
+    background-color: var(--color-ink-surface);
+    border-color: var(--color-ink-surface);
+  }
+
+  .frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .frame__glyph {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 1.5;
+  }
+</style>

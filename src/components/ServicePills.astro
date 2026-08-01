@@ -1,0 +1,164 @@
+---
+/**
+ * The five services as a wrapping row of compact pills, with one shared
+ * caption line beneath (design system, "Service pills").
+ *
+ * Pointer users get the description on hover, keyboard users on focus,
+ * and touch users on tap. The caption starts populated with the first
+ * service rather than empty, so the line never appears from nowhere and
+ * shifts the layout underneath it.
+ */
+import { TrendingUp, PenTool, Palette, Presentation, Bot } from "@lucide/astro";
+import { SERVICES, type ServiceIcon } from "../data/services";
+
+const ICONS: Record<ServiceIcon, typeof TrendingUp> = {
+  "trending-up": TrendingUp,
+  "pen-tool": PenTool,
+  palette: Palette,
+  presentation: Presentation,
+  bot: Bot,
+};
+---
+
+<div class="services" data-services>
+  <ul class="services__row">
+    {
+      SERVICES.map((service, index) => {
+        const Icon = ICONS[service.icon];
+        return (
+          <li>
+            <button
+              type="button"
+              class="services__pill"
+              data-service
+              data-index={index}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <Icon class="services__icon" aria-hidden="true" />
+              {service.name}
+            </button>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <p class="services__caption" data-service-caption aria-live="polite">
+    {SERVICES[0].description}
+  </p>
+</div>
+
+<script>
+  import { SERVICES } from "../data/services";
+
+  const root = document.querySelector<HTMLElement>("[data-services]");
+  const caption = root?.querySelector<HTMLElement>("[data-service-caption]");
+  const pills = root ? Array.from(root.querySelectorAll<HTMLButtonElement>("[data-service]")) : [];
+
+  if (root && caption && pills.length > 0) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let selected = 0;
+
+    function show(index: number): void {
+      const service = SERVICES[index];
+      if (!service || !caption) return;
+
+      pills.forEach((pill, i) => pill.setAttribute("aria-pressed", String(i === index)));
+
+      if (caption.textContent?.trim() === service.description) return;
+
+      if (reduceMotion.matches) {
+        caption.textContent = service.description;
+        return;
+      }
+
+      // Crossfade: out, swap, back in.
+      caption.dataset.swapping = "true";
+      window.setTimeout(() => {
+        caption.textContent = service.description;
+        delete caption.dataset.swapping;
+      }, 140);
+    }
+
+    pills.forEach((pill, index) => {
+      // Hover and focus preview; the selection itself does not change.
+      pill.addEventListener("pointerenter", () => show(index));
+      pill.addEventListener("focus", () => show(index));
+      pill.addEventListener("click", () => {
+        selected = index;
+        show(index);
+      });
+    });
+
+    // Leaving the row returns to whatever was last chosen.
+    root.addEventListener("pointerleave", () => show(selected));
+    root.addEventListener("focusout", (event) => {
+      if (!root.contains(event.relatedTarget as Node)) show(selected);
+    });
+  }
+</script>
+
+<style>
+  .services__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .services__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+    text-align: left;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .services__pill:hover,
+  .services__pill:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    translate: 0 -2px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .services__pill[aria-pressed="true"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: var(--color-accent-soft);
+  }
+
+  .services__icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+    flex: none;
+  }
+
+  .services__caption {
+    /* Reserve two lines so swapping descriptions never nudges the page. */
+    min-height: calc(var(--text-body) * var(--leading-body) * 2);
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .services__caption[data-swapping="true"] {
+    opacity: 0;
+  }
+</style>

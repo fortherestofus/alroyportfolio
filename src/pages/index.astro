@@ -9,13 +9,13 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import JourneyNav from "../components/JourneyNav.astro";
 import JourneySection from "../components/JourneySection.astro";
+import WhoIsAlroy from "../components/WhoIsAlroy.astro";
+import ExperienceList from "../components/ExperienceList.astro";
+import EducationGroups from "../components/EducationGroups.astro";
 import { SITE, SECTIONS } from "../data/site";
 
-/** Temporary: what lands in each right column, and when. */
+/** Right columns still to be filled, and by which phase. */
 const PENDING: Record<string, string> = {
-  who: "Phase 3 — profile photo, bio, service pills, proof row",
-  experience: "Phase 3 — 11 roles with company icons",
-  education: "Phase 3 — 4 themed groups",
   portfolio: "Phase 4 — 5 category cards and the modal carousel",
   "case-studies": "Phase 5 — stacked overview cards",
   contact: "Phase 6 — email, phone, Cal.com embed, socials",
@@ -45,10 +45,16 @@ const PENDING: Record<string, string> = {
         heading={section.heading}
         blurb={section.blurb}
       >
-        <div class="pending" data-reveal>
-          <p class="eyebrow">Coming next</p>
-          <p class="pending__note">{PENDING[section.id]}</p>
-        </div>
+        {section.id === "who" && <WhoIsAlroy />}
+        {section.id === "experience" && <ExperienceList />}
+        {section.id === "education" && <EducationGroups />}
+
+        {PENDING[section.id] && (
+          <div class="pending" data-reveal>
+            <p class="eyebrow">Coming next</p>
+            <p class="pending__note">{PENDING[section.id]}</p>
+          </div>
+        )}
       </JourneySection>
     ))
   }

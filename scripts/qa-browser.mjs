@@ -338,11 +338,67 @@ async function checkDesktop(browser, origin, viewport) {
     jumps.map((j) => `${j.from.offset}→${j.to.offset}: moved ${j.delta}px`).join(", "),
   );
 
+  // --- Data logic (§12b): the content actually rendered, not the source.
+  const content = await page.evaluate(() => ({
+    roles: document.querySelectorAll(".roles__row").length,
+    studyGroups: document.querySelectorAll(".study__group").length,
+    studyRows: document.querySelectorAll(".study__row").length,
+    services: document.querySelectorAll("[data-service]").length,
+    testimonials: document.querySelectorAll(".who__quote").length,
+    brokenImages: [...document.querySelectorAll("img")].filter(
+      (img) => img.complete && img.naturalWidth === 0,
+    ).length,
+    emptyDates: [...document.querySelectorAll(".roles__dates, .study__dates")].filter(
+      (el) => !el.textContent.trim(),
+    ).length,
+  }));
+
+  record(`[${tag}] 11 experience rows`, content.roles === 11, `${content.roles}`);
+  record(`[${tag}] 4 education groups`, content.studyGroups === 4, `${content.studyGroups}`);
+  record(`[${tag}] 10 education entries`, content.studyRows === 10, `${content.studyRows}`);
+  record(`[${tag}] 5 service pills`, content.services === 5, `${content.services}`);
+  record(`[${tag}] 3 testimonials`, content.testimonials === 3, `${content.testimonials}`);
+  record(`[${tag}] every date renders`, content.emptyDates === 0, `${content.emptyDates} empty`);
+  record(`[${tag}] no broken images`, content.brokenImages === 0, `${content.brokenImages} broken`);
+
+  // --- Service pills: hovering swaps the shared caption line.
+  const pills = await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const caption = document.querySelector("[data-service-caption]");
+    const all = [...document.querySelectorAll("[data-service]")];
+    const first = caption.textContent.trim();
+    all[2].dispatchEvent(new PointerEvent("pointerenter", { bubbles: true }));
+    await wait(400);
+    const third = caption.textContent.trim();
+    return { first, third, pressed: all[2].getAttribute("aria-pressed") };
+  });
+  record(
+    `[${tag}] service pill swaps the caption`,
+    pills.first.length > 0 && pills.third.length > 0 && pills.first !== pills.third,
+    `"${pills.first.slice(0, 28)}…" → "${pills.third.slice(0, 28)}…"`,
+  );
+
   // --- Layout hygiene.
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
   );
   record(`[${tag}] no horizontal overflow`, !overflow);
+
+  // Reveals must never strand content: after scrolling the whole page,
+  // every item that was hidden pre-animation has to be showing.
+  const stuck = await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight / 2) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(90);
+    }
+    await wait(500);
+    return [...document.querySelectorAll("[data-reveal-item]")].filter(
+      (el) => parseFloat(getComputedStyle(el).opacity) < 0.9,
+    ).length;
+  });
+  record(`[${tag}] no content stranded by reveals`, stuck === 0, `${stuck} item(s) still hidden`);
 
   record(`[${tag}] no console errors or warnings`, problems.length === 0, problems.join(" | "));
 
@@ -413,12 +469,45 @@ async function checkReducedMotion(browser, origin) {
   const lenisOff = await page.evaluate(() => !document.documentElement.classList.contains("lenis"));
   record("[reduced-motion] Lenis not initialised", lenisOff);
 
-  // Content must be visible, not stuck in its pre-reveal hidden state.
-  const visible = await page.evaluate(() => {
-    const items = [...document.querySelectorAll("[data-reveal-item]")];
-    return items.every((el) => parseFloat(getComputedStyle(el).opacity) > 0.9);
+  /*
+   * Reveals still happen with reduced motion, just as plain fades, so
+   * content below the fold is legitimately still hidden on load. What
+   * must be true is that anything on screen has revealed, and that
+   * nothing stays stuck hidden once it has been scrolled past.
+   */
+  const onScreenVisible = await page.evaluate(() => {
+    const items = [...document.querySelectorAll("[data-reveal-item]")].filter((el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
+    });
+    return {
+      count: items.length,
+      allVisible: items.every((el) => parseFloat(getComputedStyle(el).opacity) > 0.9),
+    };
   });
-  record("[reduced-motion] revealed content is visible", visible);
+  record(
+    "[reduced-motion] on-screen content has revealed",
+    onScreenVisible.count > 0 && onScreenVisible.allVisible,
+    `${onScreenVisible.count} item(s) in view`,
+  );
+
+  const nothingStuck = await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight / 2) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(90);
+    }
+    await wait(400);
+    return [...document.querySelectorAll("[data-reveal-item]")].filter(
+      (el) => parseFloat(getComputedStyle(el).opacity) < 0.9,
+    ).length;
+  });
+  record(
+    "[reduced-motion] nothing stays hidden after scrolling through",
+    nothingStuck === 0,
+    `${nothingStuck} item(s) still hidden`,
+  );
 
   // Drag must be inert; the labels remain the way to move.
   const knobBox = await page.locator("#journey-knob").boundingBox();

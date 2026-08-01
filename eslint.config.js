@@ -34,6 +34,7 @@ export default [
         getComputedStyle: "readonly",
         requestAnimationFrame: "readonly",
         setTimeout: "readonly",
+        PointerEvent: "readonly",
         Event: "readonly",
       },
     },

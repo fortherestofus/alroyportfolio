@@ -138,7 +138,16 @@ public/case-studies/{innovatr,thrifty-adventures,hakkan,inspiritintruth}/
 ```
 
 Anything missing renders as a labelled placeholder showing the expected path
-(`src/components/Placeholder.astro`), never a broken image.
+(`src/components/Placeholder.astro`), never a broken image. Company and
+institution marks fall back to a Lucide glyph in the same 40px frame, so a row
+never breaks.
+
+**Light logos:** a few marks are white on a transparent background and would
+vanish against the warm-white frame (Thrifty Adventures is one). Those are
+listed in `LIGHT_ON_TRANSPARENT` in `src/data/logos.ts` and get an ink backing
+instead. If you drop in a new logo and it disappears, add its filename there.
+This is not the same as a logo with a white _background_ — most of them — which
+reads fine as-is.
 
 ---
 
@@ -154,8 +163,11 @@ Tracked from PRD §14. None of these block the build.
 - [ ] **Innovatr metrics.** The outcome-led headline needs real numbers (growth
       %, leads, output cadence). Same for **Thrifty Adventures** (ROAS, CTR,
       bookings).
-- [ ] One extra work-experience entry you mentioned. A `TODO(alroy)` marker goes
-      in the experience data file in Phase 3.
+- [ ] One extra work-experience entry you mentioned. The `TODO(alroy)` marker is
+      now in `src/data/experience.ts`; adding a row to that array is all it takes.
+- [ ] **"Google me" link dropped.** The old site had one. It felt like clutter
+      next to LinkedIn, Dribbble, GitHub, Ask AI and Résumé. Say the word and it
+      goes back in.
 
 ### Files to drop in
 
@@ -199,7 +211,7 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
       system, QA gates, deploy pipeline
 - [x] **2. Journey shell** — timeline nav, drag-to-scrub, six two-column
       sections, Lenis/ScrollTrigger, mobile pill bar, browser QA harness
-- [ ] 3. Sections 01-03 — Who is Alroy, Experience, Education
+- [x] **3. Sections 01-03** — Who is Alroy, Experience, Education
 - [ ] 4. Section 04 — Portfolio cards + modal carousel
 - [ ] 5. Section 05 — Stacked case study cards + 4 full pages
 - [ ] 6. Section 06 — Contact + lazy Cal.com embed + footer

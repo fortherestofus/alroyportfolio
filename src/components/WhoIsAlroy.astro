@@ -1,0 +1,268 @@
+---
+/**
+ * Section 01 content: profile photo, bio, the service pills, a proof
+ * row of stats and quick links, then testimonials and the client strip.
+ */
+import { Image } from "astro:assets";
+import { Sparkles, Download, ArrowUpRight } from "@lucide/astro";
+import ServicePills from "./ServicePills.astro";
+import LogoStrip from "./LogoStrip.astro";
+import portrait from "../assets/images/Alroy-Ndhlovu-FOE.jpeg";
+import { SITE, SOCIAL } from "../data/site";
+import { STATS } from "../data/services";
+import { TESTIMONIALS } from "../data/testimonials";
+
+/**
+ * Lucide carries no brand marks, and Simple Icons has dropped LinkedIn,
+ * so a mixed set would leave one link visibly odd. Everything therefore
+ * uses Lucide, per the PRD, and the label carries the identity: the
+ * outbound arrow for profiles, and a meaningful glyph where one exists.
+ */
+const QUICK_LINKS = [
+  { label: "LinkedIn", href: SOCIAL.linkedin, icon: ArrowUpRight, external: true },
+  { label: "Dribbble", href: SOCIAL.dribbble, icon: ArrowUpRight, external: true },
+  { label: "GitHub", href: SOCIAL.github, icon: ArrowUpRight, external: true },
+  {
+    label: "Ask AI about me",
+    href: "https://chatgpt.com/?q=Who+is+Alroy+Ndhlovu%2C+the+digital+marketing+and+business+technology+consultant%3F",
+    icon: Sparkles,
+    external: true,
+  },
+  { label: "Résumé", href: SITE.resume, icon: Download, external: false },
+];
+
+// Rendered at 2x the 160px frame for retina.
+const PORTRAIT_SIZE = 320;
+---
+
+<div class="who">
+  <div class="who__intro" data-reveal>
+    <Image
+      class="who__portrait"
+      src={portrait}
+      alt="Alroy Ndhlovu"
+      width={PORTRAIT_SIZE}
+      height={PORTRAIT_SIZE}
+      loading="eager"
+      fetchpriority="high"
+      data-reveal-item
+    />
+
+    <p class="who__bio" data-reveal-item>
+      With over ten years of experience in digital marketing, branding, media and content
+      development, as well as business optimisation and automation technologies, I've worked with
+      brands and organisations like Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital &
+      Power and the African Agri Council to boost visibility, strengthen brand presence and drive
+      profitability through data-driven, audience-focused solutions.
+    </p>
+  </div>
+
+  <div class="who__block" data-reveal>
+    <h3 class="who__subheading">What I do</h3>
+    <ServicePills />
+  </div>
+
+  <div class="who__block" data-reveal>
+    <dl class="who__stats">
+      {
+        STATS.map((stat) => (
+          <div class="who__stat" data-reveal-item>
+            <dt class="who__stat-value">{stat.value}</dt>
+            <dd class="who__stat-label">{stat.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <ul class="who__links">
+      {
+        QUICK_LINKS.map((link) => (
+          <li>
+            <a
+              class="who__link"
+              href={link.href}
+              {...(link.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : { download: true })}
+            >
+              <link.icon class="who__link-icon" aria-hidden="true" />
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="who__block" data-reveal>
+    <h3 class="who__subheading">What people say</h3>
+    <ul class="who__quotes">
+      {
+        TESTIMONIALS.map((testimonial) => (
+          <li class="who__quote" data-reveal-item>
+            <blockquote>
+              <p>{testimonial.quote}</p>
+            </blockquote>
+            <p class="who__attribution">
+              <span class="who__quote-name">{testimonial.name}</span>
+              <span class="who__quote-role">
+                {testimonial.role}, {testimonial.organisation}
+              </span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="who__block" data-reveal>
+    <LogoStrip />
+  </div>
+</div>
+
+<style>
+  .who {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .who__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .who__portrait {
+    width: var(--avatar-profile-sm);
+    height: var(--avatar-profile-sm);
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+
+  .who__bio {
+    color: var(--color-text-muted);
+  }
+
+  .who__subheading {
+    font-size: var(--text-h3);
+    margin-bottom: var(--space-4);
+  }
+
+  /* --- Proof row -------------------------------------------- */
+  .who__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-7);
+    margin: 0;
+  }
+
+  .who__stat-value {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-accent);
+  }
+
+  .who__stat-label {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .who__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .who__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out);
+  }
+
+  .who__link:hover,
+  .who__link:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    translate: 0 -2px;
+  }
+
+  .who__link-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  /* --- Testimonials ----------------------------------------- */
+  .who__quotes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .who__quote {
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .who__quote blockquote {
+    margin: 0;
+  }
+
+  .who__quote blockquote p {
+    color: var(--color-text);
+  }
+
+  .who__attribution {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+  }
+
+  .who__quote-name {
+    font-weight: var(--weight-heading);
+  }
+
+  .who__quote-role {
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 768px) {
+    .who__intro {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--space-6);
+    }
+
+    .who__portrait {
+      width: var(--avatar-profile);
+      height: var(--avatar-profile);
+    }
+  }
+</style>
