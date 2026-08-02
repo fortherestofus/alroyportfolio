@@ -1209,6 +1209,103 @@ async function checkMobile(browser, origin, viewport) {
  * the brightest pixel that was sitting behind it. Then compute the real
  * ratio against the text's own colour.
  */
+/**
+ * WCAG SC 1.4.4 Resize Text: text has to survive being doubled in size
+ * without the page scrolling sideways or content being lost.
+ *
+ * Page zoom would pass this trivially, because it scales everything
+ * including the viewport. This raises the *root font size* instead,
+ * which is what a reader who has set a larger default in their browser
+ * actually experiences — and which only rem-based type responds to at
+ * all. The scale used to be px and vw throughout, so this test would
+ * once have passed by doing nothing: not one character changed size.
+ *
+ * The assertion is that the page cannot be scrolled horizontally, not
+ * that nothing reports overflow. Deliberately horizontal things — the
+ * mobile nav bar, the chapter bar — scroll inside themselves by design,
+ * and their content stays reachable.
+ */
+async function checkTextZoom(browser, origin) {
+  const PAGES = ["/", "/case-studies/innovatr/"];
+  const WIDTHS = [320, 375, 768, 1280];
+
+  for (const path of PAGES) {
+    for (const width of WIDTHS) {
+      const context = await browser.newContext({ viewport: { width, height: 900 } });
+      const page = await context.newPage();
+      await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
+
+      const result = await page.evaluate(async () => {
+        const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+        const root = document.documentElement;
+        const base = parseFloat(getComputedStyle(root).fontSize);
+
+        const body = document.querySelector("p") ?? document.body;
+        const headingBefore = parseFloat(getComputedStyle(document.querySelector("h1")).fontSize);
+        const bodyBefore = parseFloat(getComputedStyle(body).fontSize);
+        root.style.fontSize = `${base * 2}px`;
+        await wait(250);
+        const headingAfter = parseFloat(getComputedStyle(document.querySelector("h1")).fontSize);
+        const bodyAfter = parseFloat(getComputedStyle(body).fontSize);
+
+        // Walk the page so lazily-revealed content is laid out too.
+        const height = root.scrollHeight;
+        for (let y = 0; y <= height; y += window.innerHeight) {
+          window.scrollTo({ top: y, behavior: "instant" });
+          await wait(40);
+        }
+        window.scrollTo(0, 0);
+        await wait(100);
+
+        window.scrollTo(9999, 0);
+        const scrolled = window.scrollX;
+        window.scrollTo(0, 0);
+
+        root.style.fontSize = "";
+        return {
+          headingBefore,
+          headingAfter,
+          bodyBefore,
+          bodyAfter,
+          scrolled: Math.round(scrolled),
+        };
+      });
+
+      record(
+        `[zoom ${width} ${path}] no horizontal scrolling at 200% text`,
+        result.scrolled === 0,
+        `page scrolled ${result.scrolled}px sideways`,
+      );
+
+      // Only worth asserting once; the scale is global.
+      if (path === "/" && width === 1280) {
+        /*
+         * Body copy is pure rem, so doubling the root doubles it.
+         */
+        record(
+          "[zoom] body text doubles with the reader's font size",
+          Math.abs(result.bodyAfter - result.bodyBefore * 2) < 1,
+          `${result.bodyBefore}px → ${result.bodyAfter}px`,
+        );
+        /*
+         * The display size cannot double, and should not: only the rem
+         * term of a fluid clamp scales, while the vw term stays put.
+         * That is the whole point — type that tracks the reader without
+         * running off the screen. So the assertion is that it moves
+         * substantially, which a px or vw-only scale never would.
+         */
+        record(
+          "[zoom] display type responds to the reader's font size",
+          result.headingAfter > result.headingBefore * 1.25,
+          `h1 went ${Math.round(result.headingBefore)}px → ${Math.round(result.headingAfter)}px`,
+        );
+      }
+
+      await context.close();
+    }
+  }
+}
+
 async function checkHeroContrast(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
@@ -1530,6 +1627,7 @@ try {
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
+  await checkTextZoom(browser, origin);
   await checkHeroContrast(browser, origin);
   await checkReducedMotion(browser, origin);
   await checkBackgroundTabLoad(browser, origin);

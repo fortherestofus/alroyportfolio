@@ -149,6 +149,14 @@
     margin: 0;
     font-family: "Apfel Grotezk", system-ui, sans-serif;
     font-weight: var(--weight-heading); /* Mittel */
+    /*
+     * Display type is large enough that a single long word can be wider
+     * than a narrow viewport, and at 200% text zoom on a 320px screen it
+     * certainly is. Breaking a word is ugly; a horizontal scrollbar is a
+     * WCAG 1.4.4 failure. This only ever triggers when the alternative
+     * is overflow.
+     */
+    overflow-wrap: break-word;
     line-height: var(--leading-heading);
   }
 

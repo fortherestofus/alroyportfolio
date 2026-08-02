@@ -24,6 +24,14 @@
   --color-surface: #1a1a1a; /* cards, pills, frames */
   --color-surface-sunken: #080808; /* wells, recessed areas */
   --color-border: rgba(249, 246, 242, 0.14);
+  /*
+   * Boundaries of controls, as opposed to boundaries of surfaces.
+   * Composited over the base this lands at ~3.3:1, clearing the 3:1
+   * that WCAG 1.4.11 asks of the visual information identifying a
+   * control. --color-border is a hairline for separating panels and
+   * sits at ~1.5:1, which is right for a panel and not enough here.
+   */
+  --color-border-control: rgba(249, 246, 242, 0.38);
 
   /* --- Text: warm whites, never pure grey ------------------ */
   --color-text: #f9f6f2; /* the brand's warm white */
@@ -170,17 +178,34 @@
   --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.5);
   --shadow-nav: 0 8px 30px rgba(0, 0, 0, 0.5);
 
-  /* --- Typography scale (desktop / mobile via clamp) ------- */
-  --text-display: clamp(44px, 6vw, 72px);
-  --text-h2: clamp(32px, 3.6vw, 44px);
-  --text-h3: clamp(22px, 2.2vw, 28px);
-  --text-body: 17px;
-  --text-body-sm: 16px;
-  --text-small: 14px;
-  --text-eyebrow: 12px;
-  --text-chip: 13px;
-  --text-nav: 13px; /* timeline nav labels */
-  --text-section-number: clamp(96px, 11vw, 160px);
+  /* --- Typography scale (fluid, rem-based) -----------------
+   *
+   * Every size here is in rem, and every fluid one has a rem term in
+   * its preferred value. That is not tidiness — it is the difference
+   * between honouring a reader's font-size setting and ignoring it.
+   *
+   * The previous scale was `clamp(44px, 6vw, 72px)` and friends. px
+   * ignores the browser's default font size outright, and vw ignores
+   * it too: a reader who sets their default to 32px because they need
+   * to, and reloads this page, saw not one character change size. That
+   * was measured, not assumed. WCAG SC 1.4.4 is nominally satisfied by
+   * page zoom, but a scale that cannot respond to the one setting the
+   * reader actually reached for is failing them regardless.
+   *
+   * Fluid values interpolate between the min at a 320px viewport and
+   * the max at 1440px: preferred = intercept + slope·100vw, with the
+   * intercept expressed in rem so zoom still moves it.
+   */
+  --text-display: clamp(3.25rem, 2.393rem + 4.286vw, 6.25rem); /* 52 → 100px */
+  --text-h2: clamp(2rem, 1.786rem + 1.071vw, 2.75rem); /* 32 → 44px */
+  --text-h3: clamp(1.375rem, 1.268rem + 0.536vw, 1.75rem); /* 22 → 28px */
+  --text-body: 1.0625rem; /* 17px */
+  --text-body-sm: 1rem; /* 16px */
+  --text-small: 0.875rem; /* 14px */
+  --text-eyebrow: 0.75rem; /* 12px */
+  --text-chip: 0.8125rem; /* 13px */
+  --text-nav: 0.8125rem; /* 13px, timeline nav labels */
+  --text-section-number: clamp(6rem, 4.857rem + 5.714vw, 10rem); /* 96 → 160px */
 
   /**
    * Weights. Only two cuts ship (Regular 400, Mittel 500), so these

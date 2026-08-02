@@ -19,6 +19,7 @@ import ContactSection from "../components/ContactSection.astro";
 import CalEmbed from "../components/CalEmbed.astro";
 import HeroCollage from "../components/HeroCollage.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { ArrowDown } from "@lucide/astro";
 import { SITE, SECTIONS } from "../data/site";
 ---
 
@@ -35,6 +36,29 @@ import { SITE, SECTIONS } from "../data/site";
         I help businesses grow by designing high-impact solutions through data-driven marketing,
         analytics, automation, AI and creative strategy.
       </p>
+
+      {
+        /*
+         * Anchors, not buttons. Following a fragment is navigation: it
+         * works with no JS, gets the link role so it appears in a screen
+         * reader's links list, updates the URL so the position is
+         * shareable, and behaves under ⌘-click. A <button> with a scroll
+         * handler throws all of that away and announces the wrong role.
+         *
+         * Labels name their destination rather than saying "Get started".
+         * NN/g's testing of generic labels found people clicking them
+         * expecting information, hitting a commitment instead, and
+         * leaving — and "Book a 15 min chat" has to keep its promise,
+         * which it does: section 07 embeds exactly that calendar.
+         */
+      }
+      <div class="hero__actions" data-reveal-item>
+        <a class="hero__cta hero__cta--primary" href="#portfolio">
+          See the work
+          <ArrowDown class="hero__cta-icon" aria-hidden="true" />
+        </a>
+        <a class="hero__cta hero__cta--secondary" href="#contact"> Book a 15 min chat </a>
+      </div>
     </div>
   </header>
 
@@ -116,6 +140,70 @@ import { SITE, SECTIONS } from "../data/site";
 
   h1 {
     margin-top: var(--space-3);
+  }
+
+  /* --- Hero calls to action ---------------------------------- */
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-heading);
+    border: 1px solid transparent;
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out);
+  }
+
+  /*
+   * The one solid block of accent on the page, which is most of what
+   * gives the hero its colour. Dark text on it rather than white: the
+   * green is light enough that white would sit at about 1.6:1.
+   */
+  .hero__cta--primary {
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+  }
+
+  .hero__cta--primary:hover,
+  .hero__cta--primary:focus-visible {
+    background-color: var(--color-accent-olive);
+  }
+
+  /*
+   * Filled, not a ghost. NN/g's eye-tracking study (n=71) measured
+   * weak clickability signifiers costing 22% more time and 25% more
+   * fixations, both significant — an outline alone on a busy hero is
+   * exactly that. A real surface plus a boundary that clears 3:1 makes
+   * it read as a control while still ranking below the primary.
+   */
+  .hero__cta--secondary {
+    background-color: var(--color-surface);
+    border-color: var(--color-border-control);
+    color: var(--color-text);
+  }
+
+  .hero__cta--secondary:hover,
+  .hero__cta--secondary:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .hero__cta-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 2;
   }
 
   .hero__blurb {
