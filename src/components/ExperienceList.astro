@@ -15,7 +15,10 @@ import { EXPERIENCE } from "../data/experience";
 
         <div class="roles__body">
           <h3 class="roles__title">{role.title}</h3>
-          <p class="roles__company">{role.company}</p>
+          <p class="roles__company">
+            {role.company}
+            {role.employment && <span class="roles__employment">{role.employment}</span>}
+          </p>
           {role.note && <p class="roles__note">{role.note}</p>}
         </div>
 
@@ -54,6 +57,25 @@ import { EXPERIENCE } from "../data/experience";
     font-size: var(--text-body);
     font-weight: var(--weight-heading);
     line-height: var(--leading-small);
+  }
+
+  /*
+   * Quiet by design. The engagement type is context for the dates, not
+   * a headline — it answers "why so many roles" without competing with
+   * the role itself.
+   */
+  .roles__employment {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    margin-left: var(--space-2);
+    padding-inline: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-chip);
+    font-size: var(--text-eyebrow);
+    color: var(--color-text-faint);
+    white-space: nowrap;
+    vertical-align: middle;
   }
 
   .roles__company {

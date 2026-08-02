@@ -283,6 +283,17 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
+- **Two experience entries do not match LinkedIn.** Employment types were added
+  from the LinkedIn screenshot (2 Aug 2026) and two rows could not be
+  reconciled:
+  - **Kelly-Anne Mealia** (Sep 2022 – Apr 2024) is on the site but not in the
+    screenshot, so it has no type. Tell me which it was and it takes one line.
+  - **Eris Property Group** (Freelance, Aug 2024) is on LinkedIn but not on the
+    site. Add it or leave it out — a one-month engagement is a fair thing to
+    omit, but it should be a decision rather than an oversight.
+  - Also: LinkedIn dates the self-employed Dejamedia entry Nov 2018 – Mar 2026;
+    the site shows "Independent Contractor · Various · 2018 – Present".
+
 - **Lumiskin case study** — named on the section 06 overview under "Being
   written". Alroy will supply the details (a design exploration: a cosmetics
   hero screen); it becomes a card and a page the moment its entry lands in

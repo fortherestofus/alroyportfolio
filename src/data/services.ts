@@ -47,6 +47,6 @@ export const SERVICES: Service[] = [
 
 /** Headline numbers shown in the proof row. */
 export const STATS = [
-  { value: "10+", label: "Years of experience" },
-  { value: "1,000+", label: "Tasks and projects completed" },
+  { value: "12+", label: "Years of experience" },
+  { value: "1,200+", label: "Projects and clients served" },
 ] as const;
