@@ -1,6 +1,6 @@
 # Alroy Ndhlovu
 
-> Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant with 10+ years of experience helping brands grow through data, design, AI and software he builds himself.
+> Alroy Ndhlovu is a marketing, branding, business technology and product consultant with 10+ years helping brands grow through data, design and AI.
 
 ## About
 
@@ -48,13 +48,13 @@ Full write-ups, each with the problem, the decisions, the measured outcome and w
 
 ## Sections of the site
 
-- [Who is Alroy Ndhlovu](https://alroyndhlovu.com/#who): Full-stack digital marketing, business technology and branding strategy. I help businesses grow by designing high-impact solutions through data, automation, AI and creative strategy.
-- [Work experience](https://alroyndhlovu.com/#experience): Ten plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.
-- [Education](https://alroyndhlovu.com/#education): Always learning. Formal certificates and specialisations across marketing, product, design and engineering.
-- [Portfolio](https://alroyndhlovu.com/#portfolio): Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.
-- [Products I've built](https://alroyndhlovu.com/#products): Business technology is not just advice. These are shipped products, built end to end with modern AI-assisted speed.
-- [Case studies](https://alroyndhlovu.com/#case-studies): The long version. The starting point, the thinking, the work, and what changed as a result.
-- [Contact](https://alroyndhlovu.com/#contact): I'm open for work. If you like what I do and want me on your team or project, reach out.
+- [Who is Alroy Ndhlovu](https://alroyndhlovu.com/#who)
+- [Work experience](https://alroyndhlovu.com/#experience)
+- [Education](https://alroyndhlovu.com/#education)
+- [Portfolio](https://alroyndhlovu.com/#portfolio)
+- [Products I've built](https://alroyndhlovu.com/#products)
+- [Case studies](https://alroyndhlovu.com/#case-studies)
+- [Contact](https://alroyndhlovu.com/#contact)
 
 ## Elsewhere
 
