@@ -1,0 +1,69 @@
+# Alroy Ndhlovu
+
+> Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant with 10+ years of experience helping brands grow through data, design, AI and software he builds himself.
+
+## About
+
+Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over ten years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.
+
+He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital & Power and the African Agri Council.
+
+- Website: https://alroyndhlovu.com
+- Email: hello@alroyndhlovu.com
+- Location: South Africa
+
+## What he does
+
+- **Data-Driven Digital Marketing** — Campaigns built on audience insight and performance data, tuned for measurable growth and conversion.
+- **Content Development** — Strategic messaging and storytelling grounded in consumer psychology, with technology cutting production cost.
+- **Design & Branding** — Cohesive visual identities and user experiences, from corporate materials to websites and landing pages.
+- **Corporate Training & Workshops** — Customised programmes giving teams hands-on knowledge in marketing, content, branding and business technology.
+- **Business Tech, Automation & AI** — eCommerce optimisation, SaaS, AI and automation: scalable systems that streamline operations and drive growth.
+
+## Case studies
+
+Full write-ups, each with the problem, the decisions, the measured outcome and what he would do differently.
+
+- [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Took a leisure travel brand onto LinkedIn from nothing and came away with 742 leads at R30 — after finding that the offer, not the audience, was what the channel actually rewarded.
+- [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): Rebuilt the whole front of a research business — positioning, website, content engine and paid programme — sourced its addressable market from nothing, and replaced a US$8,000-a-year software licence with a product the company could sell.
+- [Hakkan](https://alroyndhlovu.com/case-studies/hakkan/) (Jul 2026 – present): Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.
+- [InSpiritInTruth](https://alroyndhlovu.com/case-studies/inspiritintruth/) (Jul 2026 – present): Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.
+- [tapa.](https://alroyndhlovu.com/case-studies/tapa/) (Jul 2026 – present): Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.
+
+## Products he has built
+
+- **Hakkan** (Web, Beta) — Worth listening to. Most AI writing tools start with a blank page and guess. Hakkan starts with research: it reads the conversation where it actually happens, returns a report where every claim carries receipts, then turns that into publishable work in a voice learned from your own samples.
+- **InSpiritInTruth** (iOS and Android, In development) — Take your faith into your own hands. A weekly devotional written to be read slowly, AI-written ones for whatever you are carrying right now, and the whole Bible in the app. Built for people who cannot always make it to church but still want to stay close to it. No algorithm, no ads.
+- **tapa.** (iOS and Android, In development) — What can I cook with this? Deletes one very specific kind of mental load: deciding what to eat. Tell it what is in the fridge by typing, talking or photographing it, and get back a real recipe built around your tastes. Dietary needs are set once and enforced as hard rules.
+- **CaughtSlipping** (Chrome extension, In development) — The browser extension that calls you out. Your phone nags you about screen time, but the real damage happens on the computer you sit at all day. It tracks where the hours go and reports back without mercy. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.
+
+## Recent experience
+
+- **Independent Contractor**, Various (2018 – Present)
+- **Brand & Marketing Manager**, Innovatr (Mar 2026 – Sep 2026)
+- **Digital Marketing Consultant**, Thrifty Adventures (Jul 2025 – Present)
+- **Web Design Specialist**, Deep Ocean (Oct 2024 – Oct 2025)
+- **Web Design Specialist**, English Plus Academy (Oct 2024 – Mar 2025)
+- **Digital Marketing Consultant**, African Agri Council (Aug 2024 – Nov 2024)
+
+## Sections of the site
+
+- [Who is Alroy Ndhlovu](https://alroyndhlovu.com/#who): Full-stack digital marketing, business technology and branding strategy. I help businesses grow by designing high-impact solutions through data, automation, AI and creative strategy.
+- [Work experience](https://alroyndhlovu.com/#experience): Ten plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.
+- [Education](https://alroyndhlovu.com/#education): Always learning. Formal certificates and specialisations across marketing, product, design and engineering.
+- [Portfolio](https://alroyndhlovu.com/#portfolio): Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.
+- [Products I've built](https://alroyndhlovu.com/#products): Business technology is not just advice. These are shipped products, built end to end with modern AI-assisted speed.
+- [Case studies](https://alroyndhlovu.com/#case-studies): The long version. The starting point, the thinking, the work, and what changed as a result.
+- [Contact](https://alroyndhlovu.com/#contact): I'm open for work. If you like what I do and want me on your team or project, reach out.
+
+## Elsewhere
+
+- LinkedIn: https://www.linkedin.com/in/alroyndhlovu/
+- Dribbble: https://dribbble.com/mralroyndhlovu
+- GitHub: https://github.com/fortherestofus
+- Instagram: https://www.instagram.com/mralroyndhlovu
+- Book a call: https://cal.com/mralroyndhlovu/quick
+
+## Contact
+
+Email hello@alroyndhlovu.com or call +27 76 267 8936. He is open to consulting work, contract engagements and full-time roles.
