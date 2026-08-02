@@ -49,22 +49,9 @@ const MAP = {
   ffffff: T.surface, // white fills become the page's raised surface
 
   /*
-   * Skin. These two warm tones carry every face and hand in the set,
-   * and they get real caramel rather than the accent or a grey. The
-   * first pass sent orange to deep pthalo and produced green faces; the
-   * second sent both to neutral greys and produced lifeless ones. A
-   * hex-keyed map cannot see what a shape is, so these two keys are
-   * pinned by hand and everything else works around them.
-   */
-  efe4b5: T.skin, // cream — skin, and light warm fills
-  fef7cf: T.skin,
-  ff7c51: T.skinShade, // orange — skin shadow, warm objects
-  fb8502: T.skinShade,
-
-  /*
    * Objects take the two brand families across their full range. The
    * ramps exist — Goldie is three colours, pthalo is three — and using
-   * one value from each was what made the first attempt look flat.
+   * one value from each is what made an early pass look flat.
    */
   "4683ec": T.pthalo, // blue   -> lively pthalo
   "2344cc": T.pthalo,
@@ -74,6 +61,88 @@ const MAP = {
   e81e21: T.goldDeep,
   ffc044: T.gold, // yellow -> bright goldie
   f4c20c: T.goldMid,
+
+  /*
+   * The two warm tones default to light surfaces — screens, paper,
+   * panels — which is what they mostly are.
+   */
+  efe4b5: T.ink, // cream  -> a light panel: screens, paper, walls
+  fef7cf: T.ink,
+  ff7c51: T.goldMid, // orange -> mid goldie, for warm objects
+  fb8502: T.goldMid,
+};
+
+/**
+ * Skin is decided by layer, not by colour, and that distinction is the
+ * whole reason this script is more than a find-and-replace.
+ *
+ * The same cream carries a character's face and the screen of a monitor,
+ * so a hex-keyed map has to choose one meaning for both. Choosing skin
+ * turned every panel to caramel, and gold bars on a caramel panel
+ * measure about 1:1 — invisible, which is exactly what Alroy saw in
+ * section 04. Choosing paper turned every face grey.
+ *
+ * Lottie layers carry names, and these files name their people: "Guy",
+ * "Character", "Hands", "Right_Hand", "Mouth". So the walk tracks its
+ * ancestry, and inside a person the warm tones become caramel while
+ * everywhere else they stay light.
+ */
+const PERSON = new Set([
+  "guy",
+  "character",
+  "person",
+  "man",
+  "woman",
+  "girl",
+  "boy",
+  "head",
+  "face",
+  "mouth",
+  "nose",
+  "ear",
+  "eye",
+  "hair",
+  "neck",
+  "torso",
+  "body",
+  "chest",
+  "shoulder",
+  "arm",
+  "forearm",
+  "elbow",
+  "hand",
+  "hands",
+  "thumb",
+  "finger",
+  "leg",
+  "thigh",
+  "knee",
+  "foot",
+  "feet",
+  "skin",
+]);
+
+/*
+ * Split rather than match. Layer names here are `Right_Hand`,
+ * `Left_Forearm`, `Isolation Mode 9` — and a word-boundary regex does
+ * not fire across an underscore, because `_` is itself a word
+ * character. `\bhand\b` therefore misses `Right_Hand` entirely, which
+ * is how the education figure ended up with a white face while its
+ * hands stayed caramel. Splitting on anything that is not a letter and
+ * testing each token has no such blind spot.
+ */
+const isPerson = (name) =>
+  typeof name === "string" &&
+  name
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .some((word) => PERSON.has(word));
+
+const SKIN_MAP = {
+  efe4b5: T.skin,
+  fef7cf: T.skin,
+  ff7c51: T.skinShade,
+  fb8502: T.skinShade,
 };
 
 const hex = (c) =>
@@ -88,27 +157,33 @@ const hex = (c) =>
 
 const unmapped = new Set();
 let recoloured = 0;
+let skinned = 0;
 
-function walk(node) {
-  if (Array.isArray(node)) return node.forEach(walk);
+function walk(node, inPerson = false) {
+  if (Array.isArray(node)) return node.forEach((child) => walk(child, inPerson));
   if (!node || typeof node !== "object") return;
+
+  // Once inside a person, stay inside: limbs are nested under the figure.
+  const here = inPerson || isPerson(node.nm);
 
   // A flat fill or stroke carries its colour as a static [r,g,b,a].
   if ((node.ty === "fl" || node.ty === "st") && node.c && Array.isArray(node.c.k)) {
     const k = node.c.k;
     if (typeof k[0] === "number") {
       const key = hex(k);
-      const target = MAP[key];
+      const skinTone = here ? SKIN_MAP[key] : undefined;
+      const target = skinTone ?? MAP[key];
       if (target) {
         node.c.k = [...target, k[3] ?? 1];
         recoloured++;
+        if (skinTone) skinned++;
       } else {
         unmapped.add(key);
       }
     }
   }
 
-  for (const key of Object.keys(node)) walk(node[key]);
+  for (const key of Object.keys(node)) walk(node[key], here);
 }
 
 mkdirSync(OUT, { recursive: true });
@@ -141,7 +216,9 @@ for (const file of files) {
   process.stdout.write(`  ${name}\n`);
 }
 
-console.log(`\n✓ Recoloured ${recoloured} fills across ${files.length} animations.`);
+console.log(
+  `\n✓ Recoloured ${recoloured} fills across ${files.length} animations (${skinned} skin).`,
+);
 if (unmapped.size > 0) {
   console.error(`\n✖ Unmapped colours: ${[...unmapped].join(", ")}`);
   console.error("Add them to MAP in scripts/theme-lottie.mjs so nothing ships off-palette.\n");

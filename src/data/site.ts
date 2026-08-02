@@ -21,13 +21,13 @@ export const SITE = {
    * by a search or answer engine.
    */
   description:
-    "Alroy Ndhlovu is a marketing, branding, business technology and product consultant with 10+ years helping brands grow through data, design and AI.",
+    "Alroy Ndhlovu is a marketing, branding, business technology and product consultant with 12+ years helping brands grow through data, design and AI.",
   /*
    * The long version, for places with no character budget: structured
    * data and llms.txt. Separate from `description` because a truncation
    * limit is a property of search results, not of the truth.
    */
-  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over ten years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.",
+  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.",
   locale: "en_ZA",
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",
@@ -78,7 +78,7 @@ export const SECTIONS = [
     short: "Work",
     heading: "Work experience",
     blurb:
-      "Ten plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.",
+      "Twelve plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.",
   },
   {
     id: "education",

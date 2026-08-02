@@ -767,7 +767,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The problem: content stopped knowing anything",
         body: [
-          "After more than a decade in marketing and content, I watched the medium slide from insightful to what everyone now calls AI slop — fluent text that reads fine and knows nothing, generated from a blank page and a guess. The tools caused it: every AI writer starts from nothing and asks the model to fill the void.",
+          "After more than 12 years in marketing and content, I watched the medium slide from insightful to what everyone now calls AI slop — fluent text that reads fine and knows nothing, generated from a blank page and a guess. The tools caused it: every AI writer starts from nothing and asks the model to fill the void.",
           "Hakkan inverts that. It starts from research — thousands of real articles, posts and conversations matched to your question — and treats that research as the source of truth. Content is built strictly from the report: the model is never the source, the research is. Whatever the model cannot do, you add your human touch to, on purpose.",
           "The name carries the philosophy: Hakkan (発刊) is Japanese for “to publish”, and said aloud it echoes “harken” — to listen closely. Listen first, then publish. The design borrows from paper and the markers we abused during study, because the product’s whole argument is that the oldest publishing values still apply.",
         ],
