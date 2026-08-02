@@ -18,13 +18,34 @@ import { TESTIMONIALS } from "../data/testimonials";
  * uses Lucide, per the PRD, and the label carries the identity: the
  * outbound arrow for profiles, and a meaningful glyph where one exists.
  */
+/*
+ * The ask-AI prompt names the domain so the assistant grounds its
+ * answer on the site rather than guessing from a bare name.
+ */
+const ASK_PROMPT = encodeURIComponent(
+  "Who is Alroy Ndhlovu (alroyndhlovu.com), the marketing, branding, business tech and product consultant? What does he do and what has he built?",
+);
+
 const QUICK_LINKS = [
   { label: "LinkedIn", href: SOCIAL.linkedin, icon: ArrowUpRight, external: true },
   { label: "Dribbble", href: SOCIAL.dribbble, icon: ArrowUpRight, external: true },
   { label: "GitHub", href: SOCIAL.github, icon: ArrowUpRight, external: true },
   {
-    label: "Ask AI about me",
-    href: "https://chatgpt.com/?q=Who+is+Alroy+Ndhlovu%2C+the+digital+marketing+and+business+technology+consultant%3F",
+    label: "Ask ChatGPT",
+    // ?q= prefills and submits; hints=search asks it to browse the web.
+    href: `https://chatgpt.com/?q=${ASK_PROMPT}&hints=search`,
+    icon: Sparkles,
+    external: true,
+  },
+  {
+    label: "Ask Gemini",
+    /*
+     * Google AI Mode (udm=50), not gemini.google.com/app?q= — tested:
+     * the Gemini app drops the query for signed-out visitors and lands
+     * them on an empty chat, while AI Mode runs it for everyone and is
+     * Gemini-powered. Swap the URL if the app ever honours the param.
+     */
+    href: `https://www.google.com/search?udm=50&q=${ASK_PROMPT}`,
     icon: Sparkles,
     external: true,
   },

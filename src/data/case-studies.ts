@@ -444,75 +444,123 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Building the pipeline",
         intro:
-          "Paid was one channel into a much bigger audience-building effort. A business selling research to decision-makers has to know who those decision-makers are, and Innovatr did not have a list. So I built one: ICP prospecting through Apollo, the shared Workshop17 tenant database, direct client sourcing, and inbound signups. Those lists then fed back into the ads as matched audiences, so targeting ran on real firmographics rather than on LinkedIn's guesses about interests.",
+          "A business selling research to decision-makers has to know exactly who those decision-makers are, and Innovatr had no list at all. So I built one — Apollo ICP prospecting, the shared Workshop17 tenant database, direct client outreach, the LinkedIn page audience and inbound signups — de-duplicated it by email into one CRM, and then matched it back into LinkedIn as the audiences the paid programme ran against. That last step is the point of the whole exercise: the ads were aimed at named companies and real job titles instead of the platform's guesses about interests, and the delivery numbers below are what that bought.",
         items: [
           {
             value: "3,094",
-            label: "Unique contacts sourced",
-            context: "Across every source, de-duplicated by email. 1,272 distinct organisations.",
-          },
-          {
-            value: "2,405",
-            label: "Sourced and enriched",
+            label: "Unique contacts in the CRM",
             context:
-              "Apollo ICP prospecting plus the Workshop17 tenant database, matched to LinkedIn for targeting.",
+              "De-duplicated by email across every source, so nobody is counted twice. Built from zero in six months.",
           },
           {
-            value: "787",
-            label: "Client sourcing",
-            context: "Direct outreach and engagement lists, built and maintained in the CRM.",
-          },
-          {
-            value: "687",
-            label: "LinkedIn",
-            context: "The company page audience, exported and cleaned as its own list.",
-          },
-          {
-            value: "43",
-            label: "Inbound members",
-            context: "Signups to the membership tiers, free and paid.",
+            value: "1,272",
+            label: "Organisations mapped",
+            context:
+              "The addressable market as a list of companies — which is what account-based targeting needs to exist.",
           },
         ],
         footnote:
-          "Counted by unique email address across all sources, so nobody is counted twice, and the sub-totals overlap by design rather than summing to the headline. This is sourced and matched audience, not inbound enquiries — a distinction worth making, because plenty of reporting does not.",
+          "Sourced audience, not inbound enquiries — a distinction plenty of reporting skips. The proof this worked is under Results: LinkedIn's own delivery demographics show the ads landing on the seniorities and companies these lists were built from.",
       },
       {
         id: "results",
         kind: "metrics",
-        heading: "Results",
+        heading: "The ads landed in the right rooms",
         intro:
-          "Four months and R63,336 of total media, from no paid presence at all. Small money and a short runway, which is the context every number below should be read in: these are the paid results specifically, taken from the July 2026 account report and measured against published B2B benchmarks rather than against themselves.",
+          "Spending on ads is easy; the business question is whether they reached people who can actually buy. Innovatr sells research to senior decision-makers at banks, insurers and consumer brands, so the first test of the paid programme is not clicks — it is LinkedIn's own delivery demographics.",
         items: [
           {
-            value: "52",
-            label: "Inbound leads from paid",
+            value: "61%",
+            label: "Of delivery reached decision-makers",
             context:
-              "From zero, on R63,336 of total media across four months. 28 of them in July alone.",
+              "Senior 35%, Director 14%, VP 4%, C-suite 3%, Owner 4%, Partner 1%. Entry-level profiles: under 3%.",
           },
           {
-            value: "R216–265",
-            label: "Cost per lead",
-            context: "Against a ~R744 gated-content median. Roughly a third of market.",
+            value: "14 of 22",
+            label: "Top companies by delivery were targets",
+            context:
+              "Absa, FNB, Standard Bank, Nedbank, Capitec, Discovery, Investec, Old Mutual and Santam among them — the exact institutions the research sells to. PwC, EY and Deloitte fill most of the rest.",
           },
           {
-            value: "R14.79",
-            label: "Blended cost per click",
-            context: "Against a ~R92 market average across four months.",
+            value: "16.9%",
+            label: "Of delivery into banking & finance",
+            context:
+              "The best-covered target vertical: top five in every single ad set, and it completed videos at 2–4× the average rate.",
+          },
+          {
+            value: "56%",
+            label: "In the three target metros",
+            context:
+              "Johannesburg 38%, Pretoria 10%, Durban 8% — the geography Innovatr sells into.",
+          },
+        ],
+        footnote:
+          "All from LinkedIn's delivery demographics for the account, April–July 2026. This is the part of paid media spend cannot fake, and it is what made a small budget worth anything: nearly two-thirds of every rand landed on someone senior enough to sign off a study.",
+      },
+      {
+        id: "results",
+        kind: "trend",
+        heading: "Leads grew with the spend",
+        intro:
+          "Total media spend and inbound lead-form leads, month by month. The programme was run in short creative flights — test, read, cut, refine — so the shape of this chart is the strategy showing up in the numbers.",
+        measure: "Inbound leads",
+        rows: [
+          {
+            label: "Apr 2026",
+            value: 10,
+            display: "10",
+            note: "R10,647 of media. First full month, broad launch flight.",
+          },
+          {
+            label: "May 2026",
+            value: 12,
+            display: "12",
+            note: "R13,820. Creative eras tested head-to-head.",
+          },
+          {
+            label: "Jun 2026",
+            value: 2,
+            display: "2",
+            note: "R11,166 — but pointed at traffic, not lead forms, between flights. Reported as is.",
+          },
+          {
+            label: "Jul 2026",
+            value: 28,
+            display: "28",
+            note: "R27,703. Spend scaled onto what the tests had proved, and leads scaled with it.",
+          },
+        ],
+        footnote:
+          "52 leads in total, on R63,336 of media — small money and a short runway, which is the honest context for every figure here. The signal is the trajectory and the unit costs below, not the absolute count: when spend went up in July, leads went up with it, which is the one thing a pilot programme has to prove before anyone funds a bigger one.",
+      },
+      {
+        id: "results",
+        kind: "metrics",
+        heading: "And each result cost a fraction of market",
+        intro:
+          "Unit costs against published B2B benchmarks rather than against themselves — the difference between a number and a result.",
+        items: [
+          {
+            value: "R252",
+            label: "Cost per lead, refined flight",
+            context:
+              "Against a ~R744 gated-content median. The four-month spread ran R216–503 depending on era; the trend was downward as targeting tightened.",
           },
           {
             value: "46–57%",
             label: "Lead form completion",
-            context: "Against a 10–13% platform benchmark, so four to five times it.",
+            context:
+              "Against a 10–13% platform benchmark — four to five times it. People who opened the form wanted the thing behind it.",
+          },
+          {
+            value: "R14.79",
+            label: "Blended cost per click",
+            context: "Against a ~R92 B2B market average.",
           },
           {
             value: "+45–50%",
             label: "Video CTR over benchmark",
             context: "Best pairing was The Innovatr Way as video, at 0.677% CTR.",
-          },
-          {
-            value: "23 of 39",
-            label: "Site conversions from one format",
-            context: "Value proposition carousels carried the majority of conversions.",
           },
         ],
         footnote:
@@ -601,6 +649,7 @@ export const CASE_STUDIES: CaseStudy[] = [
  * clickable and is not is worse than an honest line of text.
  */
 export const UPCOMING_STUDIES: { name: string; note: string }[] = [
+  { name: "Lumiskin", note: "Design exploration — a cosmetics hero, from blank page to polish" },
   { name: "Hakkan", note: "Research-first AI writing, built end to end" },
   { name: "InSpiritInTruth", note: "A devotional app, design through release" },
 ];

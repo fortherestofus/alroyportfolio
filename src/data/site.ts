@@ -8,7 +8,7 @@
 export const SITE = {
   name: "Alroy Ndhlovu",
   url: "https://alroyndhlovu.com",
-  title: "Alroy Ndhlovu | Full-Stack Marketing, Branding & Business Tech Consultant",
+  title: "Alroy Ndhlovu | Full-Stack Marketing, Branding, Business Tech & Product Consultant",
   description:
     "Alroy Ndhlovu is a full-stack digital marketing, branding and business technology consultant with 10+ years of experience helping brands grow through data, design and AI.",
   locale: "en_ZA",

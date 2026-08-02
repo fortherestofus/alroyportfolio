@@ -83,7 +83,7 @@ const EXPECTED = {
   products: 4, // src/data/products.ts
   productShots: 18,
   caseStudyCards: 2, // CASE_STUDIES — Thrifty and Innovatr
-  upcomingStudies: 2, // UPCOMING_STUDIES
+  upcomingStudies: 3, // UPCOMING_STUDIES
   stripShots: 8, // strip entries across all studies, rendered twice for the marquee
 };
 

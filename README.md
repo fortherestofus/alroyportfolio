@@ -259,6 +259,18 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
+- **Lumiskin case study** — named on the section 06 overview under "Being
+  written". Alroy will supply the details (a design exploration: a cosmetics
+  hero screen); it becomes a card and a page the moment its entry lands in
+  `src/data/case-studies.ts`.
+- **More web video** — Alroy has additional website video for the portfolio.
+  Drop the files into `src/assets/portfolio/`, run `npm run video`, and add
+  each clip + poster to the `web` category in `src/data/portfolio.ts`.
+- **"Ask Gemini" opens Google AI Mode** (`udm=50`), not gemini.google.com —
+  tested: the Gemini app drops a prefilled query for signed-out visitors and
+  lands them on an empty chat, while AI Mode runs the same query for everyone
+  and is Gemini-powered. One-line swap in `WhoIsAlroy.astro` if that changes.
+
 - **The booking embed points at one event, not the profile.** `SOCIAL.cal` is
   `cal.com/mralroyndhlovu/quick`, so the section shows the 15-minute chat's
   calendar directly. The paid consultation is linked underneath rather than
