@@ -222,9 +222,16 @@ Tracked from PRD §14. None of these block the build.
 
 ### Needs your input
 
-- [ ] **Blog decision.** The WordPress site has ranked blog posts. Out of scope
-      here, but the content needs a call: migrate later, or redirect permanently?
-      301s go in either way in Phase 7.
+- [x] **Blog decision — leave it out for now** (Alroy, 2 Aug 2026). The 20
+      posts are _not_ migrated, but nothing is lost: every post is archived in
+      `legacy-content/` (HTML + metadata, 23,683 words), captured while the
+      WordPress site was still live. The redirects reflect the decision
+      honestly — posts get **302** (temporary), because migration is deferred
+      rather than cancelled and a 301 would tell search engines they are
+      permanently gone. Portfolio items and testimonials get **301**, since the
+      new site genuinely carries them. To revive the blog: build the post
+      template, restore from the archive at the same URLs, and the 302s can be
+      deleted rather than unwound.
 - [ ] **Innovatr metrics.** The outcome-led headline needs real numbers (growth
       %, leads, output cadence). Same for **Thrifty Adventures** (ROAS, CTR,
       bookings).
@@ -311,5 +318,7 @@ Per PRD §13. Each ends with the full §12b gates, then a commit.
   through the moment a matching page exists.
 - [x] **7. Section 07** — Contact: email with copy-to-clipboard, phone, the
       lazy Cal.com embed, social links and the footer
-- [ ] 8. SEO/GEO/AIO — schema, meta, llms.txt, sitemap, 301 redirects, OG
+- [x] **8. SEO/GEO/AIO** — ProfilePage + Person + WebSite + ItemList JSON-LD,
+      generated `llms.txt`, sitemap, robots with AI crawlers allowed, and 33
+      legacy redirects gated in browser QA
 - [ ] 9. Polish & QA — Lighthouse, a11y, reduced-motion, cross-browser

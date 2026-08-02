@@ -45,7 +45,12 @@ const schema = [
     "@type": "CreativeWork",
     name: `${study.name} case study`,
     abstract: study.summary,
-    author: { "@type": "Person", name: SITE.name, url: SITE.url },
+    /*
+     * A reference, not a copy. The home page defines the Person node at
+     * this @id; pointing at it makes every case study part of one graph
+     * about one human, which is what lets an engine attribute the work.
+     */
+    author: { "@id": `${SITE.url}/#alroy` },
     url: new URL(path, SITE.url).href,
     datePublished: "2026-08-01",
   },

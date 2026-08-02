@@ -9,8 +9,14 @@ export const SITE = {
   name: "Alroy Ndhlovu",
   url: "https://alroyndhlovu.com",
   title: "Alroy Ndhlovu | Full-Stack Marketing, Branding, Business Tech & Product Consultant",
+  /*
+   * Answer-shaped on purpose ("Alroy Ndhlovu is a…"): this string is the
+   * meta description, the OG description and the llms.txt summary, so it
+   * has to survive being quoted out of context by a search or answer
+   * engine.
+   */
   description:
-    "Alroy Ndhlovu is a full-stack digital marketing, branding and business technology consultant with 10+ years of experience helping brands grow through data, design and AI.",
+    "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant with 10+ years of experience helping brands grow through data, design, AI and software he builds himself.",
   locale: "en_ZA",
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",

@@ -1272,6 +1272,99 @@ async function checkMobile(browser, origin, viewport) {
  * mobile nav bar, the chapter bar — scroll inside themselves by design,
  * and their content stays reachable.
  */
+/**
+ * The SEO/GEO surface (PRD §9): the files and markup an engine reads
+ * rather than a person. None of it is visible, which is exactly why it
+ * needs a gate — a broken canonical or a JSON-LD typo shows no symptom
+ * on the page and is found months later, if ever.
+ */
+async function checkSeo(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const page = await context.newPage();
+
+  for (const path of ["/robots.txt", "/llms.txt", "/sitemap-index.xml"]) {
+    const response = await page.goto(`${origin}${path}`);
+    record(`[seo] ${path} is served`, response?.status() === 200, `status ${response?.status()}`);
+  }
+
+  // llms.txt has to be the convention's shape, not just a file that exists.
+  const llms = await (await page.goto(`${origin}/llms.txt`))?.text();
+  record("[seo] llms.txt leads with an H1 and a summary", /^# .+\n\n> .+/m.test(llms ?? ""));
+  record(
+    "[seo] llms.txt links the case studies",
+    (llms?.match(/\/case-studies\/[a-z-]+\//g) ?? []).length >= EXPECTED.caseStudyCards,
+    `${(llms?.match(/\/case-studies\//g) ?? []).length} links`,
+  );
+
+  const PAGES = ["/", "/case-studies/hakkan/"];
+  for (const path of PAGES) {
+    await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
+    const meta = await page.evaluate(() => {
+      const attr = (selector, name) =>
+        document.querySelector(selector)?.getAttribute(name)?.trim() ?? "";
+      const blocks = [...document.querySelectorAll('script[type="application/ld+json"]')];
+      const parsed = [];
+      const broken = [];
+      for (const block of blocks) {
+        try {
+          parsed.push(JSON.parse(block.textContent ?? ""));
+        } catch (error) {
+          broken.push(String(error));
+        }
+      }
+      return {
+        title: document.title,
+        description: attr('meta[name="description"]', "content"),
+        canonical: attr('link[rel="canonical"]', "href"),
+        ogTitle: attr('meta[property="og:title"]', "content"),
+        ogImage: attr('meta[property="og:image"]', "content"),
+        h1s: document.querySelectorAll("h1").length,
+        types: parsed.map((entry) => entry["@type"]),
+        broken,
+        graph: JSON.stringify(parsed),
+      };
+    });
+
+    record(`[seo ${path}] has a title and description`, !!meta.title && !!meta.description);
+    record(
+      `[seo ${path}] canonical is absolute and matches the path`,
+      meta.canonical.startsWith("https://") && new URL(meta.canonical).pathname === path,
+      meta.canonical,
+    );
+    record(`[seo ${path}] exactly one h1`, meta.h1s === 1, `${meta.h1s} found`);
+    record(`[seo ${path}] og:title and og:image are set`, !!meta.ogTitle && !!meta.ogImage);
+    record(
+      `[seo ${path}] every JSON-LD block parses`,
+      meta.broken.length === 0,
+      meta.broken.join("; "),
+    );
+
+    if (path === "/") {
+      record(
+        "[seo] home declares a ProfilePage and a WebSite",
+        meta.types.includes("ProfilePage") && meta.types.includes("WebSite"),
+        meta.types.join(", "),
+      );
+      record(
+        "[seo] the Person node carries sameAs profiles",
+        /"sameAs":\[[^\]]*linkedin/i.test(meta.graph),
+      );
+    } else {
+      /*
+       * The case study must point at the Person defined on the home
+       * page rather than restating it, or the two are separate people
+       * as far as a parser is concerned.
+       */
+      record(
+        "[seo] case study author references the site's Person node",
+        /"author":\{"@id":"[^"]*#alroy"\}/.test(meta.graph),
+      );
+    }
+  }
+
+  await context.close();
+}
+
 async function checkTextZoom(browser, origin) {
   const PAGES = ["/", "/case-studies/innovatr/"];
   const WIDTHS = [320, 375, 768, 1280];
@@ -1674,6 +1767,7 @@ try {
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
+  await checkSeo(browser, origin);
   await checkTextZoom(browser, origin);
   await checkHeroContrast(browser, origin);
   await checkReducedMotion(browser, origin);

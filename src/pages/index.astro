@@ -20,10 +20,74 @@ import CalEmbed from "../components/CalEmbed.astro";
 import HeroCollage from "../components/HeroCollage.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { ArrowDown } from "@lucide/astro";
-import { SITE, SECTIONS } from "../data/site";
+import { SITE, SECTIONS, SOCIAL } from "../data/site";
+import { CASE_STUDIES } from "../data/case-studies";
+import { SERVICES } from "../data/services";
+
+/*
+ * Structured data for the home page (PRD §9, GEO/AIO).
+ *
+ * A ProfilePage wrapping a Person, because that is what this is —
+ * schema.org added ProfilePage precisely for "a page about one person"
+ * and it is what lets an engine attribute the whole site to Alroy
+ * rather than to an unnamed organisation. `sameAs` is the property
+ * that links this identity to his profiles elsewhere, which is how
+ * knowledge panels get built.
+ *
+ * The WebSite entry exists so the site itself is a named thing an AI
+ * answer can cite, and the ItemList surfaces the case studies as
+ * distinct works rather than leaving them buried in the page body.
+ */
+const person = {
+  "@type": "Person",
+  "@id": `${SITE.url}/#alroy`,
+  name: SITE.name,
+  url: SITE.url,
+  email: `mailto:${SITE.email}`,
+  telephone: SITE.phone,
+  jobTitle: "Marketing, Branding, Business Technology and Product Consultant",
+  description: SITE.description,
+  knowsAbout: SERVICES.map((service) => service.name),
+  address: { "@type": "PostalAddress", addressCountry: "ZA" },
+  sameAs: [SOCIAL.linkedin, SOCIAL.dribbble, SOCIAL.instagram, SOCIAL.github],
+};
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${SITE.url}/#profilepage`,
+    url: SITE.url,
+    name: SITE.title,
+    description: SITE.description,
+    inLanguage: SITE.locale.replace("_", "-"),
+    mainEntity: person,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE.url}/#website`,
+    url: SITE.url,
+    name: SITE.name,
+    description: SITE.description,
+    inLanguage: SITE.locale.replace("_", "-"),
+    publisher: { "@id": `${SITE.url}/#alroy` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Case studies",
+    itemListElement: CASE_STUDIES.map((study, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE.url}/case-studies/${study.slug}/`,
+      name: `${study.name} case study`,
+    })),
+  },
+];
 ---
 
-<BaseLayout title={SITE.title} description={SITE.description} path="/">
+<BaseLayout title={SITE.title} description={SITE.description} path="/" schema={schema}>
   <JourneyNav slot="nav" />
 
   <header class="hero" id="top">

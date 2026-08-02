@@ -1,7 +1,77 @@
 # Hostinger (Apache) config for the static build.
-# Legacy 301 redirects from the old WordPress URLs are added in Phase 7.
 
 ErrorDocument 404 /404.html
+
+# ============================================================
+# LEGACY REDIRECTS — the WordPress site this replaces
+#
+# Two kinds, deliberately, because they mean different things.
+#
+# 301 (permanent) where the new site genuinely carries the same
+# thing: the old portfolio items and testimonials live on as
+# sections here, so the value should move with them. Google only
+# passes a redirect's value when the destination is a reasonable
+# equivalent; irrelevant redirects are treated as soft 404s, so
+# these point at the closest real section rather than all at "/".
+#
+# 302 (temporary) for the 20 blog posts. Migration is deferred,
+# not cancelled (Alroy, 2 Aug 2026), and a 301 would tell search
+# engines the posts are permanently gone — making them expensive
+# to restore at the same URLs later. A 302 keeps them as known
+# URLs while nothing is served there. Every post is archived in
+# `legacy-content/` in this repo, HTML and metadata, captured
+# before the cutover.
+#
+# Change these to 301 if the blog is abandoned for good, or point
+# them at the migrated posts if it is revived.
+# ============================================================
+
+<IfModule mod_alias.c>
+  # Portfolio items -> the portfolio section
+  Redirect 301 /portfolio/ https://alroyndhlovu.com/#portfolio
+  RedirectMatch 301 ^/portfolio/.+$ https://alroyndhlovu.com/#portfolio
+
+  # Testimonials -> section 01, which carries them
+  RedirectMatch 301 ^/dtr_testimonial/.*$ https://alroyndhlovu.com/#who
+
+  # Old top-level pages
+  Redirect 301 /personal-projects/ https://alroyndhlovu.com/#products
+  Redirect 301 /about/ https://alroyndhlovu.com/#who
+  Redirect 301 /contact/ https://alroyndhlovu.com/#contact
+  Redirect 301 /services/ https://alroyndhlovu.com/#who
+
+  # Blog taxonomy
+  RedirectMatch 301 ^/category/.*$ https://alroyndhlovu.com/
+  RedirectMatch 301 ^/tag/.*$ https://alroyndhlovu.com/
+  RedirectMatch 301 ^/author/.*$ https://alroyndhlovu.com/#who
+
+  # WordPress plumbing that should never have been indexed
+  RedirectMatch 301 ^/(wp-content|wp-includes|wp-admin|wp-login\.php)(/.*)?$ https://alroyndhlovu.com/
+  Redirect 301 /feed/ https://alroyndhlovu.com/
+  Redirect 301 /sitemap_index.xml https://alroyndhlovu.com/sitemap-index.xml
+
+  # Blog posts — temporary, see the note above
+  Redirect 302 /ai-wont-replace-you-at-least-not-yet/ https://alroyndhlovu.com/
+  Redirect 302 /browser-ai-assistant-edge-chrome-comet/ https://alroyndhlovu.com/
+  Redirect 302 /building-products/ https://alroyndhlovu.com/
+  Redirect 302 /crafting-your-own-career-path/ https://alroyndhlovu.com/
+  Redirect 302 /diversification/ https://alroyndhlovu.com/
+  Redirect 302 /ghost-jobs/ https://alroyndhlovu.com/
+  Redirect 302 /is-influencer-marketing-dead/ https://alroyndhlovu.com/
+  Redirect 302 /job-market-dating-apps-broken-hiring/ https://alroyndhlovu.com/
+  Redirect 302 /marketing-and-pr/ https://alroyndhlovu.com/
+  Redirect 302 /marketing-channel-attribution/ https://alroyndhlovu.com/
+  Redirect 302 /organic-reach-is-dying/ https://alroyndhlovu.com/
+  Redirect 302 /personal-brand/ https://alroyndhlovu.com/
+  Redirect 302 /right-opportunity/ https://alroyndhlovu.com/
+  Redirect 302 /specialists-generalists/ https://alroyndhlovu.com/
+  Redirect 302 /stop-being-cheap/ https://alroyndhlovu.com/
+  Redirect 302 /suno-ai-music-generator-small-business/ https://alroyndhlovu.com/
+  Redirect 302 /thought-leadership/ https://alroyndhlovu.com/
+  Redirect 302 /train-ai-chatbot-gems-skills-custom-gpts/ https://alroyndhlovu.com/
+  Redirect 302 /working-smarter/ https://alroyndhlovu.com/
+  Redirect 302 /your-branding-matters-more-than-sales-marketing-budget/ https://alroyndhlovu.com/
+</IfModule>
 
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
