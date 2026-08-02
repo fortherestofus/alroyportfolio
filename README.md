@@ -272,7 +272,8 @@ Tracked from PRD §14. None of these block the build.
 - [x] **Social Sweep screenshots** — received 1 Aug 2026 as
       `social_sweep_landing.jpg`, `social_sweep_report.jpg` and
       `social_sweep_charts.jpg`.
-- [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights Film
+- [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Eris
+      Property Group, Lights Film
       School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
       downloaded is the old Facebook primary logo). Until they arrive these fall
       back to a Lucide `building-2`/`graduation-cap` glyph in the same frame.
@@ -283,16 +284,12 @@ Tracked from PRD §14. None of these block the build.
 
 ### Flagged for a decision
 
-- **Two experience entries do not match LinkedIn.** Employment types were added
-  from the LinkedIn screenshot (2 Aug 2026) and two rows could not be
-  reconciled:
-  - **Kelly-Anne Mealia** (Sep 2022 – Apr 2024) is on the site but not in the
-    screenshot, so it has no type. Tell me which it was and it takes one line.
-  - **Eris Property Group** (Freelance, Aug 2024) is on LinkedIn but not on the
-    site. Add it or leave it out — a one-month engagement is a fair thing to
-    omit, but it should be a decision rather than an oversight.
-  - Also: LinkedIn dates the self-employed Dejamedia entry Nov 2018 – Mar 2026;
-    the site shows "Independent Contractor · Various · 2018 – Present".
+- **The self-employed entry is dated differently to LinkedIn.** LinkedIn closes
+  the Dejamedia entry at Nov 2018 – Mar 2026; the site says "Independent
+  Contractor · Various · 2018 – Present". The site is deliberately the open
+  one — the consulting is ongoing (Thrifty Adventures still runs) — so this is
+  noted rather than treated as an error. Say the word and it becomes a closed
+  range.
 
 - **Lumiskin case study** — named on the section 06 overview under "Being
   written". Alroy will supply the details (a design exploration: a cosmetics

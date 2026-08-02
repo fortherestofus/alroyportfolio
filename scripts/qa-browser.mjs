@@ -74,7 +74,7 @@ const SECTION_IDS = [
  * them in the same commit as the data file that changes.
  */
 const EXPECTED = {
-  roles: 12, // src/data/experience.ts
+  roles: 13, // src/data/experience.ts
   studyGroups: 4, // src/data/education.ts
   studyEntries: 10,
   services: 5, // src/data/services.ts

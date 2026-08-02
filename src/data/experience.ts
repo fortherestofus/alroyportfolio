@@ -71,6 +71,13 @@ export const EXPERIENCE: Role[] = [
     logoFile: "aac.png",
   },
   {
+    title: "Social Media Specialist",
+    company: "Eris Property Group",
+    employment: "Contract",
+    dates: "Aug 2024",
+    // TODO(alroy): logo missing, see README.
+  },
+  {
     title: "Digital Media & Marketing Consultant",
     company: "Energy Capital & Power",
     employment: "Contract",
@@ -80,6 +87,7 @@ export const EXPERIENCE: Role[] = [
   {
     title: "Brand & Social Media Management",
     company: "Kelly-Anne Mealia",
+    employment: "Freelance",
     dates: "Sep 2022 – Apr 2024",
     // TODO(alroy): logo missing, see README.
   },
