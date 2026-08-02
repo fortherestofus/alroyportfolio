@@ -500,71 +500,99 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "results",
         kind: "trend",
-        heading: "Leads grew with the spend",
+        heading: "Leads grew, and got better every month",
         intro:
-          "Total media spend and inbound lead-form leads, month by month. The programme was run in short creative flights — test, read, cut, refine — so the shape of this chart is the strategy showing up in the numbers.",
+          "Inbound lead-form leads by month — count and quality together, because the count alone says nothing. The programme ran in short creative flights, and each flight tightened who the forms were put in front of.",
         measure: "Inbound leads",
         rows: [
           {
             label: "Apr 2026",
             value: 10,
             display: "10",
-            note: "R10,647 of media. First full month, broad launch flight.",
+            note: "Broad launch flight. Forms captured personal emails — only ~27% corporate.",
           },
           {
             label: "May 2026",
             value: 12,
             display: "12",
-            note: "R13,820. Creative eras tested head-to-head.",
+            note: "Creative eras tested head to head; forms rebuilt to require work email and phone.",
           },
           {
             label: "Jun 2026",
             value: 2,
             display: "2",
-            note: "R11,166 — but pointed at traffic, not lead forms, between flights. Reported as is.",
+            note: "Between flights — that month's ads pointed at traffic and video, not lead forms.",
           },
           {
             label: "Jul 2026",
             value: 28,
             display: "28",
-            note: "R27,703. Spend scaled onto what the tests had proved, and leads scaled with it.",
+            note: "Refined vertical flight: 91% work emails, and 9 of the newest 11 squarely in the ICP.",
           },
         ],
         footnote:
-          "52 leads in total, on R63,336 of media — small money and a short runway, which is the honest context for every figure here. The signal is the trajectory and the unit costs below, not the absolute count: when spend went up in July, leads went up with it, which is the one thing a pilot programme has to prove before anyone funds a bigger one.",
+          "Work-email share climbed from ~27% at launch to ~75% mid-programme to 91% in the newest cohort — the audience refinement showing up in the pipeline itself. Leads are deliberately not set against the total media budget: that budget was buying four different jobs at once, which the next section separates.",
       },
       {
         id: "results",
         kind: "metrics",
-        heading: "And each result cost a fraction of market",
+        heading: "One budget, four jobs — each judged on its own",
         intro:
-          "Unit costs against published B2B benchmarks rather than against themselves — the difference between a number and a result.",
+          "Judging the whole media budget on leads would be wrong, because most of it was never pointed at leads. The spend split across four formats with four different jobs: video bought attention, carousels bought site conversions, static bought cheap clicks, and only the lead-gen documents bought leads. So each format is scored on the job it was given, against LinkedIn's own B2B benchmarks.",
         items: [
           {
             value: "R252",
-            label: "Cost per lead, refined flight",
+            label: "Per lead — lead-gen spend only",
             context:
-              "Against a ~R744 gated-content median. The four-month spread ran R216–503 depending on era; the trend was downward as targeting tightened.",
+              "16 leads from R4,037 of dedicated lead-gen budget in the measured flight, against a ~R744 gated median. Form completion ran 46–57% against a 10–13% benchmark.",
           },
           {
-            value: "46–57%",
-            label: "Lead form completion",
-            context:
-              "Against a 10–13% platform benchmark — four to five times it. People who opened the form wanted the thing behind it.",
+            value: "34",
+            label: "Site conversions — the carousels' job",
+            context: "23 of them from the value-proposition carousels alone.",
+          },
+          {
+            value: "44–48%",
+            label: "Video view rate — the videos' job",
+            context: "Against a 29.5% benchmark, 15–19 points over.",
           },
           {
             value: "R14.79",
-            label: "Blended cost per click",
-            context: "Against a ~R92 B2B market average.",
-          },
-          {
-            value: "+45–50%",
-            label: "Video CTR over benchmark",
-            context: "Best pairing was The Innovatr Way as video, at 0.677% CTR.",
+            label: "Blended cost per click, account-wide",
+            context: "Against a ~R92 B2B market average, across 1.03M impressions.",
           },
         ],
         footnote:
           "Reported honestly: no flight ran longer than five weeks against LinkedIn's six to eight week optimisation runway, so these are pre-optimisation numbers. A June conversion tag counting view-throughs is excluded throughout.",
+      },
+      {
+        id: "results",
+        kind: "metrics",
+        heading: "And the leads were the right people",
+        intro:
+          "The count matters less than who filled the forms in. From the lead-form exports, assessed on work-email capture, seniority and ICP fit:",
+        items: [
+          {
+            value: "~25 of 52",
+            label: "Call-first tier",
+            context:
+              "Work-email leads at ICP accounts with decision-layer titles — the leads a salesperson actually phones.",
+          },
+          {
+            value: "91%",
+            label: "Work emails, newest cohort",
+            context:
+              "Up from ~27% in the launch era. The refinement is visible in the pipeline itself.",
+          },
+          {
+            value: "9 of 11",
+            label: "Newest cohort inside the ICP",
+            context:
+              "Senior research, strategy and CX roles at exactly the institutions being targeted.",
+          },
+        ],
+        footnote:
+          "Among them, by role: CX management at Capitec, market research at FNB, business analysis at Old Mutual, a risk and compliance executive at Vodacom Financial Services, business development at Cardinal Insurance Management Systems, the head of marketing at Warwick Wine Estate, the chief executive of Bed King and the product lead at SnapScan. Roles from the lead-form exports; no names published.",
       },
       {
         id: "results",

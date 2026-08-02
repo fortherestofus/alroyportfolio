@@ -68,36 +68,16 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "Checkout step of a shuttle booking flow, showing the trip summary in rand beside a card payment form.",
       },
       {
-        image: "hakkan-report.jpg",
-        alt: "Hakkan research report: a claim-by-claim view with themes, a sentiment split, and the receipts behind each finding.",
-      },
-      {
         image: "hakkan-research.jpg",
         alt: "Hakkan's question screen — one input, depth and time-range controls, and the platforms it reads.",
-      },
-      {
-        image: "social_sweep_landing.jpg",
-        alt: "Social Sweep's ask screen: a plain-language question box over a trends radar, built for non-researchers.",
-      },
-      {
-        image: "social_sweep_report.jpg",
-        alt: "A finished Social Sweep report, leading with net sentiment, sources and an executive summary.",
       },
       {
         image: "isit-home.png",
         alt: "InSpiritInTruth home screen: the week's devotional and verse of the day in a warm serif system.",
       },
       {
-        image: "isit-bible.png",
-        alt: "The in-app Bible with a highlighted verse and note-taking controls.",
-      },
-      {
         image: "tapa-home.jpg",
         alt: "tapa. home screen with the day's recipe suggestion and saved-recipe shelf.",
-      },
-      {
-        image: "tapa-cooking.jpg",
-        alt: "tapa.'s cooking mode, stepping through a recipe one instruction at a time.",
       },
       {
         image: "design_404.webp",
