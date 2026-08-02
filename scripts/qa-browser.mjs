@@ -575,6 +575,53 @@ async function checkDesktop(browser, origin, viewport) {
   );
   record(`[${tag}] stacking panels are opaque`, seeThrough.length === 0, seeThrough.join(", "));
 
+  /*
+   * Every case study card's CTA must be clickable at the moment that
+   * card is the topmost of the stack. A pinned card taller than the
+   * space under its pin point hides its own button at every scroll
+   * position — which happened at 1440x700 — so this is checked per
+   * viewport rather than assumed from the layout.
+   */
+  const deadCtas = await page.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const cards = [...document.querySelectorAll(".stack__card")];
+    const problems = [];
+    for (let i = 0; i < cards.length; i++) {
+      const cta = cards[i].querySelector(".stack__cta");
+      if (!cta) continue;
+      const next = cards[i + 1] ?? document.querySelector(".stack__upcoming");
+      if (next) {
+        // Scroll so this card is fully presented and the next has not covered it.
+        const nextTop = next.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, nextTop - window.innerHeight), behavior: "instant" });
+      } else {
+        cta.scrollIntoView({ block: "center", behavior: "instant" });
+      }
+      await wait(200);
+      let box = cta.getBoundingClientRect();
+      // Static regimes may need a nudge to bring the CTA into view.
+      if (box.bottom > window.innerHeight || box.top < 0) {
+        cta.scrollIntoView({ block: "center", behavior: "instant" });
+        await wait(200);
+        box = cta.getBoundingClientRect();
+      }
+      const visible = box.top >= 0 && box.bottom <= window.innerHeight;
+      const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+      if (!visible || !hit || !(cta === hit || cta.contains(hit))) {
+        problems.push(
+          `card ${i} CTA ${visible ? "covered by " + (hit?.className || hit?.tagName || "nothing") : "outside the viewport"}`,
+        );
+      }
+    }
+    window.scrollTo({ top: 0, behavior: "instant" });
+    return problems;
+  });
+  record(
+    `[${tag}] every case study CTA is clickable when its card is on top`,
+    deadCtas.length === 0,
+    deadCtas.join("; "),
+  );
+
   const missingStacks = await page.evaluate(() =>
     [...document.querySelectorAll(".product")]
       .filter((p) => p.querySelectorAll(".product__tech").length === 0)

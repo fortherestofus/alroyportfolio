@@ -743,7 +743,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     name: "Hakkan",
     dates: "Jul 2026 – present",
     summary:
-      "Built a content research tool to fight AI slop — one where every claim traces to a real person saying a real thing, and the tool is engineered so it cannot quietly make things up.",
+      "Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.",
     description:
       "Hakkan (発刊, “to publish”) is a research-first content tool. Give it a topic and it reads the actual conversation — Reddit, TikTok, X, YouTube, the open web — then hands you a visual report with receipts, and helps you build content from that research in your own voice. This is the story of why it exists and what it took to make “no slop” true rather than a tagline.",
     tags: ["Product build", "AI engineering", "UX", "Research"],
@@ -768,7 +768,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The problem: content stopped knowing anything",
         body: [
           "After more than a decade in marketing and content, I watched the medium slide from insightful to what everyone now calls AI slop — fluent text that reads fine and knows nothing, generated from a blank page and a guess. The tools caused it: every AI writer starts from nothing and asks the model to fill the void.",
-          "Hakkan inverts that. It starts from research — thousands of real posts, articles and comments matched to your question — and treats that research as the source of truth the content must be built from. The model is never allowed to be the source. People are.",
+          "Hakkan inverts that. It starts from research — thousands of real articles, posts and conversations matched to your question — and treats that research as the source of truth. Content is built strictly from the report: the model is never the source, the research is. Whatever the model cannot do, you add your human touch to, on purpose.",
           "The name carries the philosophy: Hakkan (発刊) is Japanese for “to publish”, and said aloud it echoes “harken” — to listen closely. Listen first, then publish. The design borrows from paper and the markers we abused during study, because the product’s whole argument is that the oldest publishing values still apply.",
         ],
       },
@@ -973,7 +973,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "A format that never changed",
         body: [
           "The devotional is one of the oldest content formats there is: a passage, a reflection, a prayer, the same page for every reader. That sameness is part of its comfort — and its limit. The person navigating faith outside church walls, the one struggling to stay consistent, the one carrying something specific today: the format has never been able to meet any of them where they actually are.",
-          "ISIT keeps everything worth keeping — a weekly devotional written by a person and meant to be read slowly, the whole Bible in the app, no algorithm, no ads — and adds the thing the format never had. You share what you are going through, and it writes a devotional for exactly that, in the moment you need it.",
+          "ISIT keeps everything worth keeping — a weekly devotional written by a person and meant to be read slowly, the whole Bible in the app, no algorithm, no ads — and adds the thing the format never had. You share what you are going through, and it writes a devotional for exactly that, in the moment you need it — rooted first and always in Scripture.",
         ],
       },
       {
@@ -1014,7 +1014,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "That ratio is a choice, and it was priced deliberately: subscriptions are set where the checking pass stays affordable at real usage, so the product is sustainable for the business without ever cutting the verification to protect a margin.",
+          "That ratio is a choice, and it sets the pricing question rather than following it: the verification pass is the one cost this product will not cut to protect a margin, so subscriptions are tuned around keeping it — the aim being an exchange that stays fair to the reader and sustainable for the business.",
       },
       {
         id: "care",
@@ -1097,7 +1097,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     name: "tapa.",
     dates: "Jul 2026 – present",
     summary:
-      "Built an app you could use every day and kept it radically simple — one question in, one good answer out — because life needs more simple, and simplicity is the discipline, not the shortcut.",
+      "Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.",
     description:
       "tapa. answers one question: “what can I cook with this?” Tell it or show it what you have, say how long you want to cook and for how many people, and it gives you one well-considered recipe. Not fifty search results. One good answer. The case study is about what keeping something that simple actually costs.",
     tags: ["Product build", "UX", "Simplicity", "Pricing"],
@@ -1133,7 +1133,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         items: [
           {
             value: "3 → 1",
-            label: "Ways in, answers out",
+            label: "Ways in, one recipe out",
             context:
               "Type it, say it, or photograph it — and one recipe comes back. Choice is the load the app exists to remove, so it never returns a list.",
           },

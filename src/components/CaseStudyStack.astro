@@ -388,6 +388,19 @@ const STRIP_QUALITY = 70;
   }
 
   /*
+   * Short viewports: no pinning. A pinned card taller than the space
+   * under its pin point can never show its bottom — measured at
+   * 1440x700, the tallest card's "case study" button sat 44px below
+   * the fold at every scroll position, permanently unclickable. Below
+   * this height the cards simply scroll, like mobile.
+   */
+  @media (width >= 1024px) and (height <= 760px) {
+    .stack__card {
+      position: static;
+    }
+  }
+
+  /*
    * Reduced motion: no marquee, and no stacking either. Cards that pin
    * and slide over each other are exactly the kind of scroll-coupled
    * movement the preference is asking us not to do.
