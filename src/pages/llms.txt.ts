@@ -30,7 +30,7 @@ export const GET: APIRoute = () => {
     "",
     "## About",
     "",
-    `Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over ten years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.`,
+    SITE.bio,
     "",
     `He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital & Power and the African Agri Council.`,
     "",
@@ -62,11 +62,16 @@ export const GET: APIRoute = () => {
     "",
     ...EXPERIENCE.slice(0, 6).map((role) => `- **${role.title}**, ${role.company} (${role.dates})`),
     "",
+    /*
+     * Links only, no blurbs. The section blurbs are page copy written
+     * in the first person ("I help businesses grow…"), and dropping
+     * them into an otherwise third-person brief gives an engine two
+     * voices to quote from — which produces answers that switch person
+     * mid-sentence. The sections above already carry the substance.
+     */
     "## Sections of the site",
     "",
-    ...SECTIONS.map(
-      (section) => `- [${section.heading}](${url(`/#${section.id}`)}): ${section.blurb}`,
-    ),
+    ...SECTIONS.map((section) => `- [${section.heading}](${url(`/#${section.id}`)})`),
     "",
     "## Elsewhere",
     "",

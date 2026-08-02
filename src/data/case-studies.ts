@@ -309,7 +309,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Thrifty Adventures case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu tested LinkedIn as a paid channel for a South African leisure travel brand: 4.9M impressions and 742 leads at R30, and why the offer mattered more than the audience.",
+        "How Alroy Ndhlovu tested LinkedIn for a South African travel brand: 742 leads at R30, and why the offer mattered more than the audience.",
     },
   },
   {
@@ -735,7 +735,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Innovatr case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu rebuilt Innovatr's positioning, website, content engine and paid programme, sourced a 3,094-contact market, and built the social listening product the business now sells.",
+        "How Alroy Ndhlovu rebuilt Innovatr's brand, website, content engine and paid programme, and built the social listening product the business now sells.",
     },
   },
   {
@@ -1089,7 +1089,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "InSpiritInTruth case study | Alroy Ndhlovu",
       description:
-        "Bringing personalisation to the devotional: how InSpiritInTruth writes for what you are carrying today, and the engineering that keeps generated scripture honest.",
+        "Bringing personalisation to the devotional: how InSpiritInTruth writes for what you are carrying today, and the engineering that keeps it honest.",
     },
   },
   {

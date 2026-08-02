@@ -8,15 +8,26 @@
 export const SITE = {
   name: "Alroy Ndhlovu",
   url: "https://alroyndhlovu.com",
-  title: "Alroy Ndhlovu | Full-Stack Marketing, Branding, Business Tech & Product Consultant",
   /*
-   * Answer-shaped on purpose ("Alroy Ndhlovu is a…"): this string is the
-   * meta description, the OG description and the llms.txt summary, so it
-   * has to survive being quoted out of context by a search or answer
-   * engine.
+   * 53 characters. Google truncates a title around 60, and the previous
+   * one ran to 86 — the four disciplines it was trying to list were cut
+   * off mid-word in the one place they were supposed to be read.
+   */
+  title: "Alroy Ndhlovu — Marketing, Brand & Product Consultant",
+  /*
+   * The meta and OG description, budgeted to 160 characters because
+   * that is where search results truncate. Answer-shaped on purpose
+   * ("Alroy Ndhlovu is a…") so it survives being lifted out of context
+   * by a search or answer engine.
    */
   description:
-    "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant with 10+ years of experience helping brands grow through data, design, AI and software he builds himself.",
+    "Alroy Ndhlovu is a marketing, branding, business technology and product consultant with 10+ years helping brands grow through data, design and AI.",
+  /*
+   * The long version, for places with no character budget: structured
+   * data and llms.txt. Separate from `description` because a truncation
+   * limit is a property of search results, not of the truth.
+   */
+  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over ten years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.",
   locale: "en_ZA",
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",

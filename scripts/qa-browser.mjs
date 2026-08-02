@@ -87,6 +87,15 @@ const EXPECTED = {
   stripShots: 22, // strip entries across all studies, rendered twice for the marquee
 };
 
+/** Every case study page, for the site-wide uniqueness checks. */
+const CASE_STUDY_PATHS = [
+  "/case-studies/thrifty-adventures/",
+  "/case-studies/innovatr/",
+  "/case-studies/hakkan/",
+  "/case-studies/inspiritintruth/",
+  "/case-studies/tapa/",
+];
+
 const results = [];
 const record = (name, passed, detail = "") => results.push({ name, passed, detail });
 
@@ -1296,7 +1305,7 @@ async function checkSeo(browser, origin) {
     `${(llms?.match(/\/case-studies\//g) ?? []).length} links`,
   );
 
-  const PAGES = ["/", "/case-studies/hakkan/"];
+  const PAGES = ["/", ...CASE_STUDY_PATHS];
   for (const path of PAGES) {
     await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
     const meta = await page.evaluate(() => {
@@ -1325,7 +1334,28 @@ async function checkSeo(browser, origin) {
       };
     });
 
-    record(`[seo ${path}] has a title and description`, !!meta.title && !!meta.description);
+    /*
+     * Budgets, not just presence. Google truncates a title around 60
+     * characters and a description around 160, and an over-long one is
+     * cut mid-word in the exact place it needs to read cleanly — the
+     * home page was shipping an 86-character title and a 207-character
+     * description, both of which looked fine in the markup.
+     */
+    record(
+      `[seo ${path}] title is 30-60 characters`,
+      meta.title.length >= 30 && meta.title.length <= 60,
+      `${meta.title.length}: ${meta.title}`,
+    );
+    record(
+      `[seo ${path}] description is 120-160 characters`,
+      meta.description.length >= 120 && meta.description.length <= 160,
+      `${meta.description.length} characters`,
+    );
+    record(
+      `[seo ${path}] description reads as an answer`,
+      /^[A-Z]/.test(meta.description) && /[.!?]$/.test(meta.description),
+      meta.description.slice(0, 60),
+    );
     record(
       `[seo ${path}] canonical is absolute and matches the path`,
       meta.canonical.startsWith("https://") && new URL(meta.canonical).pathname === path,
@@ -1349,7 +1379,7 @@ async function checkSeo(browser, origin) {
         "[seo] the Person node carries sameAs profiles",
         /"sameAs":\[[^\]]*linkedin/i.test(meta.graph),
       );
-    } else {
+    } else if (path === "/case-studies/hakkan/") {
       /*
        * The case study must point at the Person defined on the home
        * page rather than restating it, or the two are separate people
@@ -1361,6 +1391,33 @@ async function checkSeo(browser, origin) {
       );
     }
   }
+
+  /*
+   * Titles and descriptions must also be unique across the site. Two
+   * pages sharing either is the classic duplicate-content signal, and
+   * it is invisible from any single page.
+   */
+  const seen = { titles: new Map(), descriptions: new Map() };
+  for (const path of ["/", ...CASE_STUDY_PATHS]) {
+    await page.goto(`${origin}${path}`, { waitUntil: "domcontentloaded" });
+    const pair = await page.evaluate(() => ({
+      title: document.title,
+      description:
+        document.querySelector('meta[name="description"]')?.getAttribute("content") ?? "",
+    }));
+    seen.titles.set(pair.title, (seen.titles.get(pair.title) ?? 0) + 1);
+    seen.descriptions.set(pair.description, (seen.descriptions.get(pair.description) ?? 0) + 1);
+  }
+  const dupeTitles = [...seen.titles].filter(([, n]) => n > 1).map(([t]) => t);
+  const dupeDescriptions = [...seen.descriptions]
+    .filter(([, n]) => n > 1)
+    .map(([d]) => d.slice(0, 40));
+  record("[seo] every page has a unique title", dupeTitles.length === 0, dupeTitles.join(" | "));
+  record(
+    "[seo] every page has a unique description",
+    dupeDescriptions.length === 0,
+    dupeDescriptions.join(" | "),
+  );
 
   await context.close();
 }
