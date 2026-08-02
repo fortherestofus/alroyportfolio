@@ -82,9 +82,9 @@ const EXPECTED = {
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
   products: 4, // src/data/products.ts
   productShots: 18,
-  caseStudyCards: 2, // CASE_STUDIES — Thrifty and Innovatr
-  upcomingStudies: 3, // UPCOMING_STUDIES
-  stripShots: 8, // strip entries across all studies, rendered twice for the marquee
+  caseStudyCards: 5, // CASE_STUDIES — Thrifty, Innovatr, Hakkan, ISIT, tapa
+  upcomingStudies: 1, // UPCOMING_STUDIES — Lumiskin
+  stripShots: 22, // strip entries across all studies, rendered twice for the marquee
 };
 
 const results = [];

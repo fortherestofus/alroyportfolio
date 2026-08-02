@@ -165,10 +165,12 @@ const schema = [
               <div class="cs__trend" data-reveal-item>
                 <table class="cs__trend-table">
                   {/* The heading above says this too, but a table needs its own. */}
-                  <caption class="visually-hidden">{block.measure} by month</caption>
+                  <caption class="visually-hidden">
+                    {block.measure} by {(block.rowLabel ?? "month").toLowerCase()}
+                  </caption>
                   <thead>
                     <tr>
-                      <th scope="col">Month</th>
+                      <th scope="col">{block.rowLabel ?? "Month"}</th>
                       <th scope="col">{block.measure}</th>
                       <th scope="col">What changed</th>
                     </tr>

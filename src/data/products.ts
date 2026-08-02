@@ -191,6 +191,7 @@ export const PRODUCTS: Product[] = [
       "Claude Code",
     ],
     shape: "phone",
+    caseStudy: "tapa",
     shots: [
       { image: "tapa-home.jpg", alt: "tapa. home screen with the day's recipe suggestion." },
       {

@@ -12,15 +12,24 @@ import type { ImageMetadata } from "astro";
  * this. A case study that overclaims is worth less than one that does
  * not, especially to the kind of client who will check.
  */
+/*
+ * Product screenshots serve the product case studies too, keyed as
+ * `products/<filename>` so the two folders cannot collide.
+ */
 const files = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/case-studies/**/*.{png,jpg,jpeg,webp,avif}",
+  [
+    "../assets/case-studies/**/*.{png,jpg,jpeg,webp,avif}",
+    "../assets/products/*.{png,jpg,jpeg,webp,avif}",
+  ],
   { eager: true },
 );
 
 const byPath = new Map<string, ImageMetadata>();
 for (const [path, module] of Object.entries(files)) {
-  const key = path.split("/assets/case-studies/")[1];
-  if (key) byPath.set(key, module.default);
+  const caseKey = path.split("/assets/case-studies/")[1];
+  if (caseKey) byPath.set(caseKey, module.default);
+  const productKey = path.split("/assets/")[1];
+  if (productKey?.startsWith("products/")) byPath.set(productKey, module.default);
 }
 
 /** `slug/filename.jpg`, matching the folder layout in 04-assets.md. */
@@ -66,6 +75,8 @@ export type Block =
       intro?: string;
       /** What the bar length means, e.g. "Impressions". */
       measure: string;
+      /** What a row is, shown as the first column header. Default "Month". */
+      rowLabel?: string;
       rows: { label: string; value: number; display: string; note?: string }[];
       footnote?: string;
     }
@@ -283,6 +294,15 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Brand awareness was the most expensive thing on the platform and I would not buy it again at that price: R8,400 at a 0.109% click-through rate and R19.76 a click. Judged as a click channel it failed outright. Judged on what it is actually sold for it did deliver 211,026 video views and 84,324 completions, so the money was not burnt — but there were cheaper ways to buy the same attention, and the run proved it.",
           "Single-destination video posts did not travel. Egypt, Namibia and Dubai each drew between 0.10% and 0.16% CTR at R25 to R37 a click. The one composite post — a year of trips in a single edit — pulled 1,791 clicks at R0.87 and 106,232 video completions. People responded to the range, not to one place.",
           "And the conversion column is not reportable. It records 97,475 conversions against 57,345 clicks — 1.7 per click. That is not necessarily an error: LinkedIn's Conversions metric counts actions taken after an impression as well as after a click, on a 30-day click and 7-day view-through window, and a broadly scoped rule will fire on ordinary page loads. But until it is split into Click Conversions and View Conversions it cannot be honestly described as people who saw an ad and then acted. So no conversion figure appears anywhere on this page, including the several that would have flattered the work considerably.",
+        ],
+      },
+      {
+        id: "honest",
+        kind: "prose",
+        heading: "What I'd do differently",
+        body: [
+          "Run the brochure from month one. The offer that ended up defining the account — 36.6% form completion against 8.6% for everything else — only entered the mix in September, which means two months of lead spend ran on the weaker ask. The lesson generalises: test the offer before tuning the audience, because the offer moved numbers the targeting never could.",
+          "And I would configure conversion tracking properly on day zero. The broad tag made the entire conversions column unusable for seven months of reporting, and no amount of after-the-fact analysis can un-mix view-throughs from clicks. Ten minutes of setup would have bought a whole extra column of evidence.",
         ],
       },
     ],
@@ -568,6 +588,48 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "results",
         kind: "metrics",
+        heading: "Every benchmark, side by side",
+        intro:
+          "The account against LinkedIn's own published B2B norms, plus the email programme against standard B2B email benchmarks. One number missed, and it is shown with the rest — a scorecard that only ever shows wins is a brochure.",
+        items: [
+          {
+            value: "R218",
+            label: "CPM vs ~R559 norm",
+            context: "61% cheaper per thousand impressions.",
+          },
+          {
+            value: "R44",
+            label: "Flight CPC vs ~R92 norm",
+            context: "52% cheaper per click on the measured flight.",
+          },
+          {
+            value: "R252",
+            label: "CPL vs ~R744 gated median",
+            context: "A third of market — and ~R1,984 is the EMEA norm.",
+          },
+          {
+            value: "4.6–5.3%",
+            label: "Lead-gen engagement rate",
+            context: "Against a ~0.5% non-video benchmark — roughly nine times it.",
+          },
+          {
+            value: "44–48%",
+            label: "Video view rate vs 29.5%",
+            context: "15–19 points over the platform norm.",
+          },
+          {
+            value: "36.7% / 4.1%",
+            label: "Email opens / clicks vs ~30–35% / ~2.5%",
+            context:
+              "The onboarding sequence, bot-filtered; the outreach sequence opened at 61.5%.",
+          },
+        ],
+        footnote:
+          "The miss, reported with the wins: carousel CTR ran 0.32% against a 0.40–0.55% band — the one format below benchmark, which is why the recommendation was to keep carousels on the conversion job they were winning rather than the click job they were losing. And the email programme's zero replies across both sequences is in the next chapter's reflection, because it is the finding that matters most.",
+      },
+      {
+        id: "results",
+        kind: "metrics",
         heading: "And the leads were the right people",
         intro:
           "The count matters less than who filled the forms in. From the lead-form exports, assessed on work-email capture, seniority and ICP fit:",
@@ -661,11 +723,501 @@ export const CASE_STUDIES: CaseStudy[] = [
         ],
         heading: "Inside the tool",
       },
+      {
+        id: "product",
+        kind: "prose",
+        heading: "What I'd do differently",
+        body: [
+          "Start the call motion sooner. The nurture data said it plainly: the email sequences earned 36–62% open rates against a ~30% benchmark and produced zero replies — opens prove interest, and the absence of replies proves email alone cannot convert it. Warm leads sat unworked while the machine that found them kept improving. If I ran it again, a human follow-up call within 48 hours would exist from the first lead, not as a recommendation in the final report.",
+        ],
+      },
     ],
     seo: {
       title: "Innovatr case study | Alroy Ndhlovu",
       description:
         "How Alroy Ndhlovu rebuilt Innovatr's positioning, website, content engine and paid programme, sourced a 3,094-contact market, and built the social listening product the business now sells.",
+    },
+  },
+  {
+    slug: "hakkan",
+    name: "Hakkan",
+    dates: "Jul 2026 – present",
+    summary:
+      "Built a content research tool to fight AI slop — one where every claim traces to a real person saying a real thing, and the tool is engineered so it cannot quietly make things up.",
+    description:
+      "Hakkan (発刊, “to publish”) is a research-first content tool. Give it a topic and it reads the actual conversation — Reddit, TikTok, X, YouTube, the open web — then hands you a visual report with receipts, and helps you build content from that research in your own voice. This is the story of why it exists and what it took to make “no slop” true rather than a tagline.",
+    tags: ["Product build", "AI engineering", "UX", "Research"],
+    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    strip: [
+      { image: "products/hakkan-research.jpg", alt: "Hakkan's search screen." },
+      { image: "products/hakkan-report.jpg", alt: "A Hakkan report with receipts." },
+      { image: "products/hakkan-visual-report.jpg", alt: "The visual report view." },
+      { image: "products/hakkan-personas.jpg", alt: "Persona view." },
+    ],
+    chapters: [
+      { id: "why", label: "Why it exists" },
+      { id: "how", label: "How it works" },
+      { id: "hard", label: "The hard part" },
+      { id: "honest", label: "Honest by construction" },
+      { id: "screens", label: "The screens" },
+    ],
+    blocks: [
+      {
+        id: "why",
+        kind: "prose",
+        heading: "The problem: content stopped knowing anything",
+        body: [
+          "After more than a decade in marketing and content, I watched the medium slide from insightful to what everyone now calls AI slop — fluent text that reads fine and knows nothing, generated from a blank page and a guess. The tools caused it: every AI writer starts from nothing and asks the model to fill the void.",
+          "Hakkan inverts that. It starts from research — thousands of real posts, articles and comments matched to your question — and treats that research as the source of truth the content must be built from. The model is never allowed to be the source. People are.",
+          "The name carries the philosophy: Hakkan (発刊) is Japanese for “to publish”, and said aloud it echoes “harken” — to listen closely. Listen first, then publish. The design borrows from paper and the markers we abused during study, because the product’s whole argument is that the oldest publishing values still apply.",
+        ],
+      },
+      {
+        id: "how",
+        kind: "prose",
+        heading: "How it works: research → report → your voice",
+        body: [
+          "You give Hakkan a topic or a question. It fans out across social platforms and the open web, gathers the conversation, filters it for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, and every quote cited to the person who said it. From there you can export the research, or generate content from it — in a persona trained on your own writing, at a format and length you choose.",
+          "The balance is deliberate. Automation does the reaching and consolidating; the taste, the opinions and the final voice stay human. Some work is left manual on purpose, because the mistakes and the opinions are the part of content that connects.",
+        ],
+      },
+      {
+        id: "how",
+        kind: "trend",
+        heading: "What one report is actually made of",
+        intro:
+          "A real shipped report, on 2026 World Cup commercialisation: 965 items cited, 903 of them real voices — comments, posts and transcripts from people, not publications.",
+        measure: "Items cited",
+        rowLabel: "Source",
+        rows: [
+          {
+            label: "Open web",
+            value: 900,
+            display: "900",
+            note: "Articles and pages, reached through search APIs.",
+          },
+          {
+            label: "Google News",
+            value: 30,
+            display: "30",
+            note: "The press layer, kept separate from opinion.",
+          },
+          {
+            label: "Reddit",
+            value: 21,
+            display: "21",
+            note: "Where the arguments actually happen.",
+          },
+          {
+            label: "YouTube",
+            value: 5,
+            display: "5",
+            note: "Transcripts, so video voices are quotable.",
+          },
+          {
+            label: "Perplexity",
+            value: 4,
+            display: "4",
+            note: "Synthesis, weighted low on purpose.",
+          },
+          { label: "Instagram", value: 4, display: "4", note: "" },
+          { label: "Pinterest", value: 1, display: "1", note: "" },
+        ],
+        footnote:
+          "The mix is chosen per question, not fixed: a travel question reaches TripAdvisor, a developer question reaches Hacker News, without a code change. Depth is a user choice, not a limit the tool invents.",
+      },
+      {
+        id: "hard",
+        kind: "prose",
+        heading: "The hard part: teaching the filter to value people",
+        body: [
+          "The promise is “what people actually said”, and the first version of the evidence filter quietly betrayed it. A verbose article restates the topic in its own headline, so it scored high; a real reply — “Why need a nanny if I won’t have a job” — is short, oblique and contextual, so it read as off-topic and died. The filter was killing exactly the material the product sells.",
+          "The fix was a rubric that judges a comment as a comment: replies answer the thing they reply to, not your search query, so relevance is scored in context, and only spam, bots and meta-chatter score zero. Rewritten on principle, then measured once — not tuned to the target.",
+        ],
+      },
+      {
+        id: "hard",
+        kind: "trend",
+        heading: "Human voice in the evidence, measured at every stage",
+        intro:
+          "The bar was set at 40% of cited items being real human utterances. Getting there took four attempts — including catching our own test harness lying to us.",
+        measure: "Voice ratio",
+        rowLabel: "Stage",
+        rows: [
+          {
+            label: "First measure",
+            value: 12,
+            display: "12%",
+            note: "Later invalidated: a test flag was replaying cached data instead of searching live. Caught, documented, runs deleted.",
+          },
+          {
+            label: "Live streaming",
+            value: 29,
+            display: "29%",
+            note: "Real runs, streamed comments arriving. Better — and still losing voices in the filter.",
+          },
+          {
+            label: "Facts added",
+            value: 19,
+            display: "19%",
+            note: "More article evidence diluted the voices. The filter was the bottleneck, now provable.",
+          },
+          {
+            label: "Filter rewritten",
+            value: 57,
+            display: "57%",
+            note: "Comments judged as comments: 81 real voices cited in the acceptance run, against the 40% bar.",
+          },
+        ],
+        footnote:
+          "The 12% row stays in this chart deliberately. The measurement was taken on replayed fixture data a flag had switched on, and the moment that was discovered it was written down and the affected runs were deleted. A tool that sells honesty has to be built by a process that practises it.",
+      },
+      {
+        id: "honest",
+        kind: "metrics",
+        heading: "Honest by construction",
+        intro:
+          "“No slop” is enforced in code, not tone of voice. The product refuses whole categories of fabrication that competing tools happily ship:",
+        items: [
+          {
+            value: "3-way",
+            label: "Every number is classified",
+            context:
+              "Grounded in the research, drawn from your own writing, or derived by the model — and only the third is flagged for you to judge. Flagged, never blocked: only the author knows which figures they stand behind.",
+          },
+          {
+            value: "0",
+            label: "Virality predictions",
+            context:
+              "Refused outright. With no outcome data to train on, a prediction is a made-up number beside real citations. Hakkan shows what did break out, measured against each platform's median.",
+          },
+          {
+            value: "“of the N voices here”",
+            label: "Every claim is scoped",
+            context:
+              "60% of the voices in a report being frustrated is measured and true; “60% of people” is neither. The copy states the scope, never an apology.",
+          },
+        ],
+        footnote:
+          "Same rule inside the business: the tool was built against a hard cost-per-run ceiling enforced in code, so the research depth users get is sustainable for them and for us — priced to be worth it on both sides, without a single invented limit.",
+      },
+      {
+        id: "screens",
+        kind: "gallery",
+        heading: "The screens",
+        wide: true,
+        shots: [
+          {
+            image: "products/hakkan-research.jpg",
+            alt: "Hakkan's search screen: one question box, depth and time-range controls, and the platforms it listens across.",
+          },
+          {
+            image: "products/hakkan-report.jpg",
+            alt: "A finished report: 965 items cited, 903 real voices, themes and sentiment with the receipts one tap away.",
+          },
+          {
+            image: "products/hakkan-visual-report.jpg",
+            alt: "The visual report, charting where the evidence and the sentiment diverge.",
+          },
+          {
+            image: "products/hakkan-personas.jpg",
+            alt: "Personas: Hakkan trained on your own writing, so the output sounds like you rather than like a model.",
+          },
+        ],
+      },
+      {
+        id: "screens",
+        kind: "prose",
+        heading: "What I'd do differently",
+        body: [
+          "Read the reference images before building the report page. The first version was built from a written summary of the design references and came out as a 7,600-pixel essay — thirteen sections, ten screens of scroll — when every actual reference was a card grid with a headline-metric band. A day was spent learning that a doc's summary of an image loses exactly the thing that mattered.",
+          "And I would batch the evidence filter from day one. Scoring every item in a single model call worked until streaming delivered what we were paying for, at which point the call outgrew its own timeout and killed runs that had already spent money. The fix — small batches, bounded parallelism — was always the right architecture; it just wasn't the first one.",
+          "Worth naming what solo meant here: product, design, code and copy are mine, with AI-assisted engineering doing the accelerating and a set of third-party research APIs doing the reaching. The judgement calls — and the mistakes above — are all mine.",
+        ],
+      },
+    ],
+    seo: {
+      title: "Hakkan case study | Alroy Ndhlovu",
+      description:
+        "Building a content research tool to fight AI slop: how Hakkan grounds every claim in real human voices, measures its own honesty, and refuses to invent numbers.",
+    },
+  },
+  {
+    slug: "inspiritintruth",
+    name: "InSpiritInTruth",
+    dates: "Jul 2026 – present",
+    summary:
+      "Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.",
+    description:
+      "InSpiritInTruth is a devotional app for imperfect journeys — the overwhelmed, the curious, the unchurched, the devoted. The daily devotional format has looked the same for generations: one text, written for everyone, read alone. ISIT keeps that shared rhythm and adds something the format has never had — a devotional written for exactly what you are carrying today.",
+    tags: ["Product build", "Personalisation", "UX", "AI engineering"],
+    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    strip: [
+      { image: "products/isit-home.png", alt: "ISIT home screen." },
+      { image: "products/isit-personalise.png", alt: "The personalisation step." },
+      { image: "products/isit-devotionals.png", alt: "Devotionals tab." },
+      { image: "products/isit-discover.png", alt: "Discover by theme." },
+      { image: "products/isit-bible.png", alt: "The in-app Bible." },
+      { image: "products/isit-profile.png", alt: "Reading streak." },
+    ],
+    chapters: [
+      { id: "why", label: "Why it exists" },
+      { id: "how", label: "The personalisation" },
+      { id: "care", label: "Care for the text" },
+      { id: "screens", label: "The screens" },
+    ],
+    blocks: [
+      {
+        id: "why",
+        kind: "prose",
+        heading: "A format that never changed",
+        body: [
+          "The devotional is one of the oldest content formats there is: a passage, a reflection, a prayer, the same page for every reader. That sameness is part of its comfort — and its limit. The person navigating faith outside church walls, the one struggling to stay consistent, the one carrying something specific today: the format has never been able to meet any of them where they actually are.",
+          "ISIT keeps everything worth keeping — a weekly devotional written by a person and meant to be read slowly, the whole Bible in the app, no algorithm, no ads — and adds the thing the format never had. You share what you are going through, and it writes a devotional for exactly that, in the moment you need it.",
+        ],
+      },
+      {
+        id: "how",
+        kind: "prose",
+        heading: "Personalisation with a safety net",
+        body: [
+          "Generated spiritual guidance is a higher-stakes writing task than most AI products ever face. The register has to carry spiritual authority without hallucinated certainty, which shaped every model decision: the generators run on the model that reviewers consistently rank first for restraint, coherence and emotional depth — because in this register, restraint is the feature and “creative risk” is the failure mode. A cheaper, edgier model was evaluated on the real prompt and turned down, twice.",
+          "And nothing generated reaches a reader unverified. Every tailored devotional passes through a fact-check that searches the live web to verify its claims before publication — a pass that deliberately costs several times more than the writing itself.",
+        ],
+      },
+      {
+        id: "how",
+        kind: "trend",
+        heading: "Where the AI effort goes",
+        intro:
+          "The share of machine effort behind one tailored devotional. Most AI products spend everything on generation; ISIT spends most of it making sure the generation told the truth.",
+        measure: "Share of effort",
+        rowLabel: "Stage",
+        rows: [
+          {
+            label: "Writing",
+            value: 22,
+            display: "~22%",
+            note: "The devotional itself, drafted from what you shared.",
+          },
+          {
+            label: "Verifying",
+            value: 77,
+            display: "~77%",
+            note: "Live web-search fact-checking of every claim, before a reader ever sees it.",
+          },
+          {
+            label: "Reflecting",
+            value: 1,
+            display: "~1%",
+            note: "The closing reflection pass.",
+          },
+        ],
+        footnote:
+          "That ratio is a choice, and it was priced deliberately: subscriptions are set where the checking pass stays affordable at real usage, so the product is sustainable for the business without ever cutting the verification to protect a margin.",
+      },
+      {
+        id: "care",
+        kind: "metrics",
+        heading: "Care for the text",
+        intro:
+          "An app that quotes scripture carries a special obligation: the words on screen must be exactly what they claim to be. Three of the rules that came out of the build:",
+        items: [
+          {
+            value: "Label + text",
+            label: "Move together, always",
+            context:
+              "A verse's translation label is only ever updated when its text was actually re-fetched in that translation. The bug this rule killed: a failed fetch publishing NKJV wording tagged “NET” — a lie a reader can never detect.",
+          },
+          {
+            value: "Device date",
+            label: "Not the server's, not UTC",
+            context:
+              "The daily verse broke three times by rolling over on UTC midnight instead of the reader's own — showing tomorrow's verse at 1am. Now a hard rule with the reproduction documented.",
+          },
+          {
+            value: "No italics",
+            label: "In scripture passages",
+            context:
+              "Retired across the app: emphasis the original text does not carry is editorialising. The passage is presented as written.",
+          },
+        ],
+        footnote:
+          "Design follows the same discipline — the devotional hero is bottom-anchored and ratio-sized, the type system is two families rather than three, and generated devotionals draw from a closed, server-enforced set of themes rather than whatever a model invents.",
+      },
+      {
+        id: "screens",
+        kind: "gallery",
+        heading: "The screens",
+        shots: [
+          {
+            image: "products/isit-home.png",
+            alt: "Home: the week's devotional and the verse of the day.",
+          },
+          {
+            image: "products/isit-personalise.png",
+            alt: "The personalisation step — what are you walking through today?",
+          },
+          {
+            image: "products/isit-devotionals.png",
+            alt: "Devotionals, including one written for you.",
+          },
+          {
+            image: "products/isit-discover.png",
+            alt: "Discover: browsing by theme, Faith to Gratitude.",
+          },
+          {
+            image: "products/isit-bible.png",
+            alt: "The in-app Bible with highlight, note and save.",
+          },
+          {
+            image: "products/isit-profile.png",
+            alt: "Profile, with a reading streak that encourages without gamifying.",
+          },
+        ],
+      },
+      {
+        id: "screens",
+        kind: "prose",
+        heading: "What I'd do differently",
+        body: [
+          "Define “today” on day one. The daily verse rolled over on UTC midnight instead of the reader's own clock, and that one wrong assumption shipped three separate times before it became a written rule with the reproduction documented. Any app with daily content should decide whose midnight it honours before writing the first query.",
+          "And I would measure the cost of honesty before pricing it, not after. The fact-check pass turned out to dominate the machine cost of a tailored devotional — several times the writing itself — which was the right design but was discovered after the subscription price was set, forcing the sums to be redone in the open. Instrument first, price second.",
+        ],
+      },
+    ],
+    seo: {
+      title: "InSpiritInTruth case study | Alroy Ndhlovu",
+      description:
+        "Bringing personalisation to the devotional: how InSpiritInTruth writes for what you are carrying today, and the engineering that keeps generated scripture honest.",
+    },
+  },
+  {
+    slug: "tapa",
+    name: "tapa.",
+    dates: "Jul 2026 – present",
+    summary:
+      "Built an app you could use every day and kept it radically simple — one question in, one good answer out — because life needs more simple, and simplicity is the discipline, not the shortcut.",
+    description:
+      "tapa. answers one question: “what can I cook with this?” Tell it or show it what you have, say how long you want to cook and for how many people, and it gives you one well-considered recipe. Not fifty search results. One good answer. The case study is about what keeping something that simple actually costs.",
+    tags: ["Product build", "UX", "Simplicity", "Pricing"],
+    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    strip: [
+      { image: "products/tapa-home.jpg", alt: "tapa. home." },
+      { image: "products/tapa-generate.jpg", alt: "Entering ingredients." },
+      { image: "products/tapa-recipe.jpg", alt: "A generated recipe." },
+      { image: "products/tapa-cooking.jpg", alt: "Cooking mode." },
+    ],
+    chapters: [
+      { id: "why", label: "Why it exists" },
+      { id: "simple", label: "Simple on purpose" },
+      { id: "fair", label: "Fair on purpose" },
+      { id: "screens", label: "The screens" },
+    ],
+    blocks: [
+      {
+        id: "why",
+        kind: "prose",
+        heading: "The mental load nobody prices in",
+        body: [
+          "Eating is a basic need, and deciding what to eat is somehow the most mentally taxing part of the day. First you work out what you have, then what could be made from it, and because that is monotonous you end up cooking the same three things forever. Recipe sites answer the question with fifty results and a life story above each one — which is more deciding, not less.",
+          "tapa. deletes the decision. Type, say, or photograph what is in the fridge, set a time and a serving count, and get one recipe tailored to your tastes. Allergies and dietary needs are set once and enforced as hard rules on every generation — a safety constraint, not a preference.",
+        ],
+      },
+      {
+        id: "simple",
+        kind: "metrics",
+        heading: "Simple on purpose",
+        intro:
+          "Every number in the product is small, and each one is a decision to leave something out:",
+        items: [
+          {
+            value: "3 → 1",
+            label: "Ways in, answers out",
+            context:
+              "Type it, say it, or photograph it — and one recipe comes back. Choice is the load the app exists to remove, so it never returns a list.",
+          },
+          {
+            value: "1×",
+            label: "Set your constraints once",
+            context:
+              "Allergies, dietary rules, household size, skill — captured in onboarding, applied to every recipe after, editable any time.",
+          },
+          {
+            value: "3",
+            label: "Recipes of history",
+            context:
+              "Enough to go back to last night, not enough to become a database you manage. Favourites are saved deliberately or not at all.",
+          },
+        ],
+        footnote:
+          "The same discipline runs through the engineering: when a second account on a shared phone could see the first account's recipes, the fix was ownership at the data layer — every row belongs to an account, not a device — rather than a patch on the sign-out path.",
+      },
+      {
+        id: "fair",
+        kind: "trend",
+        heading: "Finding the free tier honestly",
+        intro:
+          "A simple app still has to sustain itself. The free allowance was tuned in public view of the numbers — how often people actually cook, what competing apps give away — and the journey is worth showing because each move had a reason.",
+        measure: "Free recipes per week",
+        rowLabel: "Iteration",
+        rows: [
+          {
+            label: "Launch",
+            value: 3,
+            display: "3",
+            note: "Generous — but the median cook makes 3–4 dinners a week, so free covered everything and the question of upgrading never arrived.",
+          },
+          {
+            label: "Revision",
+            value: 1,
+            display: "1",
+            note: "Too far the other way. Live for roughly an hour before the reasoning was rechecked.",
+          },
+          {
+            label: "Settled",
+            value: 2,
+            display: "2",
+            note: "Real weekly value free, and anyone cooking regularly meets the upgrade question at a genuine moment of need.",
+          },
+        ],
+        footnote:
+          "The aim was an exchange that is fair in both directions — worth it for the user, sustainable for the business — set from how people actually cook rather than from hope. And a matching honesty rule ships in the code: upsell copy is derived from the configuration that enforces it, so the app can only ever promise what it actually delivers.",
+      },
+      {
+        id: "screens",
+        kind: "gallery",
+        heading: "The screens",
+        shots: [
+          {
+            image: "products/tapa-home.jpg",
+            alt: "Home: today's suggestion, saved recipes, totals.",
+          },
+          {
+            image: "products/tapa-generate.jpg",
+            alt: "What's in your fridge? Type it, scan it, or say it.",
+          },
+          {
+            image: "products/tapa-recipe.jpg",
+            alt: "One recipe: time, difficulty, nutrition, allergens flagged.",
+          },
+          { image: "products/tapa-cooking.jpg", alt: "Cooking mode, one step at a time." },
+        ],
+      },
+      {
+        id: "screens",
+        kind: "prose",
+        heading: "What I'd do differently",
+        body: [
+          "Own the data properly from the first schema. Local recipes belonged to the phone, not the account, until a TestFlight tester signed into a fresh account and saw someone else's saved recipes. The fix — every row owned by a user, enforced at the data layer — was always the right design; it should not have taken a stranger's recipe list to prove it.",
+          "And I would research the free tier before launch rather than in public. It moved from three recipes a week to one to two inside two days — each step reasoned and documented, but the cooking-frequency data that settled it existed all along. The habit this project actually taught me: check how people already behave before deciding what to charge them for.",
+        ],
+      },
+    ],
+    seo: {
+      title: "tapa. case study | Alroy Ndhlovu",
+      description:
+        "Building something for every day and keeping it simple: how tapa. answers “what can I cook with this?” with one good recipe, and prices the exchange fairly.",
     },
   },
 ];
@@ -678,8 +1230,6 @@ export const CASE_STUDIES: CaseStudy[] = [
  */
 export const UPCOMING_STUDIES: { name: string; note: string }[] = [
   { name: "Lumiskin", note: "Design exploration — a cosmetics hero, from blank page to polish" },
-  { name: "Hakkan", note: "Research-first AI writing, built end to end" },
-  { name: "InSpiritInTruth", note: "A devotional app, design through release" },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
