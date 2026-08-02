@@ -44,8 +44,20 @@
   --color-accent-soft: rgba(144, 168, 66, 0.14); /* tinted chip backgrounds */
   --color-accent-olive: #b5b325; /* rare gradient partner */
 
-  /* --- Gold: micro-accents only ---------------------------- */
-  --color-gold: #f0b331;
+  /* --- Goldie: the full brand ramp -------------------------- */
+  --color-gold: #f0b331; /* bright, 10.4:1 — micro-accents */
+  --color-gold-mid: #c2a142; /* 7.8:1 */
+  --color-gold-deep: #b58104; /* 5.7:1 */
+
+  /*
+   * Illustration skin tones. The section illustrations draw people, and
+   * a portfolio belonging to a Black man should not render them in
+   * neutral grey — the first themed pass did, and it read as lifeless.
+   * Caramel at 5.3:1 against the base, with a deeper tone for shadow at
+   * 3.3:1, which is enough separation to model a form.
+   */
+  --color-skin: #b07a4e;
+  --color-skin-shade: #8a5a37;
 
   /*
    * Inverted blocks. The light palette survives as a deliberate accent
@@ -114,6 +126,12 @@
   --nav-brand-reserve: 130px;
   --nav-num-circle: 30px; /* the glass disc behind the active step number */
   --brand-mark-height: 48px; /* Alroy's signature wordmark; it is a script, and below this it stops reading */
+
+  /* The section illustration in a left column (§6). Decorative, so it
+     sits below the giant number in the visual hierarchy. */
+  --lottie-size: 260px;
+  /* How far ahead of the viewport an illustration starts loading. */
+  --lottie-preload-margin: 700px;
 
   /* Smallest a card may get before an auto-fill grid drops a column. */
   --card-min: 240px;

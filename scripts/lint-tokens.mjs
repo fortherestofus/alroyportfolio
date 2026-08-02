@@ -12,7 +12,7 @@
  * Exits non-zero on any violation.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative, sep } from "node:path";
+import { join, relative } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const SRC = join(ROOT, "src");
@@ -110,7 +110,12 @@ function check(file) {
      * condition. Breakpoints are still declared once, as
      * --breakpoint-* in the @theme block.
      */
-    const inMediaCondition = /^@(media|container)\b/.test(trimmed);
+    /*
+     * A matchMedia() query is the JavaScript twin of a media condition
+     * and has the same constraint: it is a string parsed by the browser,
+     * so var() cannot appear in it. Same exemption, same reason.
+     */
+    const inMediaCondition = /^@(media|container)\b/.test(trimmed) || /matchMedia\(/.test(trimmed);
 
     const isTokenDefinition = rel.startsWith(TOKEN_LAYER) && CUSTOM_PROPERTY_DECLARATION.test(line);
     if (isTokenDefinition) return;
@@ -200,14 +205,80 @@ for (const [token, where] of used) {
   });
 }
 
+/**
+ * The built Lottie animations must contain only site colours.
+ *
+ * `npm run lottie` remaps them, but the source files stay in the repo
+ * and a new illustration could be dropped into public/lottie by hand,
+ * or the build step could be skipped. One off-palette fill among
+ * hundreds is invisible on a 260px looping animation and completely
+ * obvious to a parser, so the parser checks.
+ */
+const LOTTIE = join(ROOT, "public", "lottie");
+const PALETTE = new Set([
+  "f9f6f2", // --color-text
+  "1a1a1a", // --color-surface
+  "b07a4e", // --color-skin
+  "8a5a37", // --color-skin-shade
+  "90a842", // --color-accent
+  "b5b325", // --color-accent-olive
+  "f0b331", // --color-gold
+  "c2a142", // --color-gold-mid
+  "b58104", // --color-gold-deep
+]);
+
+const toHex = (channels) =>
+  channels
+    .slice(0, 3)
+    .map((value) =>
+      Math.round(value * 255)
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("");
+
+function auditLottie() {
+  let animations;
+  try {
+    animations = readdirSync(LOTTIE).filter((file) => file.endsWith(".json"));
+  } catch {
+    return; // Not built yet; the browser QA covers their presence.
+  }
+
+  for (const file of animations) {
+    const offenders = new Set();
+    const walk = (node) => {
+      if (Array.isArray(node)) return node.forEach(walk);
+      if (!node || typeof node !== "object") return;
+      if ((node.ty === "fl" || node.ty === "st") && Array.isArray(node.c?.k)) {
+        const [first] = node.c.k;
+        if (typeof first === "number") {
+          const hex = toHex(node.c.k);
+          if (!PALETTE.has(hex)) offenders.add(hex);
+        }
+      }
+      for (const key of Object.keys(node)) walk(node[key]);
+    };
+    walk(JSON.parse(readFileSync(join(LOTTIE, file), "utf8")));
+
+    for (const hex of offenders) {
+      violations.push({
+        rel: join("public", "lottie", file),
+        lineNumber: 1,
+        value: `#${hex}`,
+        rule: "off-palette Lottie colour (run `npm run lottie`)",
+      });
+    }
+  }
+}
+
+auditLottie();
+
 if (violations.length > 0) {
   console.error(`\n✖ Token lint failed: ${violations.length} violation(s)\n`);
   for (const v of violations) {
     console.error(`  ${v.rel}:${v.lineNumber}  ${v.rule} → ${v.value}`);
   }
-  console.error(
-    `\nEvery color, size and spacing value must come from src${sep}styles${sep}tokens.css.\n`,
-  );
   process.exit(1);
 }
 

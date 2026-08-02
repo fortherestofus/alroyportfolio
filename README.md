@@ -13,15 +13,16 @@ still outstanding.
 npm install
 ```
 
-| Command              | What it does                                    |
-| -------------------- | ----------------------------------------------- |
-| `npm run dev`        | Dev server at `localhost:4321`                  |
-| `npm run build`      | Static build into `dist/`                       |
-| `npm run preview`    | Serve the built output                          |
-| `npm run qa`         | **All PRD §12b gates, in order**                |
-| `npm run qa:browser` | Just the behavioural gates in a real browser    |
-| `npm run video`      | Re-encode portfolio video and cut poster frames |
-| `npm run deploy`     | QA, then publish `dist/` to the `deploy` branch |
+| Command              | What it does                                      |
+| -------------------- | ------------------------------------------------- |
+| `npm run dev`        | Dev server at `localhost:4321`                    |
+| `npm run build`      | Static build into `dist/`                         |
+| `npm run preview`    | Serve the built output                            |
+| `npm run qa`         | **All PRD §12b gates, in order**                  |
+| `npm run qa:browser` | Just the behavioural gates in a real browser      |
+| `npm run video`      | Re-encode portfolio video and cut poster frames   |
+| `npm run lottie`     | Recolour the section illustrations to the palette |
+| `npm run deploy`     | QA, then publish `dist/` to the `deploy` branch   |
 
 `npm run qa` runs: `astro check` → ESLint → token lint → Prettier → build → link
 check → browser behaviour. It is the same sequence CI runs, so a green local `qa`
@@ -105,6 +106,22 @@ targets. Both are satisfied by making `--control-md` itself responsive: 40px on
 pointer devices, 44px on coarse pointers and at 768px or below. Components just
 use the token. Use the `touch-target` utility only for interactive elements not
 sized by `--control-md` (icon-only buttons, carousel arrows).
+
+### Section illustrations
+
+Five sections (02–06) carry a Lottie illustration in the left column. The
+sources in `src/assets/lottie/` are bright eight-colour illustrations;
+`npm run lottie` remaps them onto the brand palette and writes
+`public/lottie/`. Skin tones are pinned by hand to caramel, because a colour
+map keyed on hex cannot tell a face from a chart bar — the first pass made
+everyone green and the second made everyone grey.
+
+Run it after adding or replacing a source file. An unmapped colour fails the
+script, and any off-palette fill in the built output fails `lint:tokens`.
+
+The player (`lottie-web` light) is the only JavaScript here that exists purely
+for decoration, so it is fetched on approach, never on mobile, and never at all
+under reduced motion. All five animations total ~117KB gzipped.
 
 ## Deployment
 

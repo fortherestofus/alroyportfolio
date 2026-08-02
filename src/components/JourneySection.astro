@@ -14,15 +14,19 @@
  * Below 1024px the columns stack and the left column becomes a plain
  * section header, with no sticky behaviour.
  */
+import SectionLottie from "./SectionLottie.astro";
+
 interface Props {
   id: string;
   number: string;
   label: string;
   heading: string;
   blurb: string;
+  /** Filename in public/lottie, for the sections that carry one. */
+  lottie?: string;
 }
 
-const { id, number, label, heading, blurb } = Astro.props;
+const { id, number, label, heading, blurb, lottie } = Astro.props;
 ---
 
 <section class="jsection" id={id} aria-labelledby={`${id}-heading`}>
@@ -32,6 +36,7 @@ const { id, number, label, heading, blurb } = Astro.props;
       <p class="eyebrow jsection__eyebrow">{label}</p>
       <h2 id={`${id}-heading`} class="jsection__heading">{heading}</h2>
       <p class="jsection__blurb">{blurb}</p>
+      {lottie && <SectionLottie name={lottie} />}
     </div>
 
     <div class="jsection__content">

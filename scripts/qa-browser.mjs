@@ -82,6 +82,7 @@ const EXPECTED = {
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
   products: 4, // src/data/products.ts
   productShots: 18,
+  sectionLotties: 5, // sections 02-06 carry an illustration; 01 and 07 do not
   caseStudyCards: 5, // CASE_STUDIES — Thrifty, Innovatr, Hakkan, ISIT, tapa
   upcomingStudies: 1, // UPCOMING_STUDIES — Lumiskin
   stripShots: 22, // strip entries across all studies, rendered twice for the marquee
@@ -1287,6 +1288,96 @@ async function checkMobile(browser, origin, viewport) {
  * needs a gate — a broken canonical or a JSON-LD typo shows no symptom
  * on the page and is found months later, if ever.
  */
+/**
+ * The section illustrations: on-palette, and genuinely deferred.
+ *
+ * The palette part is checked in the built JSON rather than on screen,
+ * because a single missed fill is invisible to a person and obvious to
+ * a parser. The deferral part matters more: lottie-web is the only
+ * JavaScript this site loads purely for decoration, so "it lazy-loads"
+ * has to be a measured fact, not an intention.
+ */
+async function checkLottie(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+
+  const requests = [];
+  page.on("request", (request) => {
+    const url = request.url();
+    if (/\/lottie\/|lottie_light|lottie-web/i.test(url)) requests.push(url);
+  });
+
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(700);
+
+  const holders = await page.evaluate(() => document.querySelectorAll("[data-lottie]").length);
+  record(
+    `[lottie] ${EXPECTED.sectionLotties} sections carry an illustration`,
+    holders === EXPECTED.sectionLotties,
+    `${holders} found`,
+  );
+
+  const animationsUpFront = requests.filter((url) => url.endsWith(".json"));
+  record(
+    "[lottie] no animation is fetched before its section is approached",
+    animationsUpFront.length === 0,
+    animationsUpFront.join(", "),
+  );
+
+  await page.evaluate(() => document.getElementById("experience")?.scrollIntoView());
+  await page.waitForTimeout(2500);
+
+  const ready = await page.evaluate(() => {
+    const first = document.querySelector("[data-lottie]");
+    return { state: first?.getAttribute("data-state"), rendered: !!first?.querySelector("svg") };
+  });
+  record(
+    "[lottie] the first illustration mounts on approach",
+    ready.state === "ready" && ready.rendered,
+    `state=${ready.state} svg=${ready.rendered}`,
+  );
+
+  const loadedNow = requests.filter((url) => url.endsWith(".json")).length;
+  record(
+    "[lottie] only the approached animation loads, not all five",
+    loadedNow > 0 && loadedNow < EXPECTED.sectionLotties,
+    `${loadedNow} of ${EXPECTED.sectionLotties} loaded at section 02`,
+  );
+
+  await context.close();
+
+  /*
+   * Reduced motion must not fetch the player or a single animation,
+   * across the whole page — not merely pause them once loaded.
+   */
+  const quiet = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const quietPage = await quiet.newPage();
+  const quietRequests = [];
+  quietPage.on("request", (request) => {
+    const url = request.url();
+    if (/\/lottie\/.*\.json|lottie_light|lottie-web/i.test(url)) quietRequests.push(url);
+  });
+  await quietPage.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await quietPage.evaluate(async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y <= height; y += window.innerHeight) {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await wait(80);
+    }
+  });
+  await quietPage.waitForTimeout(1000);
+  record(
+    "[lottie] reduced motion fetches neither the player nor any animation",
+    quietRequests.length === 0,
+    quietRequests.map((url) => url.split("/").pop()).join(", "),
+  );
+  await quiet.close();
+}
+
 async function checkSeo(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await context.newPage();
@@ -1824,6 +1915,7 @@ try {
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);
+  await checkLottie(browser, origin);
   await checkSeo(browser, origin);
   await checkTextZoom(browser, origin);
   await checkHeroContrast(browser, origin);

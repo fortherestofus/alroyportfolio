@@ -136,6 +136,7 @@ const schema = [
         label={section.label}
         heading={section.heading}
         blurb={section.blurb}
+        lottie={"lottie" in section ? section.lottie : undefined}
       >
         {section.id === "who" && <WhoIsAlroy />}
         {section.id === "experience" && <ExperienceList />}

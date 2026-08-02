@@ -72,6 +72,7 @@ export const SECTIONS = [
   },
   {
     id: "experience",
+    lottie: "workexperience",
     number: "02",
     label: "Work experience",
     short: "Work",
@@ -81,6 +82,7 @@ export const SECTIONS = [
   },
   {
     id: "education",
+    lottie: "education",
     number: "03",
     label: "Education",
     short: "Study",
@@ -90,6 +92,7 @@ export const SECTIONS = [
   },
   {
     id: "portfolio",
+    lottie: "portfolio",
     number: "04",
     label: "Portfolio",
     short: "Portfolio",
@@ -99,6 +102,7 @@ export const SECTIONS = [
   },
   {
     id: "products",
+    lottie: "products",
     number: "05",
     label: "Products",
     short: "Products",
@@ -108,6 +112,7 @@ export const SECTIONS = [
   },
   {
     id: "case-studies",
+    lottie: "case-studies",
     number: "06",
     label: "Case studies",
     short: "Cases",

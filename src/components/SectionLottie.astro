@@ -1,0 +1,192 @@
+---
+/**
+ * The illustration in a section's left column.
+ *
+ * Five of the seven sections get one. Section 01 already has Alroy's
+ * portrait and 07 has the booking calendar, so those columns are
+ * carrying something; the middle five were empty.
+ *
+ * Deliberately quiet. Five looping animations down one page would
+ * compete with the timeline nav, which is the site's actual signature
+ * interaction — so each one is small, dimmed until its section is the
+ * one being read, and paused whenever it is off screen.
+ *
+ * Colours are not the source files'. `npm run lottie` remaps the
+ * originals' bright eight-colour palette onto the site tokens; see
+ * scripts/theme-lottie.mjs for why that is a build step rather than a
+ * runtime filter.
+ */
+interface Props {
+  /** Filename in public/lottie, without the extension. */
+  name: string;
+  /**
+   * Read out to assistive tech. These illustrate a heading that already
+   * says the same thing, so the default is to hide them — pass a label
+   * only if one ever carries information the text does not.
+   */
+  label?: string;
+}
+
+const { name, label } = Astro.props;
+---
+
+<div
+  class="slottie"
+  data-lottie={`/lottie/${name}.json`}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+>
+</div>
+
+<style>
+  /*
+   * Sized in its own token so all five stay in step, and reserved from
+   * the start: the player injects an SVG asynchronously, and without a
+   * held box the sticky column would jump when it lands.
+   */
+  .slottie {
+    width: 100%;
+    max-width: var(--lottie-size);
+    aspect-ratio: 1;
+    margin-top: var(--space-6);
+    /*
+     * Held back so it reads as texture beside the heading rather than
+     * as a second thing to look at, and brought up when the reader is
+     * actually in this section.
+     */
+    opacity: 0.55;
+    transition: opacity var(--duration-slow) var(--ease-out);
+  }
+
+  .slottie[data-in-view="true"] {
+    opacity: 1;
+  }
+
+  /* Nothing to show until the animation has actually loaded. */
+  .slottie:empty {
+    opacity: 0;
+  }
+
+  .slottie :global(svg) {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /*
+   * Below the two-column breakpoint the left column is a plain section
+   * header stacked above the content, and an illustration there pushes
+   * the actual content down a screen for no benefit.
+   */
+  @media (width < 1024px) {
+    .slottie {
+      display: none;
+    }
+  }
+
+  /*
+   * Reduced motion: the player is never even fetched (see the script),
+   * so there is nothing here to hide — but the reserved box would leave
+   * a hole, so it collapses.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .slottie {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * One loader for every illustration on the page.
+   *
+   * lottie-web is the only JavaScript dependency this site carries
+   * purely for decoration, so it is treated accordingly: the light
+   * build (no expressions — none of these use any), fetched on first
+   * approach rather than at load, and never fetched at all when the
+   * reader has asked for reduced motion. A visitor who does not scroll
+   * past section 01, or who is on a phone, pays nothing.
+   */
+  type LottieAnimation = { play(): void; pause(): void; destroy(): void };
+  type LottiePlayer = {
+    loadAnimation(config: Record<string, unknown>): LottieAnimation;
+  };
+
+  const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const MOBILE = window.matchMedia("(width < 1024px)");
+  /** Read from the token layer, like every other design value. */
+  const approachMargin = getComputedStyle(document.documentElement)
+    .getPropertyValue("--lottie-preload-margin")
+    .trim();
+
+  const holders = [...document.querySelectorAll<HTMLElement>("[data-lottie]")];
+
+  if (holders.length > 0 && !REDUCED.matches && !MOBILE.matches) {
+    let playerPromise: Promise<LottiePlayer> | null = null;
+
+    const player = () => {
+      playerPromise ??= import("lottie-web/build/player/lottie_light").then(
+        (module) => (module.default ?? module) as LottiePlayer,
+      );
+      return playerPromise;
+    };
+
+    const mount = async (holder: HTMLElement) => {
+      const source = holder.dataset.lottie;
+      if (!source || holder.dataset.state) return;
+      holder.dataset.state = "loading";
+
+      try {
+        const [lottie, animationData] = await Promise.all([
+          player(),
+          fetch(source).then((response) => {
+            if (!response.ok) throw new Error(`${response.status}`);
+            return response.json();
+          }),
+        ]);
+
+        const animation = lottie.loadAnimation({
+          container: holder,
+          renderer: "svg",
+          loop: true,
+          autoplay: false,
+          animationData,
+          rendererSettings: { progressiveLoad: true },
+        });
+        holder.dataset.state = "ready";
+
+        /*
+         * Only animate what is on screen. Five simultaneous SVG
+         * animations is real main-thread work, and four of them are
+         * always somewhere the reader cannot see.
+         */
+        const visibility = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            const showing = entry.isIntersecting;
+            holder.dataset.inView = String(showing);
+            if (showing) animation.play();
+            else animation.pause();
+          }
+        });
+        visibility.observe(holder);
+      } catch {
+        // A missing or malformed animation is not worth a broken page.
+        holder.dataset.state = "failed";
+      }
+    };
+
+    const approach = new IntersectionObserver(
+      (entries, observer) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          void mount(entry.target as HTMLElement);
+        }
+      },
+      { rootMargin: approachMargin },
+    );
+
+    for (const holder of holders) approach.observe(holder);
+  }
+</script>
