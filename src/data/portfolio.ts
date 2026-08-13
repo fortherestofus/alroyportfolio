@@ -96,6 +96,11 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal product card slides in over the video.",
       },
       {
+        image: "website_video_filosofee-poster.webp",
+        video: "/media/portfolio/website_video_filosofee.mp4",
+        alt: "The Filosofee storefront scrolling from its hero through the t-shirt and hoodie categories to a product page.",
+      },
+      {
         image: "website_video_dejamedia-poster.webp",
         video: "/media/portfolio/website_video_dejamedia.mp4",
         alt: "The Deja Media site scrolling through its hero and services, headlined “Let's tell your brand story through business tech”.",

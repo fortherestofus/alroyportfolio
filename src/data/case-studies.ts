@@ -1457,6 +1457,139 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
   },
   {
+    slug: "filosofee",
+    name: "Filosofee",
+    dates: "2024 – present",
+    hero: {
+      image: "filosofee/hero-shoot.jpg",
+      alt: "Three frames from the Filosofee product shoot: the wordmark hoodie and tees on a plain studio backdrop.",
+    },
+    summary:
+      "Built a clothing brand end to end — product, store, payments, photography — and validated it the only way that counts: sales in the first month, local and international, then a 20-unit bulk order from another brand.",
+    description:
+      "Filosofee is a South African streetwear label. I designed the range, built the store, wired the payments, ran the shoot and the marketing. It sold in its first month and then landed its first wholesale order. One line of it failed, and that is in here too.",
+    tags: ["E-commerce", "Brand", "Product design", "Photography", "AI production"],
+    meta: ["Own brand", "Product, store and growth", "2024 – present"],
+    website: "https://www.filosofee.shop",
+    strip: [
+      { image: "filosofee/hero-shoot.jpg", alt: "" },
+      { image: "filosofee/designs.jpg", alt: "" },
+      { image: "filosofee/real-vs-ai.jpg", alt: "" },
+    ],
+    chapters: [
+      { id: "build", label: "Building it" },
+      { id: "proof", label: "Proof" },
+      { id: "media", label: "Cutting the cost" },
+      { id: "stickers", label: "What I killed" },
+      { id: "honest", label: "What I'd change" },
+    ],
+    blocks: [
+      {
+        id: "build",
+        kind: "prose",
+        heading: "The whole thing, not a piece of it",
+        body: [
+          "Filosofee started as a graphic tee brand and grew into apparel, packaging and a store. I did the range, the store, the payment gateways, the photography and the marketing. That is the useful part of this case study: most people who can design a shirt cannot take a card payment, and most people who can build a store have never had to price a garment.",
+          "The range is graphic-led — the wordmark pieces, and a set of designs that carry an idea rather than a logo. The store is a hosted storefront with Paystack for local cards and PayPal for everyone else, because a South African brand that cannot take an international payment is a local brand whether it wants to be or not.",
+        ],
+      },
+      {
+        id: "build",
+        kind: "video",
+        heading: "The store",
+        intro: "Homepage through category to product, as it ships.",
+        src: "/media/case-studies/filosofee-site.mp4",
+        poster: "filosofee/designs.jpg",
+        alt: "The Filosofee storefront scrolling from the homepage hero through the t-shirt and hoodie categories to a product page with size guide and payment options.",
+      },
+      {
+        id: "proof",
+        kind: "metrics",
+        heading: "What validated it",
+        intro: "A brand is an opinion until somebody pays for it. Two things settled the question.",
+        items: [
+          {
+            value: "Month one",
+            label: "First sales",
+            context: "Local and international, from the store rather than from friends.",
+          },
+          {
+            value: "20 units",
+            label: "First bulk order",
+            context: "Thrifty Adventures, designed and produced as their branded apparel.",
+          },
+          {
+            value: "2",
+            label: "Revenue lines it proved",
+            context: "Direct-to-consumer, and business-to-business off the same production setup.",
+          },
+        ],
+        footnote:
+          "Order volumes are small and reported as such — this is validation, not a trading record. The point of the bulk order is not its size but that it came from a different kind of buyer through the same product, the same suppliers and the same fulfilment.",
+      },
+      {
+        id: "proof",
+        kind: "prose",
+        heading: "The order that changed the business",
+        body: [
+          "Thrifty Adventures needed branded apparel for their tours. Filosofee designed and produced it — twenty units, the first wholesale order the brand had taken.",
+          "One order does not make a wholesale business. What it did was prove the setup could serve a second, better kind of customer without changing anything: B2B buys more per order, does not need converting one shirt at a time, and comes back on a schedule. The consumer store is the shop window; the print run is the margin.",
+        ],
+      },
+      {
+        id: "media",
+        kind: "prose",
+        heading: "A shoot you pay for once",
+        body: [
+          "The product shoot was the single most expensive line in the brand's first year: studio, model, photographer, retouching. It also produced the best assets Filosofee has.",
+          "So it became the reference rather than the whole library. The shoot fixes what the brand looks like — the black garments, the plain ground, the light, how the pieces sit on a person — and generated imagery extends it into the volume social needs, matched to that look. Real work sets the standard and AI runs at the pace of a content calendar.",
+        ],
+      },
+      {
+        id: "media",
+        kind: "gallery",
+        pair: true,
+        heading: "Photographed, then extended",
+        intro:
+          "Left: the studio shoot. Right: generated, working from it. Same brand, one of them costing a day and a crew.",
+        shots: [
+          {
+            image: "filosofee/real-vs-ai.jpg",
+            alt: "Side by side: a photographed hoodie shot from the studio shoot, and a generated model shot in the same lighting and staging.",
+          },
+          {
+            image: "filosofee/designs.jpg",
+            alt: "Three Filosofee graphic tees on hangers: the African Queen print, “may all your delulu come trululu”, and the coffee slogan piece.",
+          },
+        ],
+      },
+      {
+        id: "stickers",
+        kind: "prose",
+        heading: "The line I stopped",
+        body: [
+          "Filosofee sold stickers alongside the apparel. They were designed, produced, listed and packed, and I ended them.",
+          "The economics never worked. A sticker order carries the same admin as a hoodie order — the payment, the pick, the pack, the label, the courier, the query if it goes missing — against a fraction of the value. It does not scale either: the volume needed to make the margin meaningful is volume the team cannot pack. For a small consulting team running a brand on the side, that is the wrong shape of work.",
+          "Killing it was worth more than the revenue it made. Same effort, moved to garments and wholesale, earns several times as much.",
+        ],
+      },
+      {
+        id: "honest",
+        kind: "prose",
+        heading: "What I'd change",
+        body: [
+          "Price the admin, not the item. Stickers looked profitable per unit and were not, because the per-order cost never appeared in the sums. Anything sold below a certain price should be tested against the handling it drags with it before it is listed.",
+          "And chase the bulk order sooner. The wholesale order arrived because someone asked, not because anyone went looking. It was the highest-value thing the brand did all year and it was inbound — which says the outbound version was never tried.",
+        ],
+      },
+    ],
+    seo: {
+      title: "Filosofee case study | Alroy Ndhlovu",
+      description:
+        "Building a clothing brand end to end — product, store, payments, photography — proven by first-month sales and a first wholesale order, plus the line I cut.",
+    },
+  },
+  {
     slug: "lumiskin",
     name: "LumiSkin",
     dates: "Mar 2026",

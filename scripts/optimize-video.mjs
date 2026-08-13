@@ -55,6 +55,7 @@ const MAX_WIDTH = 1280;
 const POSTER_AT = {
   website_video_lumiskin: "6.5",
   social_sweep_demo: "8",
+  website_video_filosofee: "3",
 };
 const POSTER_DEFAULT = "1";
 
@@ -79,7 +80,10 @@ const KEEP_AUDIO = new Set(["social_sweep_demo"]);
  * liability — so that copy has no audio track at all rather than an
  * audio track behind a mute button.
  */
-const SILENT_COPY = { social_sweep_demo: "social-sweep" };
+const SILENT_COPY = {
+  social_sweep_demo: "social-sweep",
+  website_video_filosofee: "filosofee-site",
+};
 const CASE_VIDEO_OUT = join(ROOT, "public", "media", "case-studies");
 
 mkdirSync(VIDEO_OUT, { recursive: true });
