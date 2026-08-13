@@ -24,6 +24,14 @@ import { PORTFOLIO, shotImage } from "../data/portfolio";
 const SLIDE_WIDTH = 1200;
 const SLIDE_HEIGHT = 820;
 const SLIDE_QUALITY = 72;
+/*
+ * A poster is scaffolding: it holds the frame until the clip starts and
+ * is then covered by the video for the rest of its life. At slide
+ * quality the travel reel's poster was the heaviest image on the site
+ * at 97KB, for something most readers see for a few hundred
+ * milliseconds.
+ */
+const POSTER_QUALITY = 58;
 
 /**
  * Slides are letterboxed into a box roughly 1200 by 820, so for a
@@ -50,7 +58,7 @@ for (const category of PORTFOLIO) {
     const optimised = await getImage({
       src: image,
       width: SLIDE_WIDTH,
-      quality: SLIDE_QUALITY,
+      quality: POSTER_QUALITY,
       format: "webp",
     });
     posters.set(shot.image, optimised.src);

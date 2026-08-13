@@ -117,8 +117,15 @@ for (const file of sources) {
     "1",
     "-vf",
     `scale='min(${MAX_WIDTH},iw)':-2`,
+    /*
+     * 68, not 80. A poster is on screen only until the clip starts, and
+     * at 80 the travel reel's frame alone came to 97KB — the single
+     * heaviest image on the home page, and enough to push a full scroll
+     * past the weight budget once another study was added. The
+     * difference is not visible at the size these are shown.
+     */
     "-q:v",
-    "80",
+    "68",
     poster,
   ]);
 

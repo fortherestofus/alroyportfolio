@@ -1220,6 +1220,204 @@ export const CASE_STUDIES: CaseStudy[] = [
         "Building something for every day and keeping it simple: how tapa. answers “what can I cook with this?” with one good recipe, and prices the exchange fairly.",
     },
   },
+  {
+    slug: "lumiskin",
+    name: "LumiSkin",
+    dates: "Mar 2026",
+    summary:
+      "A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.",
+    description:
+      "LumiSkin is a design exploration: what an ultra-premium organic beauty brand could look like if the hero did something rather than sat there. A chameleon walks into frame, shifts colour to match the bar beside it, and the product card arrives on the match. Every asset in it was generated, and the whole thing cost less than a single day of studio time.",
+    tags: ["Art direction", "AI production", "Front-end", "Motion"],
+    meta: ["Self-directed", "Design exploration", "Mar 2026"],
+    website: "https://deft-pasca-8eec5e.netlify.app",
+    strip: [
+      { image: "lumiskin/hero-aurora.jpg", alt: "" },
+      { image: "lumiskin/collection-aurora.jpg", alt: "" },
+      { image: "lumiskin/hero-jade.jpg", alt: "" },
+      { image: "lumiskin/hero-peach.jpg", alt: "" },
+    ],
+    chapters: [
+      { id: "idea", label: "The idea" },
+      { id: "make", label: "Making it" },
+      { id: "cost", label: "What it cost" },
+      { id: "build", label: "The build" },
+      { id: "honest", label: "What I'd change" },
+    ],
+    blocks: [
+      {
+        id: "idea",
+        kind: "prose",
+        heading: "A hero that earns the word premium",
+        body: [
+          "Beauty brands nearly all open the same way: a still of the product on a clean surface, a serif headline over it, a Shop button. It photographs well and says nothing. The interesting question is what a hero would look like if the thing on screen actually performed the product's promise instead of describing it.",
+          "The soaps are the answer. Aurora Petal is lavender, Jade Mist is green, Peach Quartz is warm clay — a range whose whole identity is colour. So the hero is a chameleon: it walks in, settles beside a bar, and takes on that bar's colour. Then the product card slides in on the match, priced and ready to add to the bag. Colour matching is what a chameleon is famous for and what the range is built on, so the metaphor does the selling without a line of copy explaining it.",
+          "As a brief it is also deliberately the expensive kind. A live animal, three colourways, macro product work and a thirty-second film is a studio booking, an animal handler, a CGI house and a front-end build. It is exactly the sort of concept that dies in a budget meeting — which is what made it worth doing as an exploration of what production actually costs now.",
+        ],
+      },
+      {
+        id: "idea",
+        kind: "gallery",
+        heading: "One mechanic, three colourways",
+        intro:
+          "The same shot, three times: the chameleon matches the bar it is standing next to, and the card arrives once the colour has landed rather than on a timer the viewer cannot see the logic of.",
+        wide: true,
+        shots: [
+          {
+            image: "lumiskin/hero-aurora.jpg",
+            alt: "The LumiSkin hero in lavender: the chameleon has matched Aurora Petal and the product card shows the bar at $24.",
+          },
+          {
+            image: "lumiskin/hero-jade.jpg",
+            alt: "The hero in pink, with the Jade Mist card and its cooling aloe and matcha note.",
+          },
+          {
+            image: "lumiskin/hero-peach.jpg",
+            alt: "The hero in warm amber, the chameleon matched to Peach Quartz with its citrus and clay note.",
+          },
+        ],
+      },
+      {
+        id: "make",
+        kind: "prose",
+        heading: "Generated, not shot",
+        body: [
+          "Nothing in LumiSkin was photographed or filmed. The product renders, the chameleon, the macro texture work and the lifestyle frames were generated as stills; the stills were then animated into three eight-second clips; and the site around them was built with an agentic IDE and finished by hand.",
+          "That order matters. Generating the stills first meant the product design was locked before a single second of video was made — the bars, the packaging and the palette were decided as images, cheaply, and the film only had to move something that already existed. Going straight to video would have meant re-rolling a thirty-second sequence every time a soap looked wrong.",
+          "The honest limitation is consistency. Getting the same bar to look like the same bar across sixteen images is the actual work, and it is where most of the effort went — not in any single prompt but in holding one object still across a set of them.",
+        ],
+      },
+      {
+        id: "cost",
+        kind: "metrics",
+        heading: "What it actually cost",
+        intro:
+          "Three line items, all of them subscription or per-second pricing rather than a quote.",
+        items: [
+          {
+            value: "16",
+            label: "Generated images",
+            context:
+              "Product renders, macro texture, protocol and collection frames — produced on a standard ChatGPT subscription.",
+          },
+          {
+            value: "24s",
+            label: "Generated video",
+            context:
+              "Three eight-second clips from Google Veo, crossfaded into one continuous hero.",
+          },
+          {
+            value: "≈$10",
+            label: "The video, at list price",
+            context:
+              "24 seconds at Veo 3's published $0.40/second API rate. On Veo 3 Fast ($0.15/second) the same footage is under $4.",
+          },
+          {
+            value: "$20",
+            label: "A month of image generation",
+            context: "The standard consumer subscription tier, not an enterprise licence.",
+          },
+          {
+            value: "1",
+            label: "People involved",
+            context: "No crew, no studio, no handler, no CGI house, no animal.",
+          },
+          {
+            value: "< $300",
+            label: "All in",
+            context:
+              "Subscriptions plus generation, including the agentic IDE used to build the site.",
+          },
+        ],
+        footnote:
+          "Veo per-second pricing is Google's published Gemini API rate. The subscription figures are list prices for the consumer tiers actually used, not negotiated or enterprise rates. Time is not costed here — this was an exploration built in evenings, and pretending to a day rate would be inventing a number.",
+      },
+      {
+        id: "cost",
+        kind: "metrics",
+        heading: "What the conventional route would have cost",
+        intro:
+          "Published 2026 market rates for the same three jobs, quoted as ranges because that is how they are quoted. These are benchmarks, not quotes anyone gave for this project.",
+        items: [
+          {
+            value: "$800 – $2,400",
+            label: "The stills, as photography",
+            context:
+              "16 images at the $50–$150 per image typical of beauty and cosmetics product work.",
+          },
+          {
+            value: "$1,200 – $3,500",
+            label: "One studio day",
+            context:
+              "Commercial product photographer day rate — before the animal handler this concept needs.",
+          },
+          {
+            value: "$3,000 – $15,000",
+            label: "The film, as 3D/CGI",
+            context:
+              "A 30–60 second product animation runs $3,000–$5,000; a 30-second commercial at the higher end reaches $5,000–$15,000.",
+          },
+          {
+            value: "$1,500 – $6,000",
+            label: "The site, built out",
+            context:
+              "A custom animated landing page: $1,500–$3,000 from a boutique agency, $3,000–$6,000 mid-size.",
+          },
+          {
+            value: "$6,500+",
+            label: "Conservative total",
+            context: "Taking the bottom of every range above, and still excluding the handler.",
+          },
+          {
+            value: "~20×",
+            label: "The gap",
+            context: "Between the cheapest conventional route and what this cost.",
+          },
+        ],
+        footnote:
+          "Sources: product photography per-image and day rates from 2026 pricing surveys (LarsMiller Media, ProShot Media, Nightjar); 3D product animation from Advids and Vidico's 2026 guides; landing page rates from 2026 agency and freelance breakdowns (Uwindi, eseospace). One caveat worth stating plainly: these ranges buy a licensed shoot with a crew, usage rights and someone accountable for the result. The comparison is of output, not of everything a production company sells.",
+      },
+      {
+        id: "build",
+        kind: "prose",
+        heading: "The part that is not a prompt",
+        body: [
+          "The site is React 19 and Vite with GSAP driving the motion, and it was built with Google Antigravity doing the first pass and Claude finishing it. That split was deliberate: the agentic pass is good at getting a whole page standing up quickly, and much less good at the small decisions that separate a demo from something you would ship.",
+          "The most important of those was refusing to drive the sequence off the video. The obvious build syncs each product card to its clip using the video's own timeupdate events — card appears at the four-second mark, and the code reads that mark off the player. It is also the build that breaks silently. Autoplay is blocked often enough (iOS Low Power Mode, Safari's policy, data saver) that a hero tied to playback can leave the cards never appearing at all, on a page whose entire job is showing the products.",
+          "So the timeline runs on its own timers and the video is treated as decoration. Eight seconds a segment, the card at 3.2 seconds, and if the video never plays the sequence still runs — the reader gets the products over a still frame instead of over motion, which is a worse experience rather than a broken one.",
+        ],
+      },
+      {
+        id: "build",
+        kind: "checklist",
+        heading: "The rest of the detail work",
+        intro:
+          "Small things, and the reason the page holds up away from a fast desktop on a good connection.",
+        items: [
+          "Reduced motion is honoured properly: the auto-advance stops entirely, so the hero settles on one product instead of cycling. The cards still appear — the preference is about motion, not about hiding the products.",
+          "An IntersectionObserver pauses the video once the hero scrolls away, so a page left open in a tab is not decoding 1080p to nobody.",
+          "A one-directional scrim sits under the wordmark, because the type has to stay legible over three different clips whose backgrounds change colour.",
+          "Products are positioned as percentages against the frame rather than pinned to pixels, so the card lands next to the chameleon at any viewport instead of drifting off it.",
+          "The seek is wrapped in a try/catch: setting currentTime on a video that is not seekable yet throws, and losing the whole sequence to a race on load would be a silly way to break a hero.",
+        ],
+      },
+      {
+        id: "honest",
+        kind: "prose",
+        heading: "What I'd change",
+        body: [
+          "The three clips are crossfaded but not continuous — the chameleon does not walk from one colour into the next, it dissolves. At eight seconds a segment most people will not read it as a cut, but the concept deserves one unbroken take, and that is a generation problem I did not solve rather than a decision I made.",
+          "I would also generate the products at a fixed camera and lighting setup from the start. The collection frames drift slightly in angle between bars, which is invisible on the hero and obvious the moment they are lined up in a grid. Locking that as a constraint before generating, instead of correcting for it afterwards, is the equivalent of setting up the shot properly.",
+          'And the real conclusion is narrower than "AI is cheap". What collapsed here is the cost of producing assets. Deciding that a chameleon is the right idea, that the card should arrive on the colour match, and that the sequence must not depend on autoplay — none of that got cheaper, and all of it is what makes the page work.',
+        ],
+      },
+    ],
+    seo: {
+      title: "LumiSkin case study | Alroy Ndhlovu",
+      description:
+        "A luxury cosmetics hero with a colour-matching chameleon, generated end to end for under $300 against a $6,500+ conventional production quote.",
+    },
+  },
 ];
 
 /**
@@ -1228,9 +1426,7 @@ export const CASE_STUDIES: CaseStudy[] = [
  * case study, but deliberately not rendered as cards: a card that looks
  * clickable and is not is worse than an honest line of text.
  */
-export const UPCOMING_STUDIES: { name: string; note: string }[] = [
-  { name: "Lumiskin", note: "Design exploration — a cosmetics hero, from blank page to polish" },
-];
+export const UPCOMING_STUDIES: { name: string; note: string }[] = [];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return CASE_STUDIES.find((study) => study.slug === slug);

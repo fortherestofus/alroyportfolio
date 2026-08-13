@@ -83,9 +83,9 @@ const EXPECTED = {
   products: 4, // src/data/products.ts
   productShots: 18,
   sectionLotties: 5, // sections 02-06 carry an illustration; 01 and 07 do not
-  caseStudyCards: 5, // CASE_STUDIES — Thrifty, Innovatr, Hakkan, ISIT, tapa
-  upcomingStudies: 1, // UPCOMING_STUDIES — Lumiskin
-  stripShots: 22, // strip entries across all studies, rendered twice for the marquee
+  caseStudyCards: 6, // CASE_STUDIES — Thrifty, Innovatr, Hakkan, ISIT, tapa, LumiSkin
+  upcomingStudies: 0, // UPCOMING_STUDIES — empty now LumiSkin is written
+  stripShots: 26, // strip entries across all studies, rendered twice for the marquee
 };
 
 /** Every case study page, for the site-wide uniqueness checks. */
@@ -95,6 +95,7 @@ const CASE_STUDY_PATHS = [
   "/case-studies/hakkan/",
   "/case-studies/inspiritintruth/",
   "/case-studies/tapa/",
+  "/case-studies/lumiskin/",
 ];
 
 const results = [];

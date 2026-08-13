@@ -147,6 +147,12 @@
   --shot-panel-width: 240px; /* a browser-extension popup */
   --shot-panel-ratio: 3 / 4;
   --shot-strip-width: 280px; /* a thumbnail on the case study marquee */
+  /*
+   * The same marquee inside a stack card, where the card has to fit
+   * under its own pin point for the peel to work at all — so the strip
+   * buys its height rather than being given it.
+   */
+  --shot-strip-width-compact: 200px;
 
   /*
    * Hero collage. The opacity is a contrast budget, not a taste call:
@@ -217,6 +223,12 @@
   --text-display: clamp(3.25rem, 2.393rem + 4.286vw, 6.25rem); /* 52 → 100px */
   --text-h2: clamp(2rem, 1.786rem + 1.071vw, 2.75rem); /* 32 → 44px */
   --text-h3: clamp(1.375rem, 1.268rem + 0.536vw, 1.75rem); /* 22 → 28px */
+  /*
+   * Between h3 and body. Exists for headings that carry a full sentence
+   * rather than a phrase — a case study summary at h3 runs to five
+   * lines, which is what stopped the stack cards fitting a laptop.
+   */
+  --text-h4: clamp(1.125rem, 1.054rem + 0.357vw, 1.375rem); /* 18 → 22px */
   --text-body: 1.0625rem; /* 17px */
   --text-body-sm: 1rem; /* 16px */
   --text-small: 0.875rem; /* 14px */

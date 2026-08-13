@@ -166,7 +166,14 @@ const STRIP_QUALITY = 70;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
-    margin-top: var(--space-7);
+    /*
+     * Deliberately tighter than the section rhythm elsewhere. Every
+     * pixel of card height is a pixel of viewport the peel needs before
+     * it can engage at all (see the fit test in the script), and the
+     * gap between a card's own header and its own summary is the
+     * cheapest place to find them.
+     */
+    margin-top: var(--space-6);
   }
 
   /*
@@ -175,7 +182,12 @@ const STRIP_QUALITY = 70;
    * this line ran to nine lines and swallowed the card.
    */
   .stack__summary {
-    font-size: var(--text-h3);
+    /*
+     * h4, not h3. These summaries are whole sentences, and at h3 the
+     * longest ran to five lines — enough on its own to push the card
+     * past the height the peel needs (see the fit test in the script).
+     */
+    font-size: var(--text-h4);
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-display);
     text-wrap: balance;
@@ -271,7 +283,7 @@ const STRIP_QUALITY = 70;
   .stack__shot {
     display: block;
     flex: none;
-    width: var(--shot-strip-width);
+    width: var(--shot-strip-width-compact);
     aspect-ratio: var(--shot-screen-ratio);
     border-radius: var(--radius-sm);
     overflow: hidden;
@@ -344,7 +356,7 @@ const STRIP_QUALITY = 70;
 
   @media (width >= 640px) {
     .stack__card {
-      padding: var(--space-6) var(--space-6) 0;
+      padding: var(--space-5) var(--space-6) 0;
     }
 
     .stack__card--no-strip {
@@ -383,21 +395,25 @@ const STRIP_QUALITY = 70;
        * Each card rests slightly lower than the one before it, so the
        * top edge of every card underneath stays visible.
        */
-      top: calc(var(--nav-height) + var(--space-5) + var(--card-index) * var(--space-4));
+      top: calc(var(--nav-height) + var(--space-4) + var(--card-index) * var(--space-3));
     }
   }
 
   /*
-   * Short viewports: no pinning. A pinned card taller than the space
-   * under its pin point can never show its bottom — measured at
-   * 1440x700, the tallest card's "case study" button sat 44px below
-   * the fold at every scroll position, permanently unclickable. Below
-   * this height the cards simply scroll, like mobile.
+   * Cards that cannot fit under their own pin point do not pin at all.
+   *
+   * A pinned card taller than the space beneath it can never show its
+   * bottom edge, so its "case study" link sits below the fold at every
+   * scroll position — permanently unclickable. This used to be a
+   * hardcoded `height <= 760px` media query, which was a guess at the
+   * content's height rather than a measurement of it: it flattened the
+   * stack on plenty of laptops that could have shown it, and it would
+   * have gone on being wrong the moment a longer summary made a card
+   * taller. The script below measures the real thing and sets this
+   * class, so the peel appears exactly when it actually works.
    */
-  @media (width >= 1024px) and (height <= 760px) {
-    .stack__card {
-      position: static;
-    }
+  .stack--flat .stack__card {
+    position: static;
   }
 
   /*
@@ -419,3 +435,76 @@ const STRIP_QUALITY = 70;
     }
   }
 </style>
+
+<script>
+  /*
+   * Decide whether the peel can actually work here.
+   *
+   * The cards pin at `--nav-height + --space-5 + index * --space-4`, so
+   * the deepest card in the stack has the least room beneath it. If the
+   * tallest card is taller than that room, its bottom — and the link
+   * that is the whole point of the card — can never come into view, so
+   * the stack falls back to ordinary scrolling.
+   *
+   * Measured rather than assumed: card height depends on how long a
+   * given summary happens to be, which is content, not layout, and the
+   * media query this replaces could only ever guess at it.
+   */
+  const stack = document.querySelector<HTMLElement>(".stack");
+
+  if (stack) {
+    const cards = [...stack.querySelectorAll<HTMLElement>(".stack__card")];
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const wide = window.matchMedia("(width >= 1024px)");
+
+    const last = cards[cards.length - 1];
+
+    const fits = () => {
+      if (cards.length === 0) return true;
+
+      /*
+       * Read the deepest pin offset off the element rather than
+       * recomputing the `top` calc here. Duplicating that formula in JS
+       * is a bug waiting to happen — it already happened once, when the
+       * offsets were tightened in CSS and this test carried on measuring
+       * against the old ones, refusing to peel on viewports that had
+       * room to spare.
+       *
+       * `top` only resolves while the card is actually sticky, so the
+       * flat class comes off for the measurement and is reapplied by the
+       * caller. Reading a layout property forces the reflow that makes
+       * the new value visible.
+       */
+      stack.classList.remove("stack--flat");
+      void stack.offsetHeight;
+
+      const deepest = Number.parseFloat(getComputedStyle(last).top) || 0;
+      const tallest = Math.max(...cards.map((card) => card.getBoundingClientRect().height));
+      const air = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--space-4"),
+      );
+
+      // A little air below the card so the link is not flush to the edge.
+      return deepest + tallest + air <= window.innerHeight;
+    };
+
+    const apply = () => {
+      const peel = wide.matches && !reduced.matches && fits();
+      stack.classList.toggle("stack--flat", !peel);
+    };
+
+    apply();
+
+    /*
+     * Re-measure on resize, and once fonts have settled: a card's height
+     * changes when the real typeface replaces the fallback, and
+     * measuring before that reports a height the card never has.
+     */
+    let frame = 0;
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(apply);
+    });
+    document.fonts?.ready.then(apply);
+  }
+</script>
