@@ -6,7 +6,7 @@ import type { ImageMetadata } from "astro";
  * Stills resolve by filename out of src/assets/portfolio/ so Astro can
  * optimise them. Video cannot go through astro:assets, so a clip names
  * its poster (optimised) and points at the encoded file that
- * `npm run video` wrote to public/portfolio/video/.
+ * `npm run video` wrote to public/media/portfolio/.
  *
  * Alt text is written from the actual image, not the filename. It is
  * the caption shown under each slide as well as the accessible
@@ -92,17 +92,17 @@ export const PORTFOLIO: PortfolioCategory[] = [
     shots: [
       {
         image: "website_video_lumiskin-poster.webp",
-        video: "/portfolio/video/website_video_lumiskin.mp4",
+        video: "/media/portfolio/website_video_lumiskin.mp4",
         alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal product card slides in over the video.",
       },
       {
         image: "website_video_dejamedia-poster.webp",
-        video: "/portfolio/video/website_video_dejamedia.mp4",
+        video: "/media/portfolio/website_video_dejamedia.mp4",
         alt: "The Deja Media site scrolling through its hero and services, headlined “Let's tell your brand story through business tech”.",
       },
       {
         image: "website_video_ecommerce-poster.webp",
-        video: "/portfolio/video/website_video_ecommerce.mp4",
+        video: "/media/portfolio/website_video_ecommerce.mp4",
         alt: "A beauty e-commerce homepage scrolling through its product and lifestyle imagery.",
       },
     ],
@@ -161,17 +161,17 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "social_sweep_demo-poster.webp",
-        video: "/portfolio/video/social_sweep_demo.mp4",
+        video: "/media/portfolio/social_sweep_demo.mp4",
         alt: "A narrated walkthrough of Social Sweep, the consumer-insights tool built for Innovatr: a plain-language question in, a cited report out.",
       },
       {
         image: "gif_social_content-poster.webp",
-        video: "/portfolio/video/gif_social_content.mp4",
+        video: "/media/portfolio/gif_social_content.mp4",
         alt: "Animated social post for the ASICS Paris Pack trainer.",
       },
       {
         image: "video_travel-poster.webp",
-        video: "/portfolio/video/video_travel.mp4",
+        video: "/media/portfolio/video_travel.mp4",
         alt: "Travel reel opening on the word WORLD over an aerial shot of open water.",
       },
       {

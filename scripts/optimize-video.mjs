@@ -9,8 +9,18 @@
  * frame so nothing has to load until the visitor asks for it.
  *
  * Outputs:
- *   public/portfolio/video/<name>.mp4     played on demand, never preloaded
+ *   public/media/portfolio/<name>.mp4      played on demand, never preloaded
+ *   public/media/case-studies/<name>.mp4   the silent copies
  *   src/assets/portfolio/<name>-poster.webp  goes through astro:assets
+ *
+ * These deliberately do NOT live under /portfolio/. That path is also
+ * the old WordPress portfolio namespace, which `public/.htaccess`
+ * redirects — and for a while it redirected these files too, so every
+ * clip 301'd to the homepage. The rule is fixed, but a 301 is cached by
+ * the browser indefinitely: anyone who loaded the site during that
+ * window still has a permanent redirect stored against those URLs and
+ * would never see a video again. Serving them from a path that has
+ * never been redirected is the only fix that reaches those visitors.
  *
  * Posters live in src/assets so Astro can size and optimise them; the
  * video itself cannot go through astro:assets, so it is served from
@@ -26,7 +36,7 @@ import ffmpeg from "ffmpeg-static";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const SOURCE_DIR = join(ROOT, "src", "assets", "portfolio");
-const VIDEO_OUT = join(ROOT, "public", "portfolio", "video");
+const VIDEO_OUT = join(ROOT, "public", "media", "portfolio");
 const POSTER_OUT = SOURCE_DIR;
 
 /** Constant Rate Factor: 28 is visually clean for screen capture at this size. */
@@ -70,7 +80,7 @@ const KEEP_AUDIO = new Set(["social_sweep_demo"]);
  * audio track behind a mute button.
  */
 const SILENT_COPY = { social_sweep_demo: "social-sweep" };
-const CASE_VIDEO_OUT = join(ROOT, "public", "case-studies", "video");
+const CASE_VIDEO_OUT = join(ROOT, "public", "media", "case-studies");
 
 mkdirSync(VIDEO_OUT, { recursive: true });
 mkdirSync(CASE_VIDEO_OUT, { recursive: true });

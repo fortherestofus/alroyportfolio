@@ -347,6 +347,24 @@ async function checkDesktop(browser, origin, viewport) {
   const trackBox = await page.locator("#journey-track").boundingBox();
   if (knobBox && trackBox) {
     const before = await page.evaluate(() => window.scrollY);
+    /*
+     * Capture the preconditions with the result. When this fails it
+     * reports "scrollY 0 to 0", which says the drag did nothing but not
+     * why — a locked page, a covered knob and a missed press all look
+     * identical from the outside.
+     */
+    const pre = await page.evaluate(
+      ([x, y]) => {
+        const hit = document.elementFromPoint(x, y);
+        return {
+          locked: document.documentElement.classList.contains("is-scroll-locked"),
+          modalOpen: !document.getElementById("portfolio-modal")?.hidden,
+          maxScroll: document.documentElement.scrollHeight - window.innerHeight,
+          hit: hit ? `${hit.tagName}.${String(hit.className).split(" ")[0]}` : "nothing",
+        };
+      },
+      [knobBox.x + knobBox.width / 2, knobBox.y + knobBox.height / 2],
+    );
     await page.mouse.move(knobBox.x + knobBox.width / 2, knobBox.y + knobBox.height / 2);
     await page.mouse.down();
     await page.mouse.move(trackBox.x + trackBox.width * 0.55, knobBox.y + knobBox.height / 2, {
@@ -360,7 +378,7 @@ async function checkDesktop(browser, origin, viewport) {
     record(
       `[${tag}] dragging the knob scrubs the page`,
       during > before + 500,
-      `scrollY ${Math.round(before)} → ${Math.round(during)}`,
+      `scrollY ${Math.round(before)} → ${Math.round(during)} (locked=${pre.locked} modal=${pre.modalOpen} maxScroll=${pre.maxScroll} hit=${pre.hit})`,
     );
 
     const knobFollowed = await page.evaluate(() => {

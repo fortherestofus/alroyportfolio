@@ -60,6 +60,13 @@ export type Block =
       intro?: string;
       /** Web captures rather than square social slides: fewer, larger. */
       wide?: boolean;
+      /**
+       * Two per row. For captures that are evidence rather than
+       * artwork — a dashboard shown full width is bigger than its
+       * source can support and reads as blurry, and nobody needs an
+       * analytics panel at 1,100px to believe it.
+       */
+      pair?: boolean;
       shots: { image: string; alt: string }[];
     }
   | { kind: "checklist"; heading: string; intro?: string; items: string[] }
@@ -150,7 +157,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     summary:
       "Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million TikTok views, 70,000 Google clicks for $2,099, and 742 LinkedIn leads at R30 — each channel doing the one job it is actually good at.",
     description:
-      "Thrifty Adventures runs group and tailored tours out of South Africa. There was no paid activity, no tracking and no organic engine when I started. What went in was not one campaign but a system: TikTok to be found, TikTok ads to start conversations, Google to catch people already looking, and LinkedIn — the channel nobody would pick for a holiday — to sell the considered trip.",
+      "Thrifty Adventures runs group and tailored tours out of South Africa. There was no paid activity and no tracking when I started, on any channel. What went in was not one campaign but a system: TikTok to be found, TikTok ads to start conversations, Google to catch people already looking, and LinkedIn — the channel nobody would pick for a holiday — to sell the considered trip.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
     logoFile: "thrifty.jpeg",
     meta: ["Client · Thrifty Adventures", "Paid media & content", "Jul 2025 – Jan 2026"],
@@ -330,20 +337,21 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The channel that did the finding",
         body: [
-          "LinkedIn was the deliberate experiment. TikTok was the engine, and it ran from a standing start: no following, no back catalogue, no paid support for the first months.",
+          "LinkedIn was the deliberate experiment. TikTok was the engine — and unlike the paid channels it was not starting from nothing. The account already existed and already had an audience, which is worth saying plainly, because a view count means something different on an account with a following than on one without.",
           "The content is not travel-brand content in the usual sense. It is destinations shot plainly and captioned as questions people actually type — the Dubai tour, the Namibia tour, what a Zanzibar trip costs. That sounds like a small thing and it is the whole reason the account works, because it is what makes the videos findable months after they are posted rather than for the two days the algorithm feels like showing them.",
         ],
       },
       {
         id: "tiktok",
         kind: "metrics",
-        heading: "Zero to 3.1 million views",
-        intro: "Organic, from a new account, over roughly eight months.",
+        heading: "3.1 million views in eight months",
+        intro:
+          "What the account did in the window I ran it — not what it was worth before, and not a claim to have built it from scratch.",
         items: [
           {
             value: "3.1M",
             label: "Video views",
-            context: "Jun 2025 to Jan 2026, from an account with no history.",
+            context: "Organic, Jun 2025 to Jan 2026.",
           },
           {
             value: "4.6M",
@@ -353,7 +361,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "39.8K",
             label: "Followers",
-            context: "And 116.8K likes across the account.",
+            context: "The account's size at the end of the run, and 116.8K likes.",
           },
           {
             value: "38.1%",
@@ -374,7 +382,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "The search share is the number worth stopping on. TikTok's own For You feed typically accounts for around 70% of a video's views; here it is 57.6%, because search is carrying 38.1% — an account being actively looked for rather than passively served. There is no published like-for-like benchmark for search share by account, so this is stated against the For You norm rather than against a search median that does not exist.",
+          "The follower figure is the account total, not growth I am claiming: it had a following before this work and the starting number was not recorded, so the honest thing is to report the size rather than a delta. Views, viewers, shares and the search split are all period figures for Jun 2025 to Jan 2026 and are attributable to it. The search share is the number worth stopping on — TikTok's own For You feed typically carries around 70% of a video's views, and here it is 57.6% because search is carrying 38.1%. There is no published like-for-like benchmark for search share by account, so this is stated against the For You norm rather than a search median that does not exist.",
       },
       {
         id: "tiktok",
@@ -446,10 +454,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "google",
         kind: "gallery",
+        pair: true,
         heading: "The dashboards behind the numbers",
         intro:
           "Every figure on this page is read off one of these rather than reconstructed from a report written afterwards.",
-        wide: true,
         shots: [
           {
             image: "thrifty-adventures/tiktok-overview.jpg",
@@ -933,7 +941,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "Social Sweep, running",
         intro:
           "A full study end to end: the question going in, the platforms it decides are worth reading, and the report coming back with the quotes underneath every claim.",
-        src: "/case-studies/video/social-sweep.mp4",
+        src: "/media/case-studies/social-sweep.mp4",
         poster: "innovatr/social_sweep_report.jpg",
         alt: "A two-minute walkthrough of Social Sweep: entering a plain-language question, watching it select platforms, and reading the finished report with its sentiment split, emotion mix and source quotes.",
         footnote:
@@ -1455,7 +1463,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     hero: {
       image: "lumiskin/hero-aurora.jpg",
       alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal card slides in.",
-      video: "/portfolio/video/website_video_lumiskin.mp4",
+      video: "/media/portfolio/website_video_lumiskin.mp4",
     },
     summary:
       "A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.",
@@ -1494,7 +1502,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "One mechanic, three colourways",
         intro:
           "Stills undersell this one — the whole idea is a transition, so the page shows the thing running rather than three frames of it. The chameleon matches the bar it is standing next to, and the card arrives once the colour has landed.",
-        src: "/portfolio/video/website_video_lumiskin.mp4",
+        src: "/media/portfolio/website_video_lumiskin.mp4",
         poster: "lumiskin/hero-aurora.jpg",
         alt: "The LumiSkin hero cycling through all three colourways: the chameleon shifts to lavender, pink and amber to match Aurora Petal, Jade Mist and Peach Quartz, each with its product card.",
       },

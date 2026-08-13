@@ -193,12 +193,22 @@ for (const category of PORTFOLIO) {
 
   .pm__counter {
     flex: 1;
+    /*
+     * The base stylesheet caps every <p> at the reading measure, which
+     * is right for prose and wrong for a flex spacer: capped, it could
+     * not grow, so the close button sat wherever the counter happened
+     * to end — floating in the middle of the header rather than in the
+     * corner people reach for.
+     */
+    max-width: none;
     font-size: var(--text-small);
     color: var(--color-text-faint);
     font-variant-numeric: tabular-nums;
   }
 
   .pm__close {
+    /* Belt and braces: cornered even if the spacer above ever fails. */
+    margin-left: auto;
     display: grid;
     place-items: center;
     flex: none;

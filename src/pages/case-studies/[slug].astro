@@ -39,6 +39,14 @@ const HERO_WIDTH = 1400;
 const SHOT_WIDTH = 900;
 /** Wide galleries run two-up at most, so each one is shown larger. */
 const WIDE_SHOT_WIDTH = 1100;
+/**
+ * Paired captures share the column, so each fills about half of it —
+ * but half a column on a 2x screen is still ~1,130 device pixels, and
+ * asking for 620 is what made these read as blurry. Sized for the
+ * retina case, and kept just under the narrowest source so nothing is
+ * upscaled to get there.
+ */
+const PAIR_SHOT_WIDTH = 1160;
 const SHOT_QUALITY = 74;
 
 const heroImage = caseImage(study.hero?.image);
@@ -166,6 +174,22 @@ const schema = [
     }
 
     <nav class="cs__chapters" aria-label="Sections of this case study">
+      {
+        /*
+        The way out, kept where the reader already is.
+
+        The link at the top of the page scrolls away, and on a study
+        this long that leaves no route back without reaching for the
+        browser's own back button — which is not where anyone looks
+        while reading. This bar is already pinned, so the exit lives in
+        it: the one control that is on screen for the whole page.
+      */
+      }
+      <a class="cs__chapters-home" href="/#case-studies">
+        <ArrowLeft class="cs__chapters-home-icon" aria-hidden="true" />
+        <span class="cs__chapters-home-label">All case studies</span>
+      </a>
+
       <ul>
         {
           study.chapters.map((chapter) => (
@@ -313,7 +337,13 @@ const schema = [
               })}
 
             {block.kind === "gallery" && (
-              <ul class:list={["cs__gallery", block.wide && "cs__gallery--wide"]}>
+              <ul
+                class:list={[
+                  "cs__gallery",
+                  block.wide && "cs__gallery--wide",
+                  block.pair && "cs__gallery--pair",
+                ]}
+              >
                 {block.shots.map((shot) => {
                   const image = caseImage(shot.image);
                   return (
@@ -322,7 +352,9 @@ const schema = [
                         <Image
                           src={image}
                           alt={shot.alt}
-                          width={block.wide ? WIDE_SHOT_WIDTH : SHOT_WIDTH}
+                          width={
+                            block.pair ? PAIR_SHOT_WIDTH : block.wide ? WIDE_SHOT_WIDTH : SHOT_WIDTH
+                          }
                           quality={SHOT_QUALITY}
                           densities={[1]}
                           loading="lazy"
@@ -478,6 +510,9 @@ const schema = [
     position: sticky;
     top: 0;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     margin-top: var(--space-8);
     padding-block: var(--space-3);
     background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
@@ -485,8 +520,50 @@ const schema = [
     border-block: 1px solid var(--color-border);
   }
 
+  /*
+   * Never scrolls away with the chapters. The pills overflow sideways
+   * on a narrow screen; the exit has to stay put or it is only findable
+   * by scrolling a bar the reader does not know scrolls.
+   */
+  .cs__chapters-home {
+    flex: none;
+    padding-inline: var(--space-3);
+    border-color: transparent;
+    color: var(--color-text-muted);
+  }
+
+  .cs__chapters-home:hover,
+  .cs__chapters-home:focus-visible {
+    color: var(--color-text);
+  }
+
+  .cs__chapters-home-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  .cs__chapters-home-label {
+    margin-left: var(--space-2);
+  }
+
+  /* Below the two-column breakpoint the label goes; the arrow carries it. */
+  @media (width < 768px) {
+    .cs__chapters-home-label {
+      /* Present for screen readers, absent on screen. */
+      position: absolute;
+      width: var(--visually-hidden-size);
+      height: var(--visually-hidden-size);
+      margin: calc(-1 * var(--visually-hidden-size));
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
   .cs__chapters ul {
     display: flex;
+    flex: 1;
+    min-width: 0;
     gap: var(--space-2);
     margin: 0;
     padding: 0;
@@ -799,6 +876,16 @@ const schema = [
    * size the window happened to be, so they get their own track and a
    * fixed frame. Square social slides keep the auto-fill grid above.
    */
+  .cs__gallery--pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (width >= 768px) {
+    .cs__gallery--pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   .cs__gallery--wide {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
