@@ -29,6 +29,7 @@ Full write-ups, each with the problem, the decisions, the measured outcome and w
 - [Hakkan](https://alroyndhlovu.com/case-studies/hakkan/) (Jul 2026 – present): Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.
 - [InSpiritInTruth](https://alroyndhlovu.com/case-studies/inspiritintruth/) (Jul 2026 – present): Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.
 - [tapa.](https://alroyndhlovu.com/case-studies/tapa/) (Jul 2026 – present): Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.
+- [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): Built a clothing brand end to end — product, store, payments, photography — and validated it the only way that counts: sales in the first month, local and international, then a 20-unit bulk order from another brand.
 - [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.
 
 ## Products he has built
