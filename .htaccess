@@ -27,9 +27,22 @@ ErrorDocument 404 /404.html
 # ============================================================
 
 <IfModule mod_alias.c>
-  # Portfolio items -> the portfolio section
-  Redirect 301 /portfolio/ https://alroyndhlovu.com/#portfolio
-  RedirectMatch 301 ^/portfolio/.+$ https://alroyndhlovu.com/#portfolio
+  # Portfolio items -> the portfolio section.
+  #
+  # The pattern must exclude files, and that is not a nicety. This site
+  # serves its own clips from /portfolio/video/*.mp4, which collides with
+  # the old WordPress /portfolio/<slug>/ namespace. A blanket rule here
+  # (`Redirect 301 /portfolio/`, which matches by prefix, plus
+  # `^/portfolio/.+$`) sent every portfolio video to the homepage as a
+  # 301 to HTML — so each one loaded its poster and then stopped dead,
+  # because an HTML document is not something a <video> can play. It was
+  # invisible locally, where no .htaccess runs, and broke all five clips
+  # in production.
+  #
+  # WordPress permalinks were directories and never carried an extension,
+  # so refusing to match a dot is both correct for the old URLs and safe
+  # for any real asset added under this path later.
+  RedirectMatch 301 ^/portfolio(/[^.]*)?$ https://alroyndhlovu.com/#portfolio
 
   # Testimonials -> section 01, which carries them
   RedirectMatch 301 ^/dtr_testimonial/.*$ https://alroyndhlovu.com/#who
