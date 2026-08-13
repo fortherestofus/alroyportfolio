@@ -64,12 +64,20 @@ const slug = (name: string) =>
           </ul>
         </div>
 
-        {hasCaseStudyPage(product.caseStudy) && (
+        {(hasCaseStudyPage(product.caseStudy) || product.link) && (
           <p class="product__link" data-reveal-item>
-            <a href={`/case-studies/${product.caseStudy}/`}>
-              Read the case study
-              <ArrowUpRight class="product__link-icon" aria-hidden="true" />
-            </a>
+            {hasCaseStudyPage(product.caseStudy) && (
+              <a href={`/case-studies/${product.caseStudy}/`}>
+                Read the case study
+                <ArrowUpRight class="product__link-icon" aria-hidden="true" />
+              </a>
+            )}
+            {product.link && (
+              <a href={product.link.url} target="_blank" rel="noopener noreferrer">
+                {product.link.label}
+                <ArrowUpRight class="product__link-icon" aria-hidden="true" />
+              </a>
+            )}
           </p>
         )}
 
@@ -213,6 +221,9 @@ const slug = (name: string) =>
   }
 
   .product__link {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
     margin-top: var(--space-4);
   }
 

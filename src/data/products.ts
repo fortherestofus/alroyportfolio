@@ -64,6 +64,13 @@ export interface Product {
   shape: "phone" | "panel" | "screen";
   /** Slug of the matching case study, where one exists. */
   caseStudy?: string;
+  /**
+   * Where to go and get it, once there is somewhere to go. Only set for
+   * products that have actually shipped — a link is the difference
+   * between a portfolio of concepts and a portfolio of things people
+   * can install.
+   */
+  link?: { url: string; label: string };
   shots: ProductShot[];
 }
 
@@ -208,8 +215,12 @@ export const PRODUCTS: Product[] = [
     tagline: "The browser extension that calls you out.",
     description:
       "Your phone nags you about screen time, but the real damage happens on the computer you sit at all day. It tracks where the hours go and reports back without mercy. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.",
-    status: "In development",
+    status: "Live",
     platform: "Chrome extension",
+    link: {
+      url: "https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg",
+      label: "Get it on the Chrome Web Store",
+    },
     stack: [
       "Manifest V3",
       "Vanilla JS, no framework",
