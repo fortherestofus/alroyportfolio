@@ -148,6 +148,23 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe and Zanzibar.",
       },
       {
+        image: "appstore_isit_sheet.jpg",
+        alt: "App Store screen sheet for InSpiritInTruth: six phones, each under its own headline, from “For the devoted, the questioning, the busy” to “Consistency without the guilt”.",
+      },
+      {
+        image: "appstore_tapa_sheet.jpg",
+        alt: "App Store screen sheet for tapa.: six phones under headlines from “Cook with what you have” to “Keep the good ones. Share the great ones.”",
+      },
+      {
+        image: "appstore_caughtslipping_grinding.jpg",
+        alt: "CaughtSlipping store panel for Work Mode — “Caught Grinding: for the overworkers” — beside a card reading nine hours forty-one worked today.",
+      },
+      {
+        image: "social_sweep_demo-poster.webp",
+        video: "/portfolio/video/social_sweep_demo.mp4",
+        alt: "A narrated walkthrough of Social Sweep, the consumer-insights tool built for Innovatr: a plain-language question in, a cited report out.",
+      },
+      {
         image: "gif_social_content-poster.webp",
         video: "/portfolio/video/gif_social_content.mp4",
         alt: "Animated social post for the ASICS Paris Pack trainer.",

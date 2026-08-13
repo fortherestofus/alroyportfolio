@@ -66,7 +66,18 @@ if (modal && panel && stage && titleEl && counterEl && dotsEl && prevButton && n
      * motion leaves it paused behind its poster, controls and all.
      */
     const video = slides[index].querySelector<HTMLVideoElement>("video");
-    if (video && !reduceMotion.matches) playWhenReady(video, index);
+    if (video) {
+      /*
+       * Attach the poster only once its slide is actually shown. As a
+       * plain `poster` attribute the browser fetches it immediately for
+       * every clip in every category, including the ones behind
+       * `hidden` that most readers never open — five posters of weight
+       * on first load to show at most one of them.
+       */
+      const { poster } = video.dataset;
+      if (poster && !video.poster) video.poster = poster;
+      if (!reduceMotion.matches) playWhenReady(video, index);
+    }
   }
 
   /**

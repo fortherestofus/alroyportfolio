@@ -11,7 +11,7 @@
  * bar instead: the same quick access, nothing hidden, and it still
  * works with JS off.
  */
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Placeholder from "../../components/Placeholder.astro";
@@ -34,10 +34,40 @@ interface Props {
 const { study } = Astro.props;
 const path = `/case-studies/${study.slug}/`;
 
+/** The opening image or clip runs the full content column. */
+const HERO_WIDTH = 1400;
 const SHOT_WIDTH = 900;
 /** Wide galleries run two-up at most, so each one is shown larger. */
 const WIDE_SHOT_WIDTH = 1100;
 const SHOT_QUALITY = 74;
+
+const heroImage = caseImage(study.hero?.image);
+/*
+ * A hero clip needs its poster as a plain URL rather than an <Image>,
+ * so it goes through getImage. Touching `image.src` instead would hand
+ * back the untransformed original and ship it at source weight — the
+ * same trap the portfolio modal documents.
+ */
+const heroPoster =
+  study.hero?.video && heroImage
+    ? (await getImage({ src: heroImage, width: HERO_WIDTH, quality: SHOT_QUALITY, format: "webp" }))
+        .src
+    : undefined;
+
+/** Same treatment for any video block inside the body. */
+const blockPosters = new Map<string, string>();
+for (const block of study.blocks) {
+  if (block.kind !== "video") continue;
+  const still = caseImage(block.poster);
+  if (!still) continue;
+  const optimised = await getImage({
+    src: still,
+    width: SHOT_WIDTH,
+    quality: SHOT_QUALITY,
+    format: "webp",
+  });
+  blockPosters.set(block.poster, optimised.src);
+}
 
 const schema = [
   {
@@ -105,6 +135,36 @@ const schema = [
       <p class="cs__intro">{study.description}</p>
     </header>
 
+    {
+      heroImage && (
+        <figure class="cs__hero">
+          {study.hero?.video ? (
+            <video
+              class="cs__hero-media"
+              src={study.hero.video}
+              poster={heroPoster}
+              preload="none"
+              controls
+              muted
+              loop
+              playsinline
+              aria-label={study.hero.alt}
+            />
+          ) : (
+            <Image
+              class="cs__hero-media"
+              src={heroImage}
+              alt={study.hero!.alt}
+              width={HERO_WIDTH}
+              quality={SHOT_QUALITY}
+              densities={[1]}
+              loading="eager"
+            />
+          )}
+        </figure>
+      )
+    }
+
     <nav class="cs__chapters" aria-label="Sections of this case study">
       <ul>
         {
@@ -121,9 +181,11 @@ const schema = [
       {
         study.blocks.map((block) => (
           <section class="cs__block" id={block.id} data-reveal>
-            <h2 class="cs__heading" data-reveal-item>
-              {block.heading}
-            </h2>
+            {block.heading && (
+              <h2 class="cs__heading" data-reveal-item>
+                {block.heading}
+              </h2>
+            )}
 
             {block.kind === "prose" &&
               block.body.map((paragraph) => (
@@ -272,6 +334,23 @@ const schema = [
                   );
                 })}
               </ul>
+            )}
+
+            {block.kind === "video" && (
+              <figure class="cs__video" data-reveal-item>
+                <video
+                  class="cs__video-media"
+                  src={block.src}
+                  poster={blockPosters.get(block.poster)}
+                  preload="none"
+                  controls
+                  muted
+                  loop
+                  playsinline
+                  aria-label={block.alt}
+                />
+                {block.footnote && <figcaption class="cs__note">{block.footnote}</figcaption>}
+              </figure>
             )}
 
             {block.kind === "pending" && (
@@ -683,6 +762,29 @@ const schema = [
   }
 
   /* --- Gallery ----------------------------------------------------- */
+  /*
+   * The opening image or clip. Full content width and eager, because it
+   * is the first thing on the page and the one asset the reader has
+   * already decided to look at.
+   */
+  .cs__hero {
+    margin: var(--space-7) 0 0;
+  }
+
+  .cs__hero-media,
+  .cs__video-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__video {
+    margin: var(--space-6) 0 0;
+  }
+
   .cs__gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));

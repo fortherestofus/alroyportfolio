@@ -298,6 +298,20 @@ async function checkDesktop(browser, origin, viewport) {
 
   // --- Dragging the knob scrubs the page.
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  /*
+   * Wait for the page to stop moving before measuring the knob.
+   *
+   * Two things settle late: the real typeface replacing the fallback,
+   * and the case study stack levelling its cards once it can measure
+   * them, which changes the page height and so moves the knob. Grabbing
+   * a bounding box before that happens meant pressing where the knob
+   * used to be — the drag never started and the test failed about one
+   * run in three, on whichever viewport happened to lose the race.
+   */
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(
+    () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+  );
   await page.waitForTimeout(400);
 
   /*
@@ -307,7 +321,29 @@ async function checkDesktop(browser, origin, viewport) {
    * was passing or failing depending on whether that label happened to
    * be showing. The pendant is what a hand actually grabs.
    */
-  const knobBox = await page.locator(".jnav__knob-pendant").boundingBox();
+  /*
+   * Wait for the knob to stop moving before measuring it. It eases
+   * toward its target rather than jumping, so for a few frames after a
+   * scroll or a resize its box is a moving target — press where it was
+   * and the drag never starts. Polling until two reads agree is the
+   * difference between this passing always and passing most of the
+   * time.
+   */
+  const settledKnobBox = async () => {
+    let previous = null;
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const box = await page.locator(".jnav__knob-pendant").boundingBox();
+      if (!box) return null;
+      if (previous && Math.abs(box.x - previous.x) < 0.5 && Math.abs(box.y - previous.y) < 0.5) {
+        return box;
+      }
+      previous = box;
+      await page.waitForTimeout(50);
+    }
+    return previous;
+  };
+
+  const knobBox = await settledKnobBox();
   const trackBox = await page.locator("#journey-track").boundingBox();
   if (knobBox && trackBox) {
     const before = await page.evaluate(() => window.scrollY);
@@ -1755,7 +1791,29 @@ async function checkReducedMotion(browser, origin) {
     window.scrollTo({ top: Math.round(max / 2), behavior: "instant" });
   });
   await page.waitForTimeout(250);
-  const knobBox = await page.locator(".jnav__knob-pendant").boundingBox();
+  /*
+   * Wait for the knob to stop moving before measuring it. It eases
+   * toward its target rather than jumping, so for a few frames after a
+   * scroll or a resize its box is a moving target — press where it was
+   * and the drag never starts. Polling until two reads agree is the
+   * difference between this passing always and passing most of the
+   * time.
+   */
+  const settledKnobBox = async () => {
+    let previous = null;
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const box = await page.locator(".jnav__knob-pendant").boundingBox();
+      if (!box) return null;
+      if (previous && Math.abs(box.x - previous.x) < 0.5 && Math.abs(box.y - previous.y) < 0.5) {
+        return box;
+      }
+      previous = box;
+      await page.waitForTimeout(50);
+    }
+    return previous;
+  };
+
+  const knobBox = await settledKnobBox();
   const trackBox = await page.locator("#journey-track").boundingBox();
   const before = await page.evaluate(() => window.scrollY);
   await page.mouse.move(knobBox.x + knobBox.width / 2, knobBox.y + knobBox.height / 2);

@@ -5,12 +5,14 @@
  * Cards stack and peel as you scroll, matching
  * `screenshots/case study overview (must be scrollable stacked cards).jpg`.
  *
- * The peel is `position: sticky`, not a ScrollTrigger pin, for the same
- * reasons the two-column pin is (see JourneySection): no pin-spacer, so
- * no jump at the section boundary, no refresh needed on resize, and it
- * still works with JS off. Each card sticks a little lower than the one
- * before it, so the stack builds a visible edge rather than hiding the
- * cards underneath it completely.
+ * Every card sticks at the same point, so each one arrives directly over
+ * the one before it: the reader looks at one case study at a time, in
+ * one place, and scrolling moves between them rather than past them.
+ *
+ * `position: sticky`, not a ScrollTrigger pin, for the same reasons the
+ * two-column pin is (see JourneySection): no pin-spacer, so no jump at
+ * the section boundary, no refresh needed on resize, and it still works
+ * with JS off.
  *
  * Cards must be opaque for this to read at all — a translucent card
  * would show the one it is covering straight through.
@@ -28,10 +30,9 @@ const STRIP_QUALITY = 70;
 
 <div class="stack">
   {
-    CASE_STUDIES.map((study, index) => (
+    CASE_STUDIES.map((study) => (
       <article
         class:list={["stack__card", !study.strip?.length && "stack__card--no-strip"]}
-        style={`--card-index:${index}`}
         data-reveal
       >
         <header class="stack__head">
@@ -121,6 +122,12 @@ const STRIP_QUALITY = 70;
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
+    /*
+     * Set by the script to the tallest card's natural height. Declared
+     * here so the value has a home, and so the stack still renders
+     * sensibly if the script never runs.
+     */
+    --stack-card-h: auto;
   }
 
   .stack__card {
@@ -385,17 +392,39 @@ const STRIP_QUALITY = 70;
    * trap the reader in the section.
    */
   @media (width >= 1024px) {
-    .stack {
-      gap: var(--space-7);
+    /*
+     * Every card sticks at the same point, so each one arrives directly
+     * over the last and the section reads as a single frame changing
+     * its contents rather than a column of cards going past.
+     *
+     * An earlier version staggered the offset by card index, which
+     * fanned them downwards and left every previous card's top edge
+     * showing. That is a different effect, and not the one this
+     * section is for: the reader should be looking at one case study at
+     * a time, in one place, and moving between them.
+     *
+     * The gap goes with it. Any space between cards is a gap the reader
+     * scrolls through before the next card covers the last, which
+     * breaks the illusion that one is replacing the other.
+     */
+    .stack:not(.stack--flat) {
+      gap: 0;
     }
 
     .stack__card {
       position: sticky;
-      /*
-       * Each card rests slightly lower than the one before it, so the
-       * top edge of every card underneath stays visible.
-       */
-      top: calc(var(--nav-height) + var(--space-4) + var(--card-index) * var(--space-3));
+      top: calc(var(--nav-height) + var(--space-4));
+    }
+
+    /*
+     * One height for all of them. Cards stick at the same point, so a
+     * short card landing on top of a tall one leaves the tall one's
+     * bottom sticking out underneath — the stack looks broken rather
+     * than layered. Levelling them to the tallest is what makes each
+     * card cover the last exactly.
+     */
+    .stack:not(.stack--flat) .stack__card {
+      min-height: var(--stack-card-h);
     }
   }
 
@@ -414,6 +443,28 @@ const STRIP_QUALITY = 70;
    */
   .stack--flat .stack__card {
     position: static;
+  }
+
+  /*
+   * The middle setting. Before giving up on the peel entirely, the
+   * script drops the moving strip — the tallest thing a card carries
+   * and the only part of it that is purely decorative. On a laptop
+   * that cannot fit a full card under its pin point, a stack that
+   * actually stacks is worth more than a row of thumbnails inside a
+   * card that does not.
+   */
+  .stack--compact .stack__viewport {
+    display: none;
+  }
+
+  .stack--compact .stack__card {
+    padding-bottom: var(--space-5);
+  }
+
+  @media (width >= 640px) {
+    .stack--compact .stack__card {
+      padding-bottom: var(--space-6);
+    }
   }
 
   /*
@@ -459,38 +510,100 @@ const STRIP_QUALITY = 70;
 
     const last = cards[cards.length - 1];
 
-    const fits = () => {
-      if (cards.length === 0) return true;
-
-      /*
-       * Read the deepest pin offset off the element rather than
-       * recomputing the `top` calc here. Duplicating that formula in JS
-       * is a bug waiting to happen — it already happened once, when the
-       * offsets were tightened in CSS and this test carried on measuring
-       * against the old ones, refusing to peel on viewports that had
-       * room to spare.
-       *
-       * `top` only resolves while the card is actually sticky, so the
-       * flat class comes off for the measurement and is reapplied by the
-       * caller. Reading a layout property forces the reflow that makes
-       * the new value visible.
-       */
+    /**
+     * Measure the stack at its natural size and report both whether it
+     * fits and how tall its tallest card is.
+     *
+     * The level-up height has to be cleared before measuring or the
+     * measurement feeds on its own output: every card would report the
+     * height set on the last pass and the value could only ever grow.
+     */
+    const measure = () => {
       stack.classList.remove("stack--flat");
+      stack.style.setProperty("--stack-card-h", "auto");
       void stack.offsetHeight;
 
-      const deepest = Number.parseFloat(getComputedStyle(last).top) || 0;
+      /*
+       * Read the pin offset off the element rather than recomputing the
+       * `top` calc here. Duplicating that formula in JS is a bug waiting
+       * to happen — it already happened once, when the offsets were
+       * tightened in CSS and this test carried on measuring against the
+       * old ones, refusing to peel on viewports that had room to spare.
+       */
+      const top = Number.parseFloat(getComputedStyle(last).top) || 0;
       const tallest = Math.max(...cards.map((card) => card.getBoundingClientRect().height));
       const air = Number.parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--space-4"),
       );
 
-      // A little air below the card so the link is not flush to the edge.
-      return deepest + tallest + air <= window.innerHeight;
+      return { fits: top + tallest + air <= window.innerHeight, tallest };
     };
 
+    /**
+     * Levelling the cards changes how tall the page is, and this can
+     * happen well after load — the first honest measurement is only
+     * available once the real typeface has replaced the fallback.
+     * Anything holding cached scroll geometry (the timeline nav, and
+     * ScrollTrigger behind it) is then measuring a page that no longer
+     * exists, and scrubbing lands in the wrong place.
+     *
+     * So when the layout actually changes, say so. A resize event is
+     * the signal every scroll library already listens for. `syncing`
+     * stops the event this dispatches from re-entering the handler
+     * that dispatched it.
+     */
+    const signature = () => `${stack.className}|${stack.style.getPropertyValue("--stack-card-h")}`;
+    let syncing = false;
+
+    const notifyIfChanged = (before: string) => {
+      if (signature() === before || syncing) return;
+      syncing = true;
+      window.dispatchEvent(new Event("resize"));
+      syncing = false;
+    };
+
+    /*
+     * Three settings, tried in order, so the peel survives a short
+     * window instead of being switched off by one.
+     *
+     * Full card first. If that cannot fit under the deepest pin point,
+     * drop the decorative strip and try again — that is worth about two
+     * hundred pixels and costs nothing the page needs. Only if a card
+     * still cannot show its own link does the stack give up and scroll
+     * like everything else.
+     */
     const apply = () => {
-      const peel = wide.matches && !reduced.matches && fits();
-      stack.classList.toggle("stack--flat", !peel);
+      if (!wide.matches || reduced.matches) {
+        const was = signature();
+        stack.classList.add("stack--flat");
+        stack.classList.remove("stack--compact");
+        stack.style.setProperty("--stack-card-h", "auto");
+        notifyIfChanged(was);
+        return;
+      }
+
+      const settle = (tallest: number) => {
+        stack.classList.remove("stack--flat");
+        stack.style.setProperty("--stack-card-h", `${Math.ceil(tallest)}px`);
+      };
+
+      const before = signature();
+
+      stack.classList.remove("stack--compact");
+      let result = measure();
+      if (result.fits) settle(result.tallest);
+      else {
+        stack.classList.add("stack--compact");
+        result = measure();
+        if (result.fits) settle(result.tallest);
+        else {
+          stack.classList.remove("stack--compact");
+          stack.classList.add("stack--flat");
+          stack.style.setProperty("--stack-card-h", "auto");
+        }
+      }
+
+      notifyIfChanged(before);
     };
 
     apply();
@@ -502,6 +615,7 @@ const STRIP_QUALITY = 70;
      */
     let frame = 0;
     window.addEventListener("resize", () => {
+      if (syncing) return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(apply);
     });

@@ -44,10 +44,36 @@ const MAX_WIDTH = 1280;
  */
 const POSTER_AT = {
   website_video_lumiskin: "6.5",
+  social_sweep_demo: "8",
 };
 const POSTER_DEFAULT = "1";
 
+/**
+ * Clips that keep their audio track.
+ *
+ * The default is to strip it: these play as silent loops in a portfolio
+ * tile, the audio is dead weight, and dropping it is what lets them
+ * autoplay everywhere. A narrated product demo is the exception — the
+ * commentary is the point. The element still starts muted so autoplay
+ * is never blocked; the controls are what let a reader turn it on.
+ */
+const KEEP_AUDIO = new Set(["social_sweep_demo"]);
+
+/**
+ * Clips that also ship a silent copy for a case study page.
+ *
+ * The same demo appears in two places with different jobs. In the
+ * portfolio it is a thing to watch, so it keeps its narration. On a
+ * case study page it sits inside an argument the reader is already
+ * reading, and a video that can be unmuted mid-paragraph is a
+ * liability — so that copy has no audio track at all rather than an
+ * audio track behind a mute button.
+ */
+const SILENT_COPY = { social_sweep_demo: "social-sweep" };
+const CASE_VIDEO_OUT = join(ROOT, "public", "case-studies", "video");
+
 mkdirSync(VIDEO_OUT, { recursive: true });
+mkdirSync(CASE_VIDEO_OUT, { recursive: true });
 
 const sources = readdirSync(SOURCE_DIR).filter((f) =>
   [".mp4", ".mov"].includes(extname(f).toLowerCase()),
@@ -98,7 +124,7 @@ for (const file of sources) {
     "yuv420p",
     // These play as silent loops in a portfolio tile, so the audio is
     // dead weight. Dropping it also lets them autoplay everywhere.
-    "-an",
+    ...(KEEP_AUDIO.has(name) ? ["-c:a", "aac", "-b:a", "96k"] : ["-an"]),
     // Puts the index up front so playback can start before the whole
     // file has arrived.
     "-movflags",
@@ -128,6 +154,21 @@ for (const file of sources) {
     "68",
     poster,
   ]);
+
+  const silentName = SILENT_COPY[name];
+  if (silentName) {
+    run([
+      "-y",
+      "-i",
+      video,
+      "-c:v",
+      "copy",
+      "-an",
+      "-movflags",
+      "+faststart",
+      join(CASE_VIDEO_OUT, `${silentName}.mp4`),
+    ]);
+  }
 
   const before = statSync(source).size;
   const after = statSync(video).size;

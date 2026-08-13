@@ -80,6 +80,22 @@ export type Block =
       rows: { label: string; value: number; display: string; note?: string }[];
       footnote?: string;
     }
+  /**
+   * A clip inside the argument. Silent by construction — these sit in
+   * the middle of prose someone is reading, so the file itself carries
+   * no audio track rather than an audio track behind a mute button.
+   */
+  | {
+      kind: "video";
+      heading?: string;
+      intro?: string;
+      /** Path under public/, written by `npm run video`. */
+      src: string;
+      /** Poster still, keyed like every other case study image. */
+      poster: string;
+      alt: string;
+      footnote?: string;
+    }
   | { kind: "pending"; heading: string; note: string };
 
 export interface CaseStudy {
@@ -94,6 +110,22 @@ export interface CaseStudy {
   website?: string;
   /** Filename in src/assets/logos, badged as a circular client mark. */
   logoFile?: string;
+  /**
+   * The image or clip the page opens on.
+   *
+   * Every study used to start on a wall of text, which reads as bland
+   * before a word of it has been judged — the work is visual and the
+   * top of the page was the one place not showing any of it. A clip is
+   * used where the thing being described actually moves; otherwise the
+   * single most representative still.
+   */
+  hero?: {
+    /** Keyed like every other case study image, e.g. `slug/file.jpg`. */
+    image: string;
+    alt: string;
+    /** Path under public/ when the hero should play rather than sit. */
+    video?: string;
+  };
   /**
    * The moving image strip on the section 06 overview card (PRD §6.05).
    * A spread of the work rather than the best six shots: a reader
@@ -111,6 +143,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "thrifty-adventures",
     name: "Thrifty Adventures",
     dates: "Jul 2025 – Jan 2026",
+    hero: {
+      image: "thrifty-adventures/hero-social.jpg",
+      alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe, Zanzibar and Egypt.",
+    },
     summary:
       "Took a leisure travel brand onto LinkedIn from nothing and came away with 742 leads at R30 — after finding that the offer, not the audience, was what the channel actually rewarded.",
     description:
@@ -316,6 +352,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "innovatr",
     name: "Innovatr",
     dates: "Mar 2026 – Sep 2026",
+    hero: {
+      image: "innovatr/web-home-after.jpg",
+      alt: "The rebuilt Innovatr home page, leading with the consumer-intelligence positioning.",
+    },
     summary:
       "Rebuilt the whole front of a research business — positioning, website, content engine and paid programme — sourced its addressable market from nothing, and replaced a US$8,000-a-year software licence with a product the company could sell.",
     description:
@@ -676,6 +716,8 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Innovatr was about to licence a social listening platform at US$8,000 a year. I built the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
           "Social Sweep takes a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — works out which platforms are worth reading for that particular question, and returns an organised report in which every claim resolves back to a real comment. Net sentiment, emotion mix, where the conversation actually lives, what is spiking, and the quotes underneath all of it. It runs on the Social Crawl API, so the reachable surface is 46 platforms across social, search, commerce and the open web.",
           "That turned a line of annual cost into a line of product. The same engine Innovatr would have rented became something it could sell, positioned at R20,000 a study.",
+          "The saving is the small part of the story. The tool Innovatr was about to licence was itself acquired by a market research group a few months later — terms undisclosed, but the company behind it had spent four years and outside investment getting there, and was bought precisely because a research firm wanted the capability in-house. That is the same conclusion Innovatr reached, arrived at from the other direction and at a rather different price. Social Sweep took about two months, a Replit subscription and a Claude one.",
+          "I am not claiming parity with a venture-backed product; theirs is a company with a roadmap, a support desk and customers who are not me. The point is narrower and more useful: the capability that used to justify an acquisition is now something one person can build for a client in a quarter, and the interesting decision is no longer whether you can afford to build it but whether owning it beats renting it.",
         ],
       },
       {
@@ -725,6 +767,18 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
       {
         id: "product",
+        kind: "video",
+        heading: "Social Sweep, running",
+        intro:
+          "A full study end to end: the question going in, the platforms it decides are worth reading, and the report coming back with the quotes underneath every claim.",
+        src: "/case-studies/video/social-sweep.mp4",
+        poster: "innovatr/social_sweep_report.jpg",
+        alt: "A two-minute walkthrough of Social Sweep: entering a plain-language question, watching it select platforms, and reading the finished report with its sentiment split, emotion mix and source quotes.",
+        footnote:
+          "Recorded from the working tool, not a prototype. This copy is silent by design; the narrated version is in the portfolio.",
+      },
+      {
+        id: "product",
         kind: "prose",
         heading: "What I'd do differently",
         body: [
@@ -742,6 +796,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "hakkan",
     name: "Hakkan",
     dates: "Jul 2026 – present",
+    hero: {
+      image: "products/hakkan-report.jpg",
+      alt: "A Hakkan report: 965 items cited and 903 real voices across seven platforms, with the sentiment split beneath.",
+    },
     summary:
       "Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.",
     description:
@@ -946,6 +1004,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "inspiritintruth",
     name: "InSpiritInTruth",
     dates: "Jul 2026 – present",
+    hero: {
+      image: "inspiritintruth/hero-screens.jpg",
+      alt: "Three InSpiritInTruth screens: the devotionals library, the home screen, and the in-app Bible.",
+    },
     summary:
       "Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.",
     description:
@@ -1096,6 +1158,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "tapa",
     name: "tapa.",
     dates: "Jul 2026 – present",
+    hero: {
+      image: "tapa/hero-screens.jpg",
+      alt: "Three tapa. screens: entering what is in the fridge, the home screen, and a finished recipe.",
+    },
     summary:
       "Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.",
     description:
@@ -1224,6 +1290,11 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "lumiskin",
     name: "LumiSkin",
     dates: "Mar 2026",
+    hero: {
+      image: "lumiskin/hero-aurora.jpg",
+      alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal card slides in.",
+      video: "/portfolio/video/website_video_lumiskin.mp4",
+    },
     summary:
       "A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.",
     description:
@@ -1257,25 +1328,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
       {
         id: "idea",
-        kind: "gallery",
+        kind: "video",
         heading: "One mechanic, three colourways",
         intro:
-          "The same shot, three times: the chameleon matches the bar it is standing next to, and the card arrives once the colour has landed rather than on a timer the viewer cannot see the logic of.",
-        wide: true,
-        shots: [
-          {
-            image: "lumiskin/hero-aurora.jpg",
-            alt: "The LumiSkin hero in lavender: the chameleon has matched Aurora Petal and the product card shows the bar at $24.",
-          },
-          {
-            image: "lumiskin/hero-jade.jpg",
-            alt: "The hero in pink, with the Jade Mist card and its cooling aloe and matcha note.",
-          },
-          {
-            image: "lumiskin/hero-peach.jpg",
-            alt: "The hero in warm amber, the chameleon matched to Peach Quartz with its citrus and clay note.",
-          },
-        ],
+          "Stills undersell this one — the whole idea is a transition, so the page shows the thing running rather than three frames of it. The chameleon matches the bar it is standing next to, and the card arrives once the colour has landed.",
+        src: "/portfolio/video/website_video_lumiskin.mp4",
+        poster: "lumiskin/hero-aurora.jpg",
+        alt: "The LumiSkin hero cycling through all three colourways: the chameleon shifts to lavender, pink and amber to match Aurora Petal, Jade Mist and Peach Quartz, each with its product card.",
       },
       {
         id: "make",
