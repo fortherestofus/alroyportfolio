@@ -33,6 +33,20 @@ const POSTER_OUT = SOURCE_DIR;
 const CRF = "28";
 const MAX_WIDTH = 1280;
 
+/**
+ * Where to grab the poster frame, in seconds.
+ *
+ * One second in is a fine default — it clears the fade from black most
+ * clips open on. It is wrong for a clip whose point only assembles
+ * later: the LumiSkin hero spends its first seconds walking the
+ * chameleon into shot, and the frame that actually explains the piece
+ * (colour matched to the product, card revealed) is around six.
+ */
+const POSTER_AT = {
+  website_video_lumiskin: "6.5",
+};
+const POSTER_DEFAULT = "1";
+
 mkdirSync(VIDEO_OUT, { recursive: true });
 
 const sources = readdirSync(SOURCE_DIR).filter((f) =>
@@ -96,7 +110,7 @@ for (const file of sources) {
   run([
     "-y",
     "-ss",
-    "1",
+    POSTER_AT[name] ?? POSTER_DEFAULT,
     "-i",
     source,
     "-frames:v",

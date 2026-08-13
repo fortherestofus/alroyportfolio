@@ -15,10 +15,11 @@
     "lint": "eslint .",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check:links": "node scripts/check-links.mjs",
+    "check:redirects": "node scripts/check-redirects.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "deploy": "npm run qa && node scripts/deploy.mjs",
-    "qa": "npm run check && npm run lint && npm run lint:tokens && npm run format:check && npm run build && npm run check:links && npm run qa:browser",
+    "qa": "npm run check && npm run lint && npm run lint:tokens && npm run format:check && npm run build && npm run check:links && npm run check:redirects && npm run qa:browser",
     "qa:browser": "node scripts/qa-browser.mjs",
     "lottie": "node scripts/theme-lottie.mjs",
     "video": "node scripts/optimize-video.mjs"

@@ -66,10 +66,35 @@ if (modal && panel && stage && titleEl && counterEl && dotsEl && prevButton && n
      * motion leaves it paused behind its poster, controls and all.
      */
     const video = slides[index].querySelector<HTMLVideoElement>("video");
-    if (video && !reduceMotion.matches) {
-      video.play().catch(() => {
-        // Autoplay refused; the controls are still there.
-      });
+    if (video && !reduceMotion.matches) playWhenReady(video, index);
+  }
+
+  /**
+   * Start a clip, and mean it.
+   *
+   * These elements carry `preload="none"`, so at the moment a slide opens
+   * the element holds no data at all. A play() issued against an empty
+   * buffer can settle before there is a decodable frame, which leaves the
+   * poster sitting there — indistinguishable, to the reader, from a clip
+   * that simply refused to start. So ask once, and if the element is
+   * still short of data, ask again the moment the browser says it can
+   * actually play.
+   *
+   * The index check matters: the media may only become ready after the
+   * reader has already moved to another shot, and starting playback on a
+   * slide nobody is looking at is how you get sound-alike bugs where two
+   * clips run at once.
+   */
+  function playWhenReady(video: HTMLVideoElement, slideIndex: number): void {
+    const attempt = () => {
+      if (index !== slideIndex) return;
+      // A genuine policy refusal still leaves the native controls.
+      video.play().catch(() => {});
+    };
+
+    attempt();
+    if (video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
+      video.addEventListener("canplay", attempt, { once: true });
     }
   }
 

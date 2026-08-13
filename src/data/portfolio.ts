@@ -88,8 +88,13 @@ export const PORTFOLIO: PortfolioCategory[] = [
   {
     id: "web",
     name: "Web",
-    cover: "website_video_dejamedia-poster.webp",
+    cover: "website_video_lumiskin-poster.webp",
     shots: [
+      {
+        image: "website_video_lumiskin-poster.webp",
+        video: "/portfolio/video/website_video_lumiskin.mp4",
+        alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal product card slides in over the video.",
+      },
       {
         image: "website_video_dejamedia-poster.webp",
         video: "/portfolio/video/website_video_dejamedia.mp4",

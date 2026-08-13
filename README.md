@@ -198,6 +198,23 @@ The first pass took **45.6MB of source down to 5.0MB** — the clips were 6-7 Mb
 which is broadcast bitrate for what is mostly slow-panning screen capture. One
 clip dropped 97% with no visible difference at playback size.
 
+**The committed source is not the camera master.** Sources in
+`src/assets/portfolio/` are tracked in git, so they need to stay a sane size —
+the existing ones sit between 0.8MB and 18MB. The LumiSkin master was a 96MB
+30-second capture at 2814x1450 and 25.8 Mbps, which is close enough to
+GitHub's 100MB hard per-file limit to be a bad thing to commit, and it would
+sit in history forever. It was reduced to a 1920-wide CRF 20 archival copy
+(12MB, visually indistinguishable at any size this site serves) before being
+committed; the untouched master stays outside the repo in
+`alroyportfolio/media/`. Do the same for anything else oversized.
+
+Poster frames are cut one second in, which clears the fade-from-black most
+clips open on. When the frame that actually explains a clip arrives later,
+name it in `POSTER_AT` in `scripts/optimize-video.mjs` — LumiSkin uses 6.5s,
+where the chameleon has finished changing colour and the product card has
+appeared. Hand-cutting a poster instead would just be overwritten by the next
+`npm run video`.
+
 Two things matter beyond the file size. The `.mov` had to become `.mp4` because
 Firefox will not reliably play a QuickTime container. And nothing is preloaded:
 tiles show the poster image and only fetch video when the visitor asks for it,
@@ -295,9 +312,13 @@ Tracked from PRD §14. None of these block the build.
   written". Alroy will supply the details (a design exploration: a cosmetics
   hero screen); it becomes a card and a page the moment its entry lands in
   `src/data/case-studies.ts`.
-- **More web video** — Alroy has additional website video for the portfolio.
-  Drop the files into `src/assets/portfolio/`, run `npm run video`, and add
-  each clip + poster to the `web` category in `src/data/portfolio.ts`.
+- **More web video** — LumiSkin landed 13 Aug 2026 and leads the `web`
+  category. For any further clips: drop the file into
+  `src/assets/portfolio/`, run `npm run video`, and add the clip + poster to
+  the `web` category in `src/data/portfolio.ts`. Keep the committed source
+  around 10–20MB (see the note under Video below); a poster frame that needs
+  to come from somewhere other than the first second goes in `POSTER_AT` in
+  `scripts/optimize-video.mjs`.
 - **"Ask Gemini" opens Google AI Mode** (`udm=50`), not gemini.google.com —
   tested: the Gemini app drops a prefilled query for signed-out visitors and
   lands them on an empty chat, while AI Mode runs the same query for everyone
