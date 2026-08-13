@@ -148,17 +148,20 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe, Zanzibar and Egypt.",
     },
     summary:
-      "Took a leisure travel brand onto LinkedIn from nothing and came away with 742 leads at R30 — after finding that the offer, not the audience, was what the channel actually rewarded.",
+      "Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million TikTok views, 70,000 Google clicks for $2,099, and 742 LinkedIn leads at R30 — each channel doing the one job it is actually good at.",
     description:
-      "Thrifty Adventures runs group and tailored tours out of South Africa. LinkedIn is a professional network and they sell holidays, so it is not the channel anyone would pick for them. I ran it properly for seven months, across every objective the platform sells, to find out what it would actually do.",
-    tags: ["Paid media", "Channel testing", "Lead generation", "Creative strategy"],
+      "Thrifty Adventures runs group and tailored tours out of South Africa. There was no paid activity, no tracking and no organic engine when I started. What went in was not one campaign but a system: TikTok to be found, TikTok ads to start conversations, Google to catch people already looking, and LinkedIn — the channel nobody would pick for a holiday — to sell the considered trip.",
+    tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
     logoFile: "thrifty.jpeg",
     meta: ["Client · Thrifty Adventures", "Paid media & content", "Jul 2025 – Jan 2026"],
     chapters: [
       { id: "start", label: "The wrong channel" },
       { id: "testing", label: "Opening it up" },
       { id: "offer", label: "The brochure" },
-      { id: "results", label: "Results" },
+      { id: "results", label: "LinkedIn results" },
+      { id: "tiktok", label: "TikTok" },
+      { id: "google", label: "Search" },
+      { id: "mix", label: "The mix" },
       { id: "honest", label: "What didn't work" },
     ],
     blocks: [
@@ -323,6 +326,164 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Click figures here are landing page clicks, not LinkedIn's headline Clicks column, which on engagement campaigns also counts reactions, comments, shares and follows. The 0.52% median is AgencyAnalytics' January 2025 benchmark across 150,000+ campaigns. Costs are in rand and are account facts rather than benchmarked ones: no credible South African or travel-sector LinkedIn cost benchmark exists to compare them against.",
       },
       {
+        id: "tiktok",
+        kind: "prose",
+        heading: "The channel that did the finding",
+        body: [
+          "LinkedIn was the deliberate experiment. TikTok was the engine, and it ran from a standing start: no following, no back catalogue, no paid support for the first months.",
+          "The content is not travel-brand content in the usual sense. It is destinations shot plainly and captioned as questions people actually type — the Dubai tour, the Namibia tour, what a Zanzibar trip costs. That sounds like a small thing and it is the whole reason the account works, because it is what makes the videos findable months after they are posted rather than for the two days the algorithm feels like showing them.",
+        ],
+      },
+      {
+        id: "tiktok",
+        kind: "metrics",
+        heading: "Zero to 3.1 million views",
+        intro: "Organic, from a new account, over roughly eight months.",
+        items: [
+          {
+            value: "3.1M",
+            label: "Video views",
+            context: "Jun 2025 to Jan 2026, from an account with no history.",
+          },
+          {
+            value: "4.6M",
+            label: "Viewers reached",
+            context: "Over twelve months, 3.3M of them people who had never seen the brand.",
+          },
+          {
+            value: "39.8K",
+            label: "Followers",
+            context: "And 116.8K likes across the account.",
+          },
+          {
+            value: "38.1%",
+            label: "Of views came from search",
+            context:
+              "People looking for a destination and finding Thrifty, rather than being served it.",
+          },
+          {
+            value: "7,200",
+            label: "Shares",
+            context:
+              "The signal that matters most on the platform: someone sending it to a person.",
+          },
+          {
+            value: "50.4K",
+            label: "Best performing video",
+            context: "The 2026 travel packages set, pinned to the profile.",
+          },
+        ],
+        footnote:
+          "The search share is the number worth stopping on. TikTok's own For You feed typically accounts for around 70% of a video's views; here it is 57.6%, because search is carrying 38.1% — an account being actively looked for rather than passively served. There is no published like-for-like benchmark for search share by account, so this is stated against the For You norm rather than against a search median that does not exist.",
+      },
+      {
+        id: "tiktok",
+        kind: "metrics",
+        heading: "And then paid, to start conversations",
+        intro:
+          "One destination, one video, one objective: get a person into a message thread. A week of delivery, priced per conversation started.",
+        items: [
+          {
+            value: "166",
+            label: "Conversations started",
+            context: "In a single week, across nine destination videos.",
+          },
+          {
+            value: "R7.51",
+            label: "Average cost each",
+            context: "Weighted across all nine, not the best one quoted as if it were typical.",
+          },
+          {
+            value: "71",
+            label: "Best single video",
+            context: "Bali and Thailand, at R7.54 a conversation.",
+          },
+          {
+            value: "R2.46",
+            label: "Cheapest",
+            context: "Mauritius — five conversations, so a small sample rather than a trend.",
+          },
+        ],
+        footnote:
+          "Figures are TikTok's own for 30 Jan – 6 Feb 2026, one week of delivery, which is why they are reported as a week and not annualised. \u201cConversations\u201d is TikTok's own metric for a messaging thread opened off an ad; what it does not tell you is how many became bookings, and no booking figure is claimed here because that attribution was never wired up.",
+      },
+      {
+        id: "google",
+        kind: "metrics",
+        heading: "Search, for the people already looking",
+        intro:
+          "The cheapest job on the list, and the one with the least argument attached: someone typing the name of a tour is not a person to be persuaded.",
+        items: [
+          {
+            value: "70,099",
+            label: "Clicks",
+            context: "From 872,272 impressions, Jun 2025 to Feb 2026.",
+          },
+          {
+            value: "$2,099",
+            label: "Total spend",
+            context: "Across six campaigns — search, display, Performance Max and Demand Gen.",
+          },
+          {
+            value: "$0.03",
+            label: "Average cost per click",
+            context: "Against a $2.14 median for travel in Google's 2026 benchmark set.",
+          },
+          {
+            value: "8.04%",
+            label: "Account click-through rate",
+            context: "The display campaign carried 18.12% of it on its own.",
+          },
+          {
+            value: "$0.12",
+            label: "Cost per click, search only",
+            context: "The 2025 Trips campaign, at a 4.30% click-through rate.",
+          },
+        ],
+        footnote:
+          "The benchmark is WordStream's 2026 study of 13,474 US search campaigns: travel medians of 9.32% CTR, $2.14 CPC and $44.70 cost per lead. Two honest caveats. It covers search campaigns, and most of this account's volume is display and Performance Max, where clicks are structurally cheaper. And it is US auction pricing — South African inventory is far less contested, so a large part of that CPC gap is the market rather than the management. The comparison is directional, not like for like.",
+      },
+      {
+        id: "google",
+        kind: "gallery",
+        heading: "The dashboards behind the numbers",
+        intro:
+          "Every figure on this page is read off one of these rather than reconstructed from a report written afterwards.",
+        wide: true,
+        shots: [
+          {
+            image: "thrifty-adventures/tiktok-overview.jpg",
+            alt: "TikTok Studio: 3.1M video views, 25K profile views, 29K likes and 7.2K shares, with the traffic source panel showing 57.6% For You and 38.1% Search.",
+          },
+          {
+            image: "thrifty-adventures/tiktok-profile.jpg",
+            alt: "The Thrifty Adventures TikTok profile: 39.8K followers, 116.8K likes, and a grid of destination videos led by the 2026 travel packages set at 50.4K views.",
+          },
+          {
+            image: "thrifty-adventures/tiktok-ads.jpg",
+            alt: "TikTok Ads manager showing cost per conversation by destination video, from R2.46 for Mauritius to R24.25 for Zimbabwe and Botswana.",
+          },
+          {
+            image: "thrifty-adventures/google-report.jpg",
+            alt: "Google Ads report editor: six campaigns totalling 70,099 clicks and 872,272 impressions at an 8.04% click-through rate and $2,099 spend.",
+          },
+        ],
+      },
+      {
+        id: "mix",
+        kind: "checklist",
+        heading: "What each channel was actually for",
+        intro:
+          "The point of running four is not four times the volume. It is that a holiday is not bought in one motion, and the channels are good at different parts of it.",
+        items: [
+          "TikTok organic is how the brand gets found — 38% of views arriving from search means the back catalogue keeps working long after a post stops trending.",
+          "TikTok ads turn that attention into a conversation with a human being, at single-digit rand, which is the cheapest qualified contact anywhere in the account.",
+          "Google catches the people who have already decided to travel and are pricing it. Cheapest clicks in the mix, and the least persuasion required.",
+          "LinkedIn sells the considered trip — the professional booking a group tour, reached with a brochure rather than an enquiry form, at R26.74 a lead.",
+          "None of them was asked to do another one's job, which is the actual finding. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
+        ],
+      },
+      {
         id: "honest",
         kind: "prose",
         heading: "What didn't work",
@@ -330,6 +491,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Brand awareness was the most expensive thing on the platform and I would not buy it again at that price: R8,400 at a 0.109% click-through rate and R19.76 a click. Judged as a click channel it failed outright. Judged on what it is actually sold for it did deliver 211,026 video views and 84,324 completions, so the money was not burnt — but there were cheaper ways to buy the same attention, and the run proved it.",
           "Single-destination video posts did not travel. Egypt, Namibia and Dubai each drew between 0.10% and 0.16% CTR at R25 to R37 a click. The one composite post — a year of trips in a single edit — pulled 1,791 clicks at R0.87 and 106,232 video completions. People responded to the range, not to one place.",
           "And the conversion column is not reportable. It records 97,475 conversions against 57,345 clicks — 1.7 per click. That is not necessarily an error: LinkedIn's Conversions metric counts actions taken after an impression as well as after a click, on a 30-day click and 7-day view-through window, and a broadly scoped rule will fire on ordinary page loads. But until it is split into Click Conversions and View Conversions it cannot be honestly described as people who saw an ad and then acted. So no conversion figure appears anywhere on this page, including the several that would have flattered the work considerably.",
+          "Google's conversion column has the same problem, and it is worth naming twice rather than quietly reporting the one that flatters. It shows 12,069 conversions from 70,099 clicks, and the search campaign alone claims 9,528 conversions from 4,099 clicks — a 232% conversion rate, which is not a conversion rate. It is a broadly scoped conversion action firing on page loads. So the click, impression, CTR and cost figures above are real and the conversion figures are not quoted anywhere on this page.",
         ],
       },
       {
