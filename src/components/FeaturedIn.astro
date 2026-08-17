@@ -1,0 +1,151 @@
+---
+/**
+ * "Where the work has shown up" — the press, programme and exhibition
+ * cards that close section 01, between the testimonials and the client
+ * marquee.
+ *
+ * Stacked full-width, not a three-column grid. Section 01 renders in
+ * the journey's content column, which is about 640px: three tracks
+ * across it come out at 204px each, which is narrower than these
+ * descriptions can survive. Stacking also matches `.who__quote`
+ * directly above, so the two proof blocks read as a pair rather than as
+ * two components that happen to be adjacent.
+ *
+ * The head borrows `.product__head`'s shape — name left, meta right —
+ * which keeps each card to three short rows instead of five.
+ *
+ * The whole card is the target. The anchor wraps the outlet name so the
+ * accessible name is the publication rather than "read more", and a
+ * stretched pseudo-element gives a pointer the full card to hit — one
+ * link per card, so nothing is announced twice.
+ */
+import { ArrowUpRight } from "@lucide/astro";
+import { FEATURES } from "../data/features";
+---
+
+<ul class="feat">
+  {
+    FEATURES.map((feature) => (
+      <li class="feat__card" data-reveal-item>
+        <div class="feat__head">
+          <h4 class="feat__outlet">
+            <a class="feat__link" href={feature.href} target="_blank" rel="noopener noreferrer">
+              {feature.outlet}
+              <ArrowUpRight class="feat__icon" aria-hidden="true" />
+            </a>
+          </h4>
+
+          <p class="feat__meta">
+            <span class="feat__kind">{feature.kind}</span>
+            <span class="feat__year">{feature.year}</span>
+          </p>
+        </div>
+
+        <p class="feat__what">{feature.what}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .feat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Matches .who__quote, which sits directly above this block. */
+  .feat__card {
+    position: relative;
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  .feat__card:has(.feat__link:hover),
+  .feat__card:has(.feat__link:focus-visible) {
+    border-color: var(--color-accent);
+  }
+
+  .feat__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .feat__outlet {
+    font-size: var(--text-h4);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .feat__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    color: var(--color-text);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .feat__link:hover,
+  .feat__link:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* Gives the pointer the whole card without a second link in the tree. */
+  .feat__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .feat__icon {
+    flex: none;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+    /* Baseline alignment puts the arrow slightly low against caps. */
+    translate: 0 0.15em;
+  }
+
+  .feat__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /*
+   * The honest label, and the reason this is not a logo wall: an
+   * article, a programme and an exhibition are three different claims,
+   * and each card says which one it is making.
+   */
+  .feat__kind {
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .feat__year {
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .feat__what {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+</style>
