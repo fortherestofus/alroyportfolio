@@ -22,22 +22,45 @@ He has worked with brands and organisations including Meta, Total Sports, Jenna 
 
 ## Case studies
 
-Full write-ups, each with the problem, the decisions, the measured outcome and what he would do differently.
+Client work, each written up with the problem, the decisions, the measured outcome and what he would do differently.
 
 - [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million TikTok views, 70,000 Google clicks for $2,099, and 742 LinkedIn leads at R30 — each channel doing the one job it is actually good at.
 - [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): Rebuilt the whole front of a research business — positioning, website, content engine and paid programme — sourced its addressable market from nothing, and replaced a US$8,000-a-year software licence with a product the company could sell.
-- [Hakkan](https://alroyndhlovu.com/case-studies/hakkan/) (Jul 2026 – present): Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.
-- [InSpiritInTruth](https://alroyndhlovu.com/case-studies/inspiritintruth/) (Jul 2026 – present): Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.
-- [tapa.](https://alroyndhlovu.com/case-studies/tapa/) (Jul 2026 – present): Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.
 - [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): Built a clothing brand end to end — product, store, payments, photography — and validated it the only way that counts: sales in the first month, local and international, then a 20-unit bulk order from another brand.
-- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.
+- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A meme about designers handing developers a brief that looks great and costs a fortune to build. I wanted to know if that was still true. One day, under $300, working site.
 
 ## Products he has built
 
-- **Hakkan** (Web, Beta) — Worth listening to. Most AI writing tools start with a blank page and guess. Hakkan starts with research: it reads the conversation where it actually happens, returns a report where every claim carries receipts, then turns that into publishable work in a voice learned from your own samples.
-- **InSpiritInTruth** (iOS and Android, In development) — Take your faith into your own hands. A weekly devotional written to be read slowly, AI-written ones for whatever you are carrying right now, and the whole Bible in the app. Built for people who cannot always make it to church but still want to stay close to it. No algorithm, no ads.
-- **tapa.** (iOS and Android, In development) — What can I cook with this? Deletes one very specific kind of mental load: deciding what to eat. Tell it what is in the fridge by typing, talking or photographing it, and get back a real recipe built around your tastes. Dietary needs are set once and enforced as hard rules.
-- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. Your phone nags you about screen time, but the real damage happens on the computer you sit at all day. It tracks where the hours go and reports back without mercy. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.
+Software he owns and shipped end to end. Each entry is the problem, the approach and the result, with a full build story where one is written.
+
+- **Hakkan** (Web, Beta) — Worth listening to. Hakkan starts with research, not a blank page. It reads the conversation where it actually happens, hands back a report with receipts, and helps you build content from it in your own voice. Yours to do what you like with.
+  - Problem: AI writing tools start from a blank page. Fluent output that knows nothing.
+  - Approach: Research first. Hakkan reads the real conversation, then helps you write from it in your voice. The report is the source, never the model.
+  - Result: Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.
+  - Build story: https://alroyndhlovu.com/products/hakkan/
+- **InSpiritInTruth** (iOS and Android, In development) — Take your faith into your own hands. Faith personalisation. A weekly devotional written to be read slowly, one written for whatever you are carrying right now, and the whole Bible in the app. For people who cannot always make it to church but still want to stay close. No algorithm, no ads.
+  - Problem: The devotional has not changed in generations. One text, written for everyone, read alone.
+  - Approach: Faith personalisation. Share what you are carrying and get a devotional written for that, rooted first in scripture.
+  - Result: Verification takes ~77% of the AI effort against ~22% on the writing. An app that quotes scripture cannot afford to misquote it.
+  - Build story: https://alroyndhlovu.com/products/inspiritintruth/
+- **tapa.** (iOS and Android, In development) — What can I cook with this? Adulting, minus one decision. Tell it what is in the fridge by typing, talking or photographing it, and get back a real meal built around your tastes. Dietary needs are set once and enforced as hard rules.
+  - Problem: Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.
+  - Approach: Work with what you have. Type, say or photograph what is in the fridge and get one meal back, built around your tastes. Dietary needs are set once and enforced.
+  - Result: Convenience and variety, minus the deciding. The free tier was set from how often people actually cook, not from hope.
+  - Build story: https://alroyndhlovu.com/products/tapa/
+- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. A cheeky extension that calls you out, and always shows you where the time went. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.
+  - Problem: Your phone nags you about screen time. The real damage happens on the computer you work at all day.
+  - Approach: Productivity for the browser, with a twist. It tracks where the hours go and calls you out — then flips, and warns you when productive has become overworking.
+  - Result: Live on the Chrome Web Store. No account, no server: everything stays on your device.
+  - Get it on the Chrome Web Store: https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg
+
+## Published, exhibited and recognised
+
+Each entry names what it actually was — an article he wrote, a programme he helped design, an exhibition his work appeared in — rather than grouping them all as press.
+
+- **GQ South Africa** (Bylined article, 2025) — Wrote the GQ South Africa piece on branding as a business's extroversion, drawing on the four brands he runs himself. https://gq.co.za/wealth/career-advice/2025-08-14-how-to-build-a-brand-that-truly-connects/
+- **We Are Victoria Falls** (National programme, 2022–23) — One of three digital specialists who designed Let's Get Digital, Zimbabwe's national tourism upskilling programme, run with the Ministry of Tourism and Hospitality Industry and supported by the World Bank Group. He also built the learning platform holding its courses and recordings. https://wearevictoriafalls.com/training/
+- **Julie Miller Investment Art Institute** (Exhibition, 2019) — Had a work shown at Africa's Art Collective Seasons at the Mall of Africa, an exhibition of more than 500 pieces by 130 African artists that was toured in VR for international buyers. https://www.citizen.co.za/fourways-review/news-headlines/2019/03/20/mall-africa-julie-miller-investment-art-institute-smash-distance-barriers-name-art/
 
 ## Recent experience
 
