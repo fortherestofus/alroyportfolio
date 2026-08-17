@@ -98,7 +98,7 @@ export const SECTIONS = [
     short: "Portfolio",
     heading: "Portfolio",
     blurb:
-      "Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
+      "A quick showcase — selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
   },
   {
     id: "products",
@@ -108,7 +108,7 @@ export const SECTIONS = [
     short: "Products",
     heading: "Products I've built",
     blurb:
-      "Business technology is not just advice. These are shipped products, built end to end with modern AI-assisted speed.",
+      "Business technology is not just advice. Products I own and shipped end to end — each one with the problem it solves, how I got there and what it is built with.",
   },
   {
     id: "case-studies",
@@ -118,7 +118,7 @@ export const SECTIONS = [
     short: "Cases",
     heading: "Case studies",
     blurb:
-      "The long version. The starting point, the thinking, the work, and what changed as a result.",
+      "Work done for a business, and what it returned. The starting point, the thinking, the measured outcome — and what I would do differently.",
   },
   {
     id: "contact",

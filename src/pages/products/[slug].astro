@@ -1,0 +1,28 @@
+---
+/**
+ * Product build stories: /products/<slug>/.
+ *
+ * Same renderer as the client case studies, reached from the product
+ * card in section 05 rather than from a card of its own in 06. These
+ * pages moved here from /case-studies/ when the sections were split by
+ * what they prove — see the `kind` note in src/data/case-studies.ts.
+ * The old URLs redirect (astro.config.mjs).
+ */
+import CaseStudyArticle from "../../components/CaseStudyArticle.astro";
+import { PRODUCT_STUDIES, type CaseStudy } from "../../data/case-studies";
+
+export function getStaticPaths() {
+  return PRODUCT_STUDIES.map((study) => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+interface Props {
+  study: CaseStudy;
+}
+
+const { study } = Astro.props;
+---
+
+<CaseStudyArticle study={study} />

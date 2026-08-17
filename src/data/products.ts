@@ -1,18 +1,21 @@
 import type { ImageMetadata } from "astro";
-import { CASE_STUDIES } from "./case-studies";
+import { CASE_STUDIES, studyPath } from "./case-studies";
 
 /**
  * Products Alroy has built and shipped (section 05).
  *
- * This is not the portfolio and it is not the case studies. The
- * portfolio is craft artifacts by discipline; the case studies are the
- * long version of four projects. A product is a thing with a name, a
- * user and a stack, and the point of the section is to prove that
- * "business technology" in the positioning means software he actually
- * ships, not just advises on.
+ * The three sections that show work each answer a different question,
+ * and the split is what keeps them from repeating each other:
  *
- * Where a product already has a case study, the card links through
- * rather than repeating it.
+ * - Portfolio (04) is a quick showcase — craft artifacts by discipline.
+ * - Products (05) is this: can he build? Each card is a thing with a
+ *   name, a user and a stack, plus the condensed story of making it.
+ * - Case studies (06) is client work, judged on what it returned to the
+ *   business.
+ *
+ * So a product appears here and nowhere else. Its long-form build story
+ * lives at /products/<slug>/ and is reached from this card, rather than
+ * taking a second card in section 06 and reading as two projects.
  *
  * Taglines and descriptions are taken verbatim, or lightly tightened,
  * from lib/apps.ts in the fortherestofus studio repo, which is the
@@ -39,6 +42,21 @@ export interface ProductShot {
   alt: string;
 }
 
+/**
+ * The condensed build story, in the order a reader needs it: what was
+ * wrong, what was done about it, and the thing that shows it worked.
+ *
+ * Three short entries and no more. This is a card — the full version is
+ * the page it links to, and a card that tries to be the page is just a
+ * page nobody scrolls. Every figure here is quoted from that page
+ * rather than written fresh, so the two can never disagree.
+ */
+export interface ProductStory {
+  problem: string;
+  approach: string;
+  result: string;
+}
+
 export interface Product {
   name: string;
   category: string;
@@ -62,7 +80,9 @@ export interface Product {
    * away.
    */
   shape: "phone" | "panel" | "screen";
-  /** Slug of the matching case study, where one exists. */
+  /** The problem, the approach and the proof. See ProductStory. */
+  story: ProductStory;
+  /** Slug of the matching build story, where one exists. */
   caseStudy?: string;
   /**
    * Where to go and get it, once there is somewhere to go. Only set for
@@ -85,13 +105,25 @@ export function hasCaseStudyPage(slug?: string): boolean {
   return slug !== undefined && CASE_STUDIES.some((study) => study.slug === slug);
 }
 
+/**
+ * The URL of a product's build story, or null when it has none written.
+ *
+ * Asks `studyPath` rather than composing the path here, so a card, the
+ * page it points at and the llms.txt line are all reading the same
+ * rule — and moving a study between sections stays a one-word change.
+ */
+export function caseStudyLink(slug?: string): string | null {
+  const study = slug ? CASE_STUDIES.find((entry) => entry.slug === slug) : undefined;
+  return study ? studyPath(study) : null;
+}
+
 export const PRODUCTS: Product[] = [
   {
     name: "Hakkan",
     category: "Research & Content",
     tagline: "Worth listening to.",
     description:
-      "Most AI writing tools start with a blank page and guess. Hakkan starts with research: it reads the conversation where it actually happens, returns a report where every claim carries receipts, then turns that into publishable work in a voice learned from your own samples.",
+      "Hakkan starts with research, not a blank page. It reads the conversation where it actually happens, hands back a report with receipts, and helps you build content from it in your own voice. Yours to do what you like with.",
     status: "Beta",
     platform: "Web",
     stack: [
@@ -108,6 +140,13 @@ export const PRODUCTS: Product[] = [
       "Claude Code",
     ],
     shape: "screen",
+    story: {
+      problem: "AI writing tools start from a blank page. Fluent output that knows nothing.",
+      approach:
+        "Research first. Hakkan reads the real conversation, then helps you write from it in your voice. The report is the source, never the model.",
+      result:
+        "Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.",
+    },
     caseStudy: "hakkan",
     shots: [
       {
@@ -133,7 +172,7 @@ export const PRODUCTS: Product[] = [
     category: "Faith & Devotion",
     tagline: "Take your faith into your own hands.",
     description:
-      "A weekly devotional written to be read slowly, AI-written ones for whatever you are carrying right now, and the whole Bible in the app. Built for people who cannot always make it to church but still want to stay close to it. No algorithm, no ads.",
+      "Faith personalisation. A weekly devotional written to be read slowly, one written for whatever you are carrying right now, and the whole Bible in the app. For people who cannot always make it to church but still want to stay close. No algorithm, no ads.",
     status: "In development",
     platform: "iOS and Android",
     stack: [
@@ -149,6 +188,14 @@ export const PRODUCTS: Product[] = [
       "Claude Code",
     ],
     shape: "phone",
+    story: {
+      problem:
+        "The devotional has not changed in generations. One text, written for everyone, read alone.",
+      approach:
+        "Faith personalisation. Share what you are carrying and get a devotional written for that, rooted first in scripture.",
+      result:
+        "Verification takes ~77% of the AI effort against ~22% on the writing. An app that quotes scripture cannot afford to misquote it.",
+    },
     caseStudy: "inspiritintruth",
     shots: [
       {
@@ -182,7 +229,7 @@ export const PRODUCTS: Product[] = [
     category: "Food & Cooking",
     tagline: "What can I cook with this?",
     description:
-      "Deletes one very specific kind of mental load: deciding what to eat. Tell it what is in the fridge by typing, talking or photographing it, and get back a real recipe built around your tastes. Dietary needs are set once and enforced as hard rules.",
+      "Adulting, minus one decision. Tell it what is in the fridge by typing, talking or photographing it, and get back a real meal built around your tastes. Dietary needs are set once and enforced as hard rules.",
     status: "In development",
     platform: "iOS and Android",
     stack: [
@@ -198,6 +245,14 @@ export const PRODUCTS: Product[] = [
       "Claude Code",
     ],
     shape: "phone",
+    story: {
+      problem:
+        "Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.",
+      approach:
+        "Work with what you have. Type, say or photograph what is in the fridge and get one meal back, built around your tastes. Dietary needs are set once and enforced.",
+      result:
+        "Convenience and variety, minus the deciding. The free tier was set from how often people actually cook, not from hope.",
+    },
     caseStudy: "tapa",
     shots: [
       { image: "tapa-home.jpg", alt: "tapa. home screen with the day's recipe suggestion." },
@@ -214,7 +269,7 @@ export const PRODUCTS: Product[] = [
     category: "Focus & Productivity",
     tagline: "The browser extension that calls you out.",
     description:
-      "Your phone nags you about screen time, but the real damage happens on the computer you sit at all day. It tracks where the hours go and reports back without mercy. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.",
+      "A cheeky extension that calls you out, and always shows you where the time went. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.",
     status: "Live",
     platform: "Chrome extension",
     link: {
@@ -232,6 +287,14 @@ export const PRODUCTS: Product[] = [
       "Claude Code",
     ],
     shape: "panel",
+    story: {
+      problem:
+        "Your phone nags you about screen time. The real damage happens on the computer you work at all day.",
+      approach:
+        "Productivity for the browser, with a twist. It tracks where the hours go and calls you out — then flips, and warns you when productive has become overworking.",
+      result:
+        "Live on the Chrome Web Store. No account, no server: everything stays on your device.",
+    },
     shots: [
       {
         image: "caught-today.jpg",

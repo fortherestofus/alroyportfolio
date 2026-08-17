@@ -11,7 +11,7 @@
 import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
-import { PRODUCTS, productImage, hasCaseStudyPage } from "../data/products";
+import { PRODUCTS, productImage, caseStudyLink } from "../data/products";
 
 /*
  * Phone screenshots are tall and only ever shown small, so they are
@@ -53,6 +53,28 @@ const slug = (name: string) =>
           {product.description}
         </p>
 
+        {/*
+         * The condensed build story. A description list rather than
+         * three paragraphs: the labels are the point — a reader
+         * skimming four products can read just the Problem rows, or
+         * just the Results, and the markup says which is which rather
+         * than leaving it to the reading order.
+         */}
+        <dl class="product__story" data-reveal-item>
+          <div class="product__beat">
+            <dt class="product__beat-label">Problem</dt>
+            <dd class="product__beat-text">{product.story.problem}</dd>
+          </div>
+          <div class="product__beat">
+            <dt class="product__beat-label">Approach</dt>
+            <dd class="product__beat-text">{product.story.approach}</dd>
+          </div>
+          <div class="product__beat">
+            <dt class="product__beat-label">Result</dt>
+            <dd class="product__beat-text">{product.story.result}</dd>
+          </div>
+        </dl>
+
         <div class="product__stack" data-reveal-item>
           <h4 class="product__stack-label" id={`stack-${slug(product.name)}`}>
             Built with
@@ -64,11 +86,11 @@ const slug = (name: string) =>
           </ul>
         </div>
 
-        {(hasCaseStudyPage(product.caseStudy) || product.link) && (
+        {(caseStudyLink(product.caseStudy) || product.link) && (
           <p class="product__link" data-reveal-item>
-            {hasCaseStudyPage(product.caseStudy) && (
-              <a href={`/case-studies/${product.caseStudy}/`}>
-                Read the case study
+            {caseStudyLink(product.caseStudy) && (
+              <a href={caseStudyLink(product.caseStudy)!}>
+                See how it was built
                 <ArrowUpRight class="product__link-icon" aria-hidden="true" />
               </a>
             )}
@@ -174,6 +196,68 @@ const slug = (name: string) =>
   .product__description {
     margin-top: var(--space-4);
     color: var(--color-text-muted);
+  }
+
+  /* --- Build story ----------------------------------------------
+   * Three beats in a labelled column. The label sits in its own track
+   * on a wide card so the three texts share a left edge and the eye
+   * can run down them; below that it stacks, because a 90px label
+   * column against a phone-width measure leaves the text too narrow to
+   * read.
+   *
+   * The Result row is accented — it is the only one of the three
+   * carrying a number, and it is what a skimming reader should be able
+   * to find without reading the other two.
+   */
+  .product__story {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: var(--space-5) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .product__beat {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .product__beat-label {
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .product__beat-text {
+    margin: 0;
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .product__beat:last-child .product__beat-label {
+    color: var(--color-accent);
+  }
+
+  .product__beat:last-child .product__beat-text {
+    color: var(--color-text);
+  }
+
+  @media (width >= 768px) {
+    .product__beat {
+      /* Wide enough for "Approach", the longest of the three labels. */
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+
+    /* Sits on the first line of its text rather than above it. */
+    .product__beat-label {
+      padding-top: 0.15em;
+    }
   }
 
   /* --- Stack ---------------------------------------------------

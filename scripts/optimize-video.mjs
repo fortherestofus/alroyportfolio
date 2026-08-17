@@ -8,10 +8,17 @@
  * is a .mov, which Firefox will not reliably play), and given a poster
  * frame so nothing has to load until the visitor asks for it.
  *
+ * Two source trees. src/assets/portfolio/ holds Alroy's own work and
+ * feeds the portfolio tiles; src/assets/case-studies/<slug>/ holds
+ * clips that only ever appear inside one study, which are always
+ * silent and never get a portfolio copy.
+ *
  * Outputs:
  *   public/media/portfolio/<name>.mp4      played on demand, never preloaded
  *   public/media/case-studies/<name>.mp4   the silent copies
+ *   public/media/case-studies/<slug>-<name>.mp4   study-only clips
  *   src/assets/portfolio/<name>-poster.webp  goes through astro:assets
+ *   src/assets/case-studies/<slug>/<name>-poster.webp  ditto, via caseImage()
  *
  * These deliberately do NOT live under /portfolio/. That path is also
  * the old WordPress portfolio namespace, which `public/.htaccess`
@@ -39,9 +46,37 @@ const SOURCE_DIR = join(ROOT, "src", "assets", "portfolio");
 const VIDEO_OUT = join(ROOT, "public", "media", "portfolio");
 const POSTER_OUT = SOURCE_DIR;
 
+/**
+ * Clips that only ever appear inside a case study, kept beside that
+ * study's images in src/assets/case-studies/<slug>/.
+ *
+ * Separate from the portfolio tree because the portfolio is a showcase
+ * of Alroy's own craft, and not every clip a study needs is his work —
+ * the LumiSkin page opens on the meme that provoked the build. Filing
+ * that under portfolio sources would eventually put someone else's
+ * video in a gallery of his.
+ *
+ * These are always silent and never get a portfolio copy: they sit
+ * inside prose the reader is already reading.
+ */
+const CASE_SOURCE_DIR = join(ROOT, "src", "assets", "case-studies");
+
 /** Constant Rate Factor: 28 is visually clean for screen capture at this size. */
 const CRF = "28";
 const MAX_WIDTH = 1280;
+
+/**
+ * Per-clip width caps, for clips the cap is wrong for.
+ *
+ * 1280 is sized for a landscape capture running the full content
+ * column. A portrait clip is displayed at a fraction of that width —
+ * it is a phone-shaped video inside a text column, not a hero — so
+ * encoding it at 720 wide ships three times the pixels anything will
+ * ever draw.
+ */
+const MAX_WIDTH_AT = {
+  "lumiskin/inspiration": 540,
+};
 
 /**
  * Where to grab the poster frame, in seconds.
@@ -56,6 +91,12 @@ const POSTER_AT = {
   website_video_lumiskin: "6.5",
   social_sweep_demo: "8",
   website_video_filosofee: "3",
+  /*
+   * Case-study clips are keyed "<slug>/<name>". Six seconds is where
+   * the meme's split screen reads best: the concept site is mid-orange
+   * and both captions are on screen.
+   */
+  "lumiskin/inspiration": "6",
 };
 const POSTER_DEFAULT = "1";
 
@@ -190,6 +231,76 @@ for (const file of sources) {
   savedAfter += after;
 
   console.log(`${mb(before)} → ${mb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`);
+}
+
+/*
+ * Case-study clips. Same encode, but the output goes straight to
+ * public/media/case-studies/ with no audio and no portfolio copy, and
+ * the poster lands next to the source so `caseImage("<slug>/<file>")`
+ * resolves it like every other image on the page.
+ */
+for (const slug of readdirSync(CASE_SOURCE_DIR, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)) {
+  const dir = join(CASE_SOURCE_DIR, slug);
+  const clips = readdirSync(dir).filter((f) => [".mp4", ".mov"].includes(extname(f).toLowerCase()));
+
+  for (const file of clips) {
+    const name = basename(file, extname(file));
+    const source = join(dir, file);
+    const video = join(CASE_VIDEO_OUT, `${slug}-${name}.mp4`);
+    const poster = join(dir, `${name}-poster.webp`);
+    const cap = MAX_WIDTH_AT[`${slug}/${name}`] ?? MAX_WIDTH;
+
+    if (existsSync(video) && existsSync(poster) && statSync(video).mtimeMs > statSync(source).mtimeMs) {
+      console.log(`· ${slug}/${name} already current`);
+      continue;
+    }
+
+    process.stdout.write(`· ${slug}/${name} … `);
+
+    run([
+      "-y",
+      "-i",
+      source,
+      "-vf",
+      `scale='min(${cap},iw)':-2`,
+      "-c:v",
+      "libx264",
+      "-crf",
+      CRF,
+      "-preset",
+      "slow",
+      "-pix_fmt",
+      "yuv420p",
+      "-an",
+      "-movflags",
+      "+faststart",
+      video,
+    ]);
+
+    run([
+      "-y",
+      "-ss",
+      POSTER_AT[`${slug}/${name}`] ?? POSTER_DEFAULT,
+      "-i",
+      source,
+      "-frames:v",
+      "1",
+      "-vf",
+      `scale='min(${cap},iw)':-2`,
+      "-q:v",
+      "68",
+      poster,
+    ]);
+
+    const before = statSync(source).size;
+    const after = statSync(video).size;
+    savedBefore += before;
+    savedAfter += after;
+
+    console.log(`${mb(before)} → ${mb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`);
+  }
 }
 
 if (savedBefore > 0) {

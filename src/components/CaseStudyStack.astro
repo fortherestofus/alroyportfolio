@@ -21,7 +21,7 @@ import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
 import LogoFrame from "./LogoFrame.astro";
-import { CASE_STUDIES, UPCOMING_STUDIES, caseImage } from "../data/case-studies";
+import { CLIENT_STUDIES, UPCOMING_STUDIES, caseImage, studyPath } from "../data/case-studies";
 
 /* Strip shots are small and never shown large. */
 const STRIP_HEIGHT = 320;
@@ -30,7 +30,7 @@ const STRIP_QUALITY = 70;
 
 <div class="stack">
   {
-    CASE_STUDIES.map((study) => (
+    CLIENT_STUDIES.map((study) => (
       <article
         class:list={["stack__card", !study.strip?.length && "stack__card--no-strip"]}
         data-reveal
@@ -57,7 +57,7 @@ const STRIP_QUALITY = 70;
 
           <div class="stack__side" data-reveal-item>
             <p class="stack__descriptor">{study.description}</p>
-            <a class="stack__cta" href={`/case-studies/${study.slug}/`}>
+            <a class="stack__cta" href={studyPath(study)}>
               case study
               <ArrowUpRight class="stack__cta-icon" aria-hidden="true" />
             </a>

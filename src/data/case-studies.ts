@@ -101,6 +101,14 @@ export type Block =
       /** Poster still, keyed like every other case study image. */
       poster: string;
       alt: string;
+      /**
+       * A phone-shaped clip. Every other video here is a landscape
+       * capture that runs the content column; left to do the same, a
+       * 9:16 clip renders about 1,600px tall and turns one paragraph of
+       * the argument into a full screen of video. Capped and centred
+       * instead.
+       */
+      portrait?: boolean;
       footnote?: string;
     }
   | { kind: "pending"; heading: string; note: string };
@@ -108,6 +116,19 @@ export type Block =
 export interface CaseStudy {
   slug: string;
   name: string;
+  /**
+   * Which story this is, which decides both where it lives and what it
+   * has to prove.
+   *
+   * "client" is work done for a business, and the case it makes is the
+   * value that came back — these are the cards in section 06. "product"
+   * is something Alroy built and owns, where the case is the building
+   * itself: the problem, the trials, the solution. Those enter through
+   * their card in section 05 instead of taking a second card of their
+   * own, because one body of work listed in two sections reads as two
+   * bodies of work counted once each.
+   */
+  kind: "client" | "product";
   dates: string;
   /** Outcome first. This is the line that has to earn the click. */
   summary: string;
@@ -149,6 +170,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "thrifty-adventures",
     name: "Thrifty Adventures",
+    kind: "client",
     dates: "Jul 2025 – Jan 2026",
     hero: {
       image: "thrifty-adventures/hero-social.jpg",
@@ -177,9 +199,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The channel nobody picks for travel",
         body: [
-          "LinkedIn is where you go to reach a job title. Thrifty Adventures sells group tours to Egypt, Namibia, Dubai and Zanzibar, to people spending their own money on their own holidays. On paper it is the wrong platform, and that is roughly what the industry assumes.",
-          "No campaigns, no saved audiences, no tracking, no idea what a click was worth. So the question was not how to scale LinkedIn. It was whether LinkedIn works for consumer travel at all.",
-          "Seven months and R117,322 later, it does — but not for the reason I expected going in.",
+          "LinkedIn is where you go to reach a job title. Thrifty Adventures sells group tours to people spending their own money on their own holidays. On paper it is the wrong platform, and nothing was running — no campaigns, no tracking, no idea what a click was worth.",
+          "So the question was not how to scale LinkedIn. It was whether it works for consumer travel at all. Seven months and R117,322 later: it does, but not for the reason I expected.",
         ],
       },
       {
@@ -187,104 +208,69 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "One objective at a time, then all of them",
         body: [
-          "July was deliberately small: R1,834 behind a single website-visits campaign, split only by whether the audience sat in South Africa or in the diaspora abroad. 29,032 impressions, and R5.80 a click, which is what an account with no history pays.",
-          "September was the real test: four campaigns, four objectives, one month — awareness, traffic, lead generation and engagement. Running them side by side is the only way to learn what a platform charges for each thing it sells. It produced the first 202 leads and the comparison that decided everything after.",
-          "Everything after that was consolidation: drop what the September comparison had killed, put the money behind what survived, and let the account's own history bring the price down.",
+          "July was deliberately small: R1,834 behind one campaign, at R5.80 a click — what an account with no history pays.",
+          "September was the real test. Four objectives side by side in one month, which is the only way to learn what a platform charges for each thing it sells. It produced the first 202 leads and the comparison that decided everything after: drop what it killed, fund what survived.",
         ],
       },
       {
         id: "testing",
         kind: "trend",
-        heading: "Zero to 1.4 million impressions a month",
+        heading: "Reach up 47×, and the price down every month",
+        intro:
+          "The bars are reach. The column that matters to a business is the one on the right: what each month cost to buy it.",
         measure: "Impressions",
         rows: [
-          {
-            label: "Jul 2025",
-            value: 29032,
-            display: "29,032",
-            note: "One campaign, one objective, R1,834. R5.80 a click.",
-          },
-          {
-            label: "Aug 2025",
-            value: 238006,
-            display: "238,006",
-            note: "Same campaign, real weight behind it. R2.43 a click.",
-          },
+          { label: "Jul 2025", value: 29032, display: "29,032", note: "R5.80 a click." },
+          { label: "Aug 2025", value: 238006, display: "238,006", note: "R2.43 a click." },
           {
             label: "Sep 2025",
             value: 662277,
             display: "662,277",
-            note: "Four objectives at once, side by side. The first 202 leads.",
+            note: "Four objectives tested. First 202 leads.",
           },
-          {
-            label: "Oct 2025",
-            value: 641912,
-            display: "641,912",
-            note: "Seven campaigns. Conversions and video added to the mix.",
-          },
-          {
-            label: "Nov 2025",
-            value: 583214,
-            display: "583,214",
-            note: "Spend pulled back to only what September had proved.",
-          },
-          {
-            label: "Dec 2025",
-            value: 1388364,
-            display: "1,388,364",
-            note: "Scaled on the winners. CPM down to R16.78.",
-          },
+          { label: "Oct 2025", value: 641912, display: "641,912", note: "Conversions and video in." },
+          { label: "Nov 2025", value: 583214, display: "583,214", note: "Cut back to the winners." },
+          { label: "Dec 2025", value: 1388364, display: "1,388,364", note: "Scaled. CPM R16.78." },
           {
             label: "Jan 2026",
             value: 1369336,
             display: "1,369,336",
-            note: "R1.72 a landing page click, R12.18 CPM. The cheapest month of the run.",
+            note: "R1.72 a click, CPM R12.18. Cheapest month.",
           },
         ],
         footnote:
-          "CPM fell 81% across the run, R63.16 to R12.18. Cost per landing page click fell 70%, R5.80 to R1.72. Monthly reach grew about 47 times. Some of that is an account earning its own history.",
+          "CPM fell 81% across the run, R63.16 to R12.18. Cost per landing page click fell 70%. Some of that is an account earning its own history.",
       },
       {
         id: "offer",
         kind: "metrics",
         heading: "The brochure was the whole finding",
         intro:
-          "Targeting did not decide this. Two sets of lead forms, same audience, same platform, overlapping months. One asked people to enquire about a trip. The other offered the 2026 brochure. Only one asked for something the reader already wanted.",
+          "Targeting did not decide this. Same audience, same platform, same form. One version asked people to enquire about a trip; the other offered the 2026 brochure. Only one asked for something the reader already wanted.",
         items: [
           {
             value: "36.6%",
             label: "Form completion, brochure",
-            context: "More than a third of everyone who opened the form finished it.",
-          },
-          {
-            value: "8.6%",
-            label: "Form completion, everything else",
-            context: "The identical form mechanic, with nothing to collect at the end.",
+            context: "Against 8.6% on the identical form with nothing to collect at the end.",
           },
           {
             value: "10–15%",
-            label: "Typical LinkedIn form completion",
-            context:
-              "So the brochure beat the band by more than the rest of the account missed it.",
+            label: "The LinkedIn norm",
+            context: "The brochure beat the band by more than the rest of the account missed it.",
           },
           {
             value: "R26.74",
             label: "Cost per lead, brochure",
-            context: "540 of the 742 leads, from R14,437.",
+            context: "540 of the 742 leads.",
           },
           {
             value: "R37.13",
             label: "Cost per lead, everything else",
-            context: "202 leads from R7,500, at 39% more each.",
-          },
-          {
-            value: "8.93%",
-            label: "Engagement rate, boosted brochure post",
-            context: "The highest of the run, at R0.36 per engagement.",
+            context: "39% more, for the weaker ask.",
           },
         ],
         footnote:
-          "Same platform, market, months and form. The only variable was what the ad asked for. The 8.93% is engagement, not click-through: LinkedIn bills reactions, comments, shares and follows as clicks on engagement campaigns, and that post drove no landing page clicks.",
+          "Same platform, market, months and form. The only variable was what the ad asked for — which is the cheapest thing on this page to copy, and the one that moved the most.",
       },
       {
         id: "results",
@@ -293,76 +279,45 @@ export const CASE_STUDIES: CaseStudy[] = [
         intro: "From no paid presence on the channel at all.",
         items: [
           {
-            value: "R117,322",
-            label: "Total spend",
-            context: "Across 16 campaigns and six different objectives.",
+            value: "R29.57",
+            label: "Cost per lead",
+            context: "742 leads, from R21,937 of lead generation spend.",
           },
           {
-            value: "4.91M",
-            label: "Impressions",
-            context: "29,032 in the first month, 1.37M in the last.",
+            value: "R2.12",
+            label: "Cost per landing page click",
+            context: "33,079 clicks, from R70,111 of traffic spend.",
           },
           {
             value: "0.97%",
-            label: "Landing page CTR",
-            context:
-              "Across the traffic campaigns, against a 0.52% median over 150,000 LinkedIn campaigns.",
+            label: "Click-through vs 0.52% median",
+            context: "Nearly double the median across 150,000+ LinkedIn campaigns.",
           },
           {
-            value: "33,079",
-            label: "Landing page clicks",
-            context: "At R2.12 each, from R70,111 of traffic spend.",
-          },
-          {
-            value: "742",
-            label: "Leads",
-            context: "At R29.57 each, from R21,937 of lead generation spend.",
-          },
-          {
-            value: "208,493",
-            label: "Video completions",
-            context: "R0.09 each, and a 25.9% completion rate against impressions.",
-          },
-          {
-            value: "929",
-            label: "New page followers",
-            context: "Picked up alongside the engagement campaigns, not bought directly.",
+            value: "R117,322",
+            label: "Total spend",
+            context: "16 campaigns, six objectives, seven months.",
           },
         ],
         footnote:
-          "Clicks here are landing page clicks, not LinkedIn's headline Clicks column, which also counts reactions, comments, shares and follows. The 0.52% median is AgencyAnalytics, January 2025, across 150,000+ campaigns. Rand costs are account facts — no credible South African or travel-sector benchmark exists.",
+          "Clicks are landing page clicks, not LinkedIn's headline Clicks column, which also counts reactions and follows. The 0.52% median is AgencyAnalytics, January 2025. Rand costs are account facts — no credible South African travel-sector benchmark exists.",
       },
       {
         id: "tiktok",
         kind: "prose",
         heading: "The channel that did the finding",
         body: [
-          "LinkedIn was the experiment. TikTok was the engine — and it did not start from nothing. The account already existed with an audience behind it, which changes what a view count means.",
-          "Destinations shot plainly, captioned as questions people actually type: the Dubai tour, the Namibia tour, what a Zanzibar trip costs. A small thing, and the whole reason it works — the videos stay findable months later instead of for the two days the algorithm favours them.",
+          "LinkedIn was the experiment. TikTok was the engine — and it did not start from nothing: the account already had an audience, which changes what a view count means.",
+          "Destinations shot plainly, captioned as questions people actually type. That is the whole trick — the videos stay findable months later instead of for the two days the algorithm favours them.",
         ],
       },
       {
         id: "tiktok",
         kind: "metrics",
-        heading: "3.1 million views in eight months",
+        heading: "3.1 million views, and 38% of them from search",
         intro:
-          "What the account did in the window I ran it — not what it was worth before, and not a claim to have built it from scratch.",
+          "The search share is the one that matters commercially: it means the back catalogue keeps working long after a post stops trending.",
         items: [
-          {
-            value: "3.1M",
-            label: "Video views",
-            context: "Organic, Jun 2025 to Jan 2026.",
-          },
-          {
-            value: "4.6M",
-            label: "Viewers reached",
-            context: "Over twelve months, 3.3M of them people who had never seen the brand.",
-          },
-          {
-            value: "39.8K",
-            label: "Followers",
-            context: "The account's size at the end of the run, and 116.8K likes.",
-          },
           {
             value: "38.1%",
             label: "Of views came from search",
@@ -370,19 +325,19 @@ export const CASE_STUDIES: CaseStudy[] = [
               "People looking for a destination and finding Thrifty, rather than being served it.",
           },
           {
+            value: "3.1M",
+            label: "Views, organic",
+            context: "Jun 2025 to Jan 2026, reaching 3.3M people who had never seen the brand.",
+          },
+          {
             value: "7,200",
             label: "Shares",
             context:
               "The signal that matters most on the platform: someone sending it to a person.",
           },
-          {
-            value: "50.4K",
-            label: "Best performing video",
-            context: "The 2026 travel packages set, pinned to the profile.",
-          },
         ],
         footnote:
-          "Views, viewers, shares and the search split are period figures for Jun 2025 to Jan 2026. The follower count is the account's size, not growth — it had a following before this work and the starting number was not recorded. On search: For You typically carries around 70% of views, here 57.6%. No published benchmark exists for search share by account.",
+          "Period figures for Jun 2025 to Jan 2026. The account had a following before this work and the starting number was not recorded, so no growth is claimed. On search: For You typically carries around 70% of views, here 57.6%. No published benchmark exists for search share by account.",
       },
       {
         id: "tiktok",
@@ -406,11 +361,6 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Best single video",
             context: "Bali and Thailand, at R7.54 a conversation.",
           },
-          {
-            value: "R2.46",
-            label: "Cheapest",
-            context: "Mauritius — five conversations, so a small sample rather than a trend.",
-          },
         ],
         footnote:
           "TikTok's own figures for 30 Jan – 6 Feb 2026, reported as the week they cover. \u201cConversations\u201d is TikTok's metric for a messaging thread opened off an ad. How many became bookings is unknown — that attribution was never wired up.",
@@ -423,29 +373,19 @@ export const CASE_STUDIES: CaseStudy[] = [
           "The cheapest job on the list, and the one with the least argument attached: someone typing the name of a tour is not a person to be persuaded.",
         items: [
           {
-            value: "70,099",
-            label: "Clicks",
-            context: "From 872,272 impressions, Jun 2025 to Feb 2026.",
-          },
-          {
-            value: "$2,099",
-            label: "Total spend",
-            context: "Across six campaigns — search, display, Performance Max and Demand Gen.",
-          },
-          {
             value: "$0.03",
             label: "Average cost per click",
             context: "Against a $2.14 median for travel in Google's 2026 benchmark set.",
           },
           {
+            value: "70,099",
+            label: "Clicks for $2,099",
+            context: "From 872,272 impressions across six campaigns, Jun 2025 to Feb 2026.",
+          },
+          {
             value: "8.04%",
             label: "Account click-through rate",
             context: "The display campaign carried 18.12% of it on its own.",
-          },
-          {
-            value: "$0.12",
-            label: "Cost per click, search only",
-            context: "The 2025 Trips campaign, at a 4.30% click-through rate.",
           },
         ],
         footnote:
@@ -484,11 +424,11 @@ export const CASE_STUDIES: CaseStudy[] = [
         intro:
           "The point of running four is not four times the volume. It is that a holiday is not bought in one motion, and the channels are good at different parts of it.",
         items: [
-          "TikTok organic is how the brand gets found — 38% of views arriving from search means the back catalogue keeps working long after a post stops trending.",
-          "TikTok ads turn that attention into a conversation with a human being, at single-digit rand, which is the cheapest qualified contact anywhere in the account.",
-          "Google catches the people who have already decided to travel and are pricing it. Cheapest clicks in the mix, and the least persuasion required.",
-          "LinkedIn sells the considered trip — the professional booking a group tour, reached with a brochure rather than an enquiry form, at R26.74 a lead.",
-          "None of them was asked to do another one's job, which is the actual finding. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
+          "TikTok organic gets the brand found, and keeps working months later.",
+          "TikTok ads turn that into a conversation at R7.51 — the cheapest qualified contact in the account.",
+          "Google catches people already pricing a trip. Cheapest clicks, least persuasion.",
+          "LinkedIn sells the considered trip, at R26.74 a lead.",
+          "None was asked to do another's job. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
         ],
       },
       {
@@ -496,10 +436,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Brand awareness was the most expensive thing on the platform: R8,400 at 0.109% CTR and R19.76 a click. As a click channel it failed. It did deliver 211,026 video views and 84,324 completions, so the money was not burnt — but there were cheaper ways to buy that attention.",
-          "Single-destination videos did not travel. Egypt, Namibia and Dubai each drew 0.10–0.16% CTR at R25–R37 a click. The one composite — a year of trips in a single edit — pulled 1,791 clicks at R0.87 and 106,232 completions. People responded to the range, not one place.",
-          "LinkedIn's conversion column is not reportable: 97,475 conversions against 57,345 clicks. It counts actions after an impression as well as after a click, on a 30-day click and 7-day view window, and a broad rule fires on ordinary page loads. Until it is split into click and view conversions it cannot be described as people who saw an ad and acted. No conversion figure appears on this page.",
-          "Google's column has the same fault: 12,069 conversions from 70,099 clicks, and 9,528 from 4,099 on the search campaign alone — a 232% conversion rate. A broad conversion action firing on page loads. Clicks, impressions, CTR and cost are real; conversions are not quoted.",
+          "Brand awareness was the most expensive thing on the platform: R8,400 at R19.76 a click. As a click channel it failed. There were cheaper ways to buy that attention.",
+          "Single-destination videos did not travel — 0.10–0.16% CTR at R25–R37 a click. The one composite, a year of trips in a single edit, pulled 1,791 clicks at R0.87. People responded to the range, not one place.",
+          "And the conversion columns on both platforms are unusable: 97,475 LinkedIn conversions against 57,345 clicks, and a 232% conversion rate on one Google campaign. Broad tags firing on ordinary page loads. Clicks, impressions and cost are real; no conversion figure appears anywhere on this page.",
         ],
       },
       {
@@ -521,6 +460,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "innovatr",
     name: "Innovatr",
+    kind: "client",
     dates: "Mar 2026 – Sep 2026",
     hero: {
       image: "innovatr/web-home-after.jpg",
@@ -574,8 +514,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The starting point",
         body: [
-          "The product was genuinely different. The way it was presented was not.",
-          "The site led with “Stop Guessing. Launch Better Innovation.” — a line that could have belonged to any research agency. No paid programme, effectively no inbound traffic, and no way to turn the research already being produced into demand for more of it.",
+          "The product was genuinely different. The way it was presented was not — the site led with “Stop Guessing. Launch Better Innovation.”, a line that could have belonged to any research agency.",
+          "No paid programme, effectively no inbound traffic, and no way to turn the research already being produced into demand for more of it.",
         ],
       },
       {
@@ -616,7 +556,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Turning research into content",
         intro:
-          "Every study Innovatr ran produced findings nobody outside the client ever saw. Two jobs came out of that. The Gen Z drinking carousel is the research argued in public, with its 4,339 comments shown rather than described. The old-versus-new carousel makes the case for the method itself. Both do what the product does: state a claim, then put the evidence under it.",
+          "Every study Innovatr ran produced findings nobody outside the client ever saw. These put them in public: the Gen Z drinking carousel shows its 4,339 comments rather than describing them, and the old-versus-new set makes the case for the method. Both do what the product does — state a claim, then put the evidence under it.",
         shots: [
           {
             image: "innovatr/carousel-drinking-1.png",
@@ -649,7 +589,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Ad creative",
         intro:
-          "The paid programme ran the same argument in a format built to be scrolled past. “The Innovatr Way” set the frame directly: Kantar, IPSOS and Nielsen unchanged in decades, six-week turnarounds, R500K studies, 30% of findings ever influencing a decision.",
+          "The paid programme ran the same argument in a format built to be scrolled past. “The Innovatr Way” named the incumbents directly: Kantar, IPSOS and Nielsen, unchanged in decades, six-week turnarounds, R500K studies.",
         shots: [
           {
             image: "innovatr/carousel-way-1.png",
@@ -674,7 +614,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Building the pipeline",
         intro:
-          "A business selling research to decision-makers has to know who they are. Innovatr had no list. I built one from Apollo prospecting, the Workshop17 tenant database, client outreach, the LinkedIn page audience and inbound signups, de-duplicated it into one CRM, then matched it back into LinkedIn as the ad audiences. That last step is the point: ads aimed at named companies and real job titles, not the platform's guesses.",
+          "A business selling research to decision-makers has to know who they are, and Innovatr had no list. I built one from Apollo prospecting, the Workshop17 tenant database, client outreach and inbound signups, de-duplicated it into one CRM, then matched it back into LinkedIn as the ad audiences. That last step is the point: ads aimed at named companies and real job titles, not the platform's guesses.",
         items: [
           {
             value: "3,094",
@@ -697,31 +637,23 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "The ads landed in the right rooms",
         intro:
-          "Spending on ads is easy. The question is whether they reached people who can buy. Innovatr sells to senior decision-makers at banks, insurers and consumer brands, so the first test is not clicks — it is LinkedIn's own delivery demographics.",
+          "Spending on ads is easy. The question is whether they reached people who can sign off a study. The first test is not clicks — it is LinkedIn's own delivery demographics.",
         items: [
           {
             value: "61%",
             label: "Of delivery reached decision-makers",
-            context:
-              "Senior 35%, Director 14%, VP 4%, C-suite 3%, Owner 4%, Partner 1%. Entry-level profiles: under 3%.",
+            context: "Senior, Director, VP, C-suite, Owner and Partner. Entry-level: under 3%.",
           },
           {
             value: "14 of 22",
             label: "Top companies by delivery were targets",
             context:
-              "Absa, FNB, Standard Bank, Nedbank, Capitec, Discovery, Investec, Old Mutual and Santam among them — the exact institutions the research sells to. PwC, EY and Deloitte fill most of the rest.",
-          },
-          {
-            value: "16.9%",
-            label: "Of delivery into banking & finance",
-            context:
-              "The best-covered target vertical: top five in every single ad set, and it completed videos at 2–4× the average rate.",
+              "Absa, FNB, Standard Bank, Nedbank, Capitec, Discovery, Investec, Old Mutual and Santam among them. PwC, EY and Deloitte fill most of the rest.",
           },
           {
             value: "56%",
             label: "In the three target metros",
-            context:
-              "Johannesburg 38%, Pretoria 10%, Durban 8% — the geography Innovatr sells into.",
+            context: "Johannesburg, Pretoria and Durban — the geography Innovatr sells into.",
           },
         ],
         footnote:
@@ -766,76 +698,33 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "results",
         kind: "metrics",
-        heading: "One budget, four jobs — each judged on its own",
+        heading: "Every cost beat the market",
         intro:
-          "Most of the budget was never pointed at leads. Video bought attention, carousels bought site conversions, static bought cheap clicks, and only the lead-gen documents bought leads. Each format is scored on its own job, against LinkedIn's B2B benchmarks.",
+          "Most of the budget was never pointed at leads — video bought attention, carousels bought site conversions, and only the lead-gen documents bought leads. Each is scored on its own job, against LinkedIn's published B2B norms.",
         items: [
           {
             value: "R252",
-            label: "Per lead — lead-gen spend only",
-            context:
-              "16 leads from R4,037 of dedicated lead-gen budget in the measured flight, against a ~R744 gated median. Form completion ran 46–57% against a 10–13% benchmark.",
-          },
-          {
-            value: "34",
-            label: "Site conversions — the carousels' job",
-            context: "23 of them from the value-proposition carousels alone.",
-          },
-          {
-            value: "44–48%",
-            label: "Video view rate — the videos' job",
-            context: "Against a 29.5% benchmark, 15–19 points over.",
-          },
-          {
-            value: "R14.79",
-            label: "Blended cost per click, account-wide",
-            context: "Against a ~R92 B2B market average, across 1.03M impressions.",
-          },
-        ],
-        footnote:
-          "No flight ran longer than five weeks against LinkedIn's six to eight week optimisation runway, so these are pre-optimisation numbers. A June conversion tag counting view-throughs is excluded throughout.",
-      },
-      {
-        id: "results",
-        kind: "metrics",
-        heading: "Every benchmark, side by side",
-        intro:
-          "The account against LinkedIn's published B2B norms, and the email programme against standard B2B benchmarks. One number missed; it is shown with the rest.",
-        items: [
-          {
-            value: "R218",
-            label: "CPM vs ~R559 norm",
-            context: "61% cheaper per thousand impressions.",
+            label: "Cost per lead vs ~R744 median",
+            context: "A third of the gated median. The EMEA norm is ~R1,984.",
           },
           {
             value: "R44",
-            label: "Flight CPC vs ~R92 norm",
-            context: "52% cheaper per click on the measured flight.",
+            label: "Cost per click vs ~R92 norm",
+            context: "52% cheaper on the measured flight; R14.79 blended account-wide.",
           },
           {
-            value: "R252",
-            label: "CPL vs ~R744 gated median",
-            context: "A third of market — and ~R1,984 is the EMEA norm.",
-          },
-          {
-            value: "4.6–5.3%",
-            label: "Lead-gen engagement rate",
-            context: "Against a ~0.5% non-video benchmark — roughly nine times it.",
+            value: "R218",
+            label: "CPM vs ~R559 norm",
+            context: "61% cheaper per thousand impressions, across 1.03M.",
           },
           {
             value: "44–48%",
             label: "Video view rate vs 29.5%",
             context: "15–19 points over the platform norm.",
           },
-          {
-            value: "36.7% / 4.1%",
-            label: "Email opens / clicks vs ~30–35% / ~2.5%",
-            context:
-              "The onboarding sequence, bot-filtered; the outreach sequence opened at 61.5%.",
-          },
         ],
         footnote:
-          "One miss: carousel CTR ran 0.32% against a 0.40–0.55% band, the only format below benchmark. So carousels stayed on the conversion job they were winning rather than the click job they were losing.",
+          "Form completion ran 46–57% against a 10–13% benchmark. One miss: carousel click-through at 0.32% against a 0.40–0.55% band, so carousels stayed on the conversion job they were winning rather than the click job they were losing. No flight ran longer than five weeks against LinkedIn's six-to-eight-week optimisation runway, so these are pre-optimisation. A June conversion tag counting view-throughs is excluded throughout.",
       },
       {
         id: "results",
@@ -871,10 +760,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "checklist",
         heading: "What the four months proved",
         items: [
-          "Costs beat the market in every era, on both broad and strict decision-maker targeting.",
-          "Lead generation produced contactable pipeline in every single flight it appeared in.",
-          "Insight-led messaging won everywhere it ran, in ads and in organic alike.",
-          "Spend and results moved together: the highest-spend month was also the highest-lead month.",
+          "Costs beat the market in every flight, on both broad and strict decision-maker targeting.",
+          "Lead generation produced contactable pipeline every time it ran.",
+          "Spend and results moved together: the highest-spend month was the highest-lead month.",
           "Format, not message, decided performance. The same line was the best video and the weakest carousel.",
         ],
       },
@@ -883,11 +771,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The product: Social Sweep",
         body: [
-          "Innovatr was about to licence a social listening platform at US$8,000 a year. I built the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
-          "Ask it a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. Sentiment, emotion mix, where the conversation lives, what is spiking. It runs on the Social Crawl API: 46 platforms across social, search, commerce and the open web.",
-          "That turned a line of annual cost into a line of product. The same engine Innovatr would have rented became something it could sell, positioned at R20,000 a study.",
-          "The saving is the small part. The tool Innovatr nearly licensed was itself acquired by a market research group a few months later — terms undisclosed, after four years and outside investment. A research firm wanted the capability in-house. Innovatr reached the same conclusion for two months of work, a Replit subscription and a Claude one.",
-          "Not parity — theirs is a company with a roadmap, a support desk and customers. The point is narrower: the capability that used to justify an acquisition is now something one person can build in a quarter. The question is no longer whether you can afford to build it, but whether owning beats renting.",
+          "Innovatr was about to licence a social listening platform at US$8,000 a year. I built the capability in-house instead — platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
+          "Ask it a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned at R20,000 a study.",
+          "The saving is the small part. The tool Innovatr nearly licensed was itself acquired by a market research group a few months later, after four years and outside investment. Not parity — theirs is a company with a roadmap and a support desk. But the capability that used to justify an acquisition is now something one person can build in a quarter.",
         ],
       },
       {
@@ -965,15 +851,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "hakkan",
     name: "Hakkan",
+    kind: "product",
     dates: "Jul 2026 – present",
     hero: {
       image: "products/hakkan-report.jpg",
       alt: "A Hakkan report: 965 items cited and 903 real voices across seven platforms, with the sentiment split beneath.",
     },
     summary:
-      "Built a content research tool to fight AI slop — content is created strictly from a researched report, real articles and real conversations, and the tool shows you when a number is derived rather than researched.",
+      "A content tool built to fight AI slop. The content always comes from solid research, it writes in your voice, and it tells you when a number came from the model rather than the research.",
     description:
-      "Hakkan (発刊, “to publish”) is a research-first content tool. Give it a topic and it reads the real conversation — Reddit, TikTok, X, YouTube, the open web — then hands you a visual report with receipts and builds content from it in your own voice.",
+      "Hakkan (発刊, “to publish”) reads the real conversation — Reddit, TikTok, X, YouTube, the open web — and hands you a report with receipts. Then it helps you build content from it. Yours to do what you like with.",
     tags: ["Product build", "AI engineering", "UX", "Research"],
     meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
     strip: [
@@ -995,9 +882,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The problem: content stopped knowing anything",
         body: [
-          "Twelve years in marketing, watching the medium slide into what everyone now calls AI slop: fluent text that reads fine and knows nothing. The tools caused it. Every AI writer starts from a blank page and asks the model to fill it.",
-          "Hakkan inverts that. It starts from thousands of real articles, posts and conversations matched to your question, and treats them as the source of truth. Content is built strictly from the report — the model is never the source. What it cannot do, you add yourself.",
-          "Hakkan (発刊) is Japanese for “to publish”, and aloud it echoes “harken” — to listen closely. Listen first, then publish. The design borrows from paper and study markers, because the argument is that the oldest publishing values still apply.",
+          "Twelve years in marketing, watching the medium fill with AI slop: fluent text that reads fine and knows nothing. The tools caused it. Every AI writer starts from a blank page and asks the model to fill it.",
+          "Hakkan starts from thousands of real articles, posts and conversations matched to your question, and treats those as the source of truth. The model never is.",
+          "Hakkan (発刊) is Japanese for “to publish”, and aloud it echoes “harken” — to listen closely. Listen first, then publish.",
         ],
       },
       {
@@ -1005,8 +892,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "How it works: research → report → your voice",
         body: [
-          "Give it a topic. It fans out across social and the open web, filters for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, every quote cited to whoever said it. Then export the research, or generate content from it in a voice trained on your own writing.",
-          "The balance is deliberate. Automation does the reaching and consolidating; the taste, the opinions and the final voice stay human. Some work is left manual on purpose, because the mistakes and the opinions are the part of content that connects.",
+          "Give it a topic. It fans out across social and the open web, filters for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, every quote cited to whoever said it. Export the research, or write from it in a voice trained on your own.",
+          "Automation does the reaching and consolidating. The taste and the opinions stay human — that is the part of content that connects.",
         ],
       },
       {
@@ -1165,7 +1052,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
     ],
     seo: {
-      title: "Hakkan case study | Alroy Ndhlovu",
+      title: "Hakkan — how I built it | Alroy Ndhlovu",
       description:
         "Building a content research tool to fight AI slop: how Hakkan grounds every claim in real human voices, measures its own honesty, and refuses to invent numbers.",
     },
@@ -1173,15 +1060,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "inspiritintruth",
     name: "InSpiritInTruth",
+    kind: "product",
     dates: "Jul 2026 – present",
     hero: {
       image: "inspiritintruth/hero-screens.jpg",
       alt: "Three InSpiritInTruth screens: the devotionals library, the home screen, and the in-app Bible.",
     },
     summary:
-      "Brought personalisation to the devotional — a format that has not changed in decades — and engineered it so that an app quoting scripture can never quietly misquote it.",
+      "Faith personalisation. A devotional written for what you are actually carrying today, engineered so an app that quotes scripture can never quietly misquote it.",
     description:
-      "A devotional app for imperfect journeys — the overwhelmed, the curious, the unchurched, the devoted. The format has looked the same for generations: one text, written for everyone, read alone. ISIT keeps that rhythm and adds what it never had — a devotional written for what you are carrying today.",
+      "A devotional app for imperfect journeys — the overwhelmed, the curious, the unchurched, the devoted. The format has looked the same for generations: one text for everyone. ISIT keeps the rhythm and adds the part it never had.",
     tags: ["Product build", "Personalisation", "UX", "AI engineering"],
     meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
     strip: [
@@ -1204,8 +1092,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A format that never changed",
         body: [
-          "The devotional is one of the oldest content formats there is: a passage, a reflection, a prayer, the same page for everyone. That sameness is its comfort and its limit. Someone navigating faith outside church, struggling to stay consistent, or carrying something specific today — the format has never met any of them where they are.",
-          "ISIT keeps what is worth keeping: a weekly devotional written by a person, the whole Bible in the app, no algorithm, no ads. Then it adds the missing piece. Share what you are going through and it writes a devotional for exactly that, rooted first in Scripture.",
+          "The devotional is one of the oldest content formats there is: a passage, a reflection, a prayer, the same page for everyone. That sameness is its comfort and its limit. Someone carrying something specific today has never been met where they are.",
+          "ISIT keeps what is worth keeping — a weekly devotional written by a person, the whole Bible, no algorithm, no ads — and adds the missing piece. Share what you are going through and it writes one for exactly that, rooted first in Scripture.",
         ],
       },
       {
@@ -1319,7 +1207,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
     ],
     seo: {
-      title: "InSpiritInTruth case study | Alroy Ndhlovu",
+      title: "InSpiritInTruth — how I built it | Alroy Ndhlovu",
       description:
         "Bringing personalisation to the devotional: how InSpiritInTruth writes for what you are carrying today, and the engineering that keeps it honest.",
     },
@@ -1327,15 +1215,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "tapa",
     name: "tapa.",
+    kind: "product",
     dates: "Jul 2026 – present",
     hero: {
       image: "tapa/hero-screens.jpg",
       alt: "Three tapa. screens: entering what is in the fridge, the home screen, and a finished recipe.",
     },
     summary:
-      "Built a recipe app for every day and kept it radically simple — your ingredients in, one well-considered recipe out — because life needs more simple, and simplicity is a discipline, not a shortcut.",
+      "Adulting, minus one decision. Tell it what you have and get a meal back — convenience and variety without the mental load of deciding.",
     description:
-      "tapa. answers one question: “what can I cook with this?” Tell it or show it what you have, how long you have and how many you are feeding, and it returns one considered recipe. Not fifty results. This is what keeping it that simple costs.",
+      "tapa. answers one question: “what can I cook with this?” Tell it or show it what you have, how long you have and how many you are feeding. One considered recipe back, not fifty results. This is what keeping it that simple costs.",
     tags: ["Product build", "UX", "Simplicity", "Pricing"],
     meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
     strip: [
@@ -1356,8 +1245,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The mental load nobody prices in",
         body: [
-          "Eating is a basic need, and deciding what to eat is the most taxing part of the day. Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each — more deciding, not less.",
-          "tapa. deletes the decision. Type, say, or photograph what is in the fridge, set a time and a serving count, and get one recipe tailored to your tastes. Allergies and dietary needs are set once and enforced as hard rules on every generation — a safety constraint, not a preference.",
+          "Deciding what to eat is the most taxing part of the day. Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each — more deciding, not less.",
+          "tapa. deletes the decision. Type, say, or photograph what is in the fridge, set a time and a serving count, and get one recipe tailored to your tastes. Allergies and dietary needs are set once and enforced on every generation — safety, not preference.",
         ],
       },
       {
@@ -1451,7 +1340,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
     ],
     seo: {
-      title: "tapa. case study | Alroy Ndhlovu",
+      title: "tapa. — how I built it | Alroy Ndhlovu",
       description:
         "Building something for every day and keeping it simple: how tapa. answers “what can I cook with this?” with one good recipe, and prices the exchange fairly.",
     },
@@ -1459,6 +1348,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "filosofee",
     name: "Filosofee",
+    kind: "client",
     dates: "2024 – present",
     hero: {
       image: "filosofee/hero-shoot.jpg",
@@ -1592,6 +1482,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "lumiskin",
     name: "LumiSkin",
+    kind: "client",
     dates: "Mar 2026",
     hero: {
       image: "lumiskin/hero-aurora.jpg",
@@ -1599,11 +1490,11 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/portfolio/website_video_lumiskin.mp4",
     },
     summary:
-      "A luxury cosmetics hero with a live chameleon that changes colour to match the soap — the kind of film that normally needs a studio, a crew and a five-figure budget. Built for under $300.",
+      "A meme about designers handing developers a brief that looks great and costs a fortune to build. I wanted to know if that was still true. One day, under $300, working site.",
     description:
-      "A design exploration: what a premium beauty brand looks like if the hero does something rather than sits there. A chameleon walks in, shifts colour to match the bar beside it, and the product card arrives on the match. Every asset generated, for less than a day of studio time.",
+      "The joke is the gap between what a designer imagines and what gets built. A chameleon that takes the colour of the product beside it is a lovely idea and a five-figure production. I took the brief seriously to find out whether AI had closed that gap.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
-    meta: ["Self-directed", "Design exploration", "Mar 2026"],
+    meta: ["Self-directed", "Build challenge", "Mar 2026"],
     website: "https://deft-pasca-8eec5e.netlify.app",
     strip: [
       { image: "lumiskin/hero-aurora.jpg", alt: "" },
@@ -1612,6 +1503,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { image: "lumiskin/hero-peach.jpg", alt: "" },
     ],
     chapters: [
+      { id: "dare", label: "The dare" },
       { id: "idea", label: "The idea" },
       { id: "make", label: "Making it" },
       { id: "cost", label: "What it cost" },
@@ -1620,13 +1512,35 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     blocks: [
       {
+        id: "dare",
+        kind: "prose",
+        heading: "Designers dream it. Developers price it.",
+        body: [
+          "A meme went round design circles: a concept site where a chameleon takes the colour of the bottle beside it, cut against the canyon-swing clip. Designer in the chair. Programmer and Developer either side, about to push.",
+          "Everyone has been in that meeting. The design is good. Building it means a studio, a handler and a render farm, so it dies. I wanted to know whether that was still true or just a habit — and whether AI had actually changed the answer.",
+          "It had. One day, under $300, on consumer subscriptions.",
+        ],
+      },
+      {
+        id: "dare",
+        kind: "video",
+        heading: "The meme that started it",
+        intro: "The concept site on top, the verdict underneath.",
+        src: "/media/case-studies/lumiskin-inspiration.mp4",
+        poster: "lumiskin/inspiration-poster.webp",
+        portrait: true,
+        alt: "A split screen: above, a concept site for Chroma Juice where a chameleon shifts through berry, orange and green to match each bottle; below, the canyon-swing meme with two people in blue jackets labelled Programmer and Developer standing over a seated man labelled Designer.",
+        footnote:
+          "Not my work, and included as the thing being answered rather than as a portfolio piece. The concept site and the edit are credited to @uiux_sumeet, whose watermark is on the clip.",
+      },
+      {
         id: "idea",
         kind: "prose",
         heading: "A hero that earns the word premium",
         body: [
-          "Beauty brands nearly all open the same way: product on a clean surface, serif headline, Shop button. It photographs well and says nothing. What would a hero look like if it performed the promise instead of describing it?",
-          "The soaps answer it. Aurora Petal is lavender, Jade Mist green, Peach Quartz warm clay — a range whose identity is colour. So the hero is a chameleon: it settles beside a bar, takes its colour, and the card slides in on the match. The metaphor sells without a line of copy explaining it.",
-          "It is deliberately the expensive kind of brief. A live animal, three colourways, macro product work and a thirty-second film means a studio, a handler, a CGI house and a build. The sort of concept that dies in a budget meeting — which is why it was worth testing what production actually costs now.",
+          "Copying the juice site would have proved nothing, so I moved the mechanic to cosmetics — a category whose identity is already colour. Aurora Petal is lavender, Jade Mist green, Peach Quartz warm clay.",
+          "The chameleon settles beside a bar, takes its colour, and the product card arrives on the match. No line of copy explaining it.",
+          "Changing the category kept every expensive part: a live animal, three colourways, macro product work and a thirty-second film. The exact bill the meme is laughing at.",
         ],
       },
       {
@@ -1644,9 +1558,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Generated, not shot",
         body: [
-          "Nothing was photographed or filmed. Product renders, the chameleon, macro texture and lifestyle frames were generated as stills, animated into three eight-second clips, and wrapped in a site built with an agentic IDE and finished by hand.",
-          "The order matters. Stills first meant the bars, packaging and palette were locked cheaply as images, so the film only had to move something that already existed. Going straight to video means re-rolling thirty seconds every time a soap looks wrong.",
-          "The honest limitation is consistency. Getting the same bar to look like the same bar across sixteen images is the actual work, and it is where most of the effort went — not in any single prompt but in holding one object still across a set of them.",
+          "Nothing was photographed or filmed. Stills first, then animated into three eight-second clips, then a site built with an agentic IDE and finished by hand.",
+          "Order matters. Locking the bars and palette as cheap stills meant the film only had to move something that already existed. Go straight to video and you re-roll thirty seconds every time a soap looks wrong.",
+          "The hard part was consistency — keeping the same bar looking like the same bar across sixteen images. That is where the effort went, not into any single prompt.",
         ],
       },
       {
@@ -1657,42 +1571,25 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Three line items, all of them subscription or per-second pricing rather than a quote.",
         items: [
           {
-            value: "16",
-            label: "Generated images",
-            context:
-              "Product renders, macro texture, protocol and collection frames — produced on a standard ChatGPT subscription.",
-          },
-          {
-            value: "24s",
-            label: "Generated video",
-            context:
-              "Three eight-second clips from Google Veo, crossfaded into one continuous hero.",
-          },
-          {
-            value: "≈$10",
-            label: "The video, at list price",
-            context:
-              "24 seconds at Veo 3's published $0.40/second API rate. On Veo 3 Fast ($0.15/second) the same footage is under $4.",
-          },
-          {
-            value: "$20",
-            label: "A month of image generation",
-            context: "The standard consumer subscription tier, not an enterprise licence.",
-          },
-          {
-            value: "1",
-            label: "People involved",
-            context: "No crew, no studio, no handler, no CGI house, no animal.",
-          },
-          {
             value: "< $300",
             label: "All in",
             context:
               "Subscriptions plus generation, including the agentic IDE used to build the site.",
           },
+          {
+            value: "1 day",
+            label: "Start to working site",
+            context: "One person. No crew, no studio, no handler, no CGI house, no animal.",
+          },
+          {
+            value: "16 + 24s",
+            label: "Generated images and video",
+            context:
+              "A $20 consumer subscription for the stills; ≈$10 of Veo at its published $0.40/second rate for the film.",
+          },
         ],
         footnote:
-          "Veo pricing is Google's published Gemini API rate. Subscriptions are list prices for the consumer tiers actually used. Time is not costed — this was built in evenings, and a day rate would be invented.",
+          "Veo pricing is Google's published Gemini API rate. Subscriptions are list prices for the consumer tiers actually used. Time is not costed — it was a day's work, and putting a day rate on it would be inventing a number.",
       },
       {
         id: "cost",
@@ -1702,33 +1599,25 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Published 2026 market rates for the same three jobs, quoted as ranges because that is how they are quoted. These are benchmarks, not quotes anyone gave for this project.",
         items: [
           {
-            value: "$800 – $2,400",
-            label: "The stills, as photography",
+            value: "$6,500+",
+            label: "Conservative total",
             context:
-              "16 images at the $50–$150 per image typical of beauty and cosmetics product work.",
-          },
-          {
-            value: "$1,200 – $3,500",
-            label: "One studio day",
-            context:
-              "Commercial product photographer day rate — before the animal handler this concept needs.",
+              "Taking the bottom of every range below, and still excluding the animal handler this concept needs.",
           },
           {
             value: "$3,000 – $15,000",
             label: "The film, as 3D/CGI",
-            context:
-              "A 30–60 second product animation runs $3,000–$5,000; a 30-second commercial at the higher end reaches $5,000–$15,000.",
+            context: "A 30-second product commercial at the higher end.",
+          },
+          {
+            value: "$2,000 – $5,900",
+            label: "The stills and a studio day",
+            context: "16 images at $50–$150 each, plus a commercial product photographer's day.",
           },
           {
             value: "$1,500 – $6,000",
             label: "The site, built out",
-            context:
-              "A custom animated landing page: $1,500–$3,000 from a boutique agency, $3,000–$6,000 mid-size.",
-          },
-          {
-            value: "$6,500+",
-            label: "Conservative total",
-            context: "Taking the bottom of every range above, and still excluding the handler.",
+            context: "A custom animated landing page, boutique through mid-size agency.",
           },
           {
             value: "~20×",
@@ -1770,14 +1659,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         body: [
           "The three clips crossfade rather than continue — the chameleon dissolves between colours instead of walking through them. Most people will not read it as a cut, but the concept deserves one unbroken take. A generation problem I did not solve.",
           "Generate the products at a fixed camera and lighting setup from the start. The collection frames drift in angle between bars — invisible on the hero, obvious in a grid. Lock it as a constraint before generating, not after.",
-          'And the real conclusion is narrower than "AI is cheap". What collapsed here is the cost of producing assets. Deciding that a chameleon is the right idea, that the card should arrive on the colour match, and that the sequence must not depend on autoplay — none of that got cheaper, and all of it is what makes the page work.',
+          'The conclusion is narrower than "AI is cheap". What collapsed is the cost of making assets. The judgement calls did not get cheaper, and they are what makes the page work.',
+          "The chameleon was not my idea — it was a meme saying the thing could not be built. Taking it seriously and shipping it in a day was the work. Ideas were never the scarce part. Execution was.",
         ],
       },
     ],
     seo: {
       title: "LumiSkin case study | Alroy Ndhlovu",
       description:
-        "A luxury cosmetics hero with a colour-matching chameleon, generated end to end for under $300 against a $6,500+ conventional production quote.",
+        "A meme said the brief was too expensive to build. A cosmetics hero with a colour-matching chameleon, made in a day for under $300 against a $6,500+ conventional quote.",
     },
   },
 ];
@@ -1792,4 +1682,39 @@ export const UPCOMING_STUDIES: { name: string; note: string }[] = [];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return CASE_STUDIES.find((study) => study.slug === slug);
+}
+
+/**
+ * Client work, which is what section 06 is now for: four engagements
+ * judged on what they returned to the business.
+ */
+export const CLIENT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "client");
+
+/**
+ * The build stories behind Alroy's own products. Same depth, same
+ * renderer, reached from the product card in section 05 instead of a
+ * card of their own in 06.
+ */
+export const PRODUCT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "product");
+
+/**
+ * Where a study lives. Derived from `kind` in exactly one place, so a
+ * page, a card, the sitemap entry and the llms.txt line can never
+ * disagree about a URL — and moving one only ever means changing its
+ * `kind`.
+ */
+export function studyPath(study: Pick<CaseStudy, "kind" | "slug">): string {
+  return study.kind === "product" ? `/products/${study.slug}/` : `/case-studies/${study.slug}/`;
+}
+
+/** The section a study belongs to, and how to name the way back to it. */
+export function studyHome(kind: CaseStudy["kind"]) {
+  return kind === "product"
+    ? { href: "/#products", section: "Products", back: "Back to products", all: "All products" }
+    : {
+        href: "/#case-studies",
+        section: "Case studies",
+        back: "Back to case studies",
+        all: "All case studies",
+      };
 }

@@ -21,7 +21,7 @@ import HeroCollage from "../components/HeroCollage.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { ArrowDown } from "@lucide/astro";
 import { SITE, SECTIONS, SOCIAL } from "../data/site";
-import { CASE_STUDIES } from "../data/case-studies";
+import { CLIENT_STUDIES, PRODUCT_STUDIES, studyPath } from "../data/case-studies";
 import { SERVICES } from "../data/services";
 
 /*
@@ -77,11 +77,28 @@ const schema = [
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Case studies",
-    itemListElement: CASE_STUDIES.map((study, index) => ({
+    itemListElement: CLIENT_STUDIES.map((study, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE.url}/case-studies/${study.slug}/`,
+      url: `${SITE.url}${studyPath(study)}`,
       name: `${study.name} case study`,
+    })),
+  },
+  /*
+   * Listed separately from the case studies rather than merged into one
+   * list, because the two sections now answer different questions and a
+   * single ItemList would tell an engine they are the same kind of
+   * thing.
+   */
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Products",
+    itemListElement: PRODUCT_STUDIES.map((study, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE.url}${studyPath(study)}`,
+      name: `${study.name} — how it was built`,
     })),
   },
 ];

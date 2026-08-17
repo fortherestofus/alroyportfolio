@@ -1,0 +1,1013 @@
+---
+/**
+ * A long-form study, rendered from the typed block list in
+ * src/data/case-studies.ts. Structure follows the template in
+ * prd/03-case-studies.md.
+ *
+ * One renderer, two routes. Client engagements live under
+ * /case-studies/ and are reached from section 06; the build stories for
+ * Alroy's own products live under /products/ and are reached from their
+ * card in section 05. The only thing that differs is where the page
+ * sits and what the way back is called, both derived from `study.kind`
+ * — so the two can never drift into being two different templates.
+ *
+ * One deliberate change from the PRD: it calls for a tab bar on
+ * Innovatr, but the story Alroy described is sequential — brand, then
+ * content, then ads, then results. Tabs would hide four fifths of that
+ * behind a click and break the through-line. The chapters render as a
+ * sticky anchor bar instead: the same quick access, nothing hidden, and
+ * it still works with JS off.
+ */
+import { Image, getImage } from "astro:assets";
+import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Placeholder from "./Placeholder.astro";
+import LogoFrame from "./LogoFrame.astro";
+import SiteFooter from "./SiteFooter.astro";
+import { caseImage, studyPath, studyHome, type CaseStudy } from "../data/case-studies";
+import { SITE } from "../data/site";
+
+interface Props {
+  study: CaseStudy;
+}
+
+const { study } = Astro.props;
+const path = studyPath(study);
+const home = studyHome(study.kind);
+
+/** The opening image or clip runs the full content column. */
+const HERO_WIDTH = 1400;
+const SHOT_WIDTH = 900;
+/** Wide galleries run two-up at most, so each one is shown larger. */
+const WIDE_SHOT_WIDTH = 1100;
+/**
+ * Paired captures share the column, so each fills about half of it —
+ * but half a column on a 2x screen is still ~1,130 device pixels, and
+ * asking for 620 is what made these read as blurry. Sized for the
+ * retina case, and kept just under the narrowest source so nothing is
+ * upscaled to get there.
+ */
+const PAIR_SHOT_WIDTH = 1160;
+const SHOT_QUALITY = 74;
+
+const heroImage = caseImage(study.hero?.image);
+/*
+ * A hero clip needs its poster as a plain URL rather than an <Image>,
+ * so it goes through getImage. Touching `image.src` instead would hand
+ * back the untransformed original and ship it at source weight — the
+ * same trap the portfolio modal documents.
+ */
+const heroPoster =
+  study.hero?.video && heroImage
+    ? (await getImage({ src: heroImage, width: HERO_WIDTH, quality: SHOT_QUALITY, format: "webp" }))
+        .src
+    : undefined;
+
+/**
+ * Same treatment for any video block inside the body.
+ *
+ * A portrait clip is capped at 26rem on screen, so asking for the
+ * landscape 900 upscales a 540-wide poster to fill a box it will never
+ * be drawn in. Sized to the source instead.
+ */
+const PORTRAIT_POSTER_WIDTH = 540;
+const blockPosters = new Map<string, string>();
+for (const block of study.blocks) {
+  if (block.kind !== "video") continue;
+  const still = caseImage(block.poster);
+  if (!still) continue;
+  const optimised = await getImage({
+    src: still,
+    width: block.portrait ? PORTRAIT_POSTER_WIDTH : SHOT_WIDTH,
+    quality: SHOT_QUALITY,
+    format: "webp",
+  });
+  blockPosters.set(block.poster, optimised.src);
+}
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: study.kind === "product" ? `${study.name} — how it was built` : `${study.name} case study`,
+    abstract: study.summary,
+    /*
+     * A reference, not a copy. The home page defines the Person node at
+     * this @id; pointing at it makes every case study part of one graph
+     * about one human, which is what lets an engine attribute the work.
+     */
+    author: { "@id": `${SITE.url}/#alroy` },
+    url: new URL(path, SITE.url).href,
+    datePublished: "2026-08-01",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: home.section,
+        item: new URL(home.href, SITE.url).href,
+      },
+      { "@type": "ListItem", position: 3, name: study.name },
+    ],
+  },
+];
+---
+
+<BaseLayout title={study.seo.title} description={study.seo.description} path={path} schema={schema}>
+  <article class="cs">
+    <header class="cs__head">
+      <a class="cs__back" href={home.href}>
+        <ArrowLeft class="cs__back-icon" aria-hidden="true" />
+        {home.back}
+      </a>
+
+      <h1 class="cs__title">
+        {study.logoFile && <LogoFrame file={study.logoFile} round size="lg" />}
+        {study.name}
+      </h1>
+      <p class="cs__summary">{study.summary}</p>
+
+      <p class="cs__meta">{study.meta.join(" · ")}</p>
+
+      <ul class="cs__tags">
+        {study.tags.map((tag) => <li class="cs__tag">{tag}</li>)}
+      </ul>
+
+      {
+        study.website && (
+          <p class="cs__visit">
+            <a href={study.website} target="_blank" rel="noopener noreferrer">
+              Visit the site
+              <ArrowUpRight class="cs__visit-icon" aria-hidden="true" />
+            </a>
+          </p>
+        )
+      }
+
+      <p class="cs__intro">{study.description}</p>
+    </header>
+
+    {
+      heroImage && (
+        <figure class="cs__hero">
+          {study.hero?.video ? (
+            <video
+              class="cs__hero-media"
+              src={study.hero.video}
+              poster={heroPoster}
+              preload="none"
+              controls
+              muted
+              loop
+              playsinline
+              aria-label={study.hero.alt}
+            />
+          ) : (
+            <Image
+              class="cs__hero-media"
+              src={heroImage}
+              alt={study.hero!.alt}
+              width={HERO_WIDTH}
+              quality={SHOT_QUALITY}
+              densities={[1]}
+              loading="eager"
+            />
+          )}
+        </figure>
+      )
+    }
+
+    <nav class="cs__chapters" aria-label="Sections of this case study">
+      {
+        /*
+        The way out, kept where the reader already is.
+
+        The link at the top of the page scrolls away, and on a study
+        this long that leaves no route back without reaching for the
+        browser's own back button — which is not where anyone looks
+        while reading. This bar is already pinned, so the exit lives in
+        it: the one control that is on screen for the whole page.
+      */
+      }
+      <a class="cs__chapters-home" href={home.href}>
+        <ArrowLeft class="cs__chapters-home-icon" aria-hidden="true" />
+        <span class="cs__chapters-home-label">{home.all}</span>
+      </a>
+
+      <ul>
+        {
+          study.chapters.map((chapter) => (
+            <li>
+              <a href={`#${chapter.id}`}>{chapter.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="cs__body">
+      {
+        study.blocks.map((block) => (
+          <section class="cs__block" id={block.id} data-reveal>
+            {block.heading && (
+              <h2 class="cs__heading" data-reveal-item>
+                {block.heading}
+              </h2>
+            )}
+
+            {block.kind === "prose" &&
+              block.body.map((paragraph) => (
+                <p class="cs__prose" data-reveal-item>
+                  {paragraph}
+                </p>
+              ))}
+
+            {"intro" in block && block.intro && (
+              <p class="cs__prose" data-reveal-item>
+                {block.intro}
+              </p>
+            )}
+
+            {block.kind === "metrics" && (
+              <>
+                <dl class="cs__metrics">
+                  {block.items.map((metric) => (
+                    <div class="cs__metric" data-reveal-item>
+                      <dt class="cs__metric-value">{metric.value}</dt>
+                      <dd class="cs__metric-label">
+                        <span class="cs__metric-name">{metric.label}</span>
+                        {metric.context && <span class="cs__metric-context">{metric.context}</span>}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                {block.footnote && <p class="cs__footnote">{block.footnote}</p>}
+              </>
+            )}
+
+            {block.kind === "checklist" && (
+              <ul class="cs__checklist">
+                {block.items.map((item) => (
+                  <li class="cs__check" data-reveal-item>
+                    <CircleCheck class="cs__check-icon" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {block.kind === "trend" && (
+              <div class="cs__trend" data-reveal-item>
+                <table class="cs__trend-table">
+                  {/* The heading above says this too, but a table needs its own. */}
+                  <caption class="visually-hidden">
+                    {block.measure} by {(block.rowLabel ?? "month").toLowerCase()}
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">{block.rowLabel ?? "Month"}</th>
+                      <th scope="col">{block.measure}</th>
+                      <th scope="col">What changed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.rows.map((row) => {
+                      const peak = Math.max(...block.rows.map((r) => r.value));
+                      /* Percentage of the tallest bar, floored so a real
+                         but tiny month is still a visible mark. */
+                      const pct = peak > 0 ? Math.max(1.5, (row.value / peak) * 100) : 0;
+                      return (
+                        <tr>
+                          <th scope="row" class="cs__trend-label">
+                            {row.label}
+                          </th>
+                          <td class="cs__trend-cell">
+                            <span class="cs__trend-bar" style={`--bar:${pct.toFixed(2)}%`} />
+                            <span class="cs__trend-value">{row.display}</span>
+                          </td>
+                          <td class="cs__trend-note">{row.note}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                {block.footnote && <p class="cs__footnote">{block.footnote}</p>}
+              </div>
+            )}
+
+            {block.kind === "beforeAfter" &&
+              block.pairs.map((pair) => {
+                const before = caseImage(pair.before);
+                const after = caseImage(pair.after);
+                return (
+                  <figure class="cs__compare" data-reveal-item>
+                    <div class="cs__compare-pair">
+                      <div class="cs__compare-side">
+                        <span class="cs__compare-tag">Before</span>
+                        {before ? (
+                          <Image
+                            src={before}
+                            alt=""
+                            width={SHOT_WIDTH}
+                            quality={SHOT_QUALITY}
+                            densities={[1]}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Placeholder label={pair.before} ratio="16/10" />
+                        )}
+                      </div>
+                      <div class="cs__compare-side">
+                        <span class="cs__compare-tag cs__compare-tag--after">After</span>
+                        {after ? (
+                          <Image
+                            src={after}
+                            alt=""
+                            width={SHOT_WIDTH}
+                            quality={SHOT_QUALITY}
+                            densities={[1]}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Placeholder label={pair.after} ratio="16/10" />
+                        )}
+                      </div>
+                    </div>
+                    <figcaption class="cs__caption">
+                      <span class="cs__caption-label">{pair.label}</span> {pair.alt}
+                    </figcaption>
+                  </figure>
+                );
+              })}
+
+            {block.kind === "gallery" && (
+              <ul
+                class:list={[
+                  "cs__gallery",
+                  block.wide && "cs__gallery--wide",
+                  block.pair && "cs__gallery--pair",
+                ]}
+              >
+                {block.shots.map((shot) => {
+                  const image = caseImage(shot.image);
+                  return (
+                    <li class="cs__shot" data-reveal-item>
+                      {image ? (
+                        <Image
+                          src={image}
+                          alt={shot.alt}
+                          width={
+                            block.pair ? PAIR_SHOT_WIDTH : block.wide ? WIDE_SHOT_WIDTH : SHOT_WIDTH
+                          }
+                          quality={SHOT_QUALITY}
+                          densities={[1]}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Placeholder label={shot.image} ratio={block.wide ? "16/10" : "1/1"} />
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {block.kind === "video" && (
+              <figure
+                class:list={["cs__video", block.portrait && "cs__video--portrait"]}
+                data-reveal-item
+              >
+                <video
+                  class="cs__video-media"
+                  src={block.src}
+                  poster={blockPosters.get(block.poster)}
+                  preload="none"
+                  controls
+                  muted
+                  loop
+                  playsinline
+                  aria-label={block.alt}
+                />
+                {block.footnote && <figcaption class="cs__note">{block.footnote}</figcaption>}
+              </figure>
+            )}
+
+            {block.kind === "pending" && (
+              <p class="cs__pending" data-reveal-item>
+                {block.note}
+              </p>
+            )}
+          </section>
+        ))
+      }
+    </div>
+
+    <footer class="cs__foot">
+      <p class="cs__foot-line">
+        {
+          study.kind === "product"
+            ? "Want something like this built?"
+            : "Want something like this for your business?"
+        }
+      </p>
+      <p class="cs__foot-links">
+        <a class="cs__foot-cta" href="/#contact">Start a conversation</a>
+        <a class="cs__foot-back" href={home.href}>{home.all}</a>
+      </p>
+    </footer>
+  </article>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<script>
+  import "../scripts/journey";
+</script>
+
+<style>
+  .cs {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-5) var(--space-10);
+  }
+
+  /* --- Header --------------------------------------------------- */
+  .cs__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .cs__back:hover,
+  .cs__back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .cs__back-icon,
+  .cs__visit-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  /* The client's mark sits on the baseline of their name. */
+  .cs__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .cs__summary {
+    margin-top: var(--space-5);
+    max-width: var(--measure);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__meta {
+    margin-top: var(--space-5);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .cs__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs__tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    background-color: var(--color-accent-soft);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__visit {
+    margin-top: var(--space-5);
+  }
+
+  .cs__visit a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .cs__intro {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  /* --- Chapter bar ---------------------------------------------- */
+  .cs__chapters {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    padding-block: var(--space-3);
+    background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-block: 1px solid var(--color-border);
+  }
+
+  /*
+   * Never scrolls away with the chapters. The pills overflow sideways
+   * on a narrow screen; the exit has to stay put or it is only findable
+   * by scrolling a bar the reader does not know scrolls.
+   */
+  .cs__chapters-home {
+    flex: none;
+    padding-inline: var(--space-3);
+    border-color: transparent;
+    color: var(--color-text-muted);
+  }
+
+  .cs__chapters-home:hover,
+  .cs__chapters-home:focus-visible {
+    color: var(--color-text);
+  }
+
+  .cs__chapters-home-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  .cs__chapters-home-label {
+    margin-left: var(--space-2);
+  }
+
+  /* Below the two-column breakpoint the label goes; the arrow carries it. */
+  @media (width < 768px) {
+    .cs__chapters-home-label {
+      /* Present for screen readers, absent on screen. */
+      position: absolute;
+      width: var(--visually-hidden-size);
+      height: var(--visually-hidden-size);
+      margin: calc(-1 * var(--visually-hidden-size));
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  .cs__chapters ul {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .cs__chapters ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cs__chapters a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-nav);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .cs__chapters a:hover,
+  .cs__chapters a:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* --- Blocks ---------------------------------------------------- */
+  .cs__block {
+    padding-top: var(--space-9);
+    scroll-margin-top: var(--space-9);
+  }
+
+  .cs__heading {
+    font-size: var(--text-h2);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .cs__prose {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  /* --- Metrics --------------------------------------------------- */
+  .cs__metrics {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+  }
+
+  .cs__metric {
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .cs__metric-value {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-accent);
+  }
+
+  .cs__metric-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+  }
+
+  .cs__metric-name {
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__metric-context {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .cs__footnote {
+    margin-top: var(--space-5);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  /* --- Checklist -------------------------------------------------- */
+  .cs__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs__check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    max-width: var(--measure);
+    color: var(--color-text-muted);
+  }
+
+  .cs__check-icon {
+    flex: none;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    margin-top: var(--space-1);
+    stroke-width: 1.5;
+    color: var(--color-accent);
+  }
+
+  /* --- Before / after --------------------------------------------- */
+  .cs__compare {
+    margin: var(--space-6) 0 0;
+  }
+
+  .cs__compare-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  /*
+   * Before and after are captures of the same page at two different
+   * window sizes, so their ratios never match. Grid stretches the two
+   * frames level with each other regardless, which leaves a band of
+   * empty card under whichever image is shorter. Fixing the frame and
+   * filling it is what makes the two actually comparable: both are
+   * cropped the same way, from the top, which is where the header and
+   * the hero of a page are.
+   */
+  .cs__compare-side {
+    position: relative;
+    aspect-ratio: var(--shot-screen-ratio);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__compare-side :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .cs__compare-side :global(.placeholder) {
+    height: 100%;
+  }
+
+  .cs__compare-tag {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-pill);
+    /* Was --color-ink-surface, which stopped existing in the dark-mode
+       rename and left this tag with no background at all. */
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__compare-tag--after {
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+  }
+
+  .cs__caption,
+  .cs__pending {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .cs__caption-label {
+    color: var(--color-text);
+    font-weight: var(--weight-heading);
+  }
+
+  /* --- Trend ------------------------------------------------------- */
+  .cs__trend {
+    margin-top: var(--space-6);
+    overflow-x: auto;
+  }
+
+  .cs__trend-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+  }
+
+  .cs__trend-table thead th {
+    padding-bottom: var(--space-3);
+    text-align: left;
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cs__trend-table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cs__trend-table th,
+  .cs__trend-table td {
+    padding-block: var(--space-3);
+    padding-right: var(--space-4);
+    vertical-align: middle;
+  }
+
+  .cs__trend-label {
+    text-align: left;
+    font-weight: var(--weight-heading);
+    white-space: nowrap;
+  }
+
+  .cs__trend-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /*
+   * A fixed track filled to --bar, which is computed from the data, so
+   * the shape of the column can never disagree with the number printed
+   * next to it. Filled with a gradient rather than a nested element
+   * because there is nothing for that element to be.
+   */
+  .cs__trend-bar {
+    flex: none;
+    width: var(--trend-bar-track);
+    height: var(--trend-bar-height);
+    background-color: var(--color-accent-soft);
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-size: var(--bar) 100%;
+    background-repeat: no-repeat;
+    border-radius: var(--radius-pill);
+  }
+
+  .cs__trend-value {
+    color: var(--color-text);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cs__trend-note {
+    color: var(--color-text-muted);
+  }
+
+  /* --- Gallery ----------------------------------------------------- */
+  /*
+   * The opening image or clip. Full content width and eager, because it
+   * is the first thing on the page and the one asset the reader has
+   * already decided to look at.
+   */
+  .cs__hero {
+    margin: var(--space-7) 0 0;
+  }
+
+  .cs__hero-media,
+  .cs__video-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__video {
+    margin: var(--space-6) 0 0;
+  }
+
+  /*
+   * A 9:16 clip at full column width is about 1,600px tall — one
+   * paragraph of the argument becoming a whole screen of video. Capped
+   * to roughly the width it was encoded at and centred, so it reads as
+   * a phone held up next to the text rather than as the page's hero.
+   */
+  .cs__video--portrait .cs__video-media {
+    max-width: min(100%, 26rem);
+    margin-inline: auto;
+  }
+
+  .cs__video--portrait .cs__note {
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  .cs__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /*
+   * Web captures are wider than they are tall and arrive at whatever
+   * size the window happened to be, so they get their own track and a
+   * fixed frame. Square social slides keep the auto-fill grid above.
+   */
+  .cs__gallery--pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (width >= 768px) {
+    .cs__gallery--pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .cs__gallery--wide {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .cs__shot {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__shot :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /*
+   * Fixed frames, filled from the top. Grid stretches the frames to
+   * match each other regardless; without this the images inside them
+   * stop at different heights and leave bands of empty card.
+   */
+  .cs__gallery--wide .cs__shot {
+    aspect-ratio: var(--shot-screen-ratio);
+  }
+
+  .cs__gallery--wide .cs__shot :global(img) {
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .cs__gallery--wide .cs__shot :global(.placeholder) {
+    height: 100%;
+  }
+
+  /* --- Footer ------------------------------------------------------- */
+  .cs__foot {
+    margin-top: var(--space-10);
+    padding-top: var(--space-7);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cs__foot-line {
+    font-size: var(--text-h3);
+  }
+
+  .cs__foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .cs__foot-cta,
+  .cs__foot-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-lg);
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+  }
+
+  .cs__foot-cta {
+    background-color: var(--color-accent);
+    color: var(--color-invert-text);
+  }
+
+  .cs__foot-back {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  @media (width >= 768px) {
+    .cs__metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cs__compare-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 1024px) {
+    .cs__metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

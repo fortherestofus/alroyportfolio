@@ -1,9 +1,10 @@
 import type { APIRoute } from "astro";
 import { SITE, SOCIAL, SECTIONS } from "../data/site";
 import { SERVICES } from "../data/services";
-import { CASE_STUDIES } from "../data/case-studies";
-import { PRODUCTS } from "../data/products";
+import { CLIENT_STUDIES, studyPath } from "../data/case-studies";
+import { PRODUCTS, caseStudyLink } from "../data/products";
 import { EXPERIENCE } from "../data/experience";
+import { FEATURES } from "../data/features";
 
 /**
  * llms.txt (PRD §9) — a plain-markdown brief for AI answer engines.
@@ -44,18 +45,35 @@ export const GET: APIRoute = () => {
     "",
     "## Case studies",
     "",
-    "Full write-ups, each with the problem, the decisions, the measured outcome and what he would do differently.",
+    "Client work, each written up with the problem, the decisions, the measured outcome and what he would do differently.",
     "",
-    ...CASE_STUDIES.map(
-      (study) =>
-        `- [${study.name}](${url(`/case-studies/${study.slug}/`)}) (${study.dates}): ${study.summary}`,
+    ...CLIENT_STUDIES.map(
+      (study) => `- [${study.name}](${url(studyPath(study))}) (${study.dates}): ${study.summary}`,
     ),
     "",
     "## Products he has built",
     "",
-    ...PRODUCTS.map(
-      (product) =>
+    "Software he owns and shipped end to end. Each entry is the problem, the approach and the result, with a full build story where one is written.",
+    "",
+    ...PRODUCTS.flatMap((product) => {
+      const story = caseStudyLink(product.caseStudy);
+      return [
         `- **${product.name}** (${product.platform}, ${product.status}) — ${product.tagline} ${product.description}`,
+        `  - Problem: ${product.story.problem}`,
+        `  - Approach: ${product.story.approach}`,
+        `  - Result: ${product.story.result}`,
+        ...(story ? [`  - Build story: ${url(story)}`] : []),
+        ...(product.link ? [`  - ${product.link.label}: ${product.link.url}`] : []),
+      ];
+    }),
+    "",
+    "## Published, exhibited and recognised",
+    "",
+    "Each entry names what it actually was — an article he wrote, a programme he helped design, an exhibition his work appeared in — rather than grouping them all as press.",
+    "",
+    ...FEATURES.map(
+      (feature) =>
+        `- **${feature.outlet}** (${feature.kind}, ${feature.year}) — ${feature.thirdPerson} ${feature.href}`,
     ),
     "",
     "## Recent experience",
