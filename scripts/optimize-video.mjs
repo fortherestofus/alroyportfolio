@@ -252,7 +252,11 @@ for (const slug of readdirSync(CASE_SOURCE_DIR, { withFileTypes: true })
     const poster = join(dir, `${name}-poster.webp`);
     const cap = MAX_WIDTH_AT[`${slug}/${name}`] ?? MAX_WIDTH;
 
-    if (existsSync(video) && existsSync(poster) && statSync(video).mtimeMs > statSync(source).mtimeMs) {
+    if (
+      existsSync(video) &&
+      existsSync(poster) &&
+      statSync(video).mtimeMs > statSync(source).mtimeMs
+    ) {
       console.log(`· ${slug}/${name} already current`);
       continue;
     }
@@ -299,7 +303,9 @@ for (const slug of readdirSync(CASE_SOURCE_DIR, { withFileTypes: true })
     savedBefore += before;
     savedAfter += after;
 
-    console.log(`${mb(before)} → ${mb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`);
+    console.log(
+      `${mb(before)} → ${mb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`,
+    );
   }
 }
 

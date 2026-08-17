@@ -87,9 +87,19 @@ import { FEATURES } from "../data/features";
     letter-spacing: var(--tracking-display);
   }
 
+  /*
+   * The ::after below hands the whole card to the pointer, so the real
+   * hit area was always card-sized. The element's own box was not, and
+   * that is what an audit measures — so it carries the minimum itself
+   * rather than relying on a pseudo-element an automated check cannot
+   * see. Centred, because the extra height goes above and below a
+   * baseline-aligned row and would otherwise sit the outlet name off
+   * the meta line beside it.
+   */
   .feat__link {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
+    min-height: var(--control-md);
     gap: var(--space-2);
     color: var(--color-text);
     transition: color var(--duration-fast) var(--ease-out);

@@ -89,7 +89,8 @@ const schema = [
   {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
-    name: study.kind === "product" ? `${study.name} — how it was built` : `${study.name} case study`,
+    name:
+      study.kind === "product" ? `${study.name} — how it was built` : `${study.name} case study`,
     abstract: study.summary,
     /*
      * A reference, not a copy. The home page defines the Person node at

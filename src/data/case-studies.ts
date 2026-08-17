@@ -228,8 +228,18 @@ export const CASE_STUDIES: CaseStudy[] = [
             display: "662,277",
             note: "Four objectives tested. First 202 leads.",
           },
-          { label: "Oct 2025", value: 641912, display: "641,912", note: "Conversions and video in." },
-          { label: "Nov 2025", value: 583214, display: "583,214", note: "Cut back to the winners." },
+          {
+            label: "Oct 2025",
+            value: 641912,
+            display: "641,912",
+            note: "Conversions and video in.",
+          },
+          {
+            label: "Nov 2025",
+            value: 583214,
+            display: "583,214",
+            note: "Cut back to the winners.",
+          },
           { label: "Dec 2025", value: 1388364, display: "1,388,364", note: "Scaled. CPM R16.78." },
           {
             label: "Jan 2026",
@@ -1667,7 +1677,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "LumiSkin case study | Alroy Ndhlovu",
       description:
-        "A meme said the brief was too expensive to build. A cosmetics hero with a colour-matching chameleon, made in a day for under $300 against a $6,500+ conventional quote.",
+        "A meme said the brief was too expensive to build. A cosmetics hero with a colour-matching chameleon, made in a day for under $300 against a $6,500+ quote.",
     },
   },
 ];

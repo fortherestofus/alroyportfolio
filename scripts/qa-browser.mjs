@@ -83,20 +83,29 @@ const EXPECTED = {
   products: 4, // src/data/products.ts
   productShots: 18,
   sectionLotties: 5, // sections 02-06 carry an illustration; 01 and 07 do not
-  caseStudyCards: 7, // CASE_STUDIES — Thrifty, Innovatr, Hakkan, ISIT, tapa, Filosofee, LumiSkin
+  caseStudyCards: 4, // CLIENT_STUDIES — Thrifty, Innovatr, Filosofee, LumiSkin. The three
+  // products are reached from their card in section 05 instead.
   upcomingStudies: 0, // UPCOMING_STUDIES — empty now LumiSkin is written
-  stripShots: 29, // strip entries across all studies, rendered twice for the marquee
+  stripShots: 15, // strip entries across the client studies, rendered twice for the marquee
 };
 
-/** Every case study page, for the site-wide uniqueness checks. */
+/**
+ * Every long-form study page, for the site-wide uniqueness checks.
+ *
+ * Client engagements live under /case-studies/, the product build
+ * stories under /products/. The old /case-studies/ URLs for the three
+ * products still resolve, but as meta-refresh redirect stubs — pointing
+ * this list at those would navigate the page out from under
+ * page.evaluate and take the whole run down with it.
+ */
 const CASE_STUDY_PATHS = [
   "/case-studies/thrifty-adventures/",
   "/case-studies/innovatr/",
-  "/case-studies/hakkan/",
-  "/case-studies/inspiritintruth/",
-  "/case-studies/tapa/",
   "/case-studies/filosofee/",
   "/case-studies/lumiskin/",
+  "/products/hakkan/",
+  "/products/inspiritintruth/",
+  "/products/tapa/",
 ];
 
 const results = [];
