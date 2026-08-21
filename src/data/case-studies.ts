@@ -177,7 +177,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe, Zanzibar and Egypt.",
     },
     summary:
-      "Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million TikTok views, 70,000 Google clicks for $2,099, and 742 LinkedIn leads at R30 — each channel doing the one job it is actually good at.",
+      "Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million TikTok views, 70,000 Google clicks, and 742 LinkedIn leads — each channel doing the one job it is actually good at.",
     description:
       "Thrifty Adventures runs group and tailored tours out of South Africa. No paid activity, no tracking, nothing running. I built four channels, each doing one job: TikTok to get found, TikTok ads to start conversations, Google to catch people already searching, LinkedIn for the considered trip.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
@@ -200,7 +200,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The channel nobody picks for travel",
         body: [
           "LinkedIn is where you go to reach a job title. Thrifty Adventures sells group tours to people spending their own money on their own holidays. On paper it is the wrong platform, and nothing was running — no campaigns, no tracking, no idea what a click was worth.",
-          "So the question was not how to scale LinkedIn. It was whether it works for consumer travel at all. Seven months and R117,322 later: it does, but not for the reason I expected.",
+          "So the question was not how to scale LinkedIn. It was whether it works for consumer travel at all. Seven months of sustained spend later: it does, but not for the reason I expected.",
         ],
       },
       {
@@ -208,7 +208,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "One objective at a time, then all of them",
         body: [
-          "July was deliberately small: R1,834 behind one campaign, at R5.80 a click — what an account with no history pays.",
+          "July was deliberately small — one campaign at R5.80 a click, which is what an account with no history pays.",
           "September was the real test. Four objectives side by side in one month, which is the only way to learn what a platform charges for each thing it sells. It produced the first 202 leads and the comparison that decided everything after: drop what it killed, fund what survived.",
         ],
       },
@@ -269,14 +269,15 @@ export const CASE_STUDIES: CaseStudy[] = [
             context: "The brochure beat the band by more than the rest of the account missed it.",
           },
           {
-            value: "R26.74",
-            label: "Cost per lead, brochure",
-            context: "540 of the 742 leads.",
+            value: "540 of 742",
+            label: "Leads from the brochure ask",
+            context: "The stronger offer carried the account.",
           },
           {
-            value: "R37.13",
+            value: "+39%",
             label: "Cost per lead, everything else",
-            context: "39% more, for the weaker ask.",
+            context:
+              "The weaker ask cost two-fifths more per lead. Absolute costs stay with the client.",
           },
         ],
         footnote:
@@ -289,14 +290,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         intro: "From no paid presence on the channel at all.",
         items: [
           {
-            value: "R29.57",
-            label: "Cost per lead",
-            context: "742 leads, from R21,937 of lead generation spend.",
+            value: "742",
+            label: "Leads",
+            context:
+              "From the dedicated lead-generation flights alone. Cost per lead stays with the client.",
           },
           {
             value: "R2.12",
             label: "Cost per landing page click",
-            context: "33,079 clicks, from R70,111 of traffic spend.",
+            context: "Across 33,079 landing page clicks from the traffic flights.",
           },
           {
             value: "0.97%",
@@ -304,13 +306,14 @@ export const CASE_STUDIES: CaseStudy[] = [
             context: "Nearly double the median across 150,000+ LinkedIn campaigns.",
           },
           {
-            value: "R117,322",
-            label: "Total spend",
-            context: "16 campaigns, six objectives, seven months.",
+            value: "16",
+            label: "Campaigns across six objectives",
+            context:
+              "Seven months, one channel, every rand tracked. The budget itself stays with the client.",
           },
         ],
         footnote:
-          "Clicks are landing page clicks, not LinkedIn's headline Clicks column, which also counts reactions and follows. The 0.52% median is AgencyAnalytics, January 2025. Rand costs are account facts — no credible South African travel-sector benchmark exists.",
+          "Clicks are landing page clicks, not LinkedIn's headline Clicks column, which also counts reactions and follows. The 0.52% median is AgencyAnalytics, January 2025. Unit costs are account facts — no credible South African travel-sector benchmark exists. Spend totals and lead costs are the client's and are held back.",
       },
       {
         id: "tiktok",
@@ -362,14 +365,15 @@ export const CASE_STUDIES: CaseStudy[] = [
             context: "In a single week, across nine destination videos.",
           },
           {
-            value: "R7.51",
-            label: "Average cost each",
-            context: "Weighted across all nine, not the best one quoted as if it were typical.",
+            value: "Cheapest",
+            label: "Qualified contact in the account",
+            context:
+              "Weighted across all nine videos, not the best one quoted as if it were typical. Absolute costs stay with the client.",
           },
           {
             value: "71",
             label: "Best single video",
-            context: "Bali and Thailand, at R7.54 a conversation.",
+            context: "Bali and Thailand, at essentially the account average per conversation.",
           },
         ],
         footnote:
@@ -389,7 +393,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
           {
             value: "70,099",
-            label: "Clicks for $2,099",
+            label: "Clicks",
             context: "From 872,272 impressions across six campaigns, Jun 2025 to Feb 2026.",
           },
           {
@@ -435,9 +439,9 @@ export const CASE_STUDIES: CaseStudy[] = [
           "The point of running four is not four times the volume. It is that a holiday is not bought in one motion, and the channels are good at different parts of it.",
         items: [
           "TikTok organic gets the brand found, and keeps working months later.",
-          "TikTok ads turn that into a conversation at R7.51 — the cheapest qualified contact in the account.",
+          "TikTok ads turn that into a conversation — the cheapest qualified contact in the account.",
           "Google catches people already pricing a trip. Cheapest clicks, least persuasion.",
-          "LinkedIn sells the considered trip, at R26.74 a lead.",
+          "LinkedIn sells the considered trip — the account's costliest contact, and its most considered.",
           "None was asked to do another's job. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
         ],
       },
@@ -446,7 +450,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Brand awareness was the most expensive thing on the platform: R8,400 at R19.76 a click. As a click channel it failed. There were cheaper ways to buy that attention.",
+          "Brand awareness was the most expensive thing on the platform, at R19.76 a click. As a click channel it failed. There were cheaper ways to buy that attention.",
           "Single-destination videos did not travel — 0.10–0.16% CTR at R25–R37 a click. The one composite, a year of trips in a single edit, pulled 1,791 clicks at R0.87. People responded to the range, not one place.",
           "And the conversion columns on both platforms are unusable: 97,475 LinkedIn conversions against 57,345 clicks, and a 232% conversion rate on one Google campaign. Broad tags firing on ordinary page loads. Clicks, impressions and cost are real; no conversion figure appears anywhere on this page.",
         ],
@@ -464,7 +468,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Thrifty Adventures case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu tested LinkedIn for a South African travel brand: 742 leads at R30, and why the offer mattered more than the audience.",
+        "How Alroy Ndhlovu tested LinkedIn for a South African travel brand: 742 leads, and why the offer mattered more than the audience.",
     },
   },
   {
