@@ -477,7 +477,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "The rebuilt Innovatr home page, leading with the consumer-intelligence positioning.",
     },
     summary:
-      "Rebuilt the whole front of a research business — positioning, website, content engine and paid programme — sourced its addressable market from nothing, and replaced a US$8,000-a-year software licence with a product the company could sell.",
+      "Rebuilt the whole front of a research business — positioning, website, content engine and paid programme — sourced its addressable market from nothing, and replaced an annual enterprise software licence with a product the company could sell.",
     description:
       "Innovatr is a consumer research and growth consultancy selling into a market that had bought the same thing from Kantar, IPSOS and Nielsen for decades. I joined as Brand & Marketing Manager. This is what changed in seven months.",
     tags: [
@@ -627,16 +627,16 @@ export const CASE_STUDIES: CaseStudy[] = [
           "A business selling research to decision-makers has to know who they are, and Innovatr had no list. I built one from Apollo prospecting, the Workshop17 tenant database, client outreach and inbound signups, de-duplicated it into one CRM, then matched it back into LinkedIn as the ad audiences. That last step is the point: ads aimed at named companies and real job titles, not the platform's guesses.",
         items: [
           {
-            value: "3,094",
-            label: "Unique contacts in the CRM",
+            value: "0 → live",
+            label: "CRM built in six months",
             context:
-              "De-duplicated by email across every source, so nobody is counted twice. Built from zero in six months.",
+              "Every source de-duplicated by email, so nobody is counted twice — a working, segmented system where none existed.",
           },
           {
-            value: "1,272",
-            label: "Organisations mapped",
+            value: "Account-based",
+            label: "Targeting on named organisations",
             context:
-              "The addressable market as a list of companies — which is what account-based targeting needs to exist.",
+              "The addressable market mapped company by company — which is what account-based targeting needs to exist. Volumes stay with the client.",
           },
         ],
         footnote:
@@ -703,7 +703,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Work-email share climbed from ~27% at launch to ~75% mid-programme to 91% in the newest cohort. Leads are not set against the total media budget — that budget bought four different jobs, separated in the next section.",
+          "The newest cohort reached 91% work-email share — the lead quality the whole programme was built toward. Leads are not set against the total media budget — that budget bought four different jobs, separated in the next section.",
       },
       {
         id: "results",
@@ -713,9 +713,10 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Most of the budget was never pointed at leads — video bought attention, carousels bought site conversions, and only the lead-gen documents bought leads. Each is scored on its own job, against LinkedIn's published B2B norms.",
         items: [
           {
-            value: "R252",
-            label: "Cost per lead vs ~R744 median",
-            context: "A third of the gated median. The EMEA norm is ~R1,984.",
+            value: "~3×",
+            label: "Better cost per lead than the B2B median",
+            context:
+              "A third of LinkedIn's published gated-lead median for B2B services; further still below the EMEA norm. The absolute figure stays with the client.",
           },
           {
             value: "R44",
@@ -781,8 +782,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The product: Social Sweep",
         body: [
-          "Innovatr was about to licence a social listening platform at US$8,000 a year. I built the capability in-house instead — platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
-          "Ask it a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned at R20,000 a study.",
+          "Innovatr was about to licence a social listening platform on an annual enterprise contract. I built the capability in-house instead — platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
+          "Ask it a plain-language question — “How do South Africans talk about Chinese car brands versus German ones?” — and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned as a billable study.",
           "The saving is the small part. The tool Innovatr nearly licensed was itself acquired by a market research group a few months later, after four years and outside investment. Not parity — theirs is a company with a roadmap and a support desk. But the capability that used to justify an acquisition is now something one person can build in a quarter.",
         ],
       },
@@ -792,14 +793,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "What building it instead of buying it was worth",
         items: [
           {
-            value: "US$8,000/yr",
-            label: "Licence cost replaced",
-            context: "The quoted annual price of the third-party tool it stood in for.",
+            value: "In-house",
+            label: "Built instead of licensed",
+            context:
+              "Replaced the annual enterprise licence the team had been quoted for a third-party tool.",
           },
           {
-            value: "R20,000",
-            label: "Priced per study",
-            context: "Positioned as a billable Innovatr product, not internal tooling.",
+            value: "Billable",
+            label: "Positioned as a product",
+            context: "Packaged as a sellable Innovatr study, not internal tooling.",
           },
           {
             value: "46",
@@ -809,7 +811,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "R20,000 is the positioned price, not revenue booked. The licence figure is the quote Innovatr held at the time. Platform count is Social Crawl's published coverage — 46 platforms, 368 endpoints — of which Social Sweep queries the relevant subset.",
+          "Positioned as a billable product; revenue is not claimed. Commercial figures — the licence quote and the study price — stay with the client. Platform count is Social Crawl's published coverage — 46 platforms, 368 endpoints — of which Social Sweep queries the relevant subset.",
       },
       {
         id: "product",
