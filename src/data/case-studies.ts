@@ -877,37 +877,37 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Where it listens",
         intro:
-          "Depth is the point. A sweep runs across the same fourteen platforms every time, and the planner routes extra sources in when the topic calls for them, so a travel question reaches review sites and a developer question reaches technical forums without a code change.",
+          "Every run sweeps the same fourteen platforms, and the planner routes extra sources in per topic: a travel question reaches review sites, a developer question reaches technical forums, with no code change.",
         items: [
           {
             value: "14",
             label: "Platforms on every run",
             context:
-              "Reddit, X, YouTube, TikTok, Instagram, LinkedIn, Threads, Hacker News, Pinterest, Rumble, GitHub, Polymarket and two search layers. Every run, not a menu to configure.",
+              "Reddit, X, YouTube, TikTok, Instagram, LinkedIn, Threads, Hacker News, Pinterest, Rumble, GitHub, Polymarket and two search layers. Not a menu to configure.",
           },
           {
             value: "19+",
             label: "Sources reachable in total",
             context:
-              "The fan-out plus routed legs: news, traveller reviews, business reviews, retail reviews and app-store reviews. Chosen per topic rather than always on.",
+              "Plus routed legs: news, traveller reviews, business reviews, retail and app-store reviews.",
           },
           {
             value: "Yours",
             label: "Depth is a user choice",
             context:
-              "How wide and how far back a run reaches is set by the person asking, not capped by a limit the tool invented to protect its own costs.",
+              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented to protect its own costs.",
           },
         ],
         footnote:
-          "Counts are derived in code from the platform registry rather than typed into copy, so the number on the marketing site, in the search bar and here cannot drift apart. They describe what Hakkan reaches, not the published ceiling of the APIs underneath it.",
+          "Both counts derive from the platform registry in code, so they cannot drift between the product and this page. They describe what Hakkan reaches, not the published ceiling of the APIs underneath it.",
       },
       {
         id: "hard",
         kind: "prose",
         heading: "The hard part: teaching the filter to value people",
         body: [
-          "The promise is “what people actually said”, and the first evidence filter quietly betrayed it. A verbose article restates the topic in its headline, so it scored high. A real reply like “Why need a nanny if I won’t have a job” is short and oblique, so it died as off-topic. The filter was killing the material the product sells.",
-          "The fix was to judge a comment as a comment. Replies answer the thing they reply to, not your search query, so relevance is scored in context and only spam and bots score zero.",
+          "The promise is “what people actually said”, and the first evidence filter betrayed it. A verbose article restates the topic in its headline, so it scored high. A real reply like “Why need a nanny if I won’t have a job” is short and oblique, so it died as off-topic. The filter was killing the material the product sells.",
+          "The fix was to judge a comment as a comment: replies answer what they reply to, not your search query, so relevance is scored in context.",
         ],
       },
       {
@@ -967,8 +967,8 @@ export const CASE_STUDIES: CaseStudy[] = [
               "Refused outright. With no outcome data to train on, a prediction is a made-up number sitting beside real citations. It shows what did break out instead.",
           },
           {
-            value: "“of the N voices here”",
-            label: "Every claim is scoped",
+            value: "Scoped",
+            label: "Every claim names its sample",
             context:
               "“60% of the voices in this report” is measured and true. “60% of people” is neither.",
           },
@@ -1005,7 +1005,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Read the reference images, not a summary of them. Built from a written description, the first report page came out a 7,600-pixel essay when every actual reference was a card grid with a metric band. A day lost to that.",
+          "Read the reference images, not a summary of them. Built from a written description, the first report page came out a 7,600-pixel essay when every reference was a card grid with a metric band.",
           "Batch the evidence filter from day one. Scoring every item in one model call worked until streaming delivered what we were paying for and the call outgrew its timeout, killing runs that had already spent money.",
         ],
       },
@@ -1349,20 +1349,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The hard part: most trackers quietly lie",
         body: [
           "Chrome's idle API watches your mouse and keyboard. Watch an hour-long show without touching anything and the browser calls it idle, so the tracker logs three minutes. A product whose promise is receipts cannot ship a number that is wrong in the user's favour.",
-          "Getting it right took four separate passes. It is the majority of the engineering in the extension, and none of it is visible in a screenshot.",
-        ],
-      },
-      {
-        id: "hard",
-        kind: "checklist",
-        heading: "What accuracy actually cost",
-        intro:
-          "Four fixes took the counter from roughly right to defensible. The first version was not broken so much as credulous: it trusted one signal from one API, and every hole came from that.",
-        items: [
-          "Playing media counts. A tab detected as audible or visibly playing keeps counting with no input, so an hour watched reads as an hour.",
-          "Abandoned tabs do not. A three-hour no-input backstop in the service worker stops a forgotten autoplaying tab inflating the day, and it catches cross-origin players the page script cannot see.",
-          "An aliveness model replaced the idle clamp. Nothing commits more than two minutes past the last proof the machine was awake, which stopped an unlocked overnight sleep counting the whole night and stopped throttled ticks clipping real watch time.",
-          "Per-tick re-evaluation. Chrome only fires idle events on transitions, so a missed lock or a show ending mid-idle kept counting. The minute flush now re-asserts locked, idle, focus and media state and converges within a minute.",
+          "Four rewrites fixed it. Playing media counts even with no input. Forgotten tabs stop counting after a no-input backstop. Nothing commits more than two minutes past the last proof the machine was awake, so an overnight sleep no longer counts the night. It is most of the engineering in the extension and none of it shows in a screenshot.",
         ],
       },
       {
@@ -1370,37 +1357,37 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Caught Grinding: the alter ego",
         intro:
-          "Work Mode inverts the whole product. Instead of shaming wasted time it runs a Workaholic Check, and the escalation is anchored to published health research rather than a vibe.",
+          "Work Mode inverts the product: instead of shaming wasted time it runs a Workaholic Check, anchored to published health research rather than a vibe.",
         items: [
           {
             value: "55h",
             label: "The line that ends the argument",
             context:
-              "The WHO and ILO put the health-risk threshold at 55 hours a week: a 35% higher stroke risk and a 17% higher risk of dying from heart disease, against a 35 to 40 hour week. Cross it and the verdict escalates straight to workaholic with the source cited on screen.",
+              "The WHO and ILO put the health-risk threshold at 55 hours a week: 35% higher stroke risk, 17% higher risk of dying from heart disease. Cross it and the verdict jumps straight to workaholic, source cited on screen.",
           },
           {
             value: "Your hours",
             label: "Not a hardcoded evening",
             context:
-              "After-hours and weekend signals read the work schedule you set, because the same hour of YouTube means something different at 10am Tuesday and 9pm Saturday. Context decides whether it is slipping at all.",
+              "After-hours and weekend signals read the schedule you set. The same hour of YouTube means something different at 10am Tuesday and 9pm Saturday.",
           },
           {
             value: "0 bytes",
             label: "Leaves your device",
             context:
-              "No account, no backend, no database. Per-site data is only collected while Work Mode is on. The app cannot sell what it never collects, which is also why every feature is free.",
+              "No account, no backend, no database. The app cannot sell what it never collects, which is also why every feature is free.",
           },
         ],
         footnote:
-          "Verdicts run from chill to workaholic across four tiers, driven by after-hours work, weekend grind, no-break streaks and weekly load. The tone stays deadpan; the threshold does not.",
+          "Four verdict tiers, from chill to workaholic, driven by after-hours work, weekend grind, no-break streaks and weekly load.",
       },
       {
         id: "free",
         kind: "prose",
         heading: "The gate I built, then deleted",
         body: [
-          "Blocking, time limits and the pause interstitial all shipped behind a licence check. Payments were wired, the Pro tier existed, and it was the wrong product.",
-          "An accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure. The paywalled features were the ones that change behaviour, so the free tier was a guilt machine with no exit. Licensing came out, everything went free, and with no backend to fund that was affordable as well as right.",
+          "Blocking, time limits and the pause interstitial all shipped behind a licence check. Payments were wired, the Pro tier existed, and it was the wrong product: an accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure.",
+          "The paywalled features were the ones that change behaviour, so the free tier was a guilt machine with no exit. Licensing came out and everything went free. With no backend to fund, that was affordable as well as right.",
         ],
       },
       {
@@ -1431,9 +1418,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Write the accuracy spec before the tracker. Four rewrites happened because the first version trusted one API and found its blind spots one scenario at a time. The ways a browser can lie about attention were knowable up front.",
-          "Test copy like data. The roast lines drifted from the numbers they described, showing “an hour” at thirty-one minutes, and repeated within a week until an audit grew the pool from 38 lines to 72.",
-          "Decide the business model before building the gate. Licensing was implemented, then removed once it was obvious the paid features were the ones that made the product work.",
+          "Write the accuracy spec before the tracker. The ways a browser can lie about attention were knowable up front, not one scenario at a time across four rewrites.",
+          "Decide the business model before building the gate. Licensing was built, then deleted once it was obvious the paid features were the ones that made the product work.",
         ],
       },
     ],
