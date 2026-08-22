@@ -859,8 +859,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The problem: content stopped knowing anything",
         body: [
-          "Since late 2024, more new articles online are written by AI than by people (Graphite, 2025). That is the slop problem: fluent text that reads fine and knows nothing. The tools caused it, because every AI writer starts from a blank page and asks the model to fill it.",
-          "Hakkan starts from a topic you want to lead. It researches the real conversation into a cited report, and you create from that. The model is never the source. Hakkan (発刊) is Japanese for “to publish”, and aloud it echoes “harken”: listen closely.",
+          "Since late 2024, more new articles online are written by AI than by people (Graphite, 2025). Fluent text that knows nothing. The tools caused it: every AI writer starts from a blank page and asks the model to fill it.",
+          "Hakkan starts from a topic you want to lead, researches the real conversation into a cited report, and you create from that. The model is never the source.",
         ],
       },
       {
@@ -868,8 +868,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "How it works: topic, report, your voice",
         body: [
-          "Give it a topic. It gathers the real conversation, filters for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, every quote cited. That report is your source of truth.",
-          "Then you create from it. Personas learn your voice from your own writing, and a trends module keeps you current between reports. Automation does the gathering; the taste stays human.",
+          "Give it a topic. It gathers the real conversation and builds a visual report: themes categorised, sentiment weighed, every quote cited. That report is your source of truth.",
+          "Then you create from it. Personas learn your voice from your own writing, and a trends module keeps you current. Automation does the gathering; the taste stays human.",
         ],
       },
       {
@@ -906,8 +906,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The hard part: teaching the filter to value people",
         body: [
-          "The promise is “what people actually said”, and the first evidence filter betrayed it. A verbose article restates the topic in its headline, so it scored high. A real reply like “Why need a nanny if I won’t have a job” is short and oblique, so it died as off-topic. The filter was killing the material the product sells.",
-          "The fix was to judge a comment as a comment: replies answer what they reply to, not your search query, so relevance is scored in context.",
+          "The promise is “what people actually said”, and the first evidence filter betrayed it. A verbose article restates the topic in its headline, so it scored high. A real reply like “Why need a nanny if I won’t have a job” is short and oblique, so it died as off-topic.",
+          "The fix was to judge a comment as a comment: replies answer what they reply to, not your search query. Relevance scored in context.",
         ],
       },
       {
@@ -1000,15 +1000,6 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
       },
-      {
-        id: "screens",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Read the reference images, not a summary of them. Built from a written description, the first report page came out a 7,600-pixel essay when every reference was a card grid with a metric band.",
-          "Batch the evidence filter from day one. Scoring every item in one model call worked until streaming delivered what we were paying for and the call outgrew its timeout, killing runs that had already spent money.",
-        ],
-      },
     ],
     seo: {
       title: "Hakkan — how I built it | Alroy Ndhlovu",
@@ -1026,9 +1017,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Three InSpiritInTruth screens: the devotionals library, the home screen, and the in-app Bible.",
     },
     summary:
-      "Faith has always been communal. ISIT complements that with the personal side: a devotional written for what you are carrying today, engineered so it can never quietly misquote scripture.",
+      "56% of Christians say their spiritual life is entirely private. InSpiritInTruth is a devotional app for people who want a more personal faith: one written for what you are carrying today, engineered so it can never quietly misquote scripture.",
     description:
-      "A devotional app for imperfect journeys: the overwhelmed, the curious, the unchurched, the devoted. It is not built to replace tradition. It keeps the shared rhythm and adds the personal side the format never had.",
+      "For imperfect journeys: the overwhelmed, the curious, the unchurched, the devoted. Not built to replace tradition, but to keep its shared rhythm and add the personal side the format never had.",
     tags: ["Product build", "Personalisation", "UX", "AI engineering"],
     meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
     strip: [
@@ -1042,7 +1033,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     chapters: [
       { id: "why", label: "Why it exists" },
       { id: "how", label: "The personalisation" },
-      { id: "care", label: "Care for the text" },
       { id: "screens", label: "The screens" },
     ],
     blocks: [
@@ -1051,8 +1041,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A format that never changed",
         body: [
-          "Faith is learned in community: the same readings, the same routines, the same page for everyone. Barna finds 56% of Christians say their spiritual life is entirely private, and a growing group report that the standard forms simply do not work for them. The communal side is well resourced. The private side, where most of it happens, gets a template.",
-          "ISIT complements tradition rather than replacing it. It keeps the weekly devotional, the shared devotions everyone knows and the whole Bible, then writes one for whatever you are actually carrying, rooted first in Scripture. No algorithm, no ads.",
+          "Faith is learned together: same readings, same routines, same page for everyone. Yet Barna finds 56% of Christians say their spiritual life is entirely private. The communal side is well resourced. The private side, where most of it happens, gets a template.",
+          "ISIT complements tradition rather than replacing it. It keeps the weekly devotional, the shared devotions and the whole Bible, then writes one for whatever you are actually carrying. No algorithm, no ads.",
         ],
       },
       {
@@ -1060,8 +1050,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Personalisation with a safety net",
         body: [
-          "Generated spiritual guidance is higher-stakes than most AI writing: it has to carry authority without hallucinated certainty. Restraint is the feature here, so a cheaper, edgier model was tested on the real prompt and turned down twice.",
-          "Nothing generated reaches a reader unverified. Every tailored devotional passes a fact-check against the live web before publication, a pass that deliberately costs several times more than the writing itself.",
+          "Generated spiritual guidance has to carry authority without hallucinated certainty. Restraint is the feature, so a cheaper, edgier model was tested on the real prompt and turned down twice.",
+          "Nothing reaches a reader unverified. Every devotional is fact-checked against the live web first, and a verse's translation label only updates when the text was genuinely re-fetched in that translation. The bug that rule killed: NKJV wording published tagged “NET”.",
         ],
       },
       {
@@ -1069,7 +1059,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Where the AI effort goes",
         intro:
-          "The share of machine effort behind one tailored devotional. Most AI products spend everything on generation; ISIT spends most of it making sure the generation told the truth.",
+          "Most AI products spend everything on generation. ISIT spends most of it checking that the generation told the truth.",
         measure: "Share of effort",
         rowLabel: "Stage",
         rows: [
@@ -1093,36 +1083,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "That ratio is a choice. Verification is the one cost this product will not cut to protect a margin, so the subscription is tuned around keeping it.",
-      },
-      {
-        id: "care",
-        kind: "metrics",
-        heading: "Care for the text",
-        intro:
-          "An app that quotes scripture carries a special obligation: the words on screen must be exactly what they claim to be. Three of the rules that came out of the build:",
-        items: [
-          {
-            value: "Label + text",
-            label: "Move together, always",
-            context:
-              "A verse's translation label is only ever updated when its text was actually re-fetched in that translation. The bug this rule killed: a failed fetch publishing NKJV wording tagged “NET”, a lie a reader can never detect.",
-          },
-          {
-            value: "Device date",
-            label: "Not the server's, not UTC",
-            context:
-              "The daily verse broke three times by rolling over on UTC midnight instead of the reader's own, showing tomorrow's verse at 1am. Now a hard rule with the reproduction documented.",
-          },
-          {
-            value: "No italics",
-            label: "In scripture passages",
-            context:
-              "Retired across the app: emphasis the original text does not carry is editorialising. The passage is presented as written.",
-          },
-        ],
-        footnote:
-          "Design follows the same discipline: two type families rather than three, and generated devotionals drawn from a closed, server-enforced set of themes rather than whatever a model invents.",
+          "Verification is the one cost this product will not cut to protect a margin.",
       },
       {
         id: "screens",
@@ -1153,15 +1114,6 @@ export const CASE_STUDIES: CaseStudy[] = [
             image: "products/isit-profile.png",
             alt: "Profile, with a reading streak that encourages without gamifying.",
           },
-        ],
-      },
-      {
-        id: "screens",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Define “today” on day one. The daily verse rolled over on UTC midnight instead of the reader's clock, and that assumption shipped three times before it became a written rule. Decide whose midnight you honour before the first query.",
-          "Measure the cost of honesty before pricing it. The fact-check pass dominates the machine cost of a tailored devotional, several times the writing itself, and that was discovered after the price was set. Instrument first, price second.",
         ],
       },
     ],
@@ -1204,8 +1156,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The mental load nobody prices in",
         body: [
-          "In one Wakefield Research survey, 68% of Americans called deciding what to eat their biggest mealtime challenge. Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each.",
-          "tapa. deletes the decision. Type it, say it or take a pic of what is in the fridge, and get one meal built around your tastes. Variety from the same shelf, with allergies and dietary needs set once and enforced on every recipe.",
+          "68% of Americans call deciding what to eat their biggest mealtime challenge (Wakefield Research). Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each.",
+          "tapa. deletes the decision. Type it, say it or take a pic of what is in the fridge, and get one meal built around your tastes. Allergies and dietary needs are set once and enforced every time.",
         ],
       },
       {
@@ -1288,15 +1240,6 @@ export const CASE_STUDIES: CaseStudy[] = [
           { image: "products/tapa-cooking.jpg", alt: "Cooking mode, one step at a time." },
         ],
       },
-      {
-        id: "screens",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Own the data properly from the first schema. Local recipes belonged to the phone, not the account, until a TestFlight tester signed into a fresh account and saw someone else's saved recipes.",
-          "Research the free tier before launch, not in public. It moved three times in two days, and the cooking-frequency data that settled it existed all along.",
-        ],
-      },
     ],
     seo: {
       title: "tapa. — how I built it | Alroy Ndhlovu",
@@ -1339,8 +1282,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Two kinds of slipper, one blind spot",
         body: [
-          "There are two kinds of people: the distracted and the overworker. I am both, on different days. Screen-time tools only nag the first one, and they live on the phone. The browser is where the work gets done, so it is also where the distraction finds you, and almost nothing was watching it.",
-          "So it is a friend with an attitude rather than a dashboard. Today's number comes with a line matched to how deep you are, a limit you cross redirects the tab to a wall, and re-opening a site you have overdone triggers a three-second pause.",
+          "Two kinds of people: the distracted and the overworker. I am both, on different days. Screen-time tools only nag the first, and they live on the phone. The browser is where work gets done, so it is also where distraction finds you.",
+          "So it is a friend with an attitude rather than a dashboard. Today's number arrives with a line matched to how deep you are, crossing a limit walls off the tab, and re-opening a site you have overdone triggers a three-second pause.",
         ],
       },
       {
@@ -1348,8 +1291,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The hard part: most trackers quietly lie",
         body: [
-          "Chrome's idle API watches your mouse and keyboard. Watch an hour-long show without touching anything and the browser calls it idle, so the tracker logs three minutes. A product whose promise is receipts cannot ship a number that is wrong in the user's favour.",
-          "Four rewrites fixed it. Playing media counts even with no input. Forgotten tabs stop counting after a no-input backstop. Nothing commits more than two minutes past the last proof the machine was awake, so an overnight sleep no longer counts the night. It is most of the engineering in the extension and none of it shows in a screenshot.",
+          "Chrome's idle API watches your mouse and keyboard. Watch an hour-long show without touching anything and the browser calls it idle, so the tracker logs three minutes. A product whose promise is receipts cannot ship a number wrong in the user's favour.",
+          "Four rewrites fixed it: playing media counts with no input, forgotten tabs stop counting, and nothing commits past the last proof the machine was awake. Most of the engineering in the extension, none of it visible in a screenshot.",
         ],
       },
       {
@@ -1386,8 +1329,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The gate I built, then deleted",
         body: [
-          "Blocking, time limits and the pause interstitial all shipped behind a licence check. Payments were wired, the Pro tier existed, and it was the wrong product: an accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure.",
-          "The paywalled features were the ones that change behaviour, so the free tier was a guilt machine with no exit. Licensing came out and everything went free. With no backend to fund, that was affordable as well as right.",
+          "Blocking, time limits and the pause all shipped behind a licence check. Payments were wired, the Pro tier existed, and it was the wrong product: an accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure.",
+          "The paywalled features were the ones that change behaviour, so the free tier was a guilt machine with no exit. Licensing came out, everything went free, and with no backend to fund that was affordable as well as right.",
         ],
       },
       {
@@ -1411,15 +1354,6 @@ export const CASE_STUDIES: CaseStudy[] = [
             image: "products/caught-sites.jpg",
             alt: "The full list of sites visited during work mode, each reclassifiable as work or leisure.",
           },
-        ],
-      },
-      {
-        id: "screens",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Write the accuracy spec before the tracker. The ways a browser can lie about attention were knowable up front, not one scenario at a time across four rewrites.",
-          "Decide the business model before building the gate. Licensing was built, then deleted once it was obvious the paid features were the ones that made the product work.",
         ],
       },
     ],
