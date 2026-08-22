@@ -718,7 +718,7 @@ export const CASE_STUDIES: CaseStudy[] = [
             value: "49",
             label: "Platforms reachable",
             context:
-              "Through the research API it runs on: social, search, commerce, reviews and the open web, of which each study queries the relevant subset.",
+              "Through the research API it runs on: social, search, commerce, reviews and the open web. Each study queries the subset the question needs, not all of them.",
           },
         ],
         footnote:
@@ -803,29 +803,29 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Where it listens",
         intro:
-          "Breadth is the easy half. The research API underneath Hakkan covers 49 platforms, and searching all of them for every question would be slow, expensive and mostly noise. The work is picking the right ones.",
+          "Searching everywhere for every question would be slow, expensive and mostly noise. The work is picking the right places, and almost none of that is a source count.",
         items: [
           {
-            value: "49",
-            label: "Platforms available to a run",
-            context:
-              "Social, video, forums, search, news, retail and review sites, reached through one research API on a single unified schema.",
-          },
-          {
             value: "Per question",
-            label: "Not all of them, every time",
+            label: "Sources are chosen, not swept blindly",
             context:
-              "The sweep decomposes your question into weighted sub-queries, picks the sources that actually carry that conversation and prunes the rest by score. A food-delivery topic drops Polymarket and GitHub without being told to.",
+              "The sweep decomposes your question into weighted sub-queries, picks the sources that carry that conversation and prunes the rest by score. On one food-delivery topic it dropped Polymarket, GitHub and Pinterest at 0.05, 0.1 and 0.15 without being told to.",
           },
           {
             value: "Then deeper",
-            label: "Routed legs the sweep misses",
+            label: "Routed legs the sweep cannot reach",
             context:
-              "Hakkan classifies the topic into domains and adds what the sweep cannot reach: traveller reviews, business reviews, news, direct forum threads. A travel question gets review sites; a developer question gets Hacker News.",
+              "Hakkan classifies the topic into domains and adds what the sweep misses: news, traveller reviews, business reviews, retail and app-store reviews, direct forum threads. A travel question gets review sites; a developer question gets Hacker News.",
+          },
+          {
+            value: "Yours",
+            label: "Depth is a user choice",
+            context:
+              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented to protect its own costs.",
           },
         ],
         footnote:
-          "The routing is layered on purpose. Handing a model a flat list of hundreds of endpoints and asking it to choose measures under 50% accuracy and fails by inventing a source; a domain classifier feeding a small candidate set measures around 86%. For a product that sells provenance, an invented source is the one failure it cannot ship.",
+          "Nineteen sources are reachable in total: a fourteen-platform universal sweep plus the routed legs. That is Hakkan's reach, deliberately not the larger catalogue of the API underneath it. The routing is layered for the same reason: handing a model a flat list of hundreds of endpoints measures under 50% accuracy and fails by inventing a source, while a domain classifier feeding a small candidate set measures around 86%. For a product that sells provenance, an invented source is the one failure it cannot ship.",
       },
       {
         id: "hard",
