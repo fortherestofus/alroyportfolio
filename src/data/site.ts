@@ -68,7 +68,7 @@ export const SECTIONS = [
     short: "Who",
     heading: "Who is Alroy Ndhlovu",
     blurb:
-      "Full-stack digital marketing, business technology and branding strategy. I help businesses grow by designing high-impact solutions through data, automation, AI and creative strategy.",
+      "Thanks for stopping by. This portfolio was built to make the case for why I'd be great to work with. But for now, let's start with the basics.",
   },
   {
     id: "experience",
@@ -88,7 +88,7 @@ export const SECTIONS = [
     short: "Study",
     heading: "Education",
     blurb:
-      "Always learning. Formal certificates and specialisations across marketing, product, design and engineering.",
+      "Always learning. Formal certificates and specialisations across marketing, product, design and business, with the work to back it.",
   },
   {
     id: "portfolio",
@@ -98,7 +98,7 @@ export const SECTIONS = [
     short: "Portfolio",
     heading: "Portfolio",
     blurb:
-      "A quick showcase — selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
+      "How I've put all that education and experience to work. Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
   },
   {
     id: "products",
@@ -108,7 +108,7 @@ export const SECTIONS = [
     short: "Products",
     heading: "Products I've built",
     blurb:
-      "Business technology is not just advice. Products I own and shipped end to end — each one with the problem it solves, how I got there and what it is built with.",
+      "Product development and management is best understood when demonstrated. A few products I've built for myself: the thinking and story behind each, the tools used, and how I manage them now that they exist.",
   },
   {
     id: "case-studies",

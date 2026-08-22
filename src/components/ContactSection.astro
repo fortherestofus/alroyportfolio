@@ -24,6 +24,19 @@ const LINKS = [
 ---
 
 <div class="contact">
+  {
+    /*
+     * A label above the two direct routes.
+     *
+     * Without it the email and phone floated as two unattached lines
+     * set larger than anything in the left column, so they read as the
+     * section's headline and the actual heading and invitation fell
+     * behind them. The label groups them as one subordinate block and
+     * names what they are.
+     */
+  }
+  <p class="eyebrow contact__label" data-reveal>Reach me directly</p>
+
   <ul class="contact__direct" data-reveal>
     <li class="contact__row" data-reveal-item>
       <Mail class="contact__icon" aria-hidden="true" />
@@ -112,11 +125,34 @@ const LINKS = [
   }
 </script>
 
+{
+  /*
+   * Section 07's invitation, promoted.
+   *
+   * The blurb is the ask on this section rather than a caption, and at
+   * shared muted body size it lost to everything around it. Scoped by
+   * #contact so the other six sections keep the standard treatment;
+   * global because the element belongs to JourneySection's aside, not
+   * to this component's tree.
+   */
+}
+<style is:global>
+  #contact .jsection__blurb {
+    font-size: clamp(1.125rem, 1.054rem + 0.357vw, 1.375rem);
+    color: var(--color-text);
+  }
+</style>
+
 <style>
+  .contact__label {
+    margin-bottom: var(--space-4);
+  }
+
   .contact__direct {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    /* Tighter than before: these are one block, not two statements. */
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -145,7 +181,14 @@ const LINKS = [
     display: inline-flex;
     align-items: center;
     min-height: var(--control-md);
-    font-size: var(--text-h3);
+    /*
+     * Below --text-h3, which at wide viewports came within a few pixels
+     * of the section h2 and out-shouted it. Large enough to read as the
+     * primary action, small enough to sit under the heading. Still
+     * comfortably over the 44px tap minimum via min-height.
+     */
+    font-size: clamp(1.125rem, 1.054rem + 0.357vw, 1.375rem);
+    font-weight: var(--weight-heading);
     border-bottom: 1px solid transparent;
     transition: border-color var(--duration-base) var(--ease-out);
     overflow-wrap: anywhere;
@@ -210,7 +253,7 @@ const LINKS = [
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-top: var(--space-7);
+    margin-top: var(--space-6);
   }
 
   .contact__link {

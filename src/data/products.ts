@@ -120,10 +120,10 @@ export function caseStudyLink(slug?: string): string | null {
 export const PRODUCTS: Product[] = [
   {
     name: "Hakkan",
-    category: "Research & Content",
+    category: "Content Research & Development",
     tagline: "Worth listening to.",
     description:
-      "Hakkan starts with research, not a blank page. It reads the conversation where it actually happens, hands back a report with receipts, and helps you build content from it in your own voice. Yours to do what you like with.",
+      "A content research and creation assistant, built to fight AI slop. Pick a topic you want to lead, and Hakkan researches the real conversation into a cited report: a source of truth you create content from, in a voice it learns from you. A trends module keeps you current on the topic.",
     status: "Beta",
     platform: "Web",
     stack: [
@@ -141,9 +141,10 @@ export const PRODUCTS: Product[] = [
     ],
     shape: "screen",
     story: {
-      problem: "AI writing tools start from a blank page. Fluent output that knows nothing.",
+      problem:
+        "“Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.",
       approach:
-        "Research first. Hakkan reads the real conversation, then helps you write from it in your voice. The report is the source, never the model.",
+        "Research before writing. Hakkan builds a cited report on your topic as the source of truth, learns your own voice to write from it, and keeps you on the pulse with a trends module.",
       result:
         "Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.",
     },
@@ -172,7 +173,7 @@ export const PRODUCTS: Product[] = [
     category: "Faith & Devotion",
     tagline: "Take your faith into your own hands.",
     description:
-      "Faith personalisation. A weekly devotional written to be read slowly, one written for whatever you are carrying right now, and the whole Bible in the app. For people who cannot always make it to church but still want to stay close. No algorithm, no ads.",
+      "Faith has always been communal: same readings, same routines, and a template feel to the personal side. InSpiritInTruth complements tradition rather than replacing it: devotionals written for whatever you are carrying, alongside the shared devotions and the whole Bible everyone knows. No algorithm, no ads.",
     status: "In development",
     platform: "iOS and Android",
     stack: [
@@ -190,9 +191,9 @@ export const PRODUCTS: Product[] = [
     shape: "phone",
     story: {
       problem:
-        "The devotional has not changed in generations. One text, written for everyone, read alone.",
+        "The devotional has not changed in generations: one text, written for everyone. The communal side of faith is well served. The personal side gets a template.",
       approach:
-        "Faith personalisation. Share what you are carrying and get a devotional written for that, rooted first in scripture.",
+        "Complement tradition, don't replace it. Share what you are carrying and get a devotional written for that, rooted first in scripture, with shared devotions and the full Bible keeping the communal thread.",
       result:
         "Verification takes ~77% of the AI effort against ~22% on the writing. An app that quotes scripture cannot afford to misquote it.",
     },
@@ -229,7 +230,7 @@ export const PRODUCTS: Product[] = [
     category: "Food & Cooking",
     tagline: "What can I cook with this?",
     description:
-      "Adulting, minus one decision. Tell it what is in the fridge by typing, talking or photographing it, and get back a real meal built around your tastes. Dietary needs are set once and enforced as hard rules.",
+      "The daily what-do-I-eat problem, solved with what is already in your kitchen. Type it, say it or take a pic of your ingredients and get real meals back: variety from the same shelf, dietary choices enforced as hard rules. Cooking made simple, and the power back with you.",
     status: "In development",
     platform: "iOS and Android",
     stack: [
@@ -249,7 +250,7 @@ export const PRODUCTS: Product[] = [
       problem:
         "Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.",
       approach:
-        "Work with what you have. Type, say or photograph what is in the fridge and get one meal back, built around your tastes. Dietary needs are set once and enforced.",
+        "Feed you with what you have, wherever you are. Type, talk or take a pic of the fridge and get variety from the same ingredients, dietary choices set once and enforced as hard rules.",
       result:
         "Convenience and variety, minus the deciding. The free tier was set from how often people actually cook, not from hope.",
     },
@@ -269,7 +270,7 @@ export const PRODUCTS: Product[] = [
     category: "Focus & Productivity",
     tagline: "The browser extension that calls you out.",
     description:
-      "A cheeky extension that calls you out, and always shows you where the time went. Flip it around and Caught Grinding warns you when productive has quietly become overworking. Everything stays on your device.",
+      "A sarcastically honest friend that keeps you in check, calling out the procrastinator and warning the workaholic. It lives in the browser, where the work happens and the distraction finds you. Everything stays on your device.",
     status: "Live",
     platform: "Chrome extension",
     link: {
@@ -289,12 +290,13 @@ export const PRODUCTS: Product[] = [
     shape: "panel",
     story: {
       problem:
-        "Your phone nags you about screen time. The real damage happens on the computer you work at all day.",
+        "The browser is where work gets done, so it is also where distraction is bound to be found. And screen-time tools only nag one kind of slipper: the distracted, never the overworked.",
       approach:
-        "Productivity for the browser, with a twist. It tracks where the hours go and calls you out — then flips, and warns you when productive has become overworking.",
+        "Hold both accountable. It tracks where the hours go and calls you out like a friend would. Then it flips, and Caught Grinding warns you when productive has quietly become overworking.",
       result:
         "Live on the Chrome Web Store. No account, no server: everything stays on your device.",
     },
+    caseStudy: "caughtslipping",
     shots: [
       {
         image: "caught-today.jpg",

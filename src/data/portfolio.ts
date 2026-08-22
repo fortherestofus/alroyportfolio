@@ -61,7 +61,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
     shots: [
       {
         image: "uxui_signup.webp",
-        alt: "Sign-in screen for Bold Beauty, the form on the left and a trio of portraits filling the right half.",
+        alt: "Sign-in screen for a beauty booking app, the form on the left and a trio of portraits filling the right half.",
       },
       {
         image: "uxui_checkout.webp",
@@ -69,15 +69,15 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "hakkan-research.jpg",
-        alt: "Hakkan's question screen — one input, depth and time-range controls, and the platforms it reads.",
+        alt: "Research tool question screen — one input, depth and time-range controls, and the platforms it reads.",
       },
       {
         image: "isit-home.png",
-        alt: "InSpiritInTruth home screen: the week's devotional and verse of the day in a warm serif system.",
+        alt: "Devotional app home screen: the week's devotional and verse of the day in a warm serif system.",
       },
       {
         image: "tapa-home.jpg",
-        alt: "tapa. home screen with the day's recipe suggestion and saved-recipe shelf.",
+        alt: "Recipe app home screen with the day's suggestion and a saved-recipe shelf.",
       },
       {
         image: "design_404.webp",
@@ -93,17 +93,17 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         image: "website_video_lumiskin-poster.webp",
         video: "/media/portfolio/website_video_lumiskin.mp4",
-        alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal product card slides in over the video.",
+        alt: "Skincare brand website hero: a chameleon shifts to lavender to match the soap beside it as a product card slides in over the video.",
       },
       {
         image: "website_video_filosofee-poster.webp",
         video: "/media/portfolio/website_video_filosofee.mp4",
-        alt: "The Filosofee storefront scrolling from its hero through the t-shirt and hoodie categories to a product page.",
+        alt: "Apparel storefront scrolling from its hero through the t-shirt and hoodie categories to a product page.",
       },
       {
         image: "website_video_dejamedia-poster.webp",
         video: "/media/portfolio/website_video_dejamedia.mp4",
-        alt: "The Deja Media site scrolling through its hero and services, headlined “Let's tell your brand story through business tech”.",
+        alt: "Agency website scrolling through its hero and services sections.",
       },
       {
         image: "website_video_ecommerce-poster.webp",
@@ -123,19 +123,19 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "branding_logo_media.webp",
-        alt: "The Legacy Lab wordmark and figure mark set on an orange to teal gradient.",
+        alt: "Wordmark and figure mark set on an orange to teal gradient.",
       },
       {
         image: "branding_corporate.webp",
-        alt: "Deja Media business cards in gold foil, fanned on a dark surface.",
+        alt: "Corporate business cards in gold foil, fanned on a dark surface.",
       },
       {
         image: "design_print_digital_2.webp",
-        alt: "LE'CONTENT winter fashion cover, cover lines wrapped around a portrait of Tammie Mashau.",
+        alt: "Winter fashion magazine cover, cover lines wrapped around a studio portrait.",
       },
       {
         image: "design_print_digital.webp",
-        alt: "MODELME magazine cover, cover lines arranged around a beauty portrait.",
+        alt: "Beauty magazine cover, cover lines arranged around a studio portrait.",
       },
       {
         image: "filosofee_design.webp",
@@ -150,46 +150,46 @@ export const PORTFOLIO: PortfolioCategory[] = [
     shots: [
       {
         image: "thrifty_socialmedia.webp",
-        alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe and Zanzibar.",
+        alt: "A grid of travel tour social posts covering Turkey, Europe and Zanzibar.",
       },
       {
         image: "appstore_isit_sheet.jpg",
-        alt: "App Store screen sheet for InSpiritInTruth: six phones, each under its own headline, from “For the devoted, the questioning, the busy” to “Consistency without the guilt”.",
+        alt: "App Store screen sheet for a devotional app: six phones, each under its own headline, from “For the devoted, the questioning, the busy” to “Consistency without the guilt”.",
       },
       {
         image: "appstore_tapa_sheet.jpg",
-        alt: "App Store screen sheet for tapa.: six phones under headlines from “Cook with what you have” to “Keep the good ones. Share the great ones.”",
+        alt: "App Store screen sheet for a recipe app: six phones under headlines from “Cook with what you have” to “Keep the good ones. Share the great ones.”",
       },
       {
         image: "appstore_caughtslipping_grinding.jpg",
-        alt: "CaughtSlipping store panel for Work Mode — “Caught Grinding: for the overworkers” — beside a card reading nine hours forty-one worked today.",
+        alt: "App Store panel for a screen-time app's Work Mode — “Caught Grinding: for the overworkers” — beside a card reading nine hours forty-one worked today.",
       },
       {
         image: "social_sweep_demo-poster.webp",
         video: "/media/portfolio/social_sweep_demo.mp4",
-        alt: "A narrated walkthrough of Social Sweep, the consumer-insights tool built for Innovatr: a plain-language question in, a cited report out.",
+        alt: "Walkthrough video made for a consumer insights company: a plain-language question in, a cited report out.",
       },
       {
         image: "gif_social_content-poster.webp",
         video: "/media/portfolio/gif_social_content.mp4",
-        alt: "Animated social post for the ASICS Paris Pack trainer.",
+        alt: "Animated social media graphic for a sneaker launch.",
       },
       {
         image: "video_travel-poster.webp",
         video: "/media/portfolio/video_travel.mp4",
-        alt: "Travel reel opening on the word WORLD over an aerial shot of open water.",
+        alt: "Travel ad video made for a travel company.",
       },
       {
         image: "Action_4.png",
-        alt: "Innovatr landing section headlined “Not a report. A direction. Clear. Every single time.”, showing the video-interview analysis view beneath it.",
+        alt: "Website landing section for a consumer insights platform, showing the video-interview analysis view beneath it.",
       },
       {
         image: "innovatrsocial_trends.png",
-        alt: "Innovatr “Trends & Insights” social graphic promoting a library of bi-monthly signal reports.",
+        alt: "Social media graphic promoting a library of bi-monthly signal reports.",
       },
       {
         image: "innovatr_carousel.png",
-        alt: "Slide two of an Innovatr social carousel, “The old way: slow, expensive, unclear”, listing 6-8 week turnarounds and R200K study costs.",
+        alt: "Social media carousel slide, “The old way: slow, expensive, unclear”, listing 6-8 week turnarounds and R200K study costs.",
       },
     ],
   },

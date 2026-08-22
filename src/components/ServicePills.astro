@@ -1,6 +1,6 @@
 ---
 /**
- * The five services as a wrapping row of compact pills, with one shared
+ * The four services as a wrapping row of compact pills, with one shared
  * caption line beneath (design system, "Service pills").
  *
  * Pointer users get the description on hover, keyboard users on focus,
@@ -8,15 +8,14 @@
  * service rather than empty, so the line never appears from nowhere and
  * shifts the layout underneath it.
  */
-import { TrendingUp, PenTool, Palette, Presentation, Bot } from "@lucide/astro";
+import { LayoutGrid, Bot, TrendingUp, Palette } from "@lucide/astro";
 import { SERVICES, type ServiceIcon } from "../data/services";
 
 const ICONS: Record<ServiceIcon, typeof TrendingUp> = {
-  "trending-up": TrendingUp,
-  "pen-tool": PenTool,
-  palette: Palette,
-  presentation: Presentation,
+  "layout-grid": LayoutGrid,
   bot: Bot,
+  "trending-up": TrendingUp,
+  palette: Palette,
 };
 ---
 

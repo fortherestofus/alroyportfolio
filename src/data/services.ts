@@ -1,10 +1,9 @@
 /**
- * The five services, rendered as compact pills with a shared caption
- * line (PRD §6.01, design system "Service pills"). Descriptions are the
- * long-form copy in 01-content.md tightened to one sentence each, as
- * that doc asks.
+ * The four services, rendered as compact pills with a shared caption
+ * line (PRD §6.01, design system "Service pills"). Each description is
+ * one sentence, as 01-content.md asks.
  */
-export type ServiceIcon = "trending-up" | "pen-tool" | "palette" | "presentation" | "bot";
+export type ServiceIcon = "layout-grid" | "bot" | "trending-up" | "palette";
 
 export interface Service {
   name: string;
@@ -14,34 +13,28 @@ export interface Service {
 
 export const SERVICES: Service[] = [
   {
-    name: "Data-Driven Digital Marketing",
-    icon: "trending-up",
+    name: "Product Development",
+    icon: "layout-grid",
     description:
-      "Campaigns built on audience insight and performance data, tuned for measurable growth and conversion.",
+      "Apps and SaaS taken from problem to shipped product: discovery, UX/UI, build and the roadmap that follows.",
   },
   {
-    name: "Content Development",
-    icon: "pen-tool",
-    description:
-      "Strategic messaging and storytelling grounded in consumer psychology, with technology cutting production cost.",
-  },
-  {
-    name: "Design & Branding",
-    icon: "palette",
-    description:
-      "Cohesive visual identities and user experiences, from corporate materials to websites and landing pages.",
-  },
-  {
-    name: "Corporate Training & Workshops",
-    icon: "presentation",
-    description:
-      "Customised programmes giving teams hands-on knowledge in marketing, content, branding and business technology.",
-  },
-  {
-    name: "Business Tech, Automation & AI",
+    name: "Business Tech Solutions",
     icon: "bot",
     description:
-      "eCommerce optimisation, SaaS, AI and automation: scalable systems that streamline operations and drive growth.",
+      "Automation, AI and eCommerce systems that cut manual work, streamline operations and scale with the business.",
+  },
+  {
+    name: "Marketing & Strategy",
+    icon: "trending-up",
+    description:
+      "Campaigns and go-to-market plans built on audience insight and performance data, tuned for measurable growth.",
+  },
+  {
+    name: "Branding",
+    icon: "palette",
+    description:
+      "Product and corporate identity: positioning, visual systems and the content that carries them across every touchpoint.",
   },
 ];
 

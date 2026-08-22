@@ -2,8 +2,7 @@
 /**
  * A two-column journey section (PRD §5.2).
  *
- * Left column (5/12) holds the giant number, eyebrow, heading and
- * blurb, and stays put while the right column (7/12) scrolls past it.
+ * Left column (5/12) holds the giant number, heading and blurb, and stays put while the right column (7/12) scrolls past it.
  *
  * The pin is CSS `position: sticky` rather than a ScrollTrigger pin.
  * Sticky needs no pin-spacer, so it cannot produce the jump, overlap
@@ -26,14 +25,15 @@ interface Props {
   lottie?: string;
 }
 
-const { id, number, label, heading, blurb, lottie } = Astro.props;
+// `label` stays in Props (the nav reads the same objects) but is not
+// rendered here: it repeated the heading almost word for word.
+const { id, number, heading, blurb, lottie } = Astro.props;
 ---
 
 <section class="jsection" id={id} aria-labelledby={`${id}-heading`}>
   <div class="jsection__grid">
     <div class="jsection__aside" data-section-aside>
       <p class="jsection__number" aria-hidden="true">{number}</p>
-      <p class="eyebrow jsection__eyebrow">{label}</p>
       <h2 id={`${id}-heading`} class="jsection__heading">{heading}</h2>
       <p class="jsection__blurb">{blurb}</p>
       {lottie && <SectionLottie name={lottie} />}
@@ -89,12 +89,8 @@ const { id, number, label, heading, blurb, lottie } = Astro.props;
     opacity: 0.9;
   }
 
-  .jsection__eyebrow {
-    margin-top: var(--space-3);
-  }
-
   .jsection__heading {
-    margin-top: var(--space-2);
+    margin-top: var(--space-3);
   }
 
   .jsection__blurb {
