@@ -191,9 +191,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe, Zanzibar and Egypt.",
     },
     summary:
-      "Built a travel brand's entire paid and organic presence from zero across four channels: 3.1 million organic TikTok views, search clicks at a fraction of the travel median, and LinkedIn lead forms converting at three times the platform norm.",
+      "Took a travel brand's marketing from scattered to deliberate across four channels: TikTok and Instagram grown on what was already there, LinkedIn and search built from nothing, and lead forms converting at three times the platform norm.",
     description:
-      "Thrifty Adventures runs group and tailored tours out of South Africa. I was contracted as digital marketing manager to grow the return on ad spend, open new audiences on channels like LinkedIn, and turn attention into leads and sales, with social content and branding alongside. Nothing was running when I started. I built four channels, each doing one job.",
+      "Thrifty Adventures runs group and tailored tours out of South Africa. Contracted as digital marketing manager to lift return on ad spend, open new audiences on channels like LinkedIn, and turn attention into leads. Social and TikTok were already running; paid was not. I gave each channel one job.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
     logoFile: "thrifty.jpeg",
     meta: ["Client · Thrifty Adventures", "Contract Digital Marketing Manager", "Jul 2025 – Jan 2026"],
@@ -213,17 +213,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The channel nobody picks for travel",
         body: [
-          "LinkedIn is where you go to reach a job title. Thrifty Adventures sells group tours to people spending their own money on their own holidays. On paper it is the wrong platform, and nothing was running: no campaigns, no tracking, no idea what a click was worth.",
-          "So the question was not how to scale LinkedIn. It was whether it works for consumer travel at all. Seven months of sustained spend later: it does, but not for the reason I expected.",
-        ],
-      },
-      {
-        id: "testing",
-        kind: "prose",
-        heading: "One objective at a time, then all of them",
-        body: [
-          "July was deliberately small: one campaign, at the cost per click an account with no history pays, which is the most it will ever pay.",
-          "September was the real test. Four objectives side by side in one month, which is the only way to learn what a platform charges for each thing it sells. It produced the first wave of leads and the comparison that decided everything after: drop what it killed, fund what survived.",
+          "The brand already had a social presence. What it did not have was paid: no campaigns, no tracking, no idea what a click was worth. TikTok and Instagram needed sharpening. LinkedIn needed inventing.",
+          "LinkedIn is where you go to reach a job title, and this sells group tours to people spending their own money. On paper it is the wrong platform. Seven months of sustained spend says it works, but not for the reason I expected.",
         ],
       },
       {
@@ -231,7 +222,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Reach up 47×, and the price down every month",
         intro:
-          "The bars are reach, indexed to the first month. The note that matters to a business is what each month cost to buy it.",
+          "July started small, at the price a new account always pays. September ran four objectives side by side, which is the only way to learn what a platform charges for each thing it sells. Then: drop what it killed, fund what survived.",
         measure: "Reach, indexed to July",
         rows: [
           { label: "Jul 2025", value: 1, display: "1×", note: "The baseline. A new account pays the most it will ever pay." },
@@ -330,19 +321,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
       {
         id: "tiktok",
-        kind: "prose",
-        heading: "The channel that did the finding",
-        body: [
-          "LinkedIn was the experiment. TikTok was the engine, and it did not start from nothing: the account already had an audience, which changes what a view count means.",
-          "Destinations shot plainly, captioned as questions people actually type. That is the whole trick: the videos stay findable months later instead of for the two days the algorithm favours them.",
-        ],
-      },
-      {
-        id: "tiktok",
         kind: "metrics",
         heading: "3.1 million views, and 38% of them from search",
         intro:
-          "The search share is the one that matters commercially: it means the back catalogue keeps working long after a post stops trending.",
+          "TikTok already had an audience. The work was making it findable: destinations shot plainly, captioned as questions people actually type. The search share is what matters commercially, because it means the back catalogue keeps earning after a post stops trending.",
         items: [
           {
             value: "38.1%",
@@ -363,7 +345,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Period figures for Jun 2025 to Jan 2026. The account had a following before this work and the starting number was not recorded, so no growth is claimed. On search: For You typically carries around 70% of views, here 57.6%. No published benchmark exists for search share by account.",
+          "Period figures for Jun 2025 to Jan 2026. The account had a following before this work and the starting number was not recorded, so no growth is claimed. For You typically carries around 70% of views; here it is 57.6%.",
       },
       {
         id: "tiktok",
@@ -416,7 +398,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Benchmark: WordStream's 2026 study of 13,474 US search campaigns, with travel medians of 9.32% CTR, $2.14 CPC and $44.70 per lead. Two caveats. It covers search, and most of this volume is display and Performance Max, where clicks are cheaper by design. And it is US pricing; South African inventory is far less contested, so much of the gap is the market rather than the management.",
+          "Benchmark: WordStream's 2026 study of 13,474 US search campaigns. Two caveats: most of this volume is display and Performance Max, where clicks are cheaper by design, and US inventory is far more contested than South African, so part of the gap is the market rather than the management.",
       },
       {
         id: "mix",
@@ -437,18 +419,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Brand awareness was the most expensive click on the platform, over ten times the price of the cheapest month's traffic clicks. As a click channel it failed. There were cheaper ways to buy that attention.",
-          "Single-destination videos did not travel: 0.10–0.16% click-through, at twenty to forty times the click cost of the winner. The one composite, a year of trips in a single edit, out-pulled them at a fraction of the cost. People responded to the range, not one place.",
-          "And the conversion columns on both platforms are unusable: more recorded conversions than clicks on LinkedIn, and a 232% conversion rate on one Google campaign. Broad tags firing on ordinary page loads. Clicks, impressions and cost are real; no conversion figure appears anywhere on this page.",
-        ],
-      },
-      {
-        id: "honest",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Run the brochure from month one. It only entered in September, so two months of lead spend went on the weaker ask: 36.6% form completion against 8.6%. Test the offer before tuning the audience.",
-          "Configure conversion tracking on day zero. The broad tag made seven months of conversion data unusable, and nothing after the fact can un-mix view-throughs from clicks.",
+          "Brand awareness bought the most expensive clicks on the platform, over ten times the cheapest month's. Single-destination videos did not travel either. The one composite edit, a year of trips in a single video, out-pulled all of them at a fraction of the cost: people responded to the range, not one place.",
+          "The conversion columns on both platforms are unusable: more recorded conversions than clicks, and a 232% conversion rate on one campaign, from broad tags firing on ordinary page loads. So no conversion figure appears anywhere on this page.",
         ],
       },
     ],
@@ -468,7 +440,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "The rebuilt Innovatr home page, leading with the consumer-intelligence positioning.",
     },
     summary:
-      "Rebuilt the whole front of a research business: brand, website, content engine and paid programme. Built its marketing system from zero, beat the industry benchmarks, and replaced an annual software licence with a product the company could sell.",
+      "Rebuilt the front of a research business: brand, website, content engine and paid programme. Built the marketing system from nothing, beat the industry benchmarks, and replaced an annual software licence with a product the company could sell.",
     description:
       "Innovatr is a consumer research and growth consultancy. I worked full time as Brand & Marketing Manager: improved the branding, started the paid engine, built the marketing system, and shipped a product. This is what changed in seven months.",
     tags: [
@@ -515,7 +487,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The starting point",
         body: [
-          "The product was genuinely different. The way it was presented was not. The site led with “Stop Guessing. Launch Better Innovation.”, a line that could have belonged to any research agency.",
+          "The product was genuinely different. The presentation was not: the site led with “Stop Guessing. Launch Better Innovation.”, a line that could have belonged to any research agency.",
           "No paid programme, effectively no inbound traffic, and no way to turn the research already being produced into demand for more of it.",
         ],
       },
@@ -524,7 +496,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "beforeAfter",
         heading: "Brand and website",
         intro:
-          "The repositioning turned a generic promise into an argument. “Old research is dead. Stop being told. Start asking why.” gives the reader something to disagree with, and the proof sits directly underneath it: 200+ studies, 25+ markets, a 44M panel.",
+          "The repositioning turned a generic promise into an argument. “Old research is dead. Stop being told. Start asking why.” gives a reader something to disagree with, and the proof sits right under it.",
         pairs: [
           {
             label: "Home",
@@ -557,7 +529,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Turning research into content",
         intro:
-          "Every study Innovatr ran produced findings nobody outside the client ever saw. These put them in public: the Gen Z drinking carousel shows its 4,339 comments rather than describing them, and the old-versus-new set makes the case for the method. Both do what the product does: state a claim, then put the evidence under it.",
+          "Every study produced findings nobody outside the client ever saw. These put them in public, doing what the product does: state a claim, then put the evidence under it.",
         shots: [
           {
             image: "innovatr/carousel-drinking-1.png",
@@ -590,7 +562,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Ad creative",
         intro:
-          "The paid programme ran the same argument in a format built to be scrolled past. “The Innovatr Way” took on the legacy research model directly: unchanged in decades, six-week turnarounds, six-figure studies.",
+          "The same argument, in a format built to be scrolled past. “The Innovatr Way” took on the legacy research model directly: unchanged in decades, six-week turnarounds, six-figure studies.",
         shots: [
           {
             image: "innovatr/carousel-way-1.png",
@@ -615,7 +587,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Building the marketing system",
         intro:
-          "A business selling research to decision-makers has to know who they are, and Innovatr had no list. I built one from prospecting tools, partner databases, client outreach and inbound signups, de-duplicated it into one CRM, and wired the rest of the system around it: email marketing and automation, LinkedIn ads with remarketing, and the CRM feeding the ad audiences. That last step is the point: ads aimed at named companies and real job titles, not the platform's guesses.",
+          "A business selling research to decision-makers has to know who they are, and Innovatr had no list. I built one into a CRM, then wired the system around it: email automation, LinkedIn ads, remarketing. The CRM feeds the ad audiences, so ads aim at named companies rather than the platform's guesses.",
         items: [
           {
             value: "0 → live",
@@ -638,7 +610,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "The ads landed in the right rooms",
         intro:
-          "Spending on ads is easy. The question is whether they reached people who can sign off a study. The first test is not clicks. It is LinkedIn's own delivery demographics.",
+          "Spending on ads is easy. The question is whether they reached people who can sign off a study, and the first test is not clicks. It is LinkedIn's own delivery demographics.",
         items: [
           {
             value: "61%",
@@ -665,7 +637,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Leads got better every flight",
         intro:
-          "The programme ran in short creative flights, each one tightening who saw the forms. The measure that matters is not the count, which stays with the client, but who was filling the forms in: the share arriving on a work email.",
+          "Short creative flights, each tightening who saw the forms. The measure that matters is not the count, which stays with the client, but who filled them in: the share arriving on a work email.",
         measure: "Work-email share of leads",
         rows: [
           {
@@ -682,14 +654,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "91% work-email share is the lead quality the whole programme was built toward, up from ~27% at launch. Lead counts and the media budget stay with the client; the budget also bought traffic and awareness, separated in the next section.",
+          "91% work-email share is the lead quality the programme was built toward, up from ~27% at launch. Lead counts and budget stay with the client.",
       },
       {
         id: "results",
         kind: "metrics",
         heading: "Every cost beat the market",
         intro:
-          "Most of the budget was never pointed at leads. Video bought attention, carousels bought site conversions, and only the lead-gen documents bought leads. Each is scored on its own job, against LinkedIn's published B2B norms.",
+          "Most of the budget was never pointed at leads: video bought attention, carousels bought conversions. Each is scored on its own job, against LinkedIn's published B2B norms.",
         items: [
           {
             value: "~3×",
@@ -714,47 +686,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Form completion ran 46–57% against a 10–13% benchmark. One miss: carousel click-through at 0.32% against a 0.40–0.55% band, so carousels stayed on the conversion job they were winning rather than the click job they were losing. No flight ran longer than five weeks against LinkedIn's six-to-eight-week optimisation runway, so these are pre-optimisation. A June conversion tag counting view-throughs is excluded throughout.",
-      },
-      {
-        id: "results",
-        kind: "metrics",
-        heading: "And the leads were the right people",
-        intro:
-          "The count matters less than who filled the forms in. From the lead-form exports, assessed on work-email capture, seniority and ICP fit:",
-        items: [
-          {
-            value: "~Half",
-            label: "Call-first tier",
-            context:
-              "Work-email leads at ICP accounts with decision-layer titles. The leads a salesperson actually phones.",
-          },
-          {
-            value: "91%",
-            label: "Work emails, newest cohort",
-            context:
-              "Up from ~27% in the launch era. The refinement is visible in the pipeline itself.",
-          },
-          {
-            value: "80%+",
-            label: "Newest cohort inside the ICP",
-            context:
-              "Senior research, strategy and CX roles at exactly the institutions being targeted.",
-          },
-        ],
-        footnote:
-          "Roles span customer experience, market research, business analysis, risk, marketing leadership, business development and product, up to chief executive, at the institutions the lists were built from. Names and counts stay with the client.",
-      },
-      {
-        id: "results",
-        kind: "checklist",
-        heading: "What the four months proved",
-        items: [
-          "Costs beat the market in every flight, on both broad and strict decision-maker targeting.",
-          "Lead generation produced contactable pipeline every time it ran.",
-          "Spend and results moved together: the highest-spend month was the highest-lead month.",
-          "Format, not message, decided performance. The same line was the best video and the weakest carousel.",
-        ],
+          "Form completion ran 46–57% against a 10–13% benchmark. One miss: carousel click-through sat under the band, so carousels stayed on the conversion job they were winning. No flight ran past five weeks against LinkedIn's six-to-eight-week optimisation runway, so these are pre-optimisation figures.",
       },
       {
         id: "product",
@@ -762,8 +694,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The product: Social Sweep",
         body: [
           "Innovatr was about to licence a social listening platform on an annual enterprise contract. I built the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
-          "Ask it a plain-language question, “How do South Africans talk about Chinese car brands versus German ones?”, and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned as a billable study.",
-          "The saving is the small part. The tool Innovatr nearly licensed was itself acquired by a market research group a few months later, after four years and outside investment. Not parity: theirs is a company with a roadmap and a support desk. But the capability that used to justify an acquisition is now something one person can build in a quarter.",
+          "Ask it a plain-language question and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned as a billable study.",
+          "The saving is the small part. The tool Innovatr nearly licensed was acquired by a research group months later, after four years and outside investment. Not parity, but the capability that used to justify an acquisition is now something one person can build in a quarter.",
         ],
       },
       {
@@ -790,7 +722,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Positioned as a billable product; revenue is not claimed. Commercial figures, the licence quote and the study price, stay with the client. Platform count is Social Crawl's published coverage of 46 platforms and 368 endpoints, of which Social Sweep queries the relevant subset.",
+          "Positioned as a billable product; revenue is not claimed. The licence quote and the study price stay with the client.",
       },
       {
         id: "product",
@@ -823,14 +755,6 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: "A two-minute walkthrough of Social Sweep: entering a plain-language question, watching it select platforms, and reading the finished report with its sentiment split, emotion mix and source quotes.",
         footnote:
           "Recorded from the working tool, not a prototype. This copy is silent by design; the narrated version is in the portfolio.",
-      },
-      {
-        id: "product",
-        kind: "prose",
-        heading: "What I'd do differently",
-        body: [
-          "Start the call motion sooner. The email sequences earned 36–62% open rates against a ~30% benchmark and zero replies. Opens prove interest; no replies prove email alone cannot convert it. Warm leads sat unworked while the machine finding them kept improving. Next time, a human call within 48 hours from the first lead.",
-        ],
       },
     ],
     seo: {
@@ -1407,7 +1331,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "proof", label: "Proof" },
       { id: "media", label: "Cutting the cost" },
       { id: "stickers", label: "What I killed" },
-      { id: "honest", label: "What I'd change" },
     ],
     blocks: [
       {
@@ -1415,8 +1338,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The whole thing, not a piece of it",
         body: [
-          "Filosofee started as a graphic tee brand and grew into apparel, packaging and a store. I did the range, the store, the payment gateways, the photography and the marketing. That is the useful part of this case study: most people who can design a shirt cannot take a card payment, and most people who can build a store have never had to price a garment.",
-          "The range is graphic-led: the wordmark pieces, and a set of designs that carry an idea rather than a logo. The store is a hosted storefront with Paystack for local cards and PayPal for everyone else, because a South African brand that cannot take an international payment is a local brand whether it wants to be or not.",
+          "Filosofee started as a graphic tee brand and grew into apparel, packaging and a store. I did the range, the store, the payment gateways, the photography and the marketing. Most people who can design a shirt cannot take a card payment; most who can build a store have never priced a garment.",
+          "Paystack for local cards, PayPal for everyone else, because a South African brand that cannot take an international payment is a local brand whether it wants to be or not.",
         ],
       },
       {
@@ -1458,8 +1381,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The order that changed the business",
         body: [
-          "Thrifty Adventures needed branded apparel for their tours. Filosofee designed and produced it: twenty units, the first wholesale order the brand had taken.",
-          "One order does not make a wholesale business. What it did was prove the setup could serve a second, better kind of customer without changing anything: B2B buys more per order, does not need converting one shirt at a time, and comes back on a schedule. The consumer store is the shop window; the print run is the margin.",
+          "A tour operator needed branded apparel. Filosofee designed and produced it: twenty units, the first wholesale order the brand had taken.",
+          "One order does not make a wholesale business. What it proved is that the same setup serves a better kind of customer with nothing changed. B2B buys more per order and comes back on a schedule. The consumer store is the shop window; the print run is the margin.",
         ],
       },
       {
@@ -1467,8 +1390,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A shoot you pay for once",
         body: [
-          "The product shoot was the single most expensive line in the brand's first year: studio, model, photographer, retouching. It also produced the best assets Filosofee has.",
-          "So it became the reference rather than the whole library. The shoot fixes what the brand looks like: the black garments, the plain ground, the light, how the pieces sit on a person. Generated imagery extends it into the volume social needs, matched to that look. Real work sets the standard and AI runs at the pace of a content calendar.",
+          "The product shoot was the most expensive line in the brand's first year, and produced the best assets Filosofee has. So it became the reference rather than the whole library.",
+          "The shoot fixes what the brand looks like. Generated imagery extends it into the volume social needs, matched to that look. Real work sets the standard; AI runs at the pace of a content calendar.",
         ],
       },
       {
@@ -1494,18 +1417,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The line I stopped",
         body: [
-          "Filosofee sold stickers alongside the apparel. They were designed, produced, listed and packed, and I ended them.",
-          "The economics never worked. A sticker order carries the same admin as a hoodie order, the payment, pick, pack, label, courier and the query if it goes missing, against a fraction of the value. It does not scale either: the volume needed to make the margin meaningful is volume the team cannot pack. For a small consulting team running a brand on the side, that is the wrong shape of work.",
-          "Killing it was worth more than the revenue it made. Same effort, moved to garments and wholesale, earns several times as much.",
-        ],
-      },
-      {
-        id: "honest",
-        kind: "prose",
-        heading: "What I'd change",
-        body: [
-          "Price the admin, not the item. Stickers looked profitable per unit and were not, because the per-order cost never appeared in the sums. Anything sold below a certain price should be tested against the handling it drags with it before it is listed.",
-          "And chase the bulk order sooner. The wholesale order arrived because someone asked, not because anyone went looking. It was the highest-value thing the brand did all year and it was inbound, which says the outbound version was never tried.",
+          "Filosofee sold stickers alongside the apparel. Designed, produced, listed, packed, and I ended them.",
+          "A sticker order carries the same admin as a hoodie order, the payment, pick, pack, label and courier, against a fraction of the value. Killing it was worth more than the revenue it made: the same effort moved to garments and wholesale earns several times as much.",
         ],
       },
     ],
@@ -1544,7 +1457,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "make", label: "Making it" },
       { id: "cost", label: "What it cost" },
       { id: "build", label: "The build" },
-      { id: "honest", label: "What I'd change" },
     ],
     blocks: [
       {
@@ -1552,9 +1464,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Designers dream it. Developers price it.",
         body: [
-          "A meme went round design circles: a concept site where a chameleon takes the colour of the bottle beside it, cut against the canyon-swing clip. Designer in the chair. Programmer and Developer either side, about to push.",
-          "Everyone has been in that meeting. The design is good. Building it means a studio, a handler and a render farm, so it dies. I wanted to know whether that was still true or just a habit, and whether AI had actually changed the answer.",
-          "It had. One day, under $300, on consumer subscriptions.",
+          "A meme went round design circles: a concept site where a chameleon takes the colour of the bottle beside it, cut against the canyon-swing clip. Designer in the chair, about to be pushed.",
+          "Everyone has been in that meeting. The design is good, building it means a studio and a render farm, so it dies. I wanted to know whether that was still true or just a habit. It is a habit: one day, under $300, on consumer subscriptions.",
         ],
       },
       {
@@ -1574,8 +1485,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A hero that earns the word premium",
         body: [
-          "Copying the juice site would have proved nothing, so I moved the mechanic to cosmetics, a category whose identity is already colour. Aurora Petal is lavender, Jade Mist green, Peach Quartz warm clay.",
-          "The chameleon settles beside a bar, takes its colour, and the product card arrives on the match. No line of copy explaining it.",
+          "Copying the juice site would have proved nothing, so I moved the mechanic to cosmetics, a category whose identity is already colour. The chameleon settles beside a bar, takes its colour, and the product card arrives on the match. No copy explaining it.",
           "Changing the category kept every expensive part: a live animal, three colourways, macro product work and a thirty-second film. The exact bill the meme is laughing at.",
         ],
       },
@@ -1595,8 +1505,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "Generated, not shot",
         body: [
           "Nothing was photographed or filmed. Stills first, then animated into three eight-second clips, then a site built with an agentic IDE and finished by hand.",
-          "Order matters. Locking the bars and palette as cheap stills meant the film only had to move something that already existed. Go straight to video and you re-roll thirty seconds every time a soap looks wrong.",
-          "The hard part was consistency: keeping the same bar looking like the same bar across sixteen images. That is where the effort went, not into any single prompt.",
+          "Order matters. Locking the bars and palette as cheap stills meant the film only had to move something that already existed; go straight to video and you re-roll thirty seconds every time a soap looks wrong. The hard part was consistency across sixteen images, not any single prompt.",
         ],
       },
       {
@@ -1669,34 +1578,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The part that is not a prompt",
         body: [
-          "React 19, Vite and GSAP, with Google Antigravity doing the first pass and Claude finishing it. The split was deliberate: the agentic pass gets a page standing up fast and is much weaker on the small decisions that separate a demo from something shippable.",
-          "The main one: the sequence is not driven off the video. The obvious build reads the four-second mark off the player itself, and breaks silently, because autoplay is blocked often enough (Low Power Mode, Safari, data saver) that the cards can simply never appear on a page whose whole job is showing products.",
-          "So the timeline runs on its own timers and the video is decoration. Eight seconds a segment, card at 3.2 seconds. If the video never plays the sequence still runs: products over a still frame, which is worse rather than broken.",
-        ],
-      },
-      {
-        id: "build",
-        kind: "checklist",
-        heading: "The rest of the detail work",
-        intro:
-          "Small things, and the reason the page holds up away from a fast desktop on a good connection.",
-        items: [
-          "Reduced motion is honoured properly: the auto-advance stops entirely, so the hero settles on one product instead of cycling. The cards still appear. The preference is about motion, not about hiding the products.",
-          "An IntersectionObserver pauses the video once the hero scrolls away, so a page left open in a tab is not decoding 1080p to nobody.",
-          "A one-directional scrim sits under the wordmark, because the type has to stay legible over three different clips whose backgrounds change colour.",
-          "Products are positioned as percentages against the frame rather than pinned to pixels, so the card lands next to the chameleon at any viewport instead of drifting off it.",
-          "The seek is wrapped in a try/catch: setting currentTime on a video that is not seekable yet throws, and losing the whole sequence to a race on load would be a silly way to break a hero.",
-        ],
-      },
-      {
-        id: "honest",
-        kind: "prose",
-        heading: "What I'd change",
-        body: [
-          "The three clips crossfade rather than continue: the chameleon dissolves between colours instead of walking through them. Most people will not read it as a cut, but the concept deserves one unbroken take. A generation problem I did not solve.",
-          "Generate the products at a fixed camera and lighting setup from the start. The collection frames drift in angle between bars: invisible on the hero, obvious in a grid. Lock it as a constraint before generating, not after.",
-          'The conclusion is narrower than "AI is cheap". What collapsed is the cost of making assets. The judgement calls did not get cheaper, and they are what makes the page work.',
-          "The chameleon was not my idea. It was a meme saying the thing could not be built. Taking it seriously and shipping it in a day was the work. Ideas were never the scarce part. Execution was.",
+          "React 19, Vite and GSAP, with an agentic IDE doing the first pass and Claude finishing it. The agentic pass gets a page standing up fast and is much weaker on the decisions that separate a demo from something shippable.",
+          "The main one: the sequence runs on its own timers rather than off the video. Autoplay is blocked often enough that reading the timeline off the player would let the product cards never appear at all. If the video never plays, the sequence still runs: worse, rather than broken.",
         ],
       },
     ],
