@@ -715,10 +715,10 @@ export const CASE_STUDIES: CaseStudy[] = [
             context: "Packaged as a sellable Innovatr study, not internal tooling.",
           },
           {
-            value: "46",
+            value: "49",
             label: "Platforms reachable",
             context:
-              "Through the Social Crawl API it runs on: social, search, commerce and the open web.",
+              "Through the research API it runs on: social, search, commerce, reviews and the open web, of which each study queries the relevant subset.",
           },
         ],
         footnote:
@@ -803,29 +803,29 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Where it listens",
         intro:
-          "Every run sweeps the same fourteen platforms, and the planner routes extra sources in per topic: a travel question reaches review sites, a developer question reaches technical forums, with no code change.",
+          "Breadth is the easy half. The research API underneath Hakkan covers 49 platforms, and searching all of them for every question would be slow, expensive and mostly noise. The work is picking the right ones.",
         items: [
           {
-            value: "14",
-            label: "Platforms on every run",
+            value: "49",
+            label: "Platforms available to a run",
             context:
-              "Reddit, X, YouTube, TikTok, Instagram, LinkedIn, Threads, Hacker News, Pinterest, Rumble, GitHub, Polymarket and two search layers. Not a menu to configure.",
+              "Social, video, forums, search, news, retail and review sites, reached through one research API on a single unified schema.",
           },
           {
-            value: "19+",
-            label: "Sources reachable in total",
+            value: "Per question",
+            label: "Not all of them, every time",
             context:
-              "Plus routed legs: news, traveller reviews, business reviews, retail and app-store reviews.",
+              "The sweep decomposes your question into weighted sub-queries, picks the sources that actually carry that conversation and prunes the rest by score. A food-delivery topic drops Polymarket and GitHub without being told to.",
           },
           {
-            value: "Yours",
-            label: "Depth is a user choice",
+            value: "Then deeper",
+            label: "Routed legs the sweep misses",
             context:
-              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented to protect its own costs.",
+              "Hakkan classifies the topic into domains and adds what the sweep cannot reach: traveller reviews, business reviews, news, direct forum threads. A travel question gets review sites; a developer question gets Hacker News.",
           },
         ],
         footnote:
-          "Both counts derive from the platform registry in code, so they cannot drift between the product and this page. They describe what Hakkan reaches, not the published ceiling of the APIs underneath it.",
+          "The routing is layered on purpose. Handing a model a flat list of hundreds of endpoints and asking it to choose measures under 50% accuracy and fails by inventing a source; a domain classifier feeding a small candidate set measures around 86%. For a product that sells provenance, an invented source is the one failure it cannot ship.",
       },
       {
         id: "hard",
