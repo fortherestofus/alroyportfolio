@@ -230,7 +230,7 @@ export const PRODUCTS: Product[] = [
     category: "Food & Cooking",
     tagline: "What can I cook with this?",
     description:
-      "The daily what-do-I-eat problem, solved with what is already in your kitchen. Type it, say it or take a pic of your ingredients and get real meals back: variety from the same shelf, dietary choices enforced as hard rules. Cooking made simple, and the power back with you.",
+      "The daily what-do-I-eat problem, solved with what is already in your kitchen. Type it, say it or take a pic of your ingredients and get real meals back: variety from the same shelf, dietary choices enforced as hard rules. Cooking made simple, and the power back to you.",
     status: "In development",
     platform: "iOS and Android",
     stack: [

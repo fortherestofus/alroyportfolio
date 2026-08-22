@@ -468,6 +468,56 @@ function initJourneyNav(): void {
     });
   });
 
+  /* ---- Landing on a section from another page -------------------- */
+  /*
+   * Arriving at /#products used to leave you thousands of pixels past
+   * section 05. The browser jumps to the anchor at first layout, then
+   * the page keeps growing underneath it — lazy images, the section
+   * Lotties, the booking embed — so the destination slides away from
+   * wherever the reader was put.
+   *
+   * The fix is to re-assert the position while the document is still
+   * changing height, for a bounded window, and to stop the moment the
+   * reader scrolls: correcting a landing is helpful, fighting someone
+   * who has taken over is not.
+   */
+  function settleHash(): void {
+    const id = location.hash.slice(1);
+    if (!id) return;
+    const section = document.getElementById(id);
+    if (section) scrollToOffset(anchorFor(section), true);
+  }
+
+  if (location.hash) {
+    settleHash();
+
+    let lastHeight = document.documentElement.scrollHeight;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      const height = document.documentElement.scrollHeight;
+      if (height !== lastHeight) {
+        lastHeight = height;
+        settleHash();
+      }
+      // ~3s, long enough for the heaviest section to finish arriving.
+      if (++ticks > 30) window.clearInterval(timer);
+    }, 100);
+
+    const release = () => window.clearInterval(timer);
+    window.addEventListener("wheel", release, { once: true, passive: true });
+    window.addEventListener("touchstart", release, { once: true, passive: true });
+    window.addEventListener("keydown", release, { once: true });
+
+    window.addEventListener(
+      "load",
+      () => {
+        ScrollTrigger.refresh();
+        settleHash();
+      },
+      { once: true },
+    );
+  }
+
   /* ---- Drag the knob -------------------------------------------- */
   function pointerFrac(clientX: number): number {
     const rect = track!.getBoundingClientRect();

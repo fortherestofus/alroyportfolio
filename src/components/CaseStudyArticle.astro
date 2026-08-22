@@ -169,7 +169,10 @@ const schema = [
             />
           ) : (
             <Image
-              class="cs__hero-media"
+              class:list={[
+                "cs__hero-media",
+                study.hero!.device && `cs__hero-media--${study.hero!.device}`,
+              ]}
               src={heroImage}
               alt={study.hero!.alt}
               width={HERO_WIDTH}
@@ -351,6 +354,7 @@ const schema = [
                   "cs__gallery",
                   block.wide && "cs__gallery--wide",
                   block.pair && "cs__gallery--pair",
+                  block.device && `cs__gallery--${block.device}`,
                 ]}
               >
                 {block.shots.map((shot) => {
@@ -876,6 +880,28 @@ const schema = [
     background-color: var(--color-surface-sunken);
   }
 
+  /*
+   * A hero sized to the thing it pictures.
+   *
+   * A phone screenshot or an extension popup blown up to the full
+   * column is several times the size anyone ever sees it at, and the
+   * page opens on a slab rather than on a product. Centred and capped
+   * at roughly device width instead, which is also the size the
+   * captures were taken for, so they stay sharp.
+   */
+  .cs__hero-media--phone,
+  .cs__hero-media--panel {
+    margin-inline: auto;
+  }
+
+  .cs__hero-media--phone {
+    max-width: calc(var(--shot-phone-width) * 1.5);
+  }
+
+  .cs__hero-media--panel {
+    max-width: calc(var(--shot-panel-width) * 1.5);
+  }
+
   .cs__video {
     margin: var(--space-6) 0 0;
   }
@@ -918,6 +944,57 @@ const schema = [
     .cs__gallery--pair {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
+
+  /*
+   * App captures shown as devices rather than as grid cells.
+   *
+   * The auto-fill grid stretches a 9:19.5 phone screenshot to card
+   * width, which makes one screen a 700px-tall column of its own and
+   * turns six of them into a scroll. Sized to the handset instead,
+   * they read the way the app does and six fit in the space two used
+   * to take. Same tokens the section 05 rails use, so a screen is the
+   * same size wherever it appears on the site.
+   */
+  .cs__gallery--phone,
+  .cs__gallery--panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: center;
+  }
+
+  .cs__gallery--phone .cs__shot,
+  .cs__gallery--panel .cs__shot {
+    flex: none;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .cs__gallery--phone .cs__shot {
+    width: var(--shot-phone-width);
+    aspect-ratio: var(--shot-phone-ratio);
+  }
+
+  .cs__gallery--panel .cs__shot {
+    width: var(--shot-panel-width);
+    aspect-ratio: var(--shot-panel-ratio);
+  }
+
+  /*
+   * `cover` rather than `contain`: the captures already arrive at
+   * about the frame's ratio, so this trims a few percent and buys an
+   * edge-to-edge screen instead of bands of dead backing.
+   */
+  .cs__gallery--phone .cs__shot :global(img),
+  .cs__gallery--panel .cs__shot :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .cs__gallery--wide {

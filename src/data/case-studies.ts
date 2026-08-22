@@ -67,6 +67,13 @@ export type Block =
        * analytics panel at 1,100px to believe it.
        */
       pair?: boolean;
+      /**
+       * Show the captures in a device frame sized to what they are
+       * pictures of, rather than stretched across a grid cell. A phone
+       * screenshot at card width is a 700px-tall slab that reads as a
+       * poster; at handset width it reads as an app.
+       */
+      device?: "phone" | "panel";
       shots: { image: string; alt: string }[];
     }
   | { kind: "checklist"; heading: string; intro?: string; items: string[] }
@@ -153,6 +160,13 @@ export interface CaseStudy {
     alt: string;
     /** Path under public/ when the hero should play rather than sit. */
     video?: string;
+    /**
+     * Constrain the hero to the shape of the thing it pictures. A
+     * browser-extension popup opened to full column width is four
+     * times the size it is ever seen at, and reads as a blown-up
+     * screenshot rather than as the product.
+     */
+    device?: "phone" | "panel";
   };
   /**
    * The moving image strip on the section 06 overview card (PRD §6.05).
@@ -1089,6 +1103,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         id: "screens",
         kind: "gallery",
         heading: "The screens",
+        device: "phone",
         shots: [
           {
             image: "products/isit-home.png",
@@ -1133,7 +1148,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Three tapa. screens: entering what is in the fridge, the home screen, and a finished recipe.",
     },
     summary:
-      "Adulting, minus one decision. It feeds you with what you have, wherever you are: one meal from your own ingredients, your diet respected, the power back with you.",
+      "Adulting, minus one decision. It feeds you with what you have, wherever you are: one meal from your own ingredients, your diet respected, the power back to you.",
     description:
       "tapa. answers one question: “what can I cook with this?” Type it, say it or take a pic of what you have, plus how long you have and how many you are feeding. One considered recipe back, not fifty results. This is what keeping it that simple costs.",
     tags: ["Product build", "UX", "Simplicity", "Pricing"],
@@ -1192,9 +1207,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "fair",
         kind: "trend",
-        heading: "Finding the free tier honestly",
+        heading: "Pricing it against how people actually cook",
         intro:
-          "A simple app still has to sustain itself. The free allowance was tuned against real numbers, how often people actually cook and what competing apps give away, and the journey is worth showing because each move had a reason.",
+          "A free tier is a product decision, not a marketing one. Set it too high and nobody ever meets the upgrade; too low and the app is a demo. It took three moves in two days to find the honest number.",
         measure: "Free recipes per week",
         rowLabel: "Iteration",
         rows: [
@@ -1202,28 +1217,29 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Launch",
             value: 3,
             display: "3",
-            note: "Generous, but the median cook makes 3–4 dinners a week, so free covered everything and the question of upgrading never arrived.",
+            note: "Generous, but the median cook makes 3–4 dinners a week, so free covered everything and the upgrade question never arrived.",
           },
           {
             label: "Revision",
             value: 1,
             display: "1",
-            note: "Too far the other way. Live for roughly an hour before the reasoning was rechecked.",
+            note: "Too far the other way. Live for about an hour before the reasoning was rechecked.",
           },
           {
             label: "Settled",
             value: 2,
             display: "2",
-            note: "Real weekly value free, and anyone cooking regularly meets the upgrade question at a genuine moment of need.",
+            note: "Real weekly value free, and anyone cooking regularly meets the upgrade at a genuine moment of need.",
           },
         ],
         footnote:
-          "The aim was an exchange fair in both directions, set from how people actually cook rather than from hope. The honesty rule ships in the code: upsell copy is derived from the configuration that enforces it, so the app can only promise what it delivers.",
+          "The honesty rule ships in the code: upsell copy is derived from the configuration that enforces it, so the app can only promise what it actually delivers.",
       },
       {
         id: "screens",
         kind: "gallery",
         heading: "The screens",
+        device: "phone",
         shots: [
           {
             image: "products/tapa-home.jpg",
@@ -1255,6 +1271,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     hero: {
       image: "products/caught-today.jpg",
       alt: "CaughtSlipping's daily verdict: a shame meter, today's total, and a per-site breakdown sorted worst first.",
+      device: "panel",
     },
     summary:
       "A browser extension that holds both kinds of slipper accountable, the procrastinator and the workaholic. Live on the Chrome Web Store, free, with no account and no server.",
@@ -1337,6 +1354,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         id: "screens",
         kind: "gallery",
         heading: "The screens",
+        device: "panel",
         shots: [
           {
             image: "products/caught-today.jpg",
