@@ -803,29 +803,27 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Where it listens",
         intro:
-          "Searching everywhere for every question would be slow, expensive and mostly noise. The work is picking the right places, and almost none of that is a source count.",
+          "Searching everywhere for every question is slow, expensive and mostly noise. The work is picking the right places.",
         items: [
           {
             value: "Per question",
             label: "Sources are chosen, not swept blindly",
             context:
-              "The sweep decomposes your question into weighted sub-queries, picks the sources that carry that conversation and prunes the rest by score. On one food-delivery topic it dropped Polymarket, GitHub and Pinterest at 0.05, 0.1 and 0.15 without being told to.",
+              "The sweep breaks your question into sub-queries and keeps only the sources that carry it. A food-delivery topic dropped Polymarket, GitHub and Pinterest on score alone.",
           },
           {
             value: "Then deeper",
             label: "Routed legs the sweep cannot reach",
             context:
-              "Hakkan classifies the topic into domains and adds what the sweep misses: news, traveller reviews, business reviews, retail and app-store reviews, direct forum threads. A travel question gets review sites; a developer question gets Hacker News.",
+              "Hakkan classifies the topic and adds what the sweep misses: news, reviews, forum threads. A travel question gets review sites; a developer question gets Hacker News.",
           },
           {
             value: "Yours",
             label: "Depth is a user choice",
             context:
-              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented to protect its own costs.",
+              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented.",
           },
         ],
-        footnote:
-          "Nineteen sources are reachable in total: a fourteen-platform universal sweep plus the routed legs. That is Hakkan's reach, deliberately not the larger catalogue of the API underneath it. The routing is layered for the same reason: handing a model a flat list of hundreds of endpoints measures under 50% accuracy and fails by inventing a source, while a domain classifier feeding a small candidate set measures around 86%. For a product that sells provenance, an invented source is the one failure it cannot ship.",
       },
       {
         id: "hard",
