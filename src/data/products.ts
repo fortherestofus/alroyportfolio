@@ -123,7 +123,7 @@ export const PRODUCTS: Product[] = [
     category: "Content Research & Development",
     tagline: "Worth listening to.",
     description:
-      "A content research and creation assistant, built to fight AI slop. Pick a topic you want to lead, and Hakkan researches the real conversation into a cited report: a source of truth you create content from, in a voice it learns from you. A trends module keeps you current on the topic.",
+      "A content research and creation assistant, built to fight AI slop. Pick a topic you want to lead, and Hakkan researches the real conversation into a cited report: a source of truth you create content from, in a voice it learns from you. A trends module keeps you current.",
     status: "Beta",
     platform: "Web",
     stack: [

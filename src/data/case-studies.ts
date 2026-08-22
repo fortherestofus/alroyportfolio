@@ -835,7 +835,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A Hakkan report: 965 items cited and 903 real voices across seven platforms, with the sentiment split beneath.",
     },
     summary:
-      "A content research and creation assistant built to fight AI slop. It researches your topic into a cited report, writes in your voice, and tells you when a number came from the model rather than the research.",
+      "A content research and creation assistant built to fight AI slop. It researches your topic into a cited report, then helps you create from it in your own voice.",
     description:
       "Hakkan (発刊, “to publish”) helps you lead a topic. It researches the real conversation into a report with receipts, treats that report as your source of truth, and helps you create content from it in a voice it learns from you.",
     tags: ["Product build", "AI engineering", "UX", "Research"],
@@ -859,9 +859,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The problem: content stopped knowing anything",
         body: [
-          "Since late 2024, more new articles online are written by AI than by people (Graphite, 2025). That is the slop problem: fluent text that reads fine and knows nothing. And the tools caused it. Every AI writer starts from a blank page and asks the model to fill it.",
-          "Hakkan starts from a topic you want to lead. It researches the real conversation, builds a cited report as your source of truth, and helps you create from that. The model is never the source.",
-          "Hakkan (発刊) is Japanese for “to publish”, and aloud it echoes “harken”: listen closely. Listen first, then publish.",
+          "Since late 2024, more new articles online are written by AI than by people (Graphite, 2025). That is the slop problem: fluent text that reads fine and knows nothing. The tools caused it, because every AI writer starts from a blank page and asks the model to fill it.",
+          "Hakkan starts from a topic you want to lead. It researches the real conversation into a cited report, and you create from that. The model is never the source. Hakkan (発刊) is Japanese for “to publish”, and aloud it echoes “harken”: listen closely.",
         ],
       },
       {
@@ -869,55 +868,38 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "How it works: topic, report, your voice",
         body: [
-          "Give it a topic. It gathers the real conversation, filters for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, every quote cited. That report is the source of truth for everything you make from it.",
-          "Then you create. Personas learn your voice from your own writing, so the output sounds like you rather than like a model. A trends module keeps you current on the topic between reports.",
-          "Automation does the gathering. The taste and the opinions stay human. That is the part of content that connects.",
+          "Give it a topic. It gathers the real conversation, filters for relevance, and builds a visual report: themes categorised, sentiment weighed, angles ranked, every quote cited. That report is your source of truth.",
+          "Then you create from it. Personas learn your voice from your own writing, and a trends module keeps you current between reports. Automation does the gathering; the taste stays human.",
         ],
       },
       {
         id: "how",
-        kind: "trend",
-        heading: "What one report is actually made of",
+        kind: "metrics",
+        heading: "Where it listens",
         intro:
-          "A real shipped report, on 2026 World Cup commercialisation: 965 items cited, 903 of them real voices: comments, posts and transcripts from people, not publications.",
-        measure: "Items cited",
-        rowLabel: "Source",
-        rows: [
+          "Depth is the point. A sweep runs across the same fourteen platforms every time, and the planner routes extra sources in when the topic calls for them, so a travel question reaches review sites and a developer question reaches technical forums without a code change.",
+        items: [
           {
-            label: "Open web",
-            value: 900,
-            display: "900",
-            note: "Articles and pages, reached through search APIs.",
+            value: "14",
+            label: "Platforms on every run",
+            context:
+              "Reddit, X, YouTube, TikTok, Instagram, LinkedIn, Threads, Hacker News, Pinterest, Rumble, GitHub, Polymarket and two search layers. Every run, not a menu to configure.",
           },
           {
-            label: "Google News",
-            value: 30,
-            display: "30",
-            note: "The press layer, kept separate from opinion.",
+            value: "19+",
+            label: "Sources reachable in total",
+            context:
+              "The fan-out plus routed legs: news, traveller reviews, business reviews, retail reviews and app-store reviews. Chosen per topic rather than always on.",
           },
           {
-            label: "Reddit",
-            value: 21,
-            display: "21",
-            note: "Where the arguments actually happen.",
+            value: "Yours",
+            label: "Depth is a user choice",
+            context:
+              "How wide and how far back a run reaches is set by the person asking, not capped by a limit the tool invented to protect its own costs.",
           },
-          {
-            label: "YouTube",
-            value: 5,
-            display: "5",
-            note: "Transcripts, so video voices are quotable.",
-          },
-          {
-            label: "Perplexity",
-            value: 4,
-            display: "4",
-            note: "Synthesis, weighted low on purpose.",
-          },
-          { label: "Instagram", value: 4, display: "4", note: "" },
-          { label: "Pinterest", value: 1, display: "1", note: "" },
         ],
         footnote:
-          "The mix is chosen per question, not fixed: a travel question reaches TripAdvisor, a developer question reaches Hacker News, without a code change. Depth is a user choice, not a limit the tool invents.",
+          "Counts are derived in code from the platform registry rather than typed into copy, so the number on the marketing site, in the search bar and here cannot drift apart. They describe what Hakkan reaches, not the published ceiling of the APIs underneath it.",
       },
       {
         id: "hard",
@@ -925,7 +907,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The hard part: teaching the filter to value people",
         body: [
           "The promise is “what people actually said”, and the first evidence filter quietly betrayed it. A verbose article restates the topic in its headline, so it scored high. A real reply like “Why need a nanny if I won’t have a job” is short and oblique, so it died as off-topic. The filter was killing the material the product sells.",
-          "The fix was a rubric that judges a comment as a comment: replies answer the thing they reply to, not your search query, so relevance is scored in context, and only spam, bots and meta-chatter score zero. Rewritten on principle, then measured once, not tuned to the target.",
+          "The fix was to judge a comment as a comment. Replies answer the thing they reply to, not your search query, so relevance is scored in context and only spam and bots score zero.",
         ],
       },
       {
@@ -933,7 +915,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Human voice in the evidence, measured at every stage",
         intro:
-          "The bar was set at 40% of cited items being real human utterances. Getting there took four attempts, including catching our own test harness lying to us.",
+          "The bar: 40% of everything cited had to be a real human utterance rather than a publication. Getting there took four attempts.",
         measure: "Voice ratio",
         rowLabel: "Stage",
         rows: [
@@ -941,58 +923,58 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "First measure",
             value: 12,
             display: "12%",
-            note: "Later invalidated: a test flag was replaying cached data instead of searching live. Caught, documented, runs deleted.",
+            note: "Invalidated: a test flag was replaying cached data instead of searching live.",
           },
           {
             label: "Live streaming",
             value: 29,
             display: "29%",
-            note: "Real runs, streamed comments arriving. Better, and still losing voices in the filter.",
+            note: "Real runs. Better, and still losing voices in the filter.",
           },
           {
             label: "Facts added",
             value: 19,
             display: "19%",
-            note: "More article evidence diluted the voices. The filter was the bottleneck, now provable.",
+            note: "More article evidence diluted the voices. The filter was the bottleneck.",
           },
           {
             label: "Filter rewritten",
             value: 57,
             display: "57%",
-            note: "Comments judged as comments: 81 real voices cited in the acceptance run, against the 40% bar.",
+            note: "Comments judged as comments. Well past the bar.",
           },
         ],
         footnote:
-          "The 12% row stays in this chart deliberately. The measurement was taken on replayed fixture data a flag had switched on, and the moment that was discovered it was written down and the affected runs were deleted. A tool that sells honesty has to be built by a process that practises it.",
+          "Measured on live runs against a 40% bar set before the work started, not tuned to hit it.",
       },
       {
         id: "honest",
         kind: "metrics",
         heading: "Honest by construction",
         intro:
-          "“No slop” is enforced in code, not tone of voice. The product refuses whole categories of fabrication that competing tools happily ship:",
+          "“No slop” is enforced in code, not tone of voice. Three refusals built into the product:",
         items: [
           {
             value: "3-way",
             label: "Every number is classified",
             context:
-              "Grounded in the research, drawn from your own writing, or derived by the model. Only the third is flagged for you to judge. Flagged, never blocked: only the author knows which figures they stand behind.",
+              "Grounded in the research, drawn from your own writing, or derived by the model. Only the third is flagged, never blocked. The author decides what they stand behind.",
           },
           {
             value: "0",
             label: "Virality predictions",
             context:
-              "Refused outright. With no outcome data to train on, a prediction is a made-up number beside real citations. Hakkan shows what did break out, measured against each platform's median.",
+              "Refused outright. With no outcome data to train on, a prediction is a made-up number sitting beside real citations. It shows what did break out instead.",
           },
           {
             value: "“of the N voices here”",
             label: "Every claim is scoped",
             context:
-              "60% of the voices in a report being frustrated is measured and true; “60% of people” is neither. The copy states the scope, never an apology.",
+              "“60% of the voices in this report” is measured and true. “60% of people” is neither.",
           },
         ],
         footnote:
-          "Same rule inside the business: the tool was built against a hard cost-per-run ceiling enforced in code, so the research depth users get is sustainable for them and for us. Priced to be worth it on both sides, without a single invented limit.",
+          "Same rule inside the business: a hard cost-per-run ceiling enforced in code, so the depth users get stays sustainable on both sides.",
       },
       {
         id: "screens",
@@ -1023,9 +1005,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Read the reference images, not a summary of them. Built from a written description, the first report page came out a 7,600-pixel essay, thirteen sections and ten screens, when every actual reference was a card grid with a metric band. A day lost to that.",
-          "Batch the evidence filter from day one. Scoring every item in one model call worked until streaming delivered what we were paying for, and the call outgrew its timeout, killing runs that had already spent money. Small batches and bounded parallelism were always the right shape.",
-          "Worth naming what solo meant here: product, design, code and copy are mine, with AI-assisted engineering doing the accelerating and a set of third-party research APIs doing the reaching. The judgement calls, and the mistakes above, are all mine.",
+          "Read the reference images, not a summary of them. Built from a written description, the first report page came out a 7,600-pixel essay when every actual reference was a card grid with a metric band. A day lost to that.",
+          "Batch the evidence filter from day one. Scoring every item in one model call worked until streaming delivered what we were paying for and the call outgrew its timeout, killing runs that had already spent money.",
         ],
       },
     ],
@@ -1070,9 +1051,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A format that never changed",
         body: [
-          "Faith is learned in community: the same readings, the same routines, the same page for everyone. That sameness is the comfort of the devotional, and its limit. Someone carrying something specific today is never met where they are.",
-          "And most of faith is lived there. Barna finds 56% of Christians say their spiritual life is entirely private, while a growing group report that the standard forms of worship and faith formation simply do not work for them. The communal side is well resourced. The private side, where most of it actually happens, gets a template.",
-          "ISIT complements tradition rather than replacing it. It keeps what is worth keeping: a weekly devotional written by a person, the shared devotions everyone knows, the whole Bible, no algorithm, no ads. Then share what you are going through and it writes one for exactly that, rooted first in Scripture.",
+          "Faith is learned in community: the same readings, the same routines, the same page for everyone. Barna finds 56% of Christians say their spiritual life is entirely private, and a growing group report that the standard forms simply do not work for them. The communal side is well resourced. The private side, where most of it happens, gets a template.",
+          "ISIT complements tradition rather than replacing it. It keeps the weekly devotional, the shared devotions everyone knows and the whole Bible, then writes one for whatever you are actually carrying, rooted first in Scripture. No algorithm, no ads.",
         ],
       },
       {
@@ -1080,8 +1060,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Personalisation with a safety net",
         body: [
-          "Generated spiritual guidance is higher-stakes than most AI writing. It has to carry authority without hallucinated certainty. So the generators run on the model that ranks first for restraint and coherence. Here restraint is the feature and creative risk is the failure mode. A cheaper, edgier model was tested on the real prompt and turned down twice.",
-          "And nothing generated reaches a reader unverified. Every tailored devotional passes through a fact-check that searches the live web to verify its claims before publication, a pass that deliberately costs several times more than the writing itself.",
+          "Generated spiritual guidance is higher-stakes than most AI writing: it has to carry authority without hallucinated certainty. Restraint is the feature here, so a cheaper, edgier model was tested on the real prompt and turned down twice.",
+          "Nothing generated reaches a reader unverified. Every tailored devotional passes a fact-check against the live web before publication, a pass that deliberately costs several times more than the writing itself.",
         ],
       },
       {
@@ -1142,7 +1122,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Design follows the same discipline. The devotional hero is bottom-anchored and ratio-sized, the type system is two families rather than three, and generated devotionals draw from a closed, server-enforced set of themes rather than whatever a model invents.",
+          "Design follows the same discipline: two type families rather than three, and generated devotionals drawn from a closed, server-enforced set of themes rather than whatever a model invents.",
       },
       {
         id: "screens",
@@ -1224,8 +1204,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The mental load nobody prices in",
         body: [
-          "In one Wakefield Research survey, 68% of Americans called deciding what to eat their biggest mealtime challenge. Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each. More deciding, not less.",
-          "tapa. deletes the decision. Type it, say it or take a pic of what is in the fridge, set a time and a serving count, and get one meal built around your tastes. Variety from the same shelf. Allergies and dietary needs are set once and enforced on every recipe. Safety, not preference.",
+          "In one Wakefield Research survey, 68% of Americans called deciding what to eat their biggest mealtime challenge. Work out what you have, then what it could become, and because that is tedious you cook the same three things forever. Recipe sites answer with fifty results and a life story above each.",
+          "tapa. deletes the decision. Type it, say it or take a pic of what is in the fridge, and get one meal built around your tastes. Variety from the same shelf, with allergies and dietary needs set once and enforced on every recipe.",
         ],
       },
       {
@@ -1313,8 +1293,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Own the data properly from the first schema. Local recipes belonged to the phone, not the account, until a TestFlight tester signed into a fresh account and saw someone else's saved recipes. Every row owned by a user, enforced at the data layer, was always the right design.",
-          "Research the free tier before launch, not in public. It went from three recipes a week to one to two inside two days, and the cooking-frequency data that settled it existed all along. Check how people already behave before deciding what to charge for.",
+          "Own the data properly from the first schema. Local recipes belonged to the phone, not the account, until a TestFlight tester signed into a fresh account and saw someone else's saved recipes.",
+          "Research the free tier before launch, not in public. It moved three times in two days, and the cooking-frequency data that settled it existed all along.",
         ],
       },
     ],
@@ -1359,8 +1339,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Two kinds of slipper, one blind spot",
         body: [
-          "There are two kinds of people: the distracted and the overworker. I am both, on different days. Screen-time tools only ever nag the first one, and they live on the phone. The browser is where the work gets done, so it is also where the distraction is bound to be found, and almost nothing was watching it.",
-          "So the product is a friend with an attitude rather than a dashboard. Open it and you get today's number with a line matched to how deep you are. Cross a limit you set and the tab redirects to a wall with a countdown. Re-open a site you have already overdone and a three-second pause asks whether you meant to.",
+          "There are two kinds of people: the distracted and the overworker. I am both, on different days. Screen-time tools only nag the first one, and they live on the phone. The browser is where the work gets done, so it is also where the distraction finds you, and almost nothing was watching it.",
+          "So it is a friend with an attitude rather than a dashboard. Today's number comes with a line matched to how deep you are, a limit you cross redirects the tab to a wall, and re-opening a site you have overdone triggers a three-second pause.",
         ],
       },
       {
@@ -1368,8 +1348,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The hard part: most trackers quietly lie",
         body: [
-          "Chrome's idle API watches your mouse and keyboard. Watch an hour-long show without touching anything and the browser calls it idle, so the tracker logs three minutes. A product whose entire promise is receipts cannot ship a number that is wrong in the user's favour.",
-          "Getting this right took four separate passes, each one closing a loss or gain path found by tracing scenarios end to end. It is the majority of the engineering in the extension, and none of it is visible in a screenshot.",
+          "Chrome's idle API watches your mouse and keyboard. Watch an hour-long show without touching anything and the browser calls it idle, so the tracker logs three minutes. A product whose promise is receipts cannot ship a number that is wrong in the user's favour.",
+          "Getting it right took four separate passes. It is the majority of the engineering in the extension, and none of it is visible in a screenshot.",
         ],
       },
       {
@@ -1420,7 +1400,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The gate I built, then deleted",
         body: [
           "Blocking, time limits and the pause interstitial all shipped behind a licence check. Payments were wired, the Pro tier existed, and it was the wrong product.",
-          "An accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure. Worse, the paywalled features are the ones that change behaviour, so the free tier was a guilt machine with no exit. The licensing came out and everything went free. There is no backend to fund, which is what made the decision affordable as well as right.",
+          "An accountability tool that withholds the intervention until you pay is selling the diagnosis and charging for the cure. The paywalled features were the ones that change behaviour, so the free tier was a guilt machine with no exit. Licensing came out, everything went free, and with no backend to fund that was affordable as well as right.",
         ],
       },
       {
@@ -1451,9 +1431,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Write the accuracy spec before the tracker. Four rewrites happened because the first version trusted one API and discovered its blind spots one user scenario at a time. The list of ways a browser can lie about attention was knowable up front.",
-          "Tier the copy against the real thresholds. The roast lines drifted from the numbers they described, showing “an hour” at thirty-one minutes, and the pools were thin enough to repeat within a week. Both were fixed in an audit that also grew the shame lines from 38 to 72. Copy that is data-driven has to be tested like data.",
-          "Decide the business model before building the gate. Licensing was implemented, then removed once it was obvious the paid features were the ones that made the product work. That was a week spent on a question that a paragraph of thinking would have answered.",
+          "Write the accuracy spec before the tracker. Four rewrites happened because the first version trusted one API and found its blind spots one scenario at a time. The ways a browser can lie about attention were knowable up front.",
+          "Test copy like data. The roast lines drifted from the numbers they described, showing “an hour” at thirty-one minutes, and repeated within a week until an audit grew the pool from 38 lines to 72.",
+          "Decide the business model before building the gate. Licensing was implemented, then removed once it was obvious the paid features were the ones that made the product work.",
         ],
       },
     ],
