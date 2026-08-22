@@ -36,10 +36,17 @@ const path = studyPath(study);
 const home = studyHome(study.kind);
 
 /** The opening image or clip runs the full content column. */
-const HERO_WIDTH = 1400;
+const HERO_WIDTH = 1800;
 const SHOT_WIDTH = 900;
+/*
+ * Before/after pairs sit two to a row, so each half is ~568 CSS pixels
+ * and needs 1,136 behind it on a 2x screen. Rendering these at
+ * SHOT_WIDTH left the one comparison a reader studies closely as the
+ * softest thing on the page.
+ */
+const BEFORE_AFTER_WIDTH = 1200;
 /** Wide galleries run two-up at most, so each one is shown larger. */
-const WIDE_SHOT_WIDTH = 1100;
+const WIDE_SHOT_WIDTH = 1800;
 /**
  * Paired captures share the column, so each fills about half of it —
  * but half a column on a 2x screen is still ~1,130 device pixels, and
@@ -47,8 +54,8 @@ const WIDE_SHOT_WIDTH = 1100;
  * retina case, and kept just under the narrowest source so nothing is
  * upscaled to get there.
  */
-const PAIR_SHOT_WIDTH = 1160;
-const SHOT_QUALITY = 74;
+const PAIR_SHOT_WIDTH = 1400;
+const SHOT_QUALITY = 80;
 
 const heroImage = caseImage(study.hero?.image);
 /*
@@ -316,7 +323,7 @@ const schema = [
                           <Image
                             src={before}
                             alt=""
-                            width={SHOT_WIDTH}
+                            width={BEFORE_AFTER_WIDTH}
                             quality={SHOT_QUALITY}
                             densities={[1]}
                             loading="lazy"
@@ -331,7 +338,7 @@ const schema = [
                           <Image
                             src={after}
                             alt=""
-                            width={SHOT_WIDTH}
+                            width={BEFORE_AFTER_WIDTH}
                             quality={SHOT_QUALITY}
                             densities={[1]}
                             loading="lazy"
@@ -870,6 +877,21 @@ const schema = [
     margin: var(--space-7) 0 0;
   }
 
+  /*
+   * Held back from the full column.
+   *
+   * At 1,152 CSS pixels on a 2× screen a hero needs 2,304 device
+   * pixels to look sharp, and it was being handed 1,400 — so the one
+   * image that opens every page was the softest thing on it. Capping
+   * the display width and raising the rendered width closes that gap
+   * from both directions, and a slightly smaller hero reads better
+   * against the text anyway.
+   */
+  .cs__hero-media:not([class*="--"]) {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
   .cs__hero-media,
   .cs__video-media {
     display: block;
@@ -997,9 +1019,12 @@ const schema = [
     object-position: center top;
   }
 
+  /* Same reasoning as the hero: one per row, so cap it and oversample. */
   .cs__gallery--wide {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
+    max-width: 900px;
+    margin-inline: auto;
   }
 
   .cs__shot {

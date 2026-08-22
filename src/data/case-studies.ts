@@ -440,9 +440,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "The rebuilt Innovatr home page, leading with the consumer-intelligence positioning.",
     },
     summary:
-      "Rebuilt the front of a research business: brand, website, content engine and paid programme. Built the marketing system from nothing, beat the industry benchmarks, and replaced an annual software licence with a product the company could sell.",
+      "Helped rebrand a research business and build its marketing engine: website, content, paid media and a CRM-backed system. Costs beat the industry benchmarks, and an annual software licence became a product the company could sell.",
     description:
-      "Innovatr is a consumer research and growth consultancy. I worked full time as Brand & Marketing Manager: improved the branding, started the paid engine, built the marketing system, and shipped a product. This is what changed in seven months.",
+      "Innovatr is a consumer research and growth consultancy. As Brand & Marketing Manager I worked with the team to sharpen the brand, start the paid engine, build the marketing system and ship a product. This is what changed in seven months.",
     tags: [
       "Rebranding",
       "Content",
@@ -587,7 +587,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Building the marketing system",
         intro:
-          "A business selling research to decision-makers has to know who they are, and Innovatr had no list. I built one into a CRM, then wired the system around it: email automation, LinkedIn ads, remarketing. The CRM feeds the ad audiences, so ads aim at named companies rather than the platform's guesses.",
+          "A business selling research to decision-makers has to know who they are, and there was no list. We built one into a CRM, then wired the system around it: email automation, LinkedIn ads, remarketing. The CRM feeds the ad audiences, so ads aim at named companies rather than the platform's guesses.",
         items: [
           {
             value: "0 → live",
@@ -693,7 +693,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The product: Social Sweep",
         body: [
-          "Innovatr was about to licence a social listening platform on an annual enterprise contract. I built the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
+          "Innovatr was about to licence a social listening platform on an annual enterprise contract. I proposed building the capability in-house instead: platform APIs feeding an AI reasoning layer, prototyped in Replit and built out with Claude.",
           "Ask it a plain-language question and it picks the platforms worth reading, then returns a report where every claim resolves to a real comment. A line of annual cost became a line of product, positioned as a billable study.",
           "The saving is the small part. The tool Innovatr nearly licensed was acquired by a research group months later, after four years and outside investment. Not parity, but the capability that used to justify an acquisition is now something one person can build in a quarter.",
         ],
@@ -744,23 +744,11 @@ export const CASE_STUDIES: CaseStudy[] = [
         ],
         heading: "Inside the tool",
       },
-      {
-        id: "product",
-        kind: "video",
-        heading: "Social Sweep, running",
-        intro:
-          "A full study end to end: the question going in, the platforms it decides are worth reading, and the report coming back with the quotes underneath every claim.",
-        src: "/media/case-studies/social-sweep.mp4",
-        poster: "innovatr/social_sweep_report.jpg",
-        alt: "A two-minute walkthrough of Social Sweep: entering a plain-language question, watching it select platforms, and reading the finished report with its sentiment split, emotion mix and source quotes.",
-        footnote:
-          "Recorded from the working tool, not a prototype. This copy is silent by design; the narrated version is in the portfolio.",
-      },
     ],
     seo: {
       title: "Innovatr case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu rebuilt Innovatr's brand, website, content engine and paid programme, and built the social listening product the business now sells.",
+        "How Alroy Ndhlovu helped rebrand Innovatr and build its marketing engine, and built the social listening product the business now sells.",
     },
   },
   {
@@ -1439,9 +1427,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/portfolio/website_video_lumiskin.mp4",
     },
     summary:
-      "A meme about designers handing developers a brief that looks great and costs a fortune to build. I wanted to know if that was still true. One day, under $300, working site.",
+      "A meme said the brief was too expensive to build. I built it in a day for under $300, against a $6,500 conventional quote.",
     description:
-      "The joke is the gap between what a designer imagines and what gets built. A chameleon that takes the colour of the product beside it is a lovely idea and a five-figure production. I took the brief seriously to find out whether AI had closed that gap.",
+      "A chameleon that takes the colour of the product beside it is a lovely idea and a five-figure production. I took the brief seriously to find out whether AI had closed that gap.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
     meta: ["Self-directed", "Build challenge", "Mar 2026"],
     website: "https://deft-pasca-8eec5e.netlify.app",
@@ -1464,8 +1452,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Designers dream it. Developers price it.",
         body: [
-          "A meme went round design circles: a concept site where a chameleon takes the colour of the bottle beside it, cut against the canyon-swing clip. Designer in the chair, about to be pushed.",
-          "Everyone has been in that meeting. The design is good, building it means a studio and a render farm, so it dies. I wanted to know whether that was still true or just a habit. It is a habit: one day, under $300, on consumer subscriptions.",
+          "A meme went round design circles: a concept site where a chameleon takes the colour of the bottle beside it, cut against the canyon-swing clip.",
+          "Everyone has been in that meeting. The design is good, building it means a studio and a render farm, so it dies. I wanted to know whether that was still true or just a habit. It is a habit: one day, under $300.",
         ],
       },
       {
@@ -1478,15 +1466,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         portrait: true,
         alt: "A split screen: above, a concept site for Chroma Juice where a chameleon shifts through berry, orange and green to match each bottle; below, the canyon-swing meme with two people in blue jackets labelled Programmer and Developer standing over a seated man labelled Designer.",
         footnote:
-          "Not my work, and included as the thing being answered rather than as a portfolio piece. The concept site and the edit are credited to @uiux_sumeet, whose watermark is on the clip.",
+          "Not my work. Included as the thing being answered, and credited to @uiux_sumeet, whose watermark is on the clip.",
       },
       {
         id: "idea",
         kind: "prose",
         heading: "A hero that earns the word premium",
         body: [
-          "Copying the juice site would have proved nothing, so I moved the mechanic to cosmetics, a category whose identity is already colour. The chameleon settles beside a bar, takes its colour, and the product card arrives on the match. No copy explaining it.",
-          "Changing the category kept every expensive part: a live animal, three colourways, macro product work and a thirty-second film. The exact bill the meme is laughing at.",
+          "I moved the mechanic to cosmetics, a category whose identity is already colour. The chameleon settles beside a bar, takes its colour, and the product card arrives on the match. No copy explaining it.",
+          "The category changed; every expensive part stayed. A live animal, three colourways, macro product work and a thirty-second film. The exact bill the meme is laughing at.",
         ],
       },
       {
@@ -1494,7 +1482,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "video",
         heading: "One mechanic, three colourways",
         intro:
-          "Stills undersell this one. The whole idea is a transition, so the page shows the thing running rather than three frames of it. The chameleon matches the bar it is standing next to, and the card arrives once the colour has landed.",
+          "The whole idea is a transition, so here it is running rather than as three frames.",
         src: "/media/portfolio/website_video_lumiskin.mp4",
         poster: "lumiskin/hero-aurora.jpg",
         alt: "The LumiSkin hero cycling through all three colourways: the chameleon shifts to lavender, pink and amber to match Aurora Petal, Jade Mist and Peach Quartz, each with its product card.",
@@ -1504,16 +1492,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Generated, not shot",
         body: [
-          "Nothing was photographed or filmed. Stills first, then animated into three eight-second clips, then a site built with an agentic IDE and finished by hand.",
-          "Order matters. Locking the bars and palette as cheap stills meant the film only had to move something that already existed; go straight to video and you re-roll thirty seconds every time a soap looks wrong. The hard part was consistency across sixteen images, not any single prompt.",
+          "Nothing was photographed or filmed. Stills first, then animated into clips, then a site built with an agentic IDE and finished by hand.",
+          "Order matters. Locking the bars as cheap stills meant the film only had to move something that already existed; go straight to video and you re-roll thirty seconds every time a soap looks wrong.",
         ],
       },
       {
         id: "cost",
         kind: "metrics",
         heading: "What it actually cost",
-        intro:
-          "Three line items, all of them subscription or per-second pricing rather than a quote.",
+        intro: "All subscription or per-second pricing rather than a quote.",
         items: [
           {
             value: "< $300",
@@ -1534,14 +1521,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Veo pricing is Google's published Gemini API rate. Subscriptions are list prices for the consumer tiers actually used. Time is not costed. It was a day's work, and putting a day rate on it would be inventing a number.",
+          "Veo pricing is Google's published API rate; subscriptions are list prices for the tiers actually used. Time is not costed.",
       },
       {
         id: "cost",
         kind: "metrics",
         heading: "What the conventional route would have cost",
         intro:
-          "Published 2026 market rates for the same three jobs, quoted as ranges because that is how they are quoted. These are benchmarks, not quotes anyone gave for this project.",
+          "Published 2026 market rates for the same three jobs. Benchmarks, not quotes anyone gave for this project.",
         items: [
           {
             value: "$6,500+",
@@ -1571,15 +1558,15 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Sources: 2026 photography pricing surveys (LarsMiller Media, ProShot Media, Nightjar); 3D animation from Advids and Vidico; landing page rates from Uwindi and eseospace. These ranges buy a licensed shoot, a crew, usage rights and someone accountable. The comparison is of output, not of everything an agency sells.",
+          "Sources: 2026 photography, 3D animation and landing-page pricing surveys. These ranges buy a crew, usage rights and someone accountable, so the comparison is of output, not of everything an agency sells.",
       },
       {
         id: "build",
         kind: "prose",
         heading: "The part that is not a prompt",
         body: [
-          "React 19, Vite and GSAP, with an agentic IDE doing the first pass and Claude finishing it. The agentic pass gets a page standing up fast and is much weaker on the decisions that separate a demo from something shippable.",
-          "The main one: the sequence runs on its own timers rather than off the video. Autoplay is blocked often enough that reading the timeline off the player would let the product cards never appear at all. If the video never plays, the sequence still runs: worse, rather than broken.",
+          "React 19, Vite and GSAP. The agentic pass gets a page standing up fast and is much weaker on the decisions that separate a demo from something shippable.",
+          "The main one: the sequence runs on its own timers rather than off the video, because autoplay is blocked often enough that reading the timeline off the player would let the product cards never appear at all.",
         ],
       },
     ],
