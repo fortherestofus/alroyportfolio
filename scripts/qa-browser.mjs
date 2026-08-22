@@ -77,7 +77,7 @@ const EXPECTED = {
   roles: 13, // src/data/experience.ts
   studyGroups: 4, // src/data/education.ts
   studyEntries: 10,
-  services: 5, // src/data/services.ts
+  services: 4, // src/data/services.ts
   testimonials: 3, // src/data/testimonials.ts
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
   products: 4, // src/data/products.ts

@@ -120,6 +120,14 @@ function check(file) {
     const isTokenDefinition = rel.startsWith(TOKEN_LAYER) && CUSTOM_PROPERTY_DECLARATION.test(line);
     if (isTokenDefinition) return;
 
+    /*
+     * The theme-color meta is the one HTML attribute that must carry a
+     * literal color: it is read by the browser chrome before any CSS
+     * loads, and var() does not resolve in attribute values. It mirrors
+     * --color-bg in tokens.css.
+     */
+    if (/name="theme-color"/.test(line)) return;
+
     for (const match of line.matchAll(HEX)) {
       violations.push({ rel, lineNumber, value: match[0], rule: "hardcoded hex color" });
     }

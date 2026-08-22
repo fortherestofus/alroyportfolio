@@ -196,7 +196,11 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Thrifty Adventures runs group and tailored tours out of South Africa. Contracted as digital marketing manager to lift return on ad spend, open new audiences on channels like LinkedIn, and turn attention into leads. Social and TikTok were already running; paid was not. I gave each channel one job.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
     logoFile: "thrifty.jpeg",
-    meta: ["Client · Thrifty Adventures", "Contract Digital Marketing Manager", "Jul 2025 – Jan 2026"],
+    meta: [
+      "Client · Thrifty Adventures",
+      "Contract Digital Marketing Manager",
+      "Jul 2025 – Jan 2026",
+    ],
     chapters: [
       { id: "start", label: "The wrong channel" },
       { id: "testing", label: "Opening it up" },
@@ -225,7 +229,12 @@ export const CASE_STUDIES: CaseStudy[] = [
           "July started small, at the price a new account always pays. September ran four objectives side by side, which is the only way to learn what a platform charges for each thing it sells. Then: drop what it killed, fund what survived.",
         measure: "Reach, indexed to July",
         rows: [
-          { label: "Jul 2025", value: 1, display: "1×", note: "The baseline. A new account pays the most it will ever pay." },
+          {
+            label: "Jul 2025",
+            value: 1,
+            display: "1×",
+            note: "The baseline. A new account pays the most it will ever pay.",
+          },
           { label: "Aug 2025", value: 8.2, display: "8×", note: "Clicks 58% cheaper than July." },
           {
             label: "Sep 2025",
@@ -245,7 +254,12 @@ export const CASE_STUDIES: CaseStudy[] = [
             display: "20×",
             note: "Cut back to the winners.",
           },
-          { label: "Dec 2025", value: 47.8, display: "48×", note: "Scaled. CPM down 73% from July." },
+          {
+            label: "Dec 2025",
+            value: 47.8,
+            display: "48×",
+            note: "Scaled. CPM down 73% from July.",
+          },
           {
             label: "Jan 2026",
             value: 47.2,
@@ -384,17 +398,20 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "~99%",
             label: "Below the travel median cost per click",
-            context: "Against the $2.14 median in the 2026 benchmark set. The absolute cost stays with the client.",
+            context:
+              "Against the $2.14 median in the 2026 benchmark set. The absolute cost stays with the client.",
           },
           {
             value: "8.04%",
             label: "Account click-through rate",
-            context: "Against a 9.32% search median. The display campaign carried 18.12% on its own.",
+            context:
+              "Against a 9.32% search median. The display campaign carried 18.12% on its own.",
           },
           {
             value: "6",
             label: "Campaigns, Jun 2025 to Feb 2026",
-            context: "Search, display and Performance Max, each on its own job. Click and impression volumes stay with the client.",
+            context:
+              "Search, display and Performance Max, each on its own job. Click and impression volumes stay with the client.",
           },
         ],
         footnote:
@@ -672,12 +689,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "52%",
             label: "Cheaper per click than the norm",
-            context: "Against LinkedIn's published B2B click costs; cheaper still blended account-wide.",
+            context:
+              "Against LinkedIn's published B2B click costs; cheaper still blended account-wide.",
           },
           {
             value: "61%",
             label: "Cheaper per thousand impressions",
-            context: "Against the published CPM norm, sustained across more than a million impressions.",
+            context:
+              "Against the published CPM norm, sustained across more than a million impressions.",
           },
           {
             value: "44–48%",
@@ -1006,8 +1025,7 @@ export const CASE_STUDIES: CaseStudy[] = [
             note: "The closing reflection pass.",
           },
         ],
-        footnote:
-          "Verification is the one cost this product will not cut to protect a margin.",
+        footnote: "Verification is the one cost this product will not cut to protect a margin.",
       },
       {
         id: "screens",
@@ -1479,8 +1497,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         id: "idea",
         kind: "video",
         heading: "One mechanic, three colourways",
-        intro:
-          "The whole idea is a transition, so here it is running rather than as three frames.",
+        intro: "The whole idea is a transition, so here it is running rather than as three frames.",
         src: "/media/portfolio/website_video_lumiskin.mp4",
         poster: "lumiskin/hero-aurora.jpg",
         alt: "The LumiSkin hero cycling through all three colourways: the chameleon shifts to lavender, pink and amber to match Aurora Petal, Jade Mist and Peach Quartz, each with its product card.",

@@ -256,6 +256,8 @@
   /* --- Layout ---------------------------------------------- */
   --width-content: 1200px;
   --width-reading: 720px;
+  /* Case-study hero and wide-gallery cap: between reading and content. */
+  --width-media: 900px;
   --measure: 65ch;
 
   /* --- Motion ---------------------------------------------- */

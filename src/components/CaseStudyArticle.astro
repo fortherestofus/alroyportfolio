@@ -92,6 +92,16 @@ for (const block of study.blocks) {
   blockPosters.set(block.poster, optimised.src);
 }
 
+/*
+ * Per-study OG image: the hero, resized for link previews. JPEG rather
+ * than webp because some scrapers (WhatsApp, older Slack) still skip
+ * webp og:images. Falls back to the branded default when a study has
+ * no hero.
+ */
+const ogImage = heroImage
+  ? (await getImage({ src: heroImage, width: 1200, quality: SHOT_QUALITY, format: "jpeg" })).src
+  : undefined;
+
 const schema = [
   {
     "@context": "https://schema.org",
@@ -106,6 +116,7 @@ const schema = [
      */
     author: { "@id": `${SITE.url}/#alroy` },
     url: new URL(path, SITE.url).href,
+    ...(ogImage ? { image: new URL(ogImage, SITE.url).href } : {}),
     datePublished: "2026-08-01",
   },
   {
@@ -125,7 +136,14 @@ const schema = [
 ];
 ---
 
-<BaseLayout title={study.seo.title} description={study.seo.description} path={path} schema={schema}>
+<BaseLayout
+  title={study.seo.title}
+  description={study.seo.description}
+  path={path}
+  schema={schema}
+  ogImage={ogImage}
+  ogImageAlt={study.hero?.alt}
+>
   <article class="cs">
     <header class="cs__head">
       <a class="cs__back" href={home.href}>
@@ -888,7 +906,7 @@ const schema = [
    * against the text anyway.
    */
   .cs__hero-media:not([class*="--"]) {
-    max-width: 900px;
+    max-width: var(--width-media);
     margin-inline: auto;
   }
 
@@ -1023,7 +1041,7 @@ const schema = [
   .cs__gallery--wide {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
-    max-width: 900px;
+    max-width: var(--width-media);
     margin-inline: auto;
   }
 

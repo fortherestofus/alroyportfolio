@@ -15,6 +15,8 @@ interface Props {
   path?: string;
   /** Absolute or root-relative OG image. Falls back to the branded default. */
   ogImage?: string;
+  /** Alt text for the OG image, for accessible link previews. */
+  ogImageAlt?: string;
   /** JSON-LD graph objects, serialised into <script type="application/ld+json">. */
   schema?: Record<string, unknown>[];
   /** Set on pages that should not be indexed (currently only /404). */
@@ -26,6 +28,7 @@ const {
   description,
   path,
   ogImage = "/og-default.png",
+  ogImageAlt = `${SITE.name} — portfolio`,
   schema = [],
   noindex = false,
 } = Astro.props;
@@ -52,6 +55,8 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={SITE.name} />
+    <meta name="theme-color" content="#0d0d0d" />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
@@ -81,11 +86,13 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     {
       schema.map((entry) => (
