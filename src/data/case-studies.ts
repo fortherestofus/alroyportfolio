@@ -780,10 +780,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A Hakkan report: 965 items cited and 903 real voices across seven platforms, with the sentiment split beneath.",
     },
     summary:
-      "A content research and creation assistant built to fight AI slop. It researches your topic into a cited report, then helps you create from it in your own voice.",
+      "A content discovery and creation assistant built to fight AI slop. It explores your topic into a cited report, then helps you create from it in your own voice.",
     description:
-      "Hakkan (発刊, “to publish”) helps you lead a topic. It researches the real conversation into a report with receipts, treats that report as your source of truth, and helps you create content from it in a voice it learns from you.",
-    tags: ["Product build", "AI engineering", "UX", "Research"],
+      "Hakkan (発刊, “to publish”) helps you lead a topic. It explores the real conversation into a report with receipts, treats that report as your source of truth, and helps you create content from it in a voice it learns from you.",
+    tags: ["Product build", "AI engineering", "UX", "Content discovery"],
     meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
     strip: [
       { image: "products/hakkan-research.jpg", alt: "Hakkan's search screen." },
@@ -805,7 +805,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "The problem: content stopped knowing anything",
         body: [
           "Since late 2024, more new articles online are written by AI than by people (Graphite, 2025). Fluent text that knows nothing. The tools caused it: every AI writer starts from a blank page and asks the model to fill it.",
-          "Hakkan starts from a topic you want to lead, researches the real conversation into a cited report, and you create from that. The model is never the source.",
+          "Hakkan starts from a topic you want to lead, explores the real conversation into a cited report, and you create from that. The model is never the source.",
         ],
       },
       {
@@ -901,7 +901,7 @@ export const CASE_STUDIES: CaseStudy[] = [
             value: "3-way",
             label: "Every number is classified",
             context:
-              "Grounded in the research, drawn from your own writing, or derived by the model. Only the third is flagged, never blocked. The author decides what they stand behind.",
+              "Grounded in the sources, drawn from your own writing, or derived by the model. Only the third is flagged, never blocked. The author decides what they stand behind.",
           },
           {
             value: "0",
@@ -947,7 +947,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Hakkan — how I built it | Alroy Ndhlovu",
       description:
-        "Building a content research and creation assistant to fight AI slop: cited reports as the source of truth, content in your own voice, and no invented numbers.",
+        "Building a content discovery and creation assistant to fight AI slop: cited reports as the source of truth, content in your own voice, and no invented numbers.",
     },
   },
   {

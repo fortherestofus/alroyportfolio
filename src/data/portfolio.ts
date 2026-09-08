@@ -69,7 +69,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "hakkan-research.jpg",
-        alt: "Research tool question screen — one input, depth and time-range controls, and the platforms it reads.",
+        alt: "Content discovery screen — one input, depth and time-range controls, and the platforms it reads.",
       },
       {
         image: "isit-home.png",
