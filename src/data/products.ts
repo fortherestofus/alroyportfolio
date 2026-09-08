@@ -174,11 +174,15 @@ export const PRODUCTS: Product[] = [
     tagline: "Take your faith into your own hands.",
     description:
       "Faith has always been communal: same readings, same routines, and a template feel to the personal side. InSpiritInTruth complements tradition rather than replacing it: devotionals written for whatever you are carrying, alongside the shared devotions and the whole Bible everyone knows. No algorithm, no ads.",
-    status: "In development",
+    status: "Live",
     platform: "iOS and Android",
+    link: {
+      url: "https://apps.apple.com/app/inspiritintruth-devotional/id6795657774",
+      label: "Download on the App Store",
+    },
     stack: [
       "React Native",
-      "Expo 56",
+      "Expo 57",
       "TypeScript",
       "Expo Router",
       "NativeWind",
