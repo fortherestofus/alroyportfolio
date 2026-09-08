@@ -231,11 +231,15 @@ export const PRODUCTS: Product[] = [
     tagline: "What can I cook with this?",
     description:
       "The daily what-do-I-eat problem, solved with what is already in your kitchen. Type it, say it or take a pic of your ingredients and get real meals back: variety from the same shelf, dietary choices enforced as hard rules. Cooking made simple, and the power back to you.",
-    status: "In development",
+    status: "Live",
     platform: "iOS and Android",
+    link: {
+      url: "https://apps.apple.com/app/tapa-cook-what-you-have/id6795631556",
+      label: "Download on the App Store",
+    },
     stack: [
       "React Native",
-      "Expo 56",
+      "Expo 57",
       "TypeScript",
       "NativeWind",
       "Supabase",
