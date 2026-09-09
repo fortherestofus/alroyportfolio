@@ -173,7 +173,7 @@ export const PRODUCTS: Product[] = [
     category: "Faith & Devotion",
     tagline: "Take your faith into your own hands.",
     description:
-      "Faith has always been communal: same readings, same routines, and a template feel to the personal side. InSpiritInTruth complements tradition rather than replacing it: devotionals written for whatever you are carrying, alongside the shared devotions and the whole Bible everyone knows. No algorithm, no ads.",
+      "Faith has always been communal: same readings, same routines, and a template feel to the personal side. InSpiritInTruth complements tradition rather than replacing it: devotionals written for whatever you are carrying, and chosen over time for what you keep coming back to, alongside the shared devotions and the whole Bible everyone knows. No attention-chasing feed, no ads.",
     status: "Live",
     platform: "iOS and Android",
     link: {
@@ -197,7 +197,7 @@ export const PRODUCTS: Product[] = [
       problem:
         "The devotional has not changed in generations: one text, written for everyone. The communal side of faith is well served. The personal side gets a template.",
       approach:
-        "Complement tradition, don't replace it. Share what you are carrying and get a devotional written for that, rooted first in scripture, with shared devotions and the full Bible keeping the communal thread.",
+        "Complement tradition, don't replace it. Share what you are carrying and get a devotional written for that, rooted first in scripture, with shared devotions and the full Bible keeping the communal thread. The home screen then leans toward the themes you actually read and the devotionals you have had written for you.",
       result:
         "Verification takes ~77% of the AI effort against ~22% on the writing. An app that quotes scripture cannot afford to misquote it.",
     },

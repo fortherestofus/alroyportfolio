@@ -985,7 +985,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "A format that never changed",
         body: [
           "Faith is learned together: same readings, same routines, same page for everyone. Yet Barna finds 56% of Christians say their spiritual life is entirely private. The communal side is well resourced. The private side, where most of it happens, gets a template.",
-          "ISIT complements tradition rather than replacing it. It keeps the weekly devotional, the shared devotions and the whole Bible, then writes one for whatever you are actually carrying. No algorithm, no ads.",
+          "ISIT complements tradition rather than replacing it. It keeps the weekly devotional, the shared devotions and the whole Bible, then writes one for whatever you are actually carrying — and leans the home screen toward the themes you keep reading. No attention-chasing feed, no ads.",
         ],
       },
       {
@@ -995,6 +995,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         body: [
           "Generated spiritual guidance has to carry authority without hallucinated certainty. Restraint is the feature, so a cheaper, edgier model was tested on the real prompt and turned down twice.",
           "Nothing reaches a reader unverified. Every devotional is fact-checked against the live web first, and a verse's translation label only updates when the text was genuinely re-fetched in that translation. The bug that rule killed: NKJV wording published tagged “NET”.",
+          "Personalisation does not stop at the first devotional. The home screen keeps weighting what it shows toward the themes a reader finishes and the devotionals they have had written for them — their own reading, never an engagement signal.",
         ],
       },
       {
@@ -1035,7 +1036,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         shots: [
           {
             image: "products/isit-home.png",
-            alt: "Home: the week's devotional and the verse of the day.",
+            alt: "Home: a devotional chosen for you, and the verse of the day.",
           },
           {
             image: "products/isit-personalise.png",
