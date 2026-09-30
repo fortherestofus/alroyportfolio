@@ -26,7 +26,7 @@ Client work, each written up with the problem, the decisions, the measured outco
 - [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Lead forms converting at three times the LinkedIn norm and 3.1 million organic views on TikTok, for a travel brand taken from scattered to deliberate across four channels. TikTok and Instagram were grown on what was already there; LinkedIn and search were built from nothing.
 - [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): Replaced an annual enterprise software licence with a tool built in-house, now a product the company can sell, and ran paid media at around three times better cost per lead than the B2B median. The rebrand and marketing engine behind a research business, in seven months.
 - [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): Sales in the first month, local and international, then a 20-unit bulk order from another brand. A clothing brand built end to end: product, store, payments, photography.
-- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): Built in a day for under $300, against a $6,500 conventional quote, for a brief a meme said was too expensive to build.
+- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): Built in a day for under $300, against $6,500+ for the same job without AI, on a brief a meme said was too expensive to build.
 
 ## Products he has built
 
