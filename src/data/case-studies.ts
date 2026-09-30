@@ -191,7 +191,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A grid of Thrifty Adventures tour posts covering Turkey, Europe, Zanzibar and Egypt.",
     },
     summary:
-      "Took a travel brand's marketing from scattered to deliberate across four channels: TikTok and Instagram grown on what was already there, LinkedIn and search built from nothing, and lead forms converting at three times the platform norm.",
+      "Lead forms converting at three times the LinkedIn norm and 3.1 million organic views on TikTok, for a travel brand taken from scattered to deliberate across four channels. TikTok and Instagram were grown on what was already there; LinkedIn and search were built from nothing.",
     description:
       "Thrifty Adventures runs group and tailored tours out of South Africa. Contracted as digital marketing manager to lift return on ad spend, open new audiences on channels like LinkedIn, and turn attention into leads. Social and TikTok were already running; paid was not. I gave each channel one job.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
@@ -457,7 +457,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "The rebuilt Innovatr home page, leading with the consumer-intelligence positioning.",
     },
     summary:
-      "Helped rebrand a research business and build its marketing engine: website, content, paid media and a CRM-backed system. Costs beat the industry benchmarks, and an annual software licence became a product the company could sell.",
+      "Replaced an annual enterprise software licence with a tool built in-house, now a product the company can sell, and ran paid media at around three times better cost per lead than the B2B median. The rebrand and marketing engine behind a research business, in seven months.",
     description:
       "Innovatr is a consumer research and growth consultancy. As Brand & Marketing Manager I worked with the team to sharpen the brand, start the paid engine, build the marketing system and ship a product. This is what changed in seven months.",
     tags: [
@@ -1320,7 +1320,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Three frames from the Filosofee product shoot: the wordmark hoodie and tees on a plain studio backdrop.",
     },
     summary:
-      "Built a clothing brand end to end: product, store, payments, photography. Validated the only way that counts: sales in the first month, local and international, then a 20-unit bulk order from another brand.",
+      "Sales in the first month, local and international, then a 20-unit bulk order from another brand. A clothing brand built end to end: product, store, payments, photography.",
     description:
       "Filosofee is a South African streetwear label. I designed the range, built the store, wired the payments, ran the shoot and the marketing. It sold in its first month and then landed its first wholesale order. One line of it failed, and that is in here too.",
     tags: ["E-commerce", "Brand", "Product design", "Photography", "AI production"],
@@ -1444,7 +1444,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/portfolio/website_video_lumiskin.mp4",
     },
     summary:
-      "A meme said the brief was too expensive to build. I built it in a day for under $300, against a $6,500 conventional quote.",
+      "Built in a day for under $300, against a $6,500 conventional quote, for a brief a meme said was too expensive to build.",
     description:
       "A chameleon that takes the colour of the product beside it is a lovely idea and a five-figure production. I took the brief seriously to find out whether AI had closed that gap.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
