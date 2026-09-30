@@ -1444,7 +1444,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/portfolio/website_video_lumiskin.mp4",
     },
     summary:
-      "Built in a day for under $300, against a $6,500 conventional quote, for a brief a meme said was too expensive to build.",
+      "Built in a day for under $300, against $6,500+ for the same job without AI, on a brief a meme said was too expensive to build.",
     description:
       "A chameleon that takes the colour of the product beside it is a lovely idea and a five-figure production. I took the brief seriously to find out whether AI had closed that gap.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
@@ -1589,7 +1589,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "LumiSkin case study | Alroy Ndhlovu",
       description:
-        "A meme said the brief was too expensive to build. A cosmetics hero with a colour-matching chameleon, made in a day for under $300 against a $6,500+ quote.",
+        "A meme said the brief was too expensive to build. A cosmetics hero with a colour-matching chameleon, made in a day for under $300 against $6,500+ without AI.",
     },
   },
 ];
