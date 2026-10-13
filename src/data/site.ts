@@ -33,6 +33,8 @@ export const SITE = {
   phone: "+27 76 267 8936",
   phoneHref: "+27762678936",
   resume: "/alroy-ndhlovu-resume.pdf",
+  /* Google Tag Manager container; it loads the GA4 tag (G-WSKDB1LYJZ). */
+  gtmId: "GTM-PLNFB2P",
 } as const;
 
 export const SOCIAL = {

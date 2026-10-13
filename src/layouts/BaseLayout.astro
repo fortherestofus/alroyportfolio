@@ -53,6 +53,20 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
       document.documentElement.classList.add("js");
     </script>
 
+    <!-- Google Tag Manager, as high in the head as possible per Google. -->
+    <script is:inline define:vars={{ gtmId: SITE.gtmId }}>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        const f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", gtmId);
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
@@ -102,6 +116,14 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
   </head>
 
   <body>
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${SITE.gtmId}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"></iframe>
+    </noscript>
     <a href="#main" class="skip-link">Skip to content</a>
     <slot name="nav" />
     <main id="main">
