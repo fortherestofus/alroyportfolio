@@ -133,6 +133,31 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
   </body>
 </html>
 
+<script>
+  /*
+   * Click tracking for the key CTAs. Any element with data-track="name"
+   * pushes a "cta_name" event to the dataLayer, which GTM picks up with
+   * a Custom Event trigger. Keyed on the attribute rather than the
+   * button text, so rewording a button never silently breaks tracking.
+   */
+  type DataLayerWindow = Window & { dataLayer?: Record<string, unknown>[] };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const el = target?.closest<HTMLElement>("[data-track]");
+    const name = el?.dataset.track;
+    if (!name) return;
+
+    const w = window as DataLayerWindow;
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({
+      event: `cta_${name}`,
+      cta_text: el.textContent?.trim(),
+      cta_url: el instanceof HTMLAnchorElement ? el.href : undefined,
+    });
+  });
+</script>
+
 <style>
   .skip-link {
     position: absolute;

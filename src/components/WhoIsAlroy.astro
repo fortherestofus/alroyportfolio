@@ -28,7 +28,13 @@ const ASK_PROMPT = encodeURIComponent(
 );
 
 const QUICK_LINKS = [
-  { label: "LinkedIn", href: SOCIAL.linkedin, icon: ArrowUpRight, external: true },
+  {
+    label: "LinkedIn",
+    href: SOCIAL.linkedin,
+    icon: ArrowUpRight,
+    external: true,
+    track: "linkedin",
+  },
   { label: "Dribbble", href: SOCIAL.dribbble, icon: ArrowUpRight, external: true },
   { label: "GitHub", href: SOCIAL.github, icon: ArrowUpRight, external: true },
   {
@@ -50,7 +56,13 @@ const QUICK_LINKS = [
     icon: Sparkles,
     external: true,
   },
-  { label: "Résumé", href: SITE.resume, icon: Download, external: false },
+  {
+    label: "Résumé",
+    href: SITE.resume,
+    icon: Download,
+    external: false,
+    track: "download_resume",
+  },
 ];
 
 // Rendered at 2x the 160px frame for retina.
@@ -104,6 +116,7 @@ const PORTRAIT_SIZE = 320;
             <a
               class="who__link"
               href={link.href}
+              data-track={link.track}
               {...(link.external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : { download: true })}
