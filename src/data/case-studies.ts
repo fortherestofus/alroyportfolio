@@ -349,7 +349,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "3.1M",
             label: "Views, organic",
-            context: "Jun 2025 to Jan 2026, reaching 3.3M people who had never seen the brand.",
+            context: "Jun 2025 to Jan 2026, with 25K profile visits and 29K likes.",
           },
           {
             value: "7,200",
@@ -496,6 +496,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "ads", label: "Ad creative" },
       { id: "pipeline", label: "The pipeline" },
       { id: "results", label: "Results" },
+      { id: "honest", label: "What didn't work" },
       { id: "product", label: "The product" },
     ],
     blocks: [
@@ -598,6 +599,27 @@ export const CASE_STUDIES: CaseStudy[] = [
             alt: "Closing slide from The Innovatr Way ad carousel.",
           },
         ],
+      },
+      {
+        kind: "metrics",
+        heading: "Same message, two formats",
+        intro:
+          "“The Innovatr Way” ran as a carousel and as a video. The argument was identical; only the format changed, and the result moved with it.",
+        items: [
+          {
+            value: "0.68%",
+            label: "Click-through as video",
+            context: "Against 0.24% for the same message as a carousel, nearly three times higher.",
+          },
+          {
+            value: "+45–50%",
+            label: "Video click-through over the platform norm",
+            context:
+              "The video ads beat LinkedIn's video benchmark; the carousel fell below its own.",
+          },
+        ],
+        footnote:
+          "Same account and message. Format, not message, made the difference, so video took the attention job.",
       },
       {
         id: "pipeline",
@@ -706,6 +728,15 @@ export const CASE_STUDIES: CaseStudy[] = [
         ],
         footnote:
           "Form completion ran 46–57% against a 10–13% benchmark. One miss: carousel click-through sat under the band, so carousels stayed on the conversion job they were winning. No flight ran past five weeks against LinkedIn's six-to-eight-week optimisation runway, so these are pre-optimisation figures.",
+      },
+      {
+        id: "honest",
+        kind: "prose",
+        heading: "What didn't work",
+        body: [
+          "Organic alone does not reach. Paid delivered about 166 times the impressions of organic, and the page's follower growth tracked the ad calendar. Insight-led posts did best organically, and the same themes won in paid.",
+          "The nurture emails earned strong opens and clicks about four times the norm, but no direct replies. The gap was a person, not another email. Every pause between flights also reset LinkedIn's learning phase, so no campaign ever optimised to maturity.",
+        ],
       },
       {
         id: "product",
