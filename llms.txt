@@ -4,7 +4,7 @@
 
 ## About
 
-Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.
+Alroy Ndhlovu is a marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works end to end across strategy, brand, paid media, content and product design, and ships his own software rather than only advising on it: he writes the specification, chooses the stack and directs coding agents such as Claude Code rather than writing the code by hand.
 
 He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital & Power and the African Agri Council.
 
