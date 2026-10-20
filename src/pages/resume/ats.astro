@@ -144,7 +144,7 @@ const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headl
     </section>
 
     <section class="block">
-      <h2 class="section">Products Built &amp; Shipped</h2>
+      <h2 class="section">Products Shipped</h2>
       <ul class="products">
         {
           PRODUCTS.map((product) => (
@@ -152,13 +152,15 @@ const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headl
               <p class="product-head">
                 <span class="product-name">{product.name}</span>
                 <span class="product-meta">
-                  {product.category} · {product.platform} · {product.status} · built solo
+                  {product.category} · {product.platform} · {product.status} · specified and shipped
+                  solo, AI-native
                 </span>
               </p>
               {PRODUCT_NOTES[product.name] && (
                 <p class="product-note">{PRODUCT_NOTES[product.name]}</p>
               )}
               <p class="product-stack">{product.stack.join(" · ")}</p>
+              {product.link && <p class="product-link">{product.link.url}</p>}
             </li>
           ))
         }
@@ -187,7 +189,10 @@ const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headl
         {
           TOOLS.map((group) => (
             <div class="keyword-row" data-keep>
-              <dt>{group.label}</dt>
+              <dt>
+                {group.label}
+                {"note" in group && <span class="keyword-note"> ({group.note})</span>}
+              </dt>
               <dd>{group.items.map((tool) => tool.name).join(" · ")}</dd>
             </div>
           ))
@@ -415,6 +420,18 @@ const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headl
     font-size: var(--resume-text-meta);
     color: var(--resume-ink-muted);
     margin-top: var(--resume-gap-1);
+  }
+
+  .keyword-note {
+    font-weight: var(--resume-weight-body);
+    color: var(--resume-ink-faint);
+  }
+
+  .product-link {
+    font-size: var(--resume-text-small);
+    color: var(--resume-accent);
+    margin-top: var(--resume-gap-1);
+    word-break: break-all;
   }
 
   .product-stack {

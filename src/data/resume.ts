@@ -81,7 +81,7 @@ export const RESUME = {
    * fine: recruiters cross-check titles and dates, not headlines.
    */
   headline:
-    "Marketing & Brand Strategy · Product Management & UX Design · Business Technology, Automation & AI Engineering",
+    "Marketing & Brand Strategy · Product Management & UX Design · AI-Native Product Builder",
   location: "Johannesburg, Gauteng, South Africa",
   linkedin: "linkedin.com/in/alroyndhlovu",
   /*
@@ -92,7 +92,7 @@ export const RESUME = {
    * readers want the same thing here.
    */
   summary:
-    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, builds the CRM and marketing automation behind them, and designs and ships the software himself — four AI products taken from discovery to the App Store and Chrome Web Store in 2026, built with React Native, Next.js, TypeScript and retrieval-augmented generation. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
+    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, and builds the CRM and marketing automation behind them. Builds software AI-natively rather than by hand: writes the specification, chooses the stack, directs coding agents such as Claude Code and reviews what they produce. Four products taken from discovery to launch in 2026 — two mobile apps live on the App Store, a published Chrome extension and an AI research tool — alongside hands-on platform work in WordPress, Shopify, WooCommerce, Squarespace and Webflow. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
 } as const;
 
 /**
@@ -112,7 +112,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for organisations including the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, the African Agri Council, Total Sports, Jenna Clifford, Cash'n'Sport, Nembhard Inc, English Plus Academy and Deep Ocean.",
       },
       {
-        text: "Served 1,200+ projects and clients across 12+ years, spanning paid media, brand identity, UX/UI design, e-commerce, full-stack web development and CRM and marketing automation.",
+        text: "Served 1,200+ projects and clients across 12+ years, spanning paid media, brand identity, UX/UI design, e-commerce builds on WordPress, Shopify and Webflow, and CRM and marketing automation.",
       },
       {
         text: "Delivered the LumiSkin brand site — concept, AI production, front-end and motion — in a single day for under $300, against $6,500+ quoted for the same brief produced conventionally.",
@@ -405,11 +405,19 @@ export const COMPETENCIES = [
       "Digital transformation",
       "Business process automation",
       "Workflow automation",
+      "No-code and low-code automation",
       "Systems integration",
       "API integration",
-      "AI engineering",
+      "CMS implementation",
+      "E-commerce platform builds",
+      "AI-native product development",
+      "AI-assisted (vibe) coding",
+      "Directing coding agents",
+      "Technical specification",
+      "Stack selection",
+      "Rapid prototyping",
+      "AI workflow design",
       "Agentic workflows",
-      "LLM orchestration",
       "Retrieval-augmented generation (RAG)",
       "Prompt engineering",
       "Multimodal input (vision and voice)",
@@ -417,8 +425,6 @@ export const COMPETENCIES = [
       "Citation verification",
       "Hallucination mitigation",
       "Human-in-the-loop review",
-      "AI-assisted development",
-      "Full-stack web development",
       "Cloud computing",
       "Data analysis",
       "Privacy-by-design",
@@ -442,20 +448,40 @@ export const COMPETENCIES = [
 /**
  * Tools, in the literal spelling a filter searches for.
  *
- * Almost every one is evidenced by something on this site: a product's
- * own stack, a case study's ad report, or this repository. The handful
- * that are not carry `assumed: true` — they are the tools the work
- * plainly required but that nothing here names, and they print exactly
- * like the rest. They are marked so they can be checked once and then
- * either confirmed or deleted in one place, because an ATS keyword that
- * cannot survive the interview is worse than a missing one.
+ * The groups carry the distinction that matters, and it is the reason
+ * this block is shaped the way it is.
  *
- * Frameworks Alroy has not built with are deliberately absent, however
- * well they would score. A 2026 AI résumé that lists every orchestration
- * framework in existence reads as junior, and the first question in the
- * interview is which one you used and what broke.
+ * Alroy is not a developer and the résumé must not imply he is. The
+ * first screen for any role that reads "React Native" on a CV is a
+ * technical one, and he would be answering for code he did not write.
+ * But the products are real, they are live on two app stores, and the
+ * stacks are real choices he made and directed. Both of those are true
+ * at once, and the group label is what keeps them true: the platform
+ * and marketing tools are hands-on, and the product stacks say plainly
+ * that they were specified and directed rather than hand-written.
+ *
+ * That framing is also the stronger one. "Developer who also markets"
+ * is a common profile and an easy one to doubt. "Marketer and designer
+ * who specifies and ships his own software through coding agents" is
+ * the profile the AI-native and product-engineer postings are actually
+ * written for, and the four shipped products are the proof.
+ *
+ * `assumed: true` still marks anything the work plainly required that
+ * nothing on this site evidences, so it can be confirmed or deleted in
+ * one pass.
  */
 export const TOOLS = [
+  {
+    label: "Platforms & CMS",
+    note: "hands-on",
+    items: [
+      { name: "WordPress" },
+      { name: "WooCommerce" },
+      { name: "Shopify" },
+      { name: "Squarespace" },
+      { name: "Webflow" },
+    ],
+  },
   {
     label: "Marketing & analytics",
     items: [
@@ -473,55 +499,55 @@ export const TOOLS = [
     ],
   },
   {
-    label: "Design & content",
+    label: "Design, product & delivery",
     items: [
-      { name: "Figma", assumed: true },
+      { name: "Figma" },
       { name: "Affinity Designer" },
-      { name: "Affinity Photo", assumed: true },
       { name: "Adobe Creative Suite", assumed: true },
-      { name: "Lottie" },
       { name: "Canva", assumed: true },
+      { name: "Notion" },
+      { name: "Airtable" },
+      { name: "Linear" },
+      { name: "Jira", assumed: true },
+      { name: "Asana" },
+      { name: "Trello", assumed: true },
+      { name: "Miro", assumed: true },
+      { name: "Slack" },
     ],
   },
   {
-    label: "Engineering",
+    label: "AI & automation",
+    items: [
+      { name: "Claude" },
+      { name: "Claude Code" },
+      { name: "OpenAI Codex" },
+      { name: "Google Gemini" },
+      { name: "Grok" },
+      { name: "Vercel AI SDK" },
+      { name: "Zapier" },
+      { name: "Make", assumed: true },
+      { name: "n8n", assumed: true },
+      { name: "Model Context Protocol (MCP)" },
+    ],
+  },
+  {
+    label: "Product stacks",
+    note: "specified and directed; built with coding agents, not hand-written",
     items: [
       { name: "TypeScript" },
-      { name: "JavaScript" },
       { name: "React" },
       { name: "React Native" },
       { name: "Expo" },
       { name: "Next.js" },
       { name: "Astro" },
       { name: "Tailwind CSS" },
-      { name: "NativeWind" },
-      { name: "Node.js" },
       { name: "Supabase" },
       { name: "PostgreSQL" },
       { name: "SQLite" },
-      { name: "Zustand" },
-      { name: "TanStack Query" },
       { name: "Chrome Manifest V3" },
-      { name: "GSAP" },
-      { name: "Playwright" },
-      { name: "Git" },
-      { name: "WordPress", assumed: true },
-      { name: "Shopify", assumed: true },
-      { name: "WooCommerce", assumed: true },
-    ],
-  },
-  {
-    label: "AI & delivery",
-    items: [
-      { name: "Vercel AI SDK" },
-      { name: "Claude" },
-      { name: "Claude Code" },
-      { name: "Grok" },
-      { name: "OpenAI API", assumed: true },
       { name: "Vercel" },
       { name: "Netlify" },
-      { name: "Sentry" },
-      { name: "Chart.js" },
+      { name: "Git" },
     ],
   },
 ] as const;
@@ -530,25 +556,27 @@ export const TOOLS = [
  * One line per product, written for the résumé rather than lifted from
  * the site.
  *
- * The site's product cards sell the idea; these say what was engineered
- * and what it measured, which is what a technical reader is looking
- * for. Each one names the system, the technique and a number, because
- * that combination is the thing a keyword list on its own cannot do:
- * "retrieval-augmented generation" in a skills block is a claim, and
- * the same phrase next to "took cited human sources from 29% to 57%"
- * is evidence.
+ * Each says what the system does, what it measured, and — the part the
+ * rest of the document depends on — what Alroy's hand in it actually
+ * was. "Specified and directed" is the accurate verb. He wrote the
+ * brief, chose the stack, drove the coding agents and reviewed the
+ * output; he did not type the implementation, and a résumé that lets a
+ * reader assume otherwise is one he has to walk back in the interview.
+ *
+ * The technical detail stays, because it is true of the product and it
+ * is what a technical reader is looking for. Only the agency changes.
  *
  * Keyed by `name` in products.ts.
  */
 export const PRODUCT_NOTES: Record<string, string> = {
   Hakkan:
-    "Agentic research pipeline: orchestrates multi-platform retrieval into a cited, source-grounded report, then generates in the user's own learned voice. Rebuilding the evidence filter took verified human sources from 29% of citations to 57%; anything the model inferred is flagged rather than hidden.",
+    "Specified and directed an agentic research pipeline: multi-platform retrieval synthesised into a cited, source-grounded report, then generation in the user's own learned voice. Rebuilding the evidence filter took verified human sources from 29% of citations to 57%; anything the model inferred is flagged rather than hidden.",
   InSpiritInTruth:
-    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass that takes ~77% of the AI effort against ~22% on the writing — an app that quotes scripture cannot afford to misquote it.",
+    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass taking ~77% of the AI effort against ~22% on the writing — an app that quotes scripture cannot afford to misquote it. Live on the App Store.",
   "tapa.":
-    "Multimodal input — text, voice and vision — resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first, with a local SQLite cache.",
+    "Multimodal input — text, voice and vision — resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first. Live on the App Store.",
   CaughtSlipping:
-    "Local-first behavioural tracking with no account and no server: a Manifest V3 service worker, declarativeNetRequest blocking and offscreen documents, all state in chrome.storage on the device.",
+    "Local-first behavioural tracking with no account and no server: everything stays on the device. Published on the Chrome Web Store.",
 };
 
 /**
@@ -610,26 +638,34 @@ export const KEYWORD_TARGETS = [
       "digital transformation",
       "data analysis",
       "cloud",
-      "full-stack",
+      "CMS",
       "SaaS",
     ],
   },
   {
-    role: "Agentic / AI development roles",
+    role: "AI-native builder / product engineer roles",
     terms: [
-      "AI engineering",
+      "AI-native",
+      "AI-assisted",
+      "coding agents",
+      "Claude Code",
+      "vibe",
+      "rapid prototyping",
       "agentic",
-      "LLM",
+      "AI workflow",
       "retrieval-augmented generation",
       "RAG",
       "prompt engineering",
       "multimodal",
-      "evaluation",
       "grounding",
       "human-in-the-loop",
+      "shipped",
+      "App Store",
+      "Chrome Web Store",
       "TypeScript",
       "React Native",
       "Next.js",
+      "Supabase",
     ],
   },
 ] as const;

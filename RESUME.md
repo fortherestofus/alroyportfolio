@@ -80,8 +80,30 @@ phrase into the résumé purely to turn a count green is how you end up in an
 interview defending a word you have never used.
 
 Some entries in `TOOLS` carry `assumed: true`. Those are tools the work plainly
-required but that nothing on this site actually names — Figma, HubSpot, Shopify
-and so on. They print exactly like the rest. Confirm or delete them once.
+required but that nothing on this site actually names — HubSpot, Jira, Make and
+so on. They print exactly like the rest. Confirm or delete them once.
+
+### The one distinction that matters in `TOOLS`
+
+Alroy is not a developer, and neither document may imply he is. The first screen
+for any CV that lists "React Native" is a technical one, and he would be
+answering for code he did not write.
+
+So the groups carry the difference. **Platforms & CMS** is marked `hands-on` —
+WordPress, Shopify, WooCommerce, Squarespace, Webflow, all real delivery work.
+**Product stacks** carries the note _"specified and directed; built with coding
+agents, not hand-written"_, and that note prints on the page beside the label.
+The stacks stay listed, because a posting that names TypeScript should still
+match, but nothing claims he types it.
+
+That framing is also the stronger one. "Developer who also markets" is a common
+profile and an easy one to doubt. "Marketer and designer who specifies and ships
+his own software through coding agents" is what the AI-native and
+product-engineer postings are written for, and four shipped products — two live
+on the App Store, one on the Chrome Web Store — are the proof.
+
+Any group in `TOOLS` can take a `note`, and it renders in brackets after the
+label. Use it whenever a list would otherwise overclaim.
 
 **When applying for a specific job**, read its posting and check its exact
 phrasing against the preview. That is worth more than any general keyword list,
