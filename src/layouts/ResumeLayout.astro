@@ -1,0 +1,70 @@
+---
+/**
+ * The shell both résumé documents print inside.
+ *
+ * Deliberately not BaseLayout: that one carries GTM, the timeline nav,
+ * Lenis smooth scroll, reveal animations and a dark full-bleed body —
+ * every one of which is either noise or actively wrong on paper. This
+ * is the whole document: charset, fonts, the print layer, nothing else.
+ *
+ * `noindex` because these are print routes. The PDFs they produce are
+ * the public artefact; the HTML behind them is scaffolding, and letting
+ * a search engine index a second copy of the résumé at a URL nobody
+ * links to only splits the signal. robots.txt disallows /resume/ too,
+ * and astro.config keeps them out of the sitemap.
+ */
+import "../styles/fonts.css";
+import "../styles/resume.css";
+
+interface Props {
+  title: string;
+  /** Sets the PDF's document description; recruiters do read it. */
+  description: string;
+  /**
+   * The visual document passes "resume-body--dark" to flip the whole
+   * palette at body level, so the black reaches the edge of every page
+   * including the gaps a page break opens.
+   */
+  bodyClass?: string;
+}
+
+const { title, description, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Alroy Ndhlovu" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    {
+      /*
+       * Preloaded rather than left to font-display: swap. The PDF is
+       * rendered once, headless, with no chance to repaint — a font
+       * that arrives after the print call is a font that is not in the
+       * file, and the fallback metrics would reflow every line.
+       */
+    }
+    <link
+      rel="preload"
+      href="/fonts/ApfelGrotezk-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ApfelGrotezk-Mittel.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body class:list={["resume-body", bodyClass]}>
+    <slot />
+  </body>
+</html>

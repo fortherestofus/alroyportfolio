@@ -1,0 +1,1060 @@
+---
+/**
+ * The visual résumé — printed to public/alroy-ndhlovu-resume-visual.pdf.
+ *
+ * This is the one sent to a person who will actually open it: the
+ * website's argument, in the website's clothes, folded onto A4. Same
+ * journey as the site and the same order — who, work, study, portfolio,
+ * products, case studies, contact — because that order was already
+ * decided once and a second opinion here would just make the two
+ * documents disagree.
+ *
+ * Everything is read from the same data files the site renders, so a
+ * role added to experience.ts or a shot added to portfolio.ts appears
+ * in the PDF on the next `npm run resume` with no edit here.
+ *
+ * The parser rules that govern ats.astro do not apply. Nothing on this
+ * page is trying to be indexed: it has images, cards, grids and a black
+ * background, and it links back into the site for the long version of
+ * every story. If this file lands in an ATS it will parse badly, which
+ * is why the ATS version exists and why only its path is the one the
+ * site's Résumé button serves.
+ */
+import { Image } from "astro:assets";
+import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import { SITE, SOCIAL } from "../../data/site";
+import { SERVICES, STATS } from "../../data/services";
+import { TESTIMONIALS, CLIENT_LOGOS } from "../../data/testimonials";
+import { EXPERIENCE } from "../../data/experience";
+import { EDUCATION } from "../../data/education";
+import { PORTFOLIO, shotImage } from "../../data/portfolio";
+import { PRODUCTS, productImage, caseStudyLink } from "../../data/products";
+import { CASE_STUDIES, caseImage, studyPath } from "../../data/case-studies";
+import { logo } from "../../data/logos";
+import { RESUME, roleDetail } from "../../data/resume";
+import portrait from "../../assets/images/Alroy-Ndhlovu-FOE.jpeg";
+
+/**
+ * Section 06 on the site is client work only; the product build
+ * stories live under /products/ and already have a card of their own
+ * further up. Same split here, for the same reason — one body of work
+ * shown twice reads as two.
+ */
+const CLIENT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "client");
+
+/**
+ * Four shots a category, which is what fits a page without the grid
+ * turning into contact-sheet thumbnails. Each category's `cover` is
+ * usually its first shot already, so taking the head of the list keeps
+ * the lead image the one chosen for it.
+ */
+const SHOTS_PER_CATEGORY = 4;
+
+const DESCRIPTION = `Portfolio résumé for Alroy Ndhlovu — ${RESUME.headline}. Work, products, case studies and selected portfolio.`;
+
+/*
+ * Source widths for the three image slots, in CSS pixels.
+ *
+ * Sized against what they actually occupy on A4 — the content column is
+ * 178mm, so a full-width image lands around 670px and a half around
+ * 335px — then carried at roughly 1.5x for print density. Asking for
+ * more only inflates the PDF: Chromium embeds what it is given, and the
+ * first pass of this document came back at 8.7MB.
+ */
+const WIDE = 820;
+const HALF = 500;
+const DEVICE = 340;
+---
+
+<ResumeLayout
+  title="Alroy Ndhlovu — Portfolio Résumé"
+  description={DESCRIPTION}
+  bodyClass="resume-body--dark"
+>
+  <main class="resume resume--visual sheet">
+    {/* ---------------------------------------------------- COVER */}
+    <section class="cover" data-keep>
+      <div class="cover__top">
+        <Image
+          class="cover__portrait"
+          src={portrait}
+          alt="Alroy Ndhlovu"
+          width={320}
+          height={320}
+          loading="eager"
+        />
+        <div>
+          <p class="eyebrow">Portfolio résumé</p>
+          <h1 class="cover__name">{SITE.name}</h1>
+          <p class="cover__headline">{RESUME.headline}</p>
+        </div>
+      </div>
+
+      <p class="cover__bio">{SITE.bio}</p>
+
+      <dl class="stats">
+        {
+          STATS.map((stat) => (
+            <div class="stat">
+              <dt class="stat__value">{stat.value}</dt>
+              <dd class="stat__label">{stat.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="services">
+        {
+          SERVICES.map((service) => (
+            <article class="service" data-keep>
+              <h3 class="service__name">{service.name}</h3>
+              <p class="service__copy">{service.description}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <ul class="contact-strip">
+        <li>{RESUME.location}</li>
+        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li><a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a></li>
+        <li><a href={SITE.url}>alroyndhlovu.com</a></li>
+        <li><a href={SOCIAL.linkedin}>{RESUME.linkedin}</a></li>
+      </ul>
+    </section>
+
+    {/* ----------------------------------------------- EXPERIENCE */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="block__eyebrow">
+          <span class="eyebrow">02</span>
+          <a class="block__link" href={`${SITE.url}/#experience`}
+            >{`alroyndhlovu.com/#experience`}</a
+          >
+        </p>
+        <h2 class="block__title">Work experience</h2>
+        <p class="block__blurb">
+          Twelve plus years across marketing, media, e-commerce and technology. Contract and
+          consulting work for global organisations and ambitious brands.
+        </p>
+      </header>
+
+      <ol class="roles">
+        {
+          EXPERIENCE.map((role) => {
+            const detail = roleDetail(role.company);
+            const mark = logo(role.logoFile);
+            return (
+              <li class="role" data-keep>
+                <span class="role__mark">
+                  {mark ? (
+                    <Image src={mark} alt="" width={80} height={80} loading="eager" />
+                  ) : (
+                    <span class="role__initial">{role.company.charAt(0)}</span>
+                  )}
+                </span>
+                <div class="role__body">
+                  <h3 class="role__title">{role.title}</h3>
+                  <p class="role__meta">
+                    {[role.company, role.employment, role.dates].filter(Boolean).join("  ·  ")}
+                  </p>
+                  {detail && detail.bullets.length > 0 && (
+                    <ul class="role__bullets">
+                      {detail.bullets.slice(0, 3).map((bullet) => (
+                        <li>{bullet.text}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {detail?.subRoles && (
+                    <p class="role__subs">{detail.subRoles.map((sub) => sub.title).join(" · ")}</p>
+                  )}
+                </div>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    {/* ------------------------------------------------ EDUCATION */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="block__eyebrow">
+          <span class="eyebrow">03</span>
+          <a class="block__link" href={`${SITE.url}/#education`}>{`alroyndhlovu.com/#education`}</a>
+        </p>
+        <h2 class="block__title">Education</h2>
+        <p class="block__blurb">
+          Always learning. Formal certificates and specialisations across marketing, product, design
+          and business, with the work to back it.
+        </p>
+      </header>
+
+      <div class="study-groups">
+        {
+          EDUCATION.map((group) => (
+            <section class="study-group" data-keep>
+              <h3 class="study-group__title">{group.title}</h3>
+              <ul class="study-list">
+                {group.entries.map((entry) => {
+                  const mark = logo(entry.logoFile);
+                  return (
+                    <li class="study">
+                      <span class="study__mark">
+                        {mark && <Image src={mark} alt="" width={64} height={64} loading="eager" />}
+                      </span>
+                      <span>
+                        <span class="study__name">{entry.qualification}</span>
+                        <span class="study__meta">
+                          {entry.institution} · {entry.dates}
+                        </span>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* ------------------------------------------------ PORTFOLIO */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="block__eyebrow">
+          <span class="eyebrow">04</span>
+          <a class="block__link" href={`${SITE.url}/#portfolio`}>{`alroyndhlovu.com/#portfolio`}</a>
+        </p>
+        <h2 class="block__title">Portfolio</h2>
+        <p class="block__blurb">
+          Selected work across UX/UI, web, branding, content and photography. The full galleries,
+          including the clips, are on the site.
+        </p>
+      </header>
+
+      {
+        PORTFOLIO.map((category) => (
+          <section class="gallery" data-keep>
+            <h3 class="gallery__title">
+              {category.name}
+              <span class="gallery__count">
+                {category.shots.length > SHOTS_PER_CATEGORY
+                  ? `${SHOTS_PER_CATEGORY} of ${category.shots.length} — see them all at alroyndhlovu.com/#portfolio`
+                  : `alroyndhlovu.com/#portfolio`}
+              </span>
+            </h3>
+            <div class="gallery__grid">
+              {category.shots.slice(0, SHOTS_PER_CATEGORY).map((shot) => {
+                const image = shotImage(shot.image);
+                return (
+                  image && (
+                    <figure class="shot">
+                      <Image src={image} alt={shot.alt} width={HALF} loading="eager" />
+                      <figcaption>{shot.alt}</figcaption>
+                    </figure>
+                  )
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </section>
+
+    {/* ------------------------------------------------- PRODUCTS */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="block__eyebrow">
+          <span class="eyebrow">05</span>
+          <a class="block__link" href={`${SITE.url}/#products`}>{`alroyndhlovu.com/#products`}</a>
+        </p>
+        <h2 class="block__title">Products I've built</h2>
+        <p class="block__blurb">
+          Four products taken from problem to shipped, solo: product, design, code and copy. The
+          full build story behind each one is on the site.
+        </p>
+      </header>
+
+      <div class="products">
+        {
+          PRODUCTS.map((product) => {
+            const shot = productImage(product.shots[0]?.image);
+            const story = caseStudyLink(product.caseStudy);
+            return (
+              <article class="product" data-keep>
+                {shot && (
+                  <div class:list={["product__shot", `product__shot--${product.shape}`]}>
+                    <Image src={shot} alt={product.shots[0].alt} width={DEVICE} loading="eager" />
+                  </div>
+                )}
+                <div class="product__body">
+                  <p class="product__chips">
+                    <span class="chip chip--accent">{product.status}</span>
+                    <span class="chip">{product.platform}</span>
+                    <span class="chip">{product.category}</span>
+                  </p>
+                  <h3 class="product__name">{product.name}</h3>
+                  <p class="product__tagline">{product.tagline}</p>
+                  <p class="product__copy">{product.story.problem}</p>
+                  <p class="product__copy">{product.story.approach}</p>
+                  <p class="product__stack">{product.stack.join(" · ")}</p>
+                  <p class="product__links">
+                    {product.link && (
+                      <a class="link" href={product.link.url}>
+                        {product.link.label}
+                      </a>
+                    )}
+                    {story && (
+                      <a class="link" href={`${SITE.url}${story}`}>
+                        Read the build story
+                      </a>
+                    )}
+                  </p>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    {/* --------------------------------------------- CASE STUDIES */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="block__eyebrow">
+          <span class="eyebrow">06</span>
+          <a class="block__link" href={`${SITE.url}/#case-studies`}
+            >{`alroyndhlovu.com/#case-studies`}</a
+          >
+        </p>
+        <h2 class="block__title">Case studies</h2>
+        <p class="block__blurb">
+          Work done for a business, and what it returned. The starting point, the thinking and the
+          measured outcome — the full version of each is a click away.
+        </p>
+      </header>
+
+      <div class="studies">
+        {
+          CLIENT_STUDIES.map((study) => {
+            const hero = caseImage(study.hero?.image);
+            const mark = logo(study.logoFile);
+            return (
+              <article class="study-card" data-keep>
+                {hero && (
+                  <div class="study-card__media">
+                    <Image
+                      src={hero}
+                      alt={study.hero?.alt ?? study.name}
+                      width={WIDE}
+                      loading="eager"
+                    />
+                  </div>
+                )}
+                <div class="study-card__body">
+                  <p class="study-card__head">
+                    {mark && (
+                      <span class="study-card__mark">
+                        <Image src={mark} alt="" width={64} height={64} loading="eager" />
+                      </span>
+                    )}
+                    <span class="study-card__name">{study.name}</span>
+                    <span class="study-card__dates">{study.dates}</span>
+                  </p>
+                  <p class="study-card__summary">{study.summary}</p>
+                  <p class="study-card__tags">{study.tags.join(" · ")}</p>
+                  <a class="link" href={`${SITE.url}${studyPath(study)}`}>
+                    {`alroyndhlovu.com${studyPath(study)}`}
+                  </a>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------- PROOF */}
+    <section class="block" data-break-before>
+      <header class="block__head">
+        <p class="eyebrow">07</p>
+        <h2 class="block__title">What people say</h2>
+      </header>
+
+      <div class="quotes">
+        {
+          TESTIMONIALS.map((testimonial) => (
+            <figure class="quote" data-keep>
+              <blockquote>{testimonial.quote}</blockquote>
+              <figcaption>
+                <span class="quote__name">{testimonial.name}</span>
+                <span class="quote__role">
+                  {testimonial.role}, {testimonial.organisation}
+                </span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
+      <section data-keep>
+        <h3 class="gallery__title">Who I've worked with</h3>
+        <ul class="clients">
+          {
+            CLIENT_LOGOS.map((client) => {
+              const mark = logo(client.logoFile);
+              return (
+                <li class="client">
+                  {mark && <Image src={mark} alt="" width={80} height={80} loading="eager" />}
+                  <span>{client.name}</span>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <section class="cta" data-keep>
+        <h3 class="cta__title">I'm open for work.</h3>
+        <p class="cta__copy">
+          If you like what you've seen and want me on your team or project, the fastest way in is a
+          call.
+        </p>
+        <ul class="contact-strip">
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li><a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a></li>
+          <li><a href={SOCIAL.cal}>Book a call</a></li>
+          <li><a href={SITE.url}>alroyndhlovu.com</a></li>
+        </ul>
+      </section>
+    </section>
+  </main>
+</ResumeLayout>
+
+<style>
+  /* --------------------------------------------------------
+     Zero page margin so the black bleeds to the paper edge;
+     the sheet carries its own padding instead. The literal
+     restates --resume-page-margin, since var() is not
+     reliably resolved inside @page.
+     -------------------------------------------------------- */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .sheet {
+    padding: 16mm;
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-8);
+  }
+
+  .eyebrow {
+    font-size: var(--resume-text-small);
+    letter-spacing: var(--resume-tracking-section);
+    text-transform: uppercase;
+    color: var(--resume-accent);
+  }
+
+  .link {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-accent);
+    border-bottom: 1px solid var(--resume-accent-tint);
+  }
+
+  /* --- Cover ---------------------------------------------- */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-6);
+  }
+
+  .cover__top {
+    display: flex;
+    align-items: center;
+    gap: var(--resume-gap-5);
+  }
+
+  .cover__portrait {
+    width: 28mm;
+    height: 28mm;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--resume-rule);
+  }
+
+  .cover__name {
+    font-size: var(--resume-text-name);
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+    letter-spacing: var(--resume-tracking-name);
+  }
+
+  .cover__headline {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  .cover__bio {
+    font-size: var(--resume-text-body);
+    color: var(--resume-ink-muted);
+  }
+
+  .stats {
+    display: flex;
+    gap: var(--resume-gap-7);
+  }
+
+  .stat__value {
+    font-size: 22pt;
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+    color: var(--resume-accent);
+  }
+
+  .stat__label {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  /*
+   * Two across, which is the one place this document uses
+   * columns. It can: nothing is parsing it.
+   */
+  .services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--resume-gap-4);
+  }
+
+  .service {
+    padding: var(--resume-gap-4);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius);
+  }
+
+  .service__name {
+    font-size: var(--resume-text-body);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .service__copy {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+    margin-top: var(--resume-gap-2);
+  }
+
+  .contact-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--resume-gap-3);
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    padding-top: var(--resume-gap-4);
+    border-top: 1px solid var(--resume-rule);
+  }
+
+  .contact-strip li + li {
+    padding-left: var(--resume-gap-3);
+    border-left: 1px solid var(--resume-rule);
+  }
+
+  .contact-strip a {
+    color: var(--resume-accent);
+  }
+
+  .block__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--resume-gap-3);
+  }
+
+  .block__link {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+  }
+
+  .gallery__count {
+    padding-left: var(--resume-gap-3);
+    font-size: var(--resume-text-small);
+    font-weight: var(--resume-weight-body);
+    color: var(--resume-ink-faint);
+  }
+
+  /* --- Section shell --------------------------------------- */
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-6);
+  }
+
+  .block__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-2);
+    padding-bottom: var(--resume-gap-4);
+    border-bottom: 1px solid var(--resume-rule);
+  }
+
+  .block__title {
+    font-size: 19pt;
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+    letter-spacing: var(--resume-tracking-name);
+  }
+
+  .block__blurb {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  /* --- Experience ------------------------------------------ */
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-5);
+  }
+
+  .role {
+    display: flex;
+    gap: var(--resume-gap-4);
+  }
+
+  .role__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 11mm;
+    height: 11mm;
+    border-radius: var(--resume-radius);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    overflow: hidden;
+  }
+
+  .role__mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--resume-gap-1);
+  }
+
+  .role__initial {
+    font-size: var(--resume-text-body);
+    font-weight: var(--resume-weight-heading);
+    color: var(--resume-accent);
+  }
+
+  .role__title {
+    font-size: var(--resume-text-role);
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+  }
+
+  .role__meta {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    margin-top: var(--resume-gap-1);
+  }
+
+  .role__bullets {
+    margin-top: var(--resume-gap-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-2);
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  .role__bullets li {
+    padding-left: var(--resume-gap-4);
+    text-indent: calc(-1 * var(--resume-gap-4));
+  }
+
+  .role__bullets li::before {
+    content: "— ";
+    color: var(--resume-accent);
+  }
+
+  .role__subs {
+    margin-top: var(--resume-gap-2);
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+  }
+
+  /* --- Education -------------------------------------------- */
+  .study-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--resume-gap-6);
+  }
+
+  .study-group__title {
+    font-size: var(--resume-text-body);
+    font-weight: var(--resume-weight-heading);
+    color: var(--resume-accent);
+    padding-bottom: var(--resume-gap-2);
+    border-bottom: 1px solid var(--resume-rule);
+  }
+
+  .study-list {
+    margin-top: var(--resume-gap-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+  }
+
+  .study {
+    display: flex;
+    gap: var(--resume-gap-3);
+    align-items: flex-start;
+  }
+
+  .study__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 8mm;
+    height: 8mm;
+    border-radius: var(--resume-radius);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    overflow: hidden;
+  }
+
+  .study__mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--resume-gap-1);
+  }
+
+  .study__name {
+    display: block;
+    font-size: var(--resume-text-meta);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .study__meta {
+    display: block;
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+  }
+
+  /* --- Portfolio -------------------------------------------- */
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+  }
+
+  .gallery + .gallery {
+    margin-top: var(--resume-gap-6);
+  }
+
+  .gallery__title {
+    font-size: var(--resume-text-body);
+    font-weight: var(--resume-weight-heading);
+    color: var(--resume-accent);
+  }
+
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: var(--resume-gap-4);
+  }
+
+  .shot {
+    break-inside: avoid;
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius);
+    overflow: hidden;
+    background-color: var(--resume-surface);
+  }
+
+  /*
+   * The whole image, not a crop of it.
+   *
+   * A fixed height with object-fit: cover turned every shot into the
+   * same letterboxed strip: a phone screenshot lost its top and bottom,
+   * a web capture lost its sides, and the one thing a portfolio has to
+   * do — let someone see the work — was the thing it stopped doing.
+   * Natural ratio, clamped so a tall screenshot cannot take the page,
+   * and contain to letterbox the few that hit the clamp.
+   */
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 88mm;
+    object-fit: contain;
+    background-color: var(--resume-paper);
+  }
+
+  .shot figcaption {
+    padding: var(--resume-gap-3);
+    font-size: var(--resume-text-small);
+    line-height: var(--resume-leading-small, 1.35);
+    color: var(--resume-ink-faint);
+  }
+
+  /* --- Products --------------------------------------------- */
+  .products {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-6);
+  }
+
+  .product {
+    display: flex;
+    gap: var(--resume-gap-5);
+    align-items: flex-start;
+    padding: var(--resume-gap-5);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius-lg);
+  }
+
+  /*
+   * The frame matches the thing the screenshot is a picture
+   * of, as on the site: a phone stays narrow, an extension
+   * popup stays a panel, a web app gets the wider slot.
+   */
+  .product__shot {
+    flex: none;
+    border-radius: var(--resume-radius);
+    overflow: hidden;
+    border: 1px solid var(--resume-rule);
+  }
+
+  .product__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .product__shot--phone {
+    width: 28mm;
+  }
+
+  .product__shot--panel {
+    width: 42mm;
+  }
+
+  .product__shot--screen {
+    width: 52mm;
+  }
+
+  .product__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--resume-gap-2);
+    margin-bottom: var(--resume-gap-3);
+  }
+
+  .chip {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+    padding: var(--resume-gap-1) var(--resume-gap-3);
+    border: 1px solid var(--resume-rule);
+    border-radius: 999pt;
+  }
+
+  .chip--accent {
+    color: var(--resume-accent);
+    background-color: var(--resume-accent-tint);
+    border-color: var(--resume-accent-tint);
+  }
+
+  .product__name {
+    font-size: var(--resume-text-role);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .product__tagline {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-accent);
+    margin-bottom: var(--resume-gap-3);
+  }
+
+  .product__copy {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+  }
+
+  .product__copy + .product__copy {
+    margin-top: var(--resume-gap-2);
+  }
+
+  .product__stack {
+    margin-top: var(--resume-gap-3);
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+  }
+
+  .product__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--resume-gap-4);
+    margin-top: var(--resume-gap-3);
+  }
+
+  /* --- Case studies ------------------------------------------ */
+  .studies {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-6);
+  }
+
+  .study-card {
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius-lg);
+    overflow: hidden;
+    background-color: var(--resume-surface);
+  }
+
+  .study-card__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .study-card__body {
+    padding: var(--resume-gap-5);
+  }
+
+  .study-card__head {
+    display: flex;
+    align-items: center;
+    gap: var(--resume-gap-3);
+    margin-bottom: var(--resume-gap-3);
+  }
+
+  .study-card__mark {
+    display: grid;
+    place-items: center;
+    width: 9mm;
+    height: 9mm;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--resume-rule);
+  }
+
+  .study-card__mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--resume-gap-1);
+  }
+
+  .study-card__name {
+    font-size: var(--resume-text-role);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .study-card__dates {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+  }
+
+  .study-card__summary {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  .study-card__tags {
+    margin: var(--resume-gap-3) 0;
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+  }
+
+  /* --- Proof and close ---------------------------------------- */
+  .quotes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+  }
+
+  .quote {
+    padding: var(--resume-gap-5);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius);
+  }
+
+  .quote blockquote {
+    font-size: var(--resume-text-meta);
+  }
+
+  .quote figcaption {
+    margin-top: var(--resume-gap-3);
+    font-size: var(--resume-text-small);
+  }
+
+  .quote__name {
+    display: block;
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .quote__role {
+    display: block;
+    color: var(--resume-ink-muted);
+  }
+
+  .clients {
+    margin-top: var(--resume-gap-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--resume-gap-3);
+  }
+
+  .client {
+    display: flex;
+    align-items: center;
+    gap: var(--resume-gap-2);
+    padding: var(--resume-gap-2) var(--resume-gap-3);
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-muted);
+    background-color: var(--resume-surface);
+    border: 1px solid var(--resume-rule);
+    border-radius: 999pt;
+  }
+
+  .client img {
+    width: 5mm;
+    height: 5mm;
+    border-radius: 50%;
+    object-fit: contain;
+  }
+
+  .cta {
+    margin-top: var(--resume-gap-4);
+    padding: var(--resume-gap-6);
+    border: 1px solid var(--resume-accent);
+    border-radius: var(--resume-radius-lg);
+    background-color: var(--resume-accent-tint);
+  }
+
+  .cta__title {
+    font-size: var(--resume-text-role);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .cta__copy {
+    margin-top: var(--resume-gap-2);
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  .cta .contact-strip {
+    margin-top: var(--resume-gap-4);
+    border-top: 0;
+    padding-top: 0;
+  }
+</style>

@@ -23,13 +23,21 @@ npm install
 | `npm run video`      | Re-encode portfolio video and cut poster frames   |
 | `npm run lottie`     | Recolour the section illustrations to the palette |
 | `npm run deploy`     | QA, then publish `dist/` to the `deploy` branch   |
+| `npm run resume`     | Re-render both résumé PDFs and verify them        |
 
 `npm run qa` runs: `astro check` → ESLint → token lint → Prettier → build → link
 check → browser behaviour. It is the same sequence CI runs, so a green local `qa`
 means a green pipeline. Run it before every commit.
 
 Individual gates: `npm run check`, `npm run lint`, `npm run lint:tokens`,
-`npm run format:check`, `npm run check:links`, `npm run qa:browser`.
+`npm run format:check`, `npm run check:links`, `npm run resume:verify`,
+`npm run qa:browser`.
+
+### Résumés
+
+Two PDFs are rendered from this site by Chromium — an ATS-safe one and a visual
+one — from the same data files the pages use. `npm run resume` rebuilds both and
+checks that a parser can still read them. See [RESUME.md](RESUME.md).
 
 ### Browser QA
 

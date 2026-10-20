@@ -46,7 +46,7 @@ export const EXPERIENCE: Role[] = [
     title: "Digital Marketing Consultant",
     company: "Thrifty Adventures",
     employment: "Contract",
-    dates: "Jul 2025 – Present",
+    dates: "Jul 2025 – Mar 2026",
     logoFile: "thrifty.jpeg",
   },
   {
@@ -81,7 +81,7 @@ export const EXPERIENCE: Role[] = [
     title: "Digital Media & Marketing Consultant",
     company: "Energy Capital & Power",
     employment: "Contract",
-    dates: "Jan 2024 – Mar 2024",
+    dates: "Nov 2023 – Mar 2024",
     logoFile: "ECP_logo_internal_1Round-150x150-1.png",
   },
   {

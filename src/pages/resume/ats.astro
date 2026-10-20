@@ -1,0 +1,441 @@
+---
+/**
+ * The ATS résumé — printed to public/alroy-ndhlovu-resume.pdf.
+ *
+ * This is the version that goes into application forms, so the rules
+ * are not stylistic preferences, they are the document's job:
+ *
+ *   - One column. A parser reads across a row before moving down, so a
+ *     two-column layout welds the left column's last word onto the
+ *     right column's first.
+ *   - No images, no tables, no text boxes, no icons. Everything a
+ *     parser needs is a text node.
+ *   - Contact details in the body flow, never a running header. Several
+ *     parsers skip the header and footer regions outright.
+ *   - Conventional section names. "Professional Experience" is matched;
+ *     "Where I've Been" is not.
+ *
+ * Inside those rules there is still room to look like something: the
+ * brand's deep pthalo on headings, a hairline under each section, the
+ * house typeface, real hierarchy. Colour and rules are painted, not
+ * structural — they cost a parser nothing.
+ *
+ * Everything factual comes from the same data the website renders, so
+ * the two cannot disagree. See src/data/resume.ts for the bullets.
+ */
+import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import { SITE, SOCIAL } from "../../data/site";
+import { EXPERIENCE } from "../../data/experience";
+import { EDUCATION } from "../../data/education";
+import { PRODUCTS } from "../../data/products";
+import { RESUME, COMPETENCIES, TOOLS, PRODUCT_NOTES, roleDetail } from "../../data/resume";
+
+/**
+ * Study is grouped by theme on the site, which is a browsing aid. A
+ * résumé wants one reverse-chronological list: the grouping reads as a
+ * table to a parser, and a recruiter only wants to know what is most
+ * recent. Sorted on the last year mentioned, so "2016 – 2017" ranks on
+ * 2017 and an open-ended "2025 – Ongoing" ranks on 2025.
+ */
+const CURRENT_YEAR = 2026;
+
+function latestYear(dates: string): number {
+  const years = dates.match(/\d{4}/g);
+  if (!years) return CURRENT_YEAR;
+  if (/ongoing|current|present/i.test(dates)) {
+    return Math.max(CURRENT_YEAR, Number(years[years.length - 1]));
+  }
+  return Number(years[years.length - 1]);
+}
+
+const STUDY = EDUCATION.flatMap((group) =>
+  group.entries.map((entry) => ({ ...entry, theme: group.title })),
+).sort((a, b) => latestYear(b.dates) - latestYear(a.dates));
+
+const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headline}. ${RESUME.location}.`;
+---
+
+<ResumeLayout title="Alroy Ndhlovu — Résumé" description={DESCRIPTION}>
+  <main class="resume sheet">
+    {
+      /*
+       * The contact block. Each detail is its own text node and the
+       * visible string is the real value — a parser's email and phone
+       * regexes match what is printed, while the anchors stay live for
+       * anyone reading the PDF on a screen.
+       */
+    }
+    <header class="head" data-keep>
+      <h1 class="name">{SITE.name}</h1>
+      <p class="headline">{RESUME.headline}</p>
+      <p class="contact">{RESUME.location}</p>
+      <p class="contact">
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <span class="sep">·</span>
+        <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+      </p>
+      <p class="contact">
+        <a href={SITE.url}>alroyndhlovu.com</a>
+        <span class="sep">·</span>
+        <a href={SOCIAL.linkedin}>{RESUME.linkedin}</a>
+      </p>
+    </header>
+
+    <section class="block">
+      <h2 class="section">Professional Summary</h2>
+      <p>{RESUME.summary}</p>
+    </section>
+
+    <section class="block">
+      <h2 class="section">Core Competencies</h2>
+      <dl class="keywords">
+        {
+          COMPETENCIES.map((group) => (
+            <div class="keyword-row" data-keep>
+              <dt>{group.label}</dt>
+              <dd>{group.items.join(" · ")}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="block">
+      <h2 class="section">Professional Experience</h2>
+
+      {
+        EXPERIENCE.map((role) => {
+          const detail = roleDetail(role.company);
+          return (
+            <article class="role">
+              <h3 class="role-title">{role.title}</h3>
+              <p class="role-meta">
+                {[role.company, role.employment, role.dates, detail?.location]
+                  .filter(Boolean)
+                  .join("  ·  ")}
+              </p>
+              {detail?.context && <p class="role-context">{detail.context}</p>}
+              {detail && !detail.compact && detail.bullets.length > 0 && (
+                <ul class="bullets">
+                  {detail.bullets.map((bullet) => (
+                    <li>{bullet.text}</li>
+                  ))}
+                </ul>
+              )}
+              {detail?.subRoles && (
+                <ul class="sub-roles">
+                  {detail.subRoles.map((sub) => (
+                    <li data-keep>
+                      <p class="sub-role-title">
+                        {sub.title}
+                        <span class="sub-role-dates">{sub.dates}</span>
+                      </p>
+                      <ul class="bullets">
+                        <li>{sub.bullet}</li>
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          );
+        })
+      }
+    </section>
+
+    <section class="block">
+      <h2 class="section">Products Built &amp; Shipped</h2>
+      <ul class="products">
+        {
+          PRODUCTS.map((product) => (
+            <li data-keep>
+              <p class="product-head">
+                <span class="product-name">{product.name}</span>
+                <span class="product-meta">
+                  {product.category} · {product.platform} · {product.status} · built solo
+                </span>
+              </p>
+              {PRODUCT_NOTES[product.name] && (
+                <p class="product-note">{PRODUCT_NOTES[product.name]}</p>
+              )}
+              <p class="product-stack">{product.stack.join(" · ")}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2 class="section">Education &amp; Certifications</h2>
+      <ul class="study">
+        {
+          STUDY.map((entry) => (
+            <li data-keep>
+              <span class="study-title">{entry.qualification}</span>
+              <span class="study-meta">
+                {entry.institution} · {entry.dates}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2 class="section">Technical Skills &amp; Tools</h2>
+      <dl class="keywords">
+        {
+          TOOLS.map((group) => (
+            <div class="keyword-row" data-keep>
+              <dt>{group.label}</dt>
+              <dd>{group.items.map((tool) => tool.name).join(" · ")}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+  </main>
+</ResumeLayout>
+
+<style>
+  /* --------------------------------------------------------
+     A4 with real margins. The literal values restate
+     --resume-page-margin from resume.css: var() is not
+     reliably resolved inside an @page block, and a margin
+     that silently falls back to the browser default is a
+     document that reflows on the one render that matters.
+     -------------------------------------------------------- */
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+
+  .sheet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+  }
+
+  @media screen {
+    .sheet {
+      padding: var(--resume-page-margin);
+    }
+  }
+
+  /* --- Masthead ------------------------------------------- */
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-1);
+    padding-bottom: var(--resume-gap-4);
+    border-bottom: 2px solid var(--resume-accent);
+  }
+
+  .name {
+    font-size: var(--resume-text-name);
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+    letter-spacing: var(--resume-tracking-name);
+    color: var(--resume-accent);
+  }
+
+  .headline {
+    font-size: var(--resume-text-headline);
+    color: var(--resume-ink);
+    margin-bottom: var(--resume-gap-2);
+  }
+
+  .contact {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+  }
+
+  .sep {
+    color: var(--resume-ink-faint);
+    padding-inline: var(--resume-gap-2);
+  }
+
+  /* --- Sections -------------------------------------------
+     The heading is the one piece of structure a parser looks
+     for by name, so it stays a literal h2 with a conventional
+     label. The rule under it is a border, not a graphic.
+     -------------------------------------------------------- */
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+  }
+
+  .section {
+    font-size: var(--resume-text-section);
+    font-weight: var(--resume-weight-heading);
+    letter-spacing: var(--resume-tracking-section);
+    text-transform: uppercase;
+    color: var(--resume-accent);
+    padding-bottom: var(--resume-gap-2);
+    border-bottom: 1px solid var(--resume-rule);
+  }
+
+  /* --- Keyword blocks --------------------------------------
+     A definition list, not a two-column grid: the label and
+     its items are adjacent text nodes in source order, so the
+     parser reads "Marketing & Growth: Paid media…" as one
+     continuous string however it chooses to flatten the page.
+     -------------------------------------------------------- */
+  .keywords {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-2);
+  }
+
+  .keyword-row {
+    font-size: var(--resume-text-meta);
+  }
+
+  .keyword-row dt {
+    display: inline;
+    font-weight: var(--resume-weight-heading);
+    color: var(--resume-ink);
+  }
+
+  .keyword-row dt::after {
+    content: " — ";
+    color: var(--resume-ink-faint);
+  }
+
+  .keyword-row dd {
+    display: inline;
+    color: var(--resume-ink-muted);
+  }
+
+  /* --- Roles ----------------------------------------------- */
+  .role + .role {
+    margin-top: var(--resume-gap-4);
+  }
+
+  /*
+   * The three header lines are pinned to whatever follows them, so a
+   * page can never end on a job title with its bullets overleaf. The
+   * bullets themselves are free to flow; orphans/widows on .resume
+   * keeps at least three lines on either side of the break.
+   */
+  .role-title {
+    font-size: var(--resume-text-role);
+    font-weight: var(--resume-weight-heading);
+    line-height: var(--resume-leading-tight);
+    break-after: avoid;
+  }
+
+  .role-meta {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    margin-top: var(--resume-gap-1);
+    break-after: avoid;
+  }
+
+  .role-context {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+    margin-top: var(--resume-gap-1);
+    break-after: avoid;
+  }
+
+  .bullets li {
+    break-inside: avoid;
+  }
+
+  .bullets {
+    margin-top: var(--resume-gap-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-1);
+  }
+
+  /*
+   * A real text bullet rather than a list-style marker or a
+   * pseudo-element glyph. Some extractors drop CSS-generated
+   * content, and a bullet that disappears takes the line's
+   * indentation with it — the lines run together into one
+   * paragraph and the achievements stop reading as a list.
+   */
+  .bullets li {
+    padding-left: var(--resume-gap-5);
+    text-indent: calc(-1 * var(--resume-gap-5));
+  }
+
+  .bullets li::before {
+    content: "• ";
+    color: var(--resume-accent);
+  }
+
+  /* --- Sub-roles at one employer --------------------------- */
+  .sub-roles {
+    margin-top: var(--resume-gap-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-4);
+    padding-left: var(--resume-gap-4);
+    border-left: 2px solid var(--resume-rule);
+  }
+
+  .sub-role-title {
+    font-size: var(--resume-text-body);
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .sub-role-dates {
+    font-weight: var(--resume-weight-body);
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    padding-left: var(--resume-gap-3);
+  }
+
+  .sub-roles .bullets {
+    margin-top: var(--resume-gap-2);
+  }
+
+  /* --- Products and study ---------------------------------- */
+  .products {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-3);
+  }
+
+  .product-name {
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .product-meta {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    padding-left: var(--resume-gap-3);
+  }
+
+  .product-note {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    margin-top: var(--resume-gap-1);
+  }
+
+  .product-stack {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
+    margin-top: var(--resume-gap-1);
+  }
+
+  .study {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-2);
+  }
+
+  .study-title {
+    font-weight: var(--resume-weight-heading);
+  }
+
+  .study-meta {
+    font-size: var(--resume-text-meta);
+    color: var(--resume-ink-muted);
+    padding-left: var(--resume-gap-3);
+  }
+</style>

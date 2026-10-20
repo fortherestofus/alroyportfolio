@@ -20,7 +20,15 @@ export default defineConfig({
     "/case-studies/inspiritintruth/": "/products/inspiritintruth/",
     "/case-studies/tapa/": "/products/tapa/",
   },
-  integrations: [sitemap()],
+  /*
+   * /resume/ats/ and /resume/visual/ are print routes: the source
+   * Chromium renders into the two PDFs. The PDFs are the artefact
+   * people link to, so indexing the HTML behind them would put a
+   * second copy of the résumé at a URL nobody points at and split the
+   * signal between them. They carry noindex too, and robots.txt
+   * disallows the directory; this keeps them out of the sitemap.
+   */
+  integrations: [sitemap({ filter: (page) => !page.includes("/resume/") })],
   vite: {
     plugins: [tailwindcss()],
   },

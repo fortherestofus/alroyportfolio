@@ -32,7 +32,15 @@ export const SITE = {
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",
   phoneHref: "+27762678936",
+  /*
+   * Two résumés, rendered from /resume/ats/ and /resume/visual/ by
+   * `npm run resume`. The ATS one is the default download because it is
+   * the one that is safe everywhere: a recruiter who drops it into an
+   * applicant tracking system gets a parsed record rather than a blank
+   * one. The visual one is the portfolio read, offered beside it.
+   */
   resume: "/alroy-ndhlovu-resume.pdf",
+  resumeVisual: "/alroy-ndhlovu-resume-visual.pdf",
   /* Google Tag Manager container; it loads the GA4 tag (G-WSKDB1LYJZ). */
   gtmId: "GTM-PLNFB2P",
 } as const;

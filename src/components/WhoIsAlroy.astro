@@ -56,12 +56,25 @@ const QUICK_LINKS = [
     icon: Sparkles,
     external: true,
   },
+  /*
+   * Two files, because they answer to two different readers. "Résumé"
+   * is the ATS-safe one — single column, text only — which is what an
+   * applicant tracking system can actually read. "Portfolio PDF" is the
+   * visual version, for a person who will open it themselves.
+   */
   {
     label: "Résumé",
     href: SITE.resume,
     icon: Download,
     external: false,
     track: "download_resume",
+  },
+  {
+    label: "Portfolio PDF",
+    href: SITE.resumeVisual,
+    icon: Download,
+    external: false,
+    track: "download_resume_visual",
   },
 ];
 

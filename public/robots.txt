@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
 
+# The two print routes behind the resume PDFs. The PDFs themselves
+# (/alroy-ndhlovu-resume.pdf and -resume-visual.pdf) stay crawlable;
+# the HTML they are rendered from is scaffolding, not a second page.
+Disallow: /resume/
+
 # AI crawlers are explicitly welcome (PRD §9, GEO/AIO).
 # Training and search/answer crawlers alike: being citable is the point.
 User-agent: GPTBot
