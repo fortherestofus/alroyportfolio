@@ -24,10 +24,18 @@ export const SITE = {
     "Alroy Ndhlovu is a marketing, branding, business technology and product consultant with 12+ years helping brands grow through data, design and AI.",
   /*
    * The long version, for places with no character budget: structured
-   * data and llms.txt. Separate from `description` because a truncation
-   * limit is a property of search results, not of the truth.
+   * data, llms.txt and the cover of the visual résumé. Separate from
+   * `description` because a truncation limit is a property of search
+   * results, not of the truth.
+   *
+   * It says how the software gets built, on purpose. "Engineering" and
+   * "full-stack" both came out of this sentence: Alroy specifies the
+   * work, picks the stack and directs the coding agents, and a word
+   * that reads as "writes the code by hand" is the one claim here he
+   * would have to walk back in an interview. Naming the method is also
+   * the stronger line for the roles he wants.
    */
-  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products, and ships the products himself rather than only advising on them.",
+  bio: "Alroy Ndhlovu is a marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works end to end across strategy, brand, paid media, content and product design, and ships his own software rather than only advising on it: he writes the specification, chooses the stack and directs coding agents such as Claude Code rather than writing the code by hand.",
   locale: "en_ZA",
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",
