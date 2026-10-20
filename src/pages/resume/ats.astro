@@ -52,10 +52,10 @@ const STUDY = EDUCATION.flatMap((group) =>
   group.entries.map((entry) => ({ ...entry, theme: group.title })),
 ).sort((a, b) => latestYear(b.dates) - latestYear(a.dates));
 
-const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headline}. ${RESUME.location}.`;
+const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu. ${RESUME.headline}. ${RESUME.location}.`;
 ---
 
-<ResumeLayout title="Alroy Ndhlovu — Résumé" description={DESCRIPTION}>
+<ResumeLayout title="Alroy Ndhlovu Résumé" description={DESCRIPTION}>
   <main class="resume sheet">
     {
       /*
@@ -304,7 +304,7 @@ const DESCRIPTION = `ATS-optimised résumé for Alroy Ndhlovu — ${RESUME.headl
   }
 
   .keyword-row dt::after {
-    content: " — ";
+    content: ": ";
     color: var(--resume-ink-faint);
   }
 

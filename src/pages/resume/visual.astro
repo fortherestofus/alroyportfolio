@@ -50,7 +50,7 @@ const CLIENT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "client");
  */
 const SHOTS_PER_CATEGORY = 4;
 
-const DESCRIPTION = `Portfolio résumé for Alroy Ndhlovu — ${RESUME.headline}. Work, products, case studies and selected portfolio.`;
+const DESCRIPTION = `Portfolio résumé for Alroy Ndhlovu. ${RESUME.headline}. Work, products, case studies and selected portfolio.`;
 
 /*
  * Source widths for the three image slots, in CSS pixels.
@@ -67,7 +67,7 @@ const DEVICE = 340;
 ---
 
 <ResumeLayout
-  title="Alroy Ndhlovu — Portfolio Résumé"
+  title="Alroy Ndhlovu Portfolio Résumé"
   description={DESCRIPTION}
   bodyClass="resume-body--dark"
 >
@@ -240,7 +240,7 @@ const DEVICE = 340;
               {category.name}
               <span class="gallery__count">
                 {category.shots.length > SHOTS_PER_CATEGORY
-                  ? `${SHOTS_PER_CATEGORY} of ${category.shots.length} — see them all at alroyndhlovu.com/#portfolio`
+                  ? `${SHOTS_PER_CATEGORY} of ${category.shots.length}. See them all at alroyndhlovu.com/#portfolio`
                   : `alroyndhlovu.com/#portfolio`}
               </span>
             </h3>
@@ -331,7 +331,7 @@ const DEVICE = 340;
         <h2 class="block__title">Case studies</h2>
         <p class="block__blurb">
           Work done for a business, and what it returned. The starting point, the thinking and the
-          measured outcome — the full version of each is a click away.
+          measured outcome. The full version of each is on the site.
         </p>
       </header>
 
@@ -677,7 +677,7 @@ const DEVICE = 340;
   }
 
   .role__bullets li::before {
-    content: "— ";
+    content: "\2022  ";
     color: var(--resume-accent);
   }
 

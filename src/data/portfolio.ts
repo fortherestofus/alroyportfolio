@@ -69,7 +69,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "hakkan-research.jpg",
-        alt: "Content discovery screen — one input, depth and time-range controls, and the platforms it reads.",
+        alt: "Content discovery screen: one input, depth and time-range controls, and the platforms it reads.",
       },
       {
         image: "isit-home.png",
@@ -162,7 +162,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
       },
       {
         image: "appstore_caughtslipping_grinding.jpg",
-        alt: "App Store panel for a screen-time app's Work Mode — “Caught Grinding: for the overworkers” — beside a card reading nine hours forty-one worked today.",
+        alt: "App Store panel for a screen-time app's Work Mode, “Caught Grinding: for the overworkers”, beside a card reading nine hours forty-one worked today.",
       },
       {
         image: "social_sweep_demo-poster.webp",

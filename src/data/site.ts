@@ -27,7 +27,7 @@ export const SITE = {
    * data and llms.txt. Separate from `description` because a truncation
    * limit is a property of search results, not of the truth.
    */
-  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products — and ships the products himself rather than only advising on them.",
+  bio: "Alroy Ndhlovu is a full-stack digital marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works across strategy, brand, paid media, content, and the design and engineering of software products, and ships the products himself rather than only advising on them.",
   locale: "en_ZA",
   email: "hello@alroyndhlovu.com",
   phone: "+27 76 267 8936",

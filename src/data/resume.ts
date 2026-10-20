@@ -92,7 +92,7 @@ export const RESUME = {
    * readers want the same thing here.
    */
   summary:
-    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, and builds the CRM and marketing automation behind them. Builds software AI-natively rather than by hand: writes the specification, chooses the stack, directs coding agents such as Claude Code and reviews what they produce. Four products taken from discovery to launch in 2026 — two mobile apps live on the App Store, a published Chrome extension and an AI research tool — alongside hands-on platform work in WordPress, Shopify, WooCommerce, Squarespace and Webflow. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
+    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, and builds the CRM and marketing automation behind them. Builds software AI-natively rather than by hand: writes the specification, chooses the stack, directs coding agents such as Claude Code and reviews what they produce. Four products taken from discovery to launch in 2026: two mobile apps live on the App Store, a published Chrome extension and an AI research tool. Hands-on platform work in WordPress, Shopify, WooCommerce, Squarespace and Webflow. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
 } as const;
 
 /**
@@ -115,7 +115,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Served 1,200+ projects and clients across 12+ years, spanning paid media, brand identity, UX/UI design, e-commerce builds on WordPress, Shopify and Webflow, and CRM and marketing automation.",
       },
       {
-        text: "Delivered the LumiSkin brand site — concept, AI production, front-end and motion — in a single day for under $300, against $6,500+ quoted for the same brief produced conventionally.",
+        text: "Delivered the LumiSkin brand site, covering concept, AI production, front-end and motion, in a single day for under $300, against $6,500+ quoted for the same brief produced conventionally.",
       },
       {
         text: "Founded and run Filosofee, a South African streetwear label: designed the range, built the e-commerce store, integrated payments, art-directed the shoot and ran the go-to-market. Sold locally and internationally in its first month and landed a 20-unit wholesale order from another brand.",
@@ -132,7 +132,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Led brand strategy and growth marketing: owned paid media and demand generation across LinkedIn, Google and Meta, developed multi-format content, and built the CRM and marketing automation workflows behind a qualified pipeline.",
       },
       {
-        text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand — positioning, visual identity and go-to-market strategy — with the founder.",
+        text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand with the founder, covering positioning, visual identity and go-to-market strategy.",
       },
       {
         text: "Designed and built Social Sweep, a proprietary real-time social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced an annual enterprise software licence with an in-house product the company can now sell.",
@@ -249,7 +249,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         title: "Digify Pro Lead Trainer",
         dates: "Jun 2022 – Aug 2022",
         bullet:
-          "Training lead for the Digify Pro programme covering digital marketing, social media and entrepreneurship, with particular emphasis on Meta properties — having served as assistant lead the previous year.",
+          "Training lead for the Digify Pro programme covering digital marketing, social media and entrepreneurship, with particular emphasis on Meta properties, having served as assistant lead the previous year.",
       },
       {
         title: "Facebook Diaspora Workshop Lead",
@@ -572,9 +572,9 @@ export const PRODUCT_NOTES: Record<string, string> = {
   Hakkan:
     "Specified and directed an agentic research pipeline: multi-platform retrieval synthesised into a cited, source-grounded report, then generation in the user's own learned voice. Rebuilding the evidence filter took verified human sources from 29% of citations to 57%; anything the model inferred is flagged rather than hidden.",
   InSpiritInTruth:
-    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass taking ~77% of the AI effort against ~22% on the writing — an app that quotes scripture cannot afford to misquote it. Live on the App Store.",
+    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass taking ~77% of the AI effort against ~22% on the writing, because an app that quotes scripture cannot afford to misquote it. Live on the App Store.",
   "tapa.":
-    "Multimodal input — text, voice and vision — resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first. Live on the App Store.",
+    "Multimodal input (text, voice and vision) resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first. Live on the App Store.",
   CaughtSlipping:
     "Local-first behavioural tracking with no account and no server: everything stays on the device. Published on the Chrome Web Store.",
 };
