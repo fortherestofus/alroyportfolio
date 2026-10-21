@@ -177,7 +177,7 @@ const DEVICE = 340;
     </section>
 
     {/* ------------------------------------------------ EDUCATION */}
-    <section class="block" data-break-before>
+    <section class="block">
       <header class="block__head">
         <p class="block__eyebrow">
           <span class="eyebrow">03</span>
@@ -220,7 +220,7 @@ const DEVICE = 340;
     </section>
 
     {/* ------------------------------------------------ PORTFOLIO */}
-    <section class="block" data-break-before>
+    <section class="block">
       <header class="block__head">
         <p class="block__eyebrow">
           <span class="eyebrow">04</span>
@@ -235,7 +235,7 @@ const DEVICE = 340;
 
       {
         PORTFOLIO.map((category) => (
-          <section class="gallery" data-keep>
+          <section class="gallery">
             <h3 class="gallery__title">
               {category.name}
               <span class="gallery__count">
@@ -263,7 +263,7 @@ const DEVICE = 340;
     </section>
 
     {/* ------------------------------------------------- PRODUCTS */}
-    <section class="block" data-break-before>
+    <section class="block">
       <header class="block__head">
         <p class="block__eyebrow">
           <span class="eyebrow">05</span>
@@ -297,7 +297,6 @@ const DEVICE = 340;
                   <h3 class="product__name">{product.name}</h3>
                   <p class="product__tagline">{product.tagline}</p>
                   <p class="product__copy">{product.story.problem}</p>
-                  <p class="product__copy">{product.story.approach}</p>
                   <p class="product__stack">{product.stack.join(" · ")}</p>
                   <p class="product__links">
                     {product.link && (
@@ -320,7 +319,7 @@ const DEVICE = 340;
     </section>
 
     {/* --------------------------------------------- CASE STUDIES */}
-    <section class="block" data-break-before>
+    <section class="block">
       <header class="block__head">
         <p class="block__eyebrow">
           <span class="eyebrow">06</span>
@@ -376,7 +375,7 @@ const DEVICE = 340;
     </section>
 
     {/* ---------------------------------------------------- PROOF */}
-    <section class="block" data-break-before>
+    <section class="block">
       <header class="block__head">
         <p class="eyebrow">07</p>
         <h2 class="block__title">What people say</h2>
@@ -465,9 +464,20 @@ const DEVICE = 340;
   }
 
   /* --- Cover ---------------------------------------------- */
+  /*
+   * The cover owns its page, so it should fill it.
+   *
+   * It is the one section that keeps a forced break, which left the
+   * bottom half of page one as dead black. Centred in the full content
+   * height, the same material reads as a title page instead of as a
+   * section that ran out early. 265mm is A4 less the sheet's 16mm
+   * padding top and bottom.
+   */
   .cover {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    min-height: 265mm;
     gap: var(--resume-gap-6);
   }
 
@@ -599,6 +609,8 @@ const DEVICE = 340;
     gap: var(--resume-gap-2);
     padding-bottom: var(--resume-gap-4);
     border-bottom: 1px solid var(--resume-rule);
+    break-inside: avoid;
+    break-after: avoid;
   }
 
   .block__title {
@@ -761,6 +773,7 @@ const DEVICE = 340;
     font-size: var(--resume-text-body);
     font-weight: var(--resume-weight-heading);
     color: var(--resume-accent);
+    break-after: avoid;
   }
 
   .gallery__grid {

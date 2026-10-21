@@ -22,6 +22,7 @@
     "resume": "npm run build && node scripts/build-resume-pdf.mjs && npm run resume:verify",
     "resume:verify": "node scripts/verify-resume-pdf.mjs",
     "resume:preview": "node scripts/ats-preview.mjs",
+    "resume:render": "node scripts/preview-pdf.mjs",
     "qa": "npm run check && npm run lint && npm run lint:tokens && npm run format:check && npm run build && npm run check:links && npm run check:redirects && npm run resume:verify && npm run qa:browser",
     "qa:browser": "node scripts/qa-browser.mjs",
     "lottie": "node scripts/theme-lottie.mjs",

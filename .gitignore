@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Scratch output from `npm run resume:render`.
+.resume-pages.png
