@@ -1,0 +1,509 @@
+---
+/**
+ * The LinkedIn document ad — printed to
+ * public/alroy-ndhlovu-linkedin.pdf by `npm run resume`.
+ *
+ * Twelve 960 × 540pt sheets, 16:9, which is what LinkedIn's document
+ * format takes and what the reference ad Alroy liked was built at.
+ * LinkedIn recommends under ten pages; the engagement data the agency
+ * guides publish puts the useful band at ten to twenty, and twelve is
+ * the shortest version of this argument that still carries proof.
+ *
+ * The argument, in order: who (01–02), whether to believe him (03),
+ * what he does (04), what it looks like (05), what it returned for two
+ * clients (06–07), what he has built himself (08), how (09), with what
+ * (10), who vouches (11), and the ask (12).
+ *
+ * The reader is either hiring or buying and is never identified, so the
+ * document is one case for both and splits only on the last sheet.
+ *
+ * Every measurable figure is read from the data files that already hold
+ * it — case-studies.ts, products.ts, testimonials.ts, services.ts — so a
+ * number corrected once is corrected on the site, in both résumés and
+ * here. Only the writing this document needs lives in linkedin-ad.ts.
+ */
+import { Image } from "astro:assets";
+import SlidesLayout from "../layouts/SlidesLayout.astro";
+import { SITE, SOCIAL } from "../data/site";
+import { TESTIMONIALS, CLIENT_LOGOS } from "../data/testimonials";
+import { PORTFOLIO, shotImage } from "../data/portfolio";
+import { PRODUCTS, productImage } from "../data/products";
+import { studyPath, CASE_STUDIES } from "../data/case-studies";
+import { logo } from "../data/logos";
+import {
+  COVER,
+  INTRO,
+  NUMBERS,
+  DISCIPLINES,
+  RANGE,
+  STUDIES,
+  PRODUCT_PITCH,
+  PRODUCT_ORDER,
+  PROCESS,
+  PROCESS_PROOF,
+  TOOLSET,
+  CLOSE,
+} from "../data/linkedin-ad";
+import coverPortrait from "../assets/images/alroy-portrait-ink.jpg";
+import introPortrait from "../assets/images/alroy-portrait-warm.jpg";
+import closePortrait from "../assets/images/alroy-portrait-bw.jpg";
+
+const DESCRIPTION =
+  "Alroy Ndhlovu — marketing, brand, product and AI-native build. Twelve years, 1,200+ projects, four products shipped in 2026.";
+
+const TOTAL = 12;
+
+/*
+ * Source widths, in CSS pixels, sized against what each slot actually
+ * occupies at 960pt wide and then carried at roughly 1.5× for print
+ * density. Asking for more only inflates the PDF — Chromium embeds what
+ * it is given, and LinkedIn's ceiling is 100MB but a reader's patience
+ * is a good deal lower.
+ */
+const W_COVER = 820;
+const W_PORTRAIT = 620;
+const W_TILE = 460;
+const W_SHOT = 300;
+const W_LOGO = 160;
+
+/** The four product tints, in the order PRODUCT_ORDER names them. */
+const TINTS = ["olive", "rust", "amber", "lime"] as const;
+
+const productByName = new Map(PRODUCTS.map((product) => [product.name, product]));
+
+/*
+ * `studyPath` rather than a composed string, so these links follow the
+ * same rule the site and both résumés do and survive a study moving
+ * between sections.
+ */
+function studyHref(slug: string): string {
+  const study = CASE_STUDIES.find((entry) => entry.slug === slug);
+  return study ? `${SITE.url}${studyPath(study)}` : SITE.url;
+}
+
+/*
+ * The client strip, in the order a stranger reads them rather than the
+ * order testimonials.ts stores them: the names that carry on their own
+ * first. Six, not all seven — the seventh mark is white type on solid
+ * black and reads as an empty tile at feed size, and six cells are
+ * wider, which is what actually helps here.
+ */
+const STRIP = [
+  "Meta",
+  "IFC (World Bank Group)",
+  "Digify Africa",
+  "Energy Capital & Power",
+  "African Agri Council",
+  "Innovatr",
+]
+  .map((name) => CLIENT_LOGOS.find((client) => client.name === name))
+  .filter((client): client is (typeof CLIENT_LOGOS)[number] => Boolean(client));
+
+/* The range slide names its own six shots; this only resolves the alt
+   text already written for each one in portfolio.ts, so the captions
+   never fall out of step with the images. */
+const altByFilename = new Map(
+  PORTFOLIO.flatMap((category) => category.shots).map((shot) => [shot.image, shot.alt]),
+);
+---
+
+<SlidesLayout title="Alroy Ndhlovu — Introduction" description={DESCRIPTION}>
+  {/* ============================================== 01 · COVER */}
+  <section class="slide slide--ink cover">
+    <div class="cover__text">
+      <p class="cover__name">{SITE.name}</p>
+      <p class="eyebrow cover__eyebrow">{COVER.eyebrow}</p>
+      <h1 class="cover__headline">{COVER.headline}</h1>
+      <p class="cover__standfirst">{COVER.standfirst}</p>
+      <div class="cover__foot">
+        <span>{COVER.location}</span>
+        <span class="cover__site">alroyndhlovu.com</span>
+      </div>
+    </div>
+    <div class="cover__portrait">
+      <Image
+        src={coverPortrait}
+        alt="Alroy Ndhlovu"
+        width={W_COVER}
+        densities={[1]}
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  {/* ============================================== 02 · INTRO */}
+  <section class="slide">
+    <div class="slide__head">
+      <h2 class="slide__title">{INTRO.heading}</h2>
+      <p class="eyebrow">Twelve years in</p>
+    </div>
+    <div class="slide__body">
+      <div class="intro">
+        <div class="intro__copy">
+          {INTRO.body.map((paragraph) => <p>{paragraph}</p>)}
+          <div class="intro__pull">
+            <p>{INTRO.pullquote}</p>
+            <p class="intro__source">{INTRO.pullquoteSource}</p>
+          </div>
+        </div>
+        <div class="intro__portrait">
+          <Image
+            src={introPortrait}
+            alt="Alroy Ndhlovu"
+            width={W_PORTRAIT}
+            densities={[1]}
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">02 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================ 03 · NUMBERS */}
+  <section class="slide slide--sunken">
+    <div class="slide__head">
+      <h2 class="slide__title">By the numbers</h2>
+      <p class="eyebrow">Track record</p>
+    </div>
+    <div class="slide__body">
+      <div class="stats">
+        {
+          NUMBERS.map((stat) => (
+            <div class="stat">
+              <div class="stat__value">{stat.value}</div>
+              <p class="stat__label">{stat.label}</p>
+              {"context" in stat && stat.context && <p class="stat__context">{stat.context}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">03 / {TOTAL}</span>
+  </section>
+
+  {/* ======================================== 04 · DISCIPLINES */}
+  <section class="slide">
+    <div class="slide__head">
+      <h2 class="slide__title">What I do</h2>
+      <p class="eyebrow">Four disciplines, one operator</p>
+    </div>
+    <div class="slide__body">
+      <div class="disciplines">
+        {
+          DISCIPLINES.map((discipline) => (
+            <div class="discipline">
+              <div class="discipline__number">{discipline.number}</div>
+              <h3 class="discipline__name">{discipline.name}</h3>
+              <p class="discipline__blurb">{discipline.blurb}</p>
+              <div class="keywords">
+                {discipline.keywords.map((keyword) => (
+                  <span class="keyword">{keyword}</span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">04 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================== 05 · RANGE */}
+  <section class="slide slide--sunken">
+    <div class="slide__head">
+      <h2 class="slide__title">The range</h2>
+      <p class="eyebrow">Identity · Web · UX/UI · Editorial · Photography · Content</p>
+    </div>
+    <div class="slide__body">
+      <div class="range">
+        {
+          RANGE.map((tile) => {
+            const image = shotImage(tile.image);
+            return (
+              <div class="range__tile">
+                <div class="range__frame">
+                  {image && (
+                    <Image
+                      src={image}
+                      alt={altByFilename.get(tile.image) ?? tile.label}
+                      width={W_TILE}
+                      densities={[1]}
+                      loading="eager"
+                      style={
+                        "focus" in tile && tile.focus ? `object-position: ${tile.focus}` : undefined
+                      }
+                    />
+                  )}
+                </div>
+                <div class="range__label">
+                  <strong>{tile.label}</strong>
+                  <span>{tile.note}</span>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">05 / {TOTAL}</span>
+  </section>
+
+  {/* ====================================== 06–07 · CASE STUDIES */}
+  {
+    STUDIES.map((study, index) => (
+      <section class="slide">
+        <div class="slide__head">
+          <h2 class="slide__title">{study.client}</h2>
+          <p class="eyebrow">{study.kicker}</p>
+        </div>
+        <div class="slide__body">
+          <div class="study">
+            <div class="study__intro">
+              <p class="study__client">Client work</p>
+              <h3 class="study__heading">{study.heading}</h3>
+              <p class="study__body">{study.body}</p>
+              <a class="study__link" href={studyHref(study.slug)}>
+                Client named in the full case study <span>→ alroyndhlovu.com</span>
+              </a>
+            </div>
+            <div class="study__metrics">
+              {study.metrics.map((metric) => (
+                <div class="metric">
+                  <div class="metric__value">{metric.value}</div>
+                  <p class="metric__label">{metric.label}</p>
+                  {"context" in metric && metric.context && (
+                    <p class="metric__context">{metric.context}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <span class="slide__mark">alroyndhlovu.com</span>
+        <span class="folio">
+          0{6 + index} / {TOTAL}
+        </span>
+      </section>
+    ))
+  }
+
+  {/* =========================================== 08 · PRODUCTS */}
+  <section class="slide slide--sunken">
+    <div class="slide__head">
+      <h2 class="slide__title">Four products, one year</h2>
+      <p class="eyebrow">Specified, designed and shipped</p>
+    </div>
+    <div class="slide__body">
+      <div class="products">
+        {
+          PRODUCT_ORDER.map((name, index) => {
+            const product = productByName.get(name);
+            const pitch = PRODUCT_PITCH[name];
+            if (!product || !pitch) return null;
+            const shot = productImage(product.shots[0]?.image);
+            return (
+              <div class={`product product--${TINTS[index]}`}>
+                <div class="product__top">
+                  <h3 class="product__name">{product.name}</h3>
+                  <span class="product__status">{product.status}</span>
+                </div>
+                <p class="product__platform">{product.platform}</p>
+                <div class="product__shot">
+                  {shot && (
+                    <Image
+                      src={shot}
+                      alt={product.shots[0]?.alt ?? product.name}
+                      width={W_SHOT}
+                      densities={[1]}
+                      loading="eager"
+                    />
+                  )}
+                </div>
+                <p class="product__problem">{pitch.problem}</p>
+                <p class="product__solution">{pitch.solution}</p>
+                {product.link && (
+                  <a class="product__link" href={product.link.url}>
+                    {product.link.label} →
+                  </a>
+                )}
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">08 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================ 09 · PROCESS */}
+  <section class="slide">
+    <div class="slide__head">
+      <h2 class="slide__title">How I build</h2>
+      <p class="eyebrow">Identify · Build · Grow</p>
+    </div>
+    <div class="slide__body">
+      <div class="process">
+        {
+          PROCESS.map((step) => (
+            <div class={`step step--${step.tint}`}>
+              <div class="step__top">
+                <span class="step__number">{step.number}</span>
+                <span class="step__stamp">{step.stamp}</span>
+              </div>
+              <h3 class="step__title">{step.title}</h3>
+              <p class="step__blurb">{step.blurb}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="proofs">
+        {
+          PROCESS_PROOF.map((proof) => (
+            <div class="proof">
+              <div class="proof__value">{proof.value}</div>
+              <p class="proof__label">{proof.label}</p>
+              <p class="proof__context">{proof.context}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">09 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================ 10 · TOOLSET */}
+  <section class="slide slide--sunken">
+    <div class="slide__head">
+      <h2 class="slide__title">The toolset</h2>
+      <p class="eyebrow">What the work actually runs on</p>
+    </div>
+    <div class="slide__body">
+      <div class="tools">
+        {
+          TOOLSET.map((group) => (
+            <div class:list={["tools__group", group.items.length > 10 && "tools__group--wide"]}>
+              <div class="tools__label">
+                <strong>{group.label}</strong>
+                <span class="tools__note">{group.note}</span>
+              </div>
+              <div class="tools__items">
+                {group.items.map((item) => (
+                  <span class={`keyword keyword--${group.tint}`}>{item}</span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">10 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================== 11 · TRUST */}
+  <section class="slide">
+    <div class="slide__head">
+      <h2 class="slide__title">Trusted by</h2>
+      <p class="eyebrow">Clients and collaborators</p>
+    </div>
+    <div class="slide__body">
+      <div class="trust">
+        <div class="logos">
+          {
+            STRIP.map((client) => {
+              const mark = logo(client.logoFile);
+              return (
+                <div class="logos__cell">
+                  {mark && (
+                    <Image
+                      src={mark}
+                      alt={client.name}
+                      width={W_LOGO}
+                      densities={[1]}
+                      loading="eager"
+                    />
+                  )}
+                </div>
+              );
+            })
+          }
+        </div>
+        <div class="quotes">
+          {
+            TESTIMONIALS.map((testimonial) => (
+              <div class="quote">
+                <div class="quote__mark">“</div>
+                <p class="quote__text">{testimonial.quote}</p>
+                <div class="quote__who">
+                  <p class="quote__name">{testimonial.name}</p>
+                  <p class="quote__role">
+                    {testimonial.role}, {testimonial.organisation}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <span class="slide__mark">alroyndhlovu.com</span>
+    <span class="folio">11 / {TOTAL}</span>
+  </section>
+
+  {/* ============================================== 12 · CLOSE */}
+  <section class="slide slide--ink">
+    <div class="slide__body">
+      <div class="close">
+        <div class="close__main">
+          <p class="eyebrow" style="margin-bottom: 18pt;">Let's talk</p>
+          <h2 class="close__heading">{CLOSE.heading}</h2>
+          <div class="tracks">
+            {
+              CLOSE.tracks.map((track) => (
+                <div class="track">
+                  <p class="track__label">{track.label}</p>
+                  <p class="track__body">{track.body}</p>
+                </div>
+              ))
+            }
+          </div>
+          <p class="close__signoff">{CLOSE.signoff}</p>
+        </div>
+        <div class="close__card">
+          <div class="close__portrait">
+            <Image
+              src={closePortrait}
+              alt="Alroy Ndhlovu"
+              width={260}
+              densities={[1]}
+              loading="eager"
+            />
+          </div>
+          <p class="close__name">{SITE.name}</p>
+          <p class="close__role">Marketing, brand, product &amp; AI-native build</p>
+          <div class="contacts">
+            <a class="contact" href={`mailto:${SITE.email}`}>
+              <span>Email</span>{SITE.email}
+            </a>
+            <a class="contact" href={SOCIAL.linkedin}>
+              <span>LinkedIn</span>/in/alroyndhlovu
+            </a>
+            <a class="contact" href={SOCIAL.cal}>
+              <span>Book a call</span>cal.com/mralroyndhlovu
+            </a>
+            <a class="contact" href={SITE.url}>
+              <span>Portfolio</span>alroyndhlovu.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</SlidesLayout>

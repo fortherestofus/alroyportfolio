@@ -64,6 +64,17 @@ const DOCUMENTS = [
     file: "alroy-ndhlovu-resume-visual.pdf",
     label: "Visual résumé",
   },
+  /*
+   * The LinkedIn document ad. Same pipeline, different geometry: its
+   * @page rule asks for 960 × 540pt, which is the 16:9 sheet LinkedIn's
+   * document format takes, and `preferCSSPageSize` is what lets one
+   * script print A4 and 16:9 without knowing about either.
+   */
+  {
+    route: "/linkedin/",
+    file: "alroy-ndhlovu-linkedin.pdf",
+    label: "LinkedIn document ad",
+  },
 ];
 
 function serve() {

@@ -1,0 +1,61 @@
+---
+/**
+ * The shell the LinkedIn document ad prints inside.
+ *
+ * Same reasoning as ResumeLayout and for the same reasons: no GTM, no
+ * Lenis, no reveal animations, no nav. A document ad is a stack of
+ * printed sheets, and every one of those would either do nothing or
+ * actively move the layout under a headless print.
+ *
+ * `noindex` because this is a print route. The PDF is the artefact.
+ */
+import "../styles/fonts.css";
+import "../styles/linkedin.css";
+
+interface Props {
+  title: string;
+  /** Becomes the PDF's document description. */
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Alroy Ndhlovu" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    {
+      /*
+       * Preloaded rather than left to font-display: swap. The print is
+       * a single shot with no chance to repaint — a font that arrives
+       * after the print call is absent from the file, and every line it
+       * would have sized has already been laid out against the
+       * fallback.
+       */
+    }
+    <link
+      rel="preload"
+      href="/fonts/ApfelGrotezk-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ApfelGrotezk-Mittel.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body class="slides-body">
+    <slot />
+  </body>
+</html>

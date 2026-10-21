@@ -1,0 +1,1188 @@
+/* ============================================================
+   LINKEDIN DOCUMENT AD — 960 × 540pt, 16:9.
+
+   Printed to public/alroy-ndhlovu-linkedin.pdf by
+   scripts/build-resume-pdf.mjs, which hands page geometry to the
+   @page rule below via `preferCSSPageSize`.
+
+   The palette is the studio's, lifted token for token from the
+   fortherestofus globals.css so the two cannot drift: white
+   canvas, ink type, ink bookends, one restrained ember, and the
+   four product tints used only where the products are.
+
+   The one thing this document must respect that the résumé need
+   not: it is read in a feed, on a phone, at a fraction of its
+   printed size. So the type scale is set large and the word count
+   per slide is kept low. A slide that needs a second look has
+   already lost.
+   ============================================================ */
+
+:root {
+  /* --- Geometry --------------------------------------------- */
+  --slide-w: 960pt;
+  --slide-h: 540pt;
+  --pad-x: 58pt;
+  --pad-y: 48pt;
+
+  /* --- Palette (fortherestofus, light) ----------------------- */
+  --bg: #ffffff;
+  --sunken: #f4f4f1;
+  --ink: #17150f;
+  --muted: #6f6a5e;
+  --faint: #a5a197;
+  --line: #e7e5de;
+
+  --accent: #c4552f;
+  --accent-soft: #f4e7de;
+  --accent-deep: #a8431f;
+  /* The ember lifted for the ink sheets — the studio's own dark-theme
+     accent, since the light one goes muddy on the dark ground. */
+  --accent-on-ink: #e07a52;
+
+  --ink-surface: #141310;
+  --ink-raised: #211e18;
+  --ink-text: #f4f2ec;
+  --ink-muted: #a49f92;
+  --ink-line: rgba(244, 242, 236, 0.14);
+
+  /* Product tints — allowed on the product and process slides only. */
+  --tint-amber: #f8dca2;
+  --tint-amber-deep: #7a5800;
+  --tint-olive: #cdd7a9;
+  --tint-olive-deep: #42530e;
+  --tint-rust: #e8b3a3;
+  --tint-rust-deep: #8f3517;
+  --tint-lime: #edf9af;
+  --tint-lime-deep: #3a4409;
+
+  /* --- Type -------------------------------------------------
+     Points, because this is a printed page — but sized against
+     being read at phone width rather than at A4 arm's length.
+     ---------------------------------------------------------- */
+  /* Sized to the line, not the other way round. The cover headline is
+     63 characters, which at 46pt sets in three lines inside the column
+     and still reads as a headline at phone width. Raising this without
+     shortening the line pushes the sheet into a fourth line and
+     overflows the page. */
+  --t-cover: 46pt;
+  --t-h1: 40pt;
+  --t-h2: 27pt;
+  --t-stat: 46pt;
+  --t-stat-sm: 32pt;
+  --t-lead: 19pt;
+  --t-body: 16pt;
+  --t-small: 13.5pt;
+  --t-eyebrow: 11.5pt;
+
+  /* Only Regular and Mittel ship. Anything else is either a faux bold
+     or a request for a font file that does not exist. */
+  --weight-body: 400;
+  --weight-heading: 500;
+
+  --radius-card: 16px;
+  --radius-well: 24px;
+  --radius-block: 32px;
+  --radius-pill: 999px;
+
+  /* Screen-preview furniture: the sheet stack and its drop shadow,
+     both ignored by print. */
+  --preview-gap: 24px;
+  --preview-shadow: 0 2px 6px rgba(22, 21, 15, 0.06), 0 14px 36px rgba(22, 21, 15, 0.1);
+
+  --hairline: 1px;
+  --rule: 2px;
+  --shot-radius: 12px;
+}
+
+@page {
+  size: 960pt 540pt;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body.slides-body {
+  font-family: "Apfel Grotezk", system-ui, sans-serif;
+  font-weight: var(--weight-body);
+  /* Nothing may render as faux bold — only Regular and Mittel are loaded. */
+  font-synthesis: none;
+  color: var(--ink);
+  background: var(--sunken);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* ------------------------------------------------------------
+   THE SLIDE
+
+   Every slide is exactly one printed page. `break-after: page`
+   on all but the last is what guarantees it: a slide that
+   overflows would otherwise silently spill onto a second sheet
+   and put a half-empty page into the middle of the ad.
+   ------------------------------------------------------------ */
+.slide {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  break-after: page;
+  break-inside: avoid;
+}
+
+.slide:last-of-type {
+  break-after: auto;
+}
+
+/* Screen preview only: stack the sheets so they can be scrolled
+   through at true size before rendering. Print ignores it. */
+@media screen {
+  body.slides-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--preview-gap);
+    padding: var(--preview-gap) 0;
+  }
+
+  .slide {
+    box-shadow: var(--preview-shadow);
+  }
+}
+
+.slide--ink {
+  background: var(--ink-surface);
+  color: var(--ink-text);
+}
+
+.slide--sunken {
+  background: var(--sunken);
+}
+
+/* ------------------------------------------------------------
+   SHARED FURNITURE
+   ------------------------------------------------------------ */
+.eyebrow {
+  margin: 0;
+  font-size: var(--t-eyebrow);
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.slide--ink .eyebrow {
+  color: var(--accent-on-ink);
+}
+
+.slide__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24pt;
+  padding-bottom: 14pt;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 26pt;
+}
+
+.slide--ink .slide__head {
+  border-bottom-color: var(--ink-line);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+h2.slide__title {
+  font-size: var(--t-h1);
+  max-width: 20ch;
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0;
+}
+
+p {
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+}
+
+.slide--ink p {
+  color: var(--ink-muted);
+}
+
+/* The folio and the site mark sit in the bottom padding, outside the
+   content box — so the body reserves the band rather than letting a
+   full-height image run underneath the page number. */
+.slide__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16pt;
+}
+
+/* The page number, bottom-right on every slide but the cover. */
+.folio {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: 26pt;
+  font-size: 10.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.08em;
+  color: var(--faint);
+}
+
+.slide--ink .folio {
+  color: var(--ink-muted);
+}
+
+/* The site URL, bottom-left, so a screenshot of any single slide
+   still carries somewhere to go. */
+.slide__mark {
+  position: absolute;
+  left: var(--pad-x);
+  bottom: 26pt;
+  font-size: 10.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.04em;
+  color: var(--faint);
+}
+
+.slide--ink .slide__mark {
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------
+   01 · COVER
+
+   The portrait is lit warm against black and bleeds into the ink
+   surface with no cutout — which is the whole reason this slide
+   is dark. A mask or a knockout would fight the photograph; the
+   background simply agrees with it.
+   ------------------------------------------------------------ */
+.cover {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 400pt;
+}
+
+.cover__text {
+  padding: var(--pad-y) 40pt var(--pad-y) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cover__name {
+  font-size: 22pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.02em;
+  margin: 0 0 auto;
+  color: var(--ink-text);
+}
+
+.cover__headline {
+  font-size: var(--t-cover);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin: 0 0 22pt;
+  color: var(--ink-text);
+  max-width: 22ch;
+}
+
+.cover__standfirst {
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0 0 28pt;
+  max-width: 44ch;
+}
+
+.cover__eyebrow {
+  margin-bottom: 20pt;
+}
+
+.cover__foot {
+  margin-top: auto;
+  padding-top: 20pt;
+  border-top: 1px solid var(--ink-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16pt;
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+}
+
+.cover__site {
+  font-weight: var(--weight-heading);
+  color: var(--ink-text);
+}
+
+.cover__portrait {
+  position: relative;
+  height: 100%;
+}
+
+.cover__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;
+  display: block;
+}
+
+/* The photograph is lit from the left and falls to black on its
+   own; this only carries that fall across the seam so there is no
+   visible edge between image and page. */
+.cover__portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--ink-surface) 0%,
+    rgba(20, 19, 16, 0.72) 14%,
+    rgba(20, 19, 16, 0) 42%
+  );
+}
+
+/* ------------------------------------------------------------
+   02 · INTRO
+   ------------------------------------------------------------ */
+.intro {
+  display: grid;
+  grid-template-columns: 1fr 300pt;
+  gap: 46pt;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.intro__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16pt;
+}
+
+.intro__copy p {
+  font-size: 15.5pt;
+  line-height: 1.5;
+}
+
+.intro__pull {
+  margin-top: 4pt;
+  padding: 14pt 18pt;
+  background: var(--sunken);
+  border-radius: var(--radius-well);
+  border-left: 3px solid var(--accent);
+}
+
+.intro__pull p {
+  font-size: 15.5pt;
+  line-height: 1.4;
+  color: var(--ink);
+  font-weight: var(--weight-heading);
+}
+
+/* Height comes from the row, not from a fixed ratio. A 4/5 box at this
+   column width ran past the body and put the page number on the
+   photograph; `object-fit: cover` takes the crop instead. */
+/* The citation under the pull quote. Deliberately quiet: the claim is
+   the thing being read, and the source is what stops it reading as an
+   assertion. */
+.intro__source {
+  font-size: 10.5pt;
+  line-height: 1.3;
+  color: var(--faint);
+  margin: 6pt 0 0;
+}
+
+.intro__portrait {
+  border-radius: var(--radius-block);
+  overflow: hidden;
+  background: var(--ink-surface);
+  min-height: 0;
+}
+
+.intro__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ------------------------------------------------------------
+   03 · NUMBERS
+   ------------------------------------------------------------ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* The grid's own background shows through the gap — that is the
+     rule between the six cells, so it is a hairline, not spacing. */
+  gap: var(--hairline);
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-well);
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.stat {
+  background: var(--bg);
+  padding: 24pt 24pt 22pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat__value {
+  font-size: var(--t-stat);
+  font-weight: var(--weight-heading);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin-bottom: 10pt;
+}
+
+.stat__label {
+  font-size: 14.5pt;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0;
+}
+
+.stat__context {
+  font-size: 12.5pt;
+  line-height: 1.35;
+  color: var(--faint);
+  margin: 6pt 0 0;
+}
+
+/* ------------------------------------------------------------
+   04 · DISCIPLINES
+   ------------------------------------------------------------ */
+.disciplines {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18pt 26pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.discipline {
+  display: flex;
+  flex-direction: column;
+  padding-top: 14pt;
+  border-top: var(--rule) solid var(--ink);
+}
+
+.discipline__number {
+  font-size: 11.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 7pt;
+}
+
+.discipline__name {
+  font-size: 21pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.02em;
+  margin: 0 0 8pt;
+}
+
+.discipline__blurb {
+  font-size: 13.5pt;
+  line-height: 1.42;
+  margin: 0 0 11pt;
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5pt;
+  margin-top: auto;
+}
+
+.keyword {
+  font-size: 10.5pt;
+  line-height: 1;
+  padding: 5.5pt 9pt;
+  border-radius: var(--radius-pill);
+  background: var(--sunken);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Tinted pills. Used on the toolset slide, where five grey lists of
+   names was the least legible slide in the document and colour is doing
+   the grouping rather than decorating it. Each pairs its wash with the
+   deep text colour that passes contrast on it. */
+.keyword--amber {
+  background: var(--tint-amber);
+  color: var(--tint-amber-deep);
+}
+.keyword--olive {
+  background: var(--tint-olive);
+  color: var(--tint-olive-deep);
+}
+.keyword--rust {
+  background: var(--tint-rust);
+  color: var(--tint-rust-deep);
+}
+.keyword--lime {
+  background: var(--tint-lime);
+  color: var(--tint-lime-deep);
+}
+
+/* ------------------------------------------------------------
+   05 · RANGE
+
+   Six tiles, three across. The point of the slide is that six
+   genuinely different kinds of artefact sit next to each other,
+   so each one keeps its own crop and gets a label — a grid of
+   unlabelled thumbnails proves nothing.
+   ------------------------------------------------------------ */
+.range {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.range__tile {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.range__frame {
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--sunken);
+  border: 1px solid var(--line);
+}
+
+.range__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.range__label {
+  display: flex;
+  align-items: baseline;
+  gap: 8pt;
+  margin-top: 8pt;
+}
+
+.range__label strong {
+  font-size: 13.5pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+}
+
+.range__label span {
+  font-size: 11.5pt;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------
+   06–07 · CASE STUDIES
+   ------------------------------------------------------------ */
+.study {
+  display: grid;
+  grid-template-columns: 330pt 1fr;
+  gap: 40pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.study__intro {
+  display: flex;
+  flex-direction: column;
+}
+
+.study__client {
+  font-size: 13.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin: 0 0 10pt;
+}
+
+.study__heading {
+  font-size: 29pt;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0 0 14pt;
+}
+
+.study__body {
+  font-size: 14.5pt;
+  line-height: 1.48;
+}
+
+/* One line, always. The full URL wrapped onto a second line and
+   landed on the site mark in the corner; the path alone is enough to
+   type, and the link itself still carries the whole address. */
+.study__link {
+  margin-top: auto;
+  font-size: 12.5pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+  text-decoration: none;
+  border-top: 1px solid var(--line);
+  padding-top: 12pt;
+  white-space: nowrap;
+}
+
+.study__link span {
+  color: var(--accent);
+}
+
+.study__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14pt;
+  align-content: stretch;
+}
+
+.metric {
+  background: var(--sunken);
+  border-radius: var(--radius-well);
+  padding: 20pt 22pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.metric__value {
+  font-size: var(--t-stat-sm);
+  font-weight: var(--weight-heading);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 9pt;
+}
+
+.metric__label {
+  font-size: 13pt;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0;
+}
+
+.metric__context {
+  font-size: 11.5pt;
+  line-height: 1.3;
+  color: var(--faint);
+  margin: 5pt 0 0;
+}
+
+/* ------------------------------------------------------------
+   08 · PRODUCTS
+
+   The one slide where the tints are allowed, because they are
+   derived from the four apps' own accents. The restraint
+   everywhere else is what makes them read as the products rather
+   than as decoration.
+   ------------------------------------------------------------ */
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.product {
+  border-radius: var(--radius-well);
+  padding: 18pt 18pt 16pt;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.product--amber {
+  background: var(--tint-amber);
+  color: var(--tint-amber-deep);
+}
+.product--olive {
+  background: var(--tint-olive);
+  color: var(--tint-olive-deep);
+}
+.product--rust {
+  background: var(--tint-rust);
+  color: var(--tint-rust-deep);
+}
+.product--lime {
+  background: var(--tint-lime);
+  color: var(--tint-lime-deep);
+}
+
+.product__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8pt;
+  margin-bottom: 3pt;
+}
+
+.product__name {
+  font-size: 19pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: inherit;
+}
+
+.product__status {
+  font-size: 9.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3.5pt 7pt;
+  border-radius: var(--radius-pill);
+  background: rgba(23, 21, 15, 0.1);
+  color: inherit;
+  white-space: nowrap;
+}
+
+.product__platform {
+  font-size: 10.5pt;
+  margin: 0 0 11pt;
+  color: inherit;
+  opacity: 0.72;
+}
+
+.product__shot {
+  border-radius: var(--shot-radius);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.5);
+  margin-bottom: 11pt;
+  height: 118pt;
+}
+
+.product__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  display: block;
+}
+
+.product__problem {
+  font-size: 12pt;
+  line-height: 1.35;
+  font-weight: var(--weight-heading);
+  color: inherit;
+  margin: 0 0 7pt;
+}
+
+.product__solution {
+  font-size: 11pt;
+  line-height: 1.38;
+  color: inherit;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.product__link {
+  margin-top: auto;
+  padding-top: 10pt;
+  font-size: 10pt;
+  font-weight: var(--weight-heading);
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------
+   09 · PROCESS
+   ------------------------------------------------------------ */
+.process {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18pt;
+  margin-bottom: 20pt;
+}
+
+.step {
+  border-radius: var(--radius-well);
+  padding: 20pt 22pt 22pt;
+  display: flex;
+  flex-direction: column;
+}
+
+.step--amber {
+  background: var(--tint-amber);
+  color: var(--tint-amber-deep);
+}
+.step--rust {
+  background: var(--tint-rust);
+  color: var(--tint-rust-deep);
+}
+.step--olive {
+  background: var(--tint-olive);
+  color: var(--tint-olive-deep);
+}
+
+.step__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 9pt;
+}
+
+.step__number {
+  font-size: 11.5pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.step__stamp {
+  font-size: 10pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.step__title {
+  font-size: 26pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.025em;
+  margin: 0 0 9pt;
+  color: inherit;
+}
+
+.step__blurb {
+  font-size: 12.5pt;
+  line-height: 1.42;
+  color: inherit;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.proofs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16pt;
+}
+
+.proof {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 15pt 18pt;
+}
+
+.proof__value {
+  font-size: 17pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  margin-bottom: 5pt;
+}
+
+.proof__label {
+  font-size: 12.5pt;
+  line-height: 1.32;
+  color: var(--ink);
+  margin: 0;
+}
+
+.proof__context {
+  font-size: 11pt;
+  line-height: 1.32;
+  color: var(--faint);
+  margin: 3pt 0 0;
+}
+
+/* ------------------------------------------------------------
+   10 · TOOLSET
+   ------------------------------------------------------------ */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16pt 34pt;
+  flex: 1;
+  min-height: 0;
+  /* Spread the five groups down the sheet. Packed to the top they
+     left a third of the slide empty, which reads as a slide that ran
+     out of things to say. */
+  align-content: space-between;
+}
+
+/* The product stacks group carries the note that keeps the rest
+   honest, so it runs the full width rather than sharing a row. */
+.tools__group--wide {
+  grid-column: 1 / -1;
+}
+
+.tools__label {
+  display: flex;
+  align-items: baseline;
+  gap: 9pt;
+  margin-bottom: 9pt;
+  padding-bottom: 7pt;
+  border-bottom: 1px solid var(--line);
+}
+
+.tools__label strong {
+  font-size: 14pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.tools__note {
+  font-size: 11pt;
+  color: var(--faint);
+  font-style: italic;
+}
+
+.tools__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5pt;
+}
+
+/* ------------------------------------------------------------
+   11 · TRUST
+   ------------------------------------------------------------ */
+.trust {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 22pt;
+}
+
+.logos {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14pt;
+  align-items: center;
+}
+
+.logos__cell {
+  height: 70pt;
+  background: var(--sunken);
+  border-radius: var(--radius-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10pt;
+}
+
+.logos__cell img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  /* Deliberately unfiltered. Several of these are photographs of a
+     mark rather than a mark — some on their own dark ground — and
+     desaturating them turned four of the seven into grey slabs. A
+     client strip that cannot be read is worse than an uneven one. */
+}
+
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.quote {
+  background: var(--sunken);
+  border-radius: var(--radius-well);
+  padding: 22pt 24pt;
+  display: flex;
+  flex-direction: column;
+}
+
+.quote__mark {
+  font-size: 30pt;
+  line-height: 0.6;
+  color: var(--accent);
+  margin-bottom: 10pt;
+}
+
+.quote__text {
+  font-size: 13pt;
+  line-height: 1.42;
+  color: var(--ink);
+  margin: 0 0 14pt;
+}
+
+.quote__who {
+  margin-top: auto;
+  padding-top: 12pt;
+  border-top: 1px solid var(--line);
+}
+
+.quote__name {
+  font-size: 12.5pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+  margin: 0;
+}
+
+.quote__role {
+  font-size: 11pt;
+  line-height: 1.3;
+  color: var(--faint);
+  margin: 2pt 0 0;
+}
+
+/* ------------------------------------------------------------
+   12 · CLOSE
+   ------------------------------------------------------------ */
+.close {
+  display: grid;
+  grid-template-columns: 1fr 330pt;
+  gap: 44pt;
+  flex: 1;
+  min-height: 0;
+}
+
+.close__main {
+  display: flex;
+  flex-direction: column;
+}
+
+.close__heading {
+  font-size: 58pt;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin: 0 0 26pt;
+  color: var(--ink-text);
+}
+
+.tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 20pt;
+}
+
+.track {
+  padding-top: 14pt;
+  border-top: 1px solid var(--ink-line);
+}
+
+.track__label {
+  font-size: 12pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-on-ink);
+  margin: 0 0 7pt;
+}
+
+.track__body {
+  font-size: 14.5pt;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
+  max-width: 54ch;
+}
+
+.close__signoff {
+  margin-top: auto;
+  font-size: 15pt;
+  color: var(--ink-text);
+  font-weight: var(--weight-heading);
+}
+
+.close__card {
+  background: var(--ink-raised);
+  border-radius: var(--radius-block);
+  padding: 30pt;
+  display: flex;
+  flex-direction: column;
+}
+
+.close__portrait {
+  width: 84pt;
+  height: 84pt;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 18pt;
+}
+
+.close__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.close__name {
+  font-size: 20pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink-text);
+  margin: 0 0 4pt;
+}
+
+.close__role {
+  font-size: 12pt;
+  line-height: 1.35;
+  color: var(--ink-muted);
+  margin: 0 0 20pt;
+}
+
+.contacts {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 11pt;
+}
+
+.contact {
+  display: block;
+  font-size: 13.5pt;
+  color: var(--ink-text);
+  text-decoration: none;
+  padding-top: 11pt;
+  border-top: 1px solid var(--ink-line);
+}
+
+.contact span {
+  display: block;
+  font-size: 10pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 3pt;
+}
