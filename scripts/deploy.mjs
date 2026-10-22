@@ -16,7 +16,7 @@
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, rmSync, readdirSync, cpSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const DIST = join(ROOT, "dist");
@@ -25,6 +25,22 @@ const BRANCH = "deploy";
 
 function git(args, opts = {}) {
   return execFileSync("git", args, { cwd: ROOT, encoding: "utf8", ...opts }).trim();
+}
+
+/*
+ * Keep macOS metadata out of the published tree. Finder drops .DS_Store
+ * into any directory it previews, and AppleDouble `._*` siblings appear
+ * when files travel through a non-native filesystem; both land in dist/
+ * without being build output.
+ *
+ * The repo's .gitignore would normally catch them, but it lives on main
+ * and the deploy branch holds only the built site, so nothing ignores
+ * them inside the worktree -- `git add -A` would commit them and
+ * Hostinger would serve them from the web root.
+ */
+function isPublishable(src) {
+  const name = basename(src);
+  return name !== ".DS_Store" && !name.startsWith("._");
 }
 
 if (!existsSync(DIST) || readdirSync(DIST).length === 0) {
@@ -82,7 +98,7 @@ try {
     rmSync(join(WORKTREE, entry), { recursive: true, force: true });
   }
 
-  cpSync(DIST, WORKTREE, { recursive: true });
+  cpSync(DIST, WORKTREE, { recursive: true, filter: isPublishable });
 
   execFileSync("git", ["add", "-A"], { cwd: WORKTREE });
 
