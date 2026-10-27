@@ -10,6 +10,7 @@ import Placeholder from "./Placeholder.astro";
 import PortfolioModal from "./PortfolioModal.astro";
 import { PORTFOLIO, shotImage } from "../data/portfolio";
 import { SOCIAL } from "../data/site";
+import { PROCESS_STUDIES, studyPath } from "../data/case-studies";
 
 // Cards render at roughly half the right column; 2x that for retina.
 const COVER_WIDTH = 720;
@@ -50,6 +51,10 @@ const COVER_WIDTH = 720;
   </ul>
 
   <p class="work__cta">
+    <a href={studyPath(PROCESS_STUDIES[0]!)}>
+      How I make content with AI
+      <ArrowUpRight class="work__cta-icon" aria-hidden="true" />
+    </a>
     <a href={SOCIAL.dribbble} target="_blank" rel="noopener noreferrer">
       See more on Dribbble
       <ArrowUpRight class="work__cta-icon" aria-hidden="true" />
@@ -130,6 +135,9 @@ const COVER_WIDTH = 720;
   }
 
   .work__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
     margin-top: var(--space-6);
   }
 

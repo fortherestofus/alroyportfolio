@@ -118,6 +118,14 @@ export const PORTFOLIO: PortfolioCategory[] = [
     cover: "design_print_digital_2.webp",
     shots: [
       {
+        image: "branding_auxaffair_logo.webp",
+        alt: "Aux Affair logo: a lowercase wordmark whose last stroke runs out into a dashed audio cable in brass, ivory and ember, ending in a 3.5 mm plug.",
+      },
+      {
+        image: "branding_auxaffair_icon.webp",
+        alt: "Aux Affair icon: the lowercase a with its tail running into the first dashes of the cable and the plug, on black.",
+      },
+      {
         image: "branding_packaging.webp",
         alt: "Three wine labels side by side, each carrying a different illustrated landscape.",
       },
@@ -163,6 +171,32 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         image: "appstore_caughtslipping_grinding.jpg",
         alt: "App Store panel for a screen-time app's Work Mode, “Caught Grinding: for the overworkers”, beside a card reading nine hours forty-one worked today.",
+      },
+      {
+        image: "content_culcha_afro_culcha.webp",
+        alt: "Instagram story highlight cover for Afro Culcha: chunky cream lettering with an orange shadow on cobalt blue, ringed by printed orange drums, suns and symbols.",
+      },
+      {
+        image: "content_culcha_lean_back.webp",
+        alt: "Instagram story highlight cover for Lean Back: sticker-cut cream lettering on a flat, grainy crimson.",
+      },
+      {
+        image: "content_culcha_spotted_at_culcha.webp",
+        alt: "Instagram story highlight cover for Spotted at Culcha: a ring of sunglasses-wearing faces shot from below against palm trees and a blue sky.",
+      },
+      {
+        image: "content_culcha_culcha_summer.webp",
+        alt: "Instagram story highlight cover for Culcha Summer: a sticker-cut yellow and brush-script headline over palms, a hot sun and a turquoise sea.",
+      },
+      {
+        image: "appstore_header_video-poster.webp",
+        video: "/media/portfolio/appstore_header_video.mp4",
+        alt: "The 12-second loop that opens a devotional app's App Store page: the verse and the app's screens in motion.",
+      },
+      {
+        image: "isit_app_promo-poster.webp",
+        video: "/media/portfolio/isit_app_promo.mp4",
+        alt: "A 25-second vertical promo for a devotional app: real screens fan out, a feeling is typed, and a devotional is written for it.",
       },
       {
         image: "social_sweep_demo-poster.webp",

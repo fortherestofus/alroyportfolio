@@ -76,6 +76,10 @@ const MAX_WIDTH = 1280;
  */
 const MAX_WIDTH_AT = {
   "lumiskin/inspiration": 540,
+  "agentic-content/isit-promo": 540,
+  /* Portfolio clips are keyed by bare name. A 9:16 promo is letterboxed
+   * to the modal's height, so it never draws wider than ~460px. */
+  isit_app_promo: 720,
 };
 
 /**
@@ -97,6 +101,10 @@ const POSTER_AT = {
    * and both captions are on screen.
    */
   "lumiskin/inspiration": "6",
+  isit_app_promo: "1.5",
+  appstore_header_video: "3",
+  "agentic-content/isit-promo": "1.5",
+  "agentic-content/appstore-header": "3",
 };
 const POSTER_DEFAULT = "1";
 
@@ -109,7 +117,7 @@ const POSTER_DEFAULT = "1";
  * commentary is the point. The element still starts muted so autoplay
  * is never blocked; the controls are what let a reader turn it on.
  */
-const KEEP_AUDIO = new Set(["social_sweep_demo"]);
+const KEEP_AUDIO = new Set(["social_sweep_demo", "isit_app_promo"]);
 
 /**
  * Clips that also ship a silent copy for a case study page.
@@ -150,6 +158,7 @@ for (const file of sources) {
   const source = join(SOURCE_DIR, file);
   const video = join(VIDEO_OUT, `${name}.mp4`);
   const poster = join(POSTER_OUT, `${name}-poster.webp`);
+  const cap = MAX_WIDTH_AT[name] ?? MAX_WIDTH;
 
   const sourceTime = statSync(source).mtimeMs;
   const upToDate = existsSync(video) && existsSync(poster) && statSync(video).mtimeMs > sourceTime;
@@ -168,7 +177,7 @@ for (const file of sources) {
     // Never upscale: only shrink clips wider than the cap, keeping even
     // dimensions because H.264 requires them.
     "-vf",
-    `scale='min(${MAX_WIDTH},iw)':-2`,
+    `scale='min(${cap},iw)':-2`,
     "-c:v",
     "libx264",
     "-crf",
@@ -197,7 +206,7 @@ for (const file of sources) {
     "-frames:v",
     "1",
     "-vf",
-    `scale='min(${MAX_WIDTH},iw)':-2`,
+    `scale='min(${cap},iw)':-2`,
     /*
      * 68, not 80. A poster is on screen only until the clip starts, and
      * at 80 the travel reel's frame alone came to 97KB — the single
