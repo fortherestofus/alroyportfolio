@@ -147,7 +147,7 @@ export interface CaseStudy {
    * own, because one body of work listed in two sections reads as two
    * bodies of work counted once each.
    */
-  kind: "client" | "product" | "process";
+  kind: "client" | "product";
   dates: string;
   /** Outcome first. This is the line that has to earn the click. */
   summary: string;
@@ -1638,25 +1638,37 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "agentic-content",
     name: "Making content agentically",
-    kind: "process",
+    kind: "client",
     dates: "Sep – Oct 2026",
     hero: {
       image: "agentic-content/hero-store-sheet.jpg",
       alt: "Six App Store screenshots for a devotional app in light and dark, each a phone under its own headline.",
     },
     summary:
-      "A logo, an App Store page, a promo film and a set of Instagram story highlights, made by directing AI tools rather than opening a design app and pushing pixels. What I used, how I steered it, and where it fell short.",
+      "A logo, an App Store page, a promo film and a set of story highlights, made by directing AI tools instead of pushing pixels.",
     description:
-      "Every piece here was built by briefing Claude, which drove real design, video and image software through MCP connections and checked its own output by rendering it and looking. The work was the direction: the brief, the taste, and knowing when to say no.",
+      "Claude drove real design and video software through MCP and checked its own renders. My job was the brief, the taste and the no.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
-    meta: ["Own process", "Solo: direction, taste, QA", "Sep – Oct 2026"],
+    meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: direction and QA", "Sep – Oct 2026"],
+    strip: [
+      { image: "agentic-content/strip-aux.webp", alt: "Aux Affair logo." },
+      { image: "agentic-content/strip-afro-culcha.webp", alt: "Afro Culcha cover." },
+      { image: "agentic-content/hero-store-sheet.jpg", alt: "App Store screenshots." },
+      { image: "agentic-content/strip-lean-back.webp", alt: "Lean Back cover." },
+      { image: "agentic-content/isit-promo-poster.webp", alt: "Promo film." },
+      {
+        image: "agentic-content/strip-spotted-at-culcha.webp",
+        alt: "Spotted at Culcha cover.",
+      },
+      { image: "agentic-content/appstore-header-poster.webp", alt: "App Store header video." },
+      { image: "agentic-content/strip-culcha-summer.webp", alt: "Culcha Summer cover." },
+    ],
     chapters: [
       { id: "approach", label: "The approach" },
       { id: "logo", label: "A logo" },
       { id: "store", label: "App Store page" },
       { id: "promo", label: "Promo film" },
       { id: "posters", label: "Story highlights" },
-      { id: "lessons", label: "What I learned" },
     ],
     blocks: [
       {
@@ -1664,24 +1676,20 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Directing, not drawing",
         body: [
-          "I describe the outcome and the constraints. Claude Code then works the tools: vector and image editors, a video renderer, a simulator, an image-generation API. It renders what it made, looks at it, and fixes what is wrong before I see it.",
-          "The loop is the same each time. Research first, so the brief is grounded in what already works. A plan I approve before anything is built. Then rounds of review where I push on taste and the agent handles the mechanical work.",
+          "I set the brief and the constraints. Claude Code worked the tools, rendered what it made, looked at it and fixed it before I saw it. Every piece ran the same loop: research, an approved plan, then rounds of notes.",
         ],
       },
       {
         id: "approach",
         kind: "checklist",
-        heading: "What is in the toolkit",
+        heading: "The toolkit",
         items: [
-          "Claude Code, as the orchestrator that plans, calls tools and reviews its own renders.",
-          "VectorCraft over MCP, a vector illustration app, for the logo.",
-          "PhotoCraft over MCP, a layered image editor, for the poster experiments.",
-          "ChatGPT image generation, for the Culcha story highlights, steered by art direction.",
-          "xAI's image API, for generated portraits and backgrounds in those experiments.",
-          "Pinterest boards, for the references each piece was steered by.",
-          "Goldie, for App Store screenshots captured from a real build in the iOS Simulator.",
-          "Remotion, for the App Store header video and the promo film, with a motion-reel skill that scores each draft.",
-          "ElevenLabs over MCP, tried for the voiceover. More on that below.",
+          "Claude Code, as the orchestrator.",
+          "VectorCraft and PhotoCraft over MCP, for vector and image work.",
+          "xAI's image API and ChatGPT, for generated imagery.",
+          "Goldie, for App Store screenshots from a real build.",
+          "Remotion, for the header video and the promo film.",
+          "Pinterest, for references.",
         ],
       },
       {
@@ -1689,26 +1697,14 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A logo for Aux Affair",
         body: [
-          "The brief: a logo for Aux Affair, a curated, exclusive, themed gathering of vibe lovers over music, food, games and conversation. Before drawing anything, the agent researched what makes a luxury or event logo work: restraint, strong contrast, generous spacing, and families of marks that hold up from a billboard to a favicon.",
-          "Direction one was a Didone capital A whose crossbar is a 3.5 mm audio plug, with an ember tip. It was refined, but it was not the feeling I wanted. My instinct was a small, rounded lowercase a whose tail runs out as an aux cable, with the cable dashing along under the wordmark in the brand colours and ending in the plug.",
-          "The first render of that read as a q. I asked how to solve it, and the fix was to flick the stroke up and then into the line, giving the a its two storeys back. From there it became a family: the full lockup, a social image and an icon, all exported as SVG and PNG. The name and mark have not been through a trademark search.",
-        ],
-      },
-      {
-        id: "logo",
-        kind: "metrics",
-        heading: "The palette",
-        items: [
-          { value: "Ink", label: "Hex 14100E", context: "The dark ground" },
-          { value: "Ivory", label: "Hex F3ECDD", context: "The wordmark and cable" },
-          { value: "Brass", label: "Hex B08D57", context: "Supporting detail" },
-          { value: "Ember", label: "Hex C2452D", context: "The plug tip, and nothing else" },
+          "Aux Affair is a curated gathering over music, food, games and conversation. The first direction, a Didone A with an aux plug for its crossbar, was refined but not the feeling.",
+          "I wanted a rounded lowercase a whose tail runs out as an aux cable, dashing under the wordmark to a plug. The first render read as a q; flicking the stroke up fixed it. Built in VectorCraft.",
         ],
       },
       {
         id: "logo",
         kind: "gallery",
-        heading: "From the first direction to the final",
+        heading: "The final mark",
         natural: true,
         shots: [
           {
@@ -1720,7 +1716,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "logo",
         kind: "gallery",
-        heading: "The icon, and the direction I set aside",
+        heading: "The icon, and the first direction",
         pair: true,
         shots: [
           {
@@ -1729,7 +1725,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
           {
             image: "agentic-content/aux-didone-sheet.webp",
-            alt: "The first direction, set aside: a Didone capital A with an audio plug as its crossbar, in four colourways with a seal and palette.",
+            alt: "The first direction, set aside: a Didone capital A with an audio plug as its crossbar.",
           },
         ],
       },
@@ -1738,29 +1734,23 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "An App Store page, to spec",
         body: [
-          "For InSpiritInTruth, the screenshots were captured from a release build on an iPhone 17 Pro Max simulator, then framed with headlines in light and dark sets. Every file was checked against Apple's size and format rules: exact pixels, no alpha channel.",
-          "The copy was researched against the category leaders: Glorify, Hallow, YouVersion, Bible Chat and Lectio 365. They lead with closeness to God and fill the second slot with claims I cannot honestly make, so the first three screens lead with what is actually different: personal, trustworthy and free of guilt.",
-          "The product page header is a 12-second, 21:9 loop built in Remotion. The verse in it is fetched from the app's own Bible source and re-checked by a script, so the video cannot quietly drift from the text. There is also an 886 by 1920 App Preview.",
+          "For InSpiritInTruth, screenshots were captured from a release build in the simulator and checked against Apple's specs. The copy leads with what competitors cannot claim: personal, trustworthy, guilt-free.",
+          "The 12-second, 21:9 header loop was built in Remotion, with its verse re-checked against the app's own Bible source.",
         ],
       },
       {
         id: "store",
         kind: "video",
-        heading: "The header video",
         src: "/media/case-studies/agentic-content-appstore-header.mp4",
         poster: "agentic-content/appstore-header-poster.webp",
         alt: "The 21:9 App Store header video: a verse and the app's screens in motion, on a loop.",
-        footnote: "3840 by 1646, 30 fps, 12 seconds. Shown here compressed for the web.",
       },
       {
         id: "promo",
         kind: "prose",
-        heading: "A promo film in a framework",
+        heading: "A 25-second promo film",
         body: [
-          "The promo is 25 seconds, 9:16, at 60 fps. It was made with a motion-reel kit on top of Remotion: real captures from the app where they existed, screens rebuilt from the app's source where they did not, and the app's own generating orb ported from its shader. The score and sound effects are synthesised and mixed to -14 LUFS.",
-          "Each draft was scored by the kit's critic on eight things, from hook and readability to sync and polish. The final passed with every score at 8 or higher.",
-          "Version one opened on blank cards. I pushed for real screenshots in the hook, a smaller logo on the end card, bigger captions and a whole phone in frame instead of a cropped one. Version two does all four.",
-          "It has no voiceover. The ElevenLabs connection could generate takes but not hand me the audio files, so I shipped it as a score-only film rather than fake it.",
+          "Built on Remotion with a motion-reel kit whose critic scored every draft; the final scored 8 or higher on all eight criteria. My notes drove version two: real screens in the hook, bigger captions, the whole phone in frame.",
         ],
       },
       {
@@ -1770,16 +1760,13 @@ export const CASE_STUDIES: CaseStudy[] = [
         poster: "agentic-content/isit-promo-poster.webp",
         alt: "The 25-second vertical promo: real app screens fan out, a feeling is typed, a devotional is generated and the streak ticks up.",
         portrait: true,
-        footnote: "Silent here. The full film, with its score, is in the portfolio under Content.",
       },
       {
         id: "posters",
         kind: "prose",
         heading: "Story highlights for Culcha",
         body: [
-          "For Culcha, an events brand, the brief was a set of Instagram story highlight covers that feel like the nights themselves: loud, textured and unmistakably 90s and Afrobeats. I did these in ChatGPT, and the quality came from art direction rather than a lucky prompt.",
-          "I collected references on Pinterest first and set the rules for each cover: one palette, one type treatment and one idea per highlight. Afro Culcha is cobalt blue with printed orange symbols and chunky cream lettering. Lean Back is a sticker-cut headline on flat, grainy crimson. Spotted at Culcha looks up through a ring of faces to a blue sky. Culcha Summer is palms, a hot sun and a brush-script headline. Then came rounds of notes until all four looked like one brand.",
-          "Before those, I ran layered poster experiments through PhotoCraft over MCP with xAI's image API. They taught me what I wanted: live type and editable layers rather than a flat picture of a poster. For the highlights, speed and look mattered more, so ChatGPT did the rendering and I did the directing.",
+          "Made in ChatGPT, steered by a Pinterest board and one rule per cover: one palette, one type treatment, one idea. ChatGPT did the rendering; I did the directing.",
         ],
       },
       {
@@ -1806,23 +1793,11 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
       },
-      {
-        id: "lessons",
-        kind: "checklist",
-        heading: "What I would tell someone starting",
-        items: [
-          "Make it research first. A brief grounded in what already works beats an agent's first guess.",
-          "Approve a plan before anything is built. It is the cheapest place to disagree.",
-          "Have the tool look at its own output. Rendering and inspecting caught more problems than I did.",
-          "Expect the first render to be wrong and say why. A q that looked like an a was the best note in the whole logo.",
-          "Name what it could not do. The missing voiceover is in the film's notes, not hidden.",
-        ],
-      },
     ],
     seo: {
       title: "Making content agentically | Alroy Ndhlovu",
       description:
-        "A logo, an App Store page, a promo film and story highlights made by directing AI tools through MCP: the toolkit, the process and what fell short.",
+        "A logo, an App Store page, a promo film and story highlights made by directing AI tools through MCP.",
     },
   },
 ];
@@ -1853,31 +1828,17 @@ export const CLIENT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "cli
 export const PRODUCT_STUDIES = CASE_STUDIES.filter((study) => study.kind === "product");
 
 /**
- * Process write-ups: how a body of work was made, not what it returned.
- * Reached from the portfolio section, routed at /process/<slug>/.
- */
-export const PROCESS_STUDIES = CASE_STUDIES.filter((study) => study.kind === "process");
-
-/**
  * Where a study lives. Derived from `kind` in exactly one place, so a
  * page, a card, the sitemap entry and the llms.txt line can never
  * disagree about a URL — and moving one only ever means changing its
  * `kind`.
  */
 export function studyPath(study: Pick<CaseStudy, "kind" | "slug">): string {
-  if (study.kind === "process") return `/process/${study.slug}/`;
   return study.kind === "product" ? `/products/${study.slug}/` : `/case-studies/${study.slug}/`;
 }
 
 /** The section a study belongs to, and how to name the way back to it. */
 export function studyHome(kind: CaseStudy["kind"]) {
-  if (kind === "process")
-    return {
-      href: "/#portfolio",
-      section: "Portfolio",
-      back: "Back to portfolio",
-      all: "All portfolio",
-    };
   return kind === "product"
     ? { href: "/#products", section: "Products", back: "Back to products", all: "All products" }
     : {

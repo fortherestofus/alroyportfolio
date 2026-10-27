@@ -117,7 +117,7 @@ const POSTER_DEFAULT = "1";
  * commentary is the point. The element still starts muted so autoplay
  * is never blocked; the controls are what let a reader turn it on.
  */
-const KEEP_AUDIO = new Set(["social_sweep_demo", "isit_app_promo"]);
+const KEEP_AUDIO = new Set(["social_sweep_demo"]);
 
 /**
  * Clips that also ship a silent copy for a case study page.

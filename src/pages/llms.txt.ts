@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { SITE, SOCIAL, SECTIONS } from "../data/site";
 import { SERVICES } from "../data/services";
-import { CLIENT_STUDIES, PROCESS_STUDIES, studyPath } from "../data/case-studies";
+import { CLIENT_STUDIES, studyPath } from "../data/case-studies";
 import { PRODUCTS, caseStudyLink } from "../data/products";
 import { EXPERIENCE } from "../data/experience";
 import { FEATURES } from "../data/features";
@@ -48,12 +48,6 @@ export const GET: APIRoute = () => {
     "Client work, each written up with the problem, the decisions, the measured outcome and what he would do differently.",
     "",
     ...CLIENT_STUDIES.map(
-      (study) => `- [${study.name}](${url(studyPath(study))}) (${study.dates}): ${study.summary}`,
-    ),
-    "",
-    "## How he makes content with AI",
-    "",
-    ...PROCESS_STUDIES.map(
       (study) => `- [${study.name}](${url(studyPath(study))}) (${study.dates}): ${study.summary}`,
     ),
     "",

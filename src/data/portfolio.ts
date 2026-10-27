@@ -122,10 +122,6 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "Aux Affair logo: a lowercase wordmark whose last stroke runs out into a dashed audio cable in brass, ivory and ember, ending in a 3.5 mm plug.",
       },
       {
-        image: "branding_auxaffair_icon.webp",
-        alt: "Aux Affair icon: the lowercase a with its tail running into the first dashes of the cable and the plug, on black.",
-      },
-      {
         image: "branding_packaging.webp",
         alt: "Three wine labels side by side, each carrying a different illustrated landscape.",
       },
@@ -173,20 +169,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "App Store panel for a screen-time app's Work Mode, “Caught Grinding: for the overworkers”, beside a card reading nine hours forty-one worked today.",
       },
       {
-        image: "content_culcha_afro_culcha.webp",
-        alt: "Instagram story highlight cover for Afro Culcha: chunky cream lettering with an orange shadow on cobalt blue, ringed by printed orange drums, suns and symbols.",
-      },
-      {
-        image: "content_culcha_lean_back.webp",
-        alt: "Instagram story highlight cover for Lean Back: sticker-cut cream lettering on a flat, grainy crimson.",
-      },
-      {
-        image: "content_culcha_spotted_at_culcha.webp",
-        alt: "Instagram story highlight cover for Spotted at Culcha: a ring of sunglasses-wearing faces shot from below against palm trees and a blue sky.",
-      },
-      {
-        image: "content_culcha_culcha_summer.webp",
-        alt: "Instagram story highlight cover for Culcha Summer: a sticker-cut yellow and brush-script headline over palms, a hot sun and a turquoise sea.",
+        image: "content_culcha_highlights.webp",
+        alt: "Four Instagram story highlight covers for an events brand, side by side: Afro Culcha on cobalt blue, Lean Back on crimson, Spotted at Culcha shot up through a ring of faces, and Culcha Summer over palms and sea.",
       },
       {
         image: "appstore_header_video-poster.webp",
