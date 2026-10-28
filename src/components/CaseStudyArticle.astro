@@ -333,7 +333,10 @@ const schema = [
                 const before = caseImage(pair.before);
                 const after = caseImage(pair.after);
                 return (
-                  <figure class="cs__compare" data-reveal-item>
+                  <figure
+                    class:list={["cs__compare", block.natural && "cs__compare--natural"]}
+                    data-reveal-item
+                  >
                     <div class="cs__compare-pair">
                       <div class="cs__compare-side">
                         <span class="cs__compare-tag">Before</span>
@@ -776,6 +779,15 @@ const schema = [
     object-fit: cover;
     object-position: center top;
     display: block;
+  }
+
+  /* Device mocks: both halves share one source size, so no frame is needed. */
+  .cs__compare--natural .cs__compare-side {
+    aspect-ratio: auto;
+  }
+
+  .cs__compare--natural .cs__compare-side :global(img) {
+    height: auto;
   }
 
   .cs__compare-side :global(.placeholder) {
