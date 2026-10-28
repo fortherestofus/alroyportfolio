@@ -1811,8 +1811,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     kind: "client",
     dates: "Oct 2026",
     hero: {
-      image: "isit-iphone-duo/hero-book.jpg",
-      alt: "ISIT's home screen on an iPhone Duo held open like a book: the devotional on one half, verses and prompts on the other.",
+      image: "isit-iphone-duo/duo-unfold-poster.webp",
+      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home, then the side-by-side Bible, and folding shut.",
+      video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
       "Apple's first foldable has two screens and five ways to hold it. I mapped how a devotional app built for one tall phone would behave on each, then redesigned it to use the fold.",
