@@ -1872,7 +1872,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "findings",
         kind: "checklist",
-        heading: "What we found",
+        heading: "What I found",
         items: [
           "The inner screen ignores the portrait lock, so ISIT opens sideways.",
           "A devotional's photo is 600pt tall on a 626pt screen. The title never shows.",
