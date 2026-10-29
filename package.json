@@ -47,7 +47,7 @@
     "pdfjs-dist": "^6.4.299",
     "playwright": "^1.62.1",
     "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro": "^1.1.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
   }
