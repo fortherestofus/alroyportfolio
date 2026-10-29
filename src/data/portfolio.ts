@@ -185,7 +185,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         image: "isit_duo_unfold-poster.webp",
         video: "/media/portfolio/isit_duo_unfold.mp4",
-        alt: "A devotional app on an iPhone Duo: the phone unfolds to two panes, turns upright, switches to dark mode and closes on the app's wordmark.",
+        alt: "A devotional app on an iPhone Duo, from real captures: the phone unfolds to two panes, opens a devotional, switches to dark mode, turns upright and closes on the app's wordmark.",
       },
       {
         image: "social_sweep_demo-poster.webp",

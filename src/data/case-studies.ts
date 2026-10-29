@@ -1774,7 +1774,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "An iPhone Duo animation",
         body: [
-          "No video editor: Claude wrote the fold as a 3D web page, rendered it frame by frame in a browser and encoded it. My notes set the captions and the order, and swapped in a real app capture where a mock overstated the app.",
+          "No video editor: Claude built the fold as a 3D web page around my own captures from the Duo simulator, rendered it frame by frame in a browser and encoded it. My notes set the captions and the order, and held out for real screens over mocks.",
         ],
       },
       {
@@ -1782,7 +1782,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "video",
         src: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
         poster: "isit-iphone-duo/duo-unfold-poster.webp",
-        alt: "InSpiritInTruth on an iPhone Duo: the phone unfolds to two panes, turns upright, switches to dark mode and closes on the wordmark.",
+        alt: "InSpiritInTruth on an iPhone Duo: the phone unfolds to two panes, opens a devotional, switches the Bible to dark mode, turns upright and closes on the wordmark.",
       },
       {
         id: "posters",
@@ -1830,7 +1830,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     dates: "Oct 2026",
     hero: {
       image: "isit-iphone-duo/duo-unfold-poster.webp",
-      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home, a devotional open wide, turning upright, switching to dark mode, folding shut and ending on the InSpiritInTruth wordmark.",
+      alt: "An iPhone Duo unfolding from InSpiritInTruth's outer screen to the two-pane home and a devotional, switching the Bible to dark mode, turning upright onto a devotional, folding shut and ending on the wordmark. Every screen is a real capture of version 1.8.",
       video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
