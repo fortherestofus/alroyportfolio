@@ -1812,20 +1812,20 @@ export const CASE_STUDIES: CaseStudy[] = [
     dates: "Oct 2026",
     hero: {
       image: "isit-iphone-duo/duo-unfold-poster.webp",
-      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home and side-by-side Bible, turning upright onto a devotional, then folding shut.",
+      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home and devotional, turning upright, switching to dark mode, then folding shut.",
       video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
       "Apple's first foldable has two screens and five ways to hold it. I mapped how a devotional app built for one tall phone would behave on each, then redesigned it to use the fold.",
     description:
-      "InSpiritInTruth (ISIT) is my devotional app. Before readers found the problems on a Duo, I researched the device, mocked every pose at true size and planned the fix.",
+      "InSpiritInTruth (ISIT) is my devotional app. Before readers found the problems on a Duo, I researched the device, mocked every pose at true size and built the fix. It ships in version 1.8.",
     tags: ["UX research", "Adaptive layout", "Foldables", "iOS"],
-    meta: ["Own product · InSpiritInTruth", "Research and UX", "Oct 2026"],
+    meta: ["Own product · InSpiritInTruth", "Research, design and build", "Oct 2026"],
     strip: [
       { image: "isit-iphone-duo/hero-book.jpg", alt: "ISIT open like a book." },
       { image: "isit-iphone-duo/open-home-after.jpg", alt: "Two-pane home." },
       { image: "products/isit-home.png", alt: "ISIT on a normal phone." },
-      { image: "isit-iphone-duo/open-bible-after.jpg", alt: "Side-by-side Bible." },
+      { image: "isit-iphone-duo/open-reader-after.jpg", alt: "Two-pane devotional." },
       { image: "isit-iphone-duo/closed-reader-after.jpg", alt: "Reader, folded." },
       { image: "isit-iphone-duo/tabletop-reader-after.jpg", alt: "Tabletop reader." },
     ],
@@ -1875,9 +1875,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "What I found",
         items: [
           "The inner screen ignores the portrait lock, so ISIT opens sideways.",
-          "A devotional's photo is 600pt tall on a 626pt screen. The title never shows.",
+          "A devotional's photo is 560pt tall on a 626pt screen. The title barely shows.",
           "Home is a 600pt strip with the hinge through every card.",
-          "Half-folded, the app can't tell. Half the layout lies flat on the table.",
+          "Folded, text and buttons sit under the status bar strip down the side.",
         ],
       },
       {
@@ -1901,7 +1901,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "beforeAfter",
         heading: "Before and after",
         intro:
-          "Today's build against the proposed layout, every pose at true point size. Photos capped at 55% of screen height, two panes split at the fold.",
+          "Version 1.7 against 1.8, every pose at true point size. Photos capped at half the screen height, two panes split at the fold.",
         natural: true,
         pairs: [
           {
@@ -1914,13 +1914,13 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Open",
             before: "isit-iphone-duo/open-home-before.jpg",
             after: "isit-iphone-duo/open-home-after.jpg",
-            alt: "A centred strip cut by the hinge becomes two panes with a side rail.",
+            alt: "A centred strip cut by the hinge becomes two panes, with the tabs standing in the side strip.",
           },
           {
-            label: "Open, Bible",
-            before: "isit-iphone-duo/open-bible-before.jpg",
-            after: "isit-iphone-duo/open-bible-after.jpg",
-            alt: "Two translations side by side, verse by verse.",
+            label: "Open, devotional",
+            before: "isit-iphone-duo/open-reader-before.jpg",
+            after: "isit-iphone-duo/open-reader-after.jpg",
+            alt: "The article on one side, the key verse and supporting verses on the other.",
           },
           {
             label: "Book",
@@ -1929,10 +1929,10 @@ export const CASE_STUDIES: CaseStudy[] = [
             alt: "Nothing crosses the fold: the devotional on one page, scripture on the other.",
           },
           {
-            label: "Tabletop",
+            label: "Tabletop, not built yet",
             before: "isit-iphone-duo/tabletop-reader-before.jpg",
             after: "isit-iphone-duo/tabletop-reader-after.jpg",
-            alt: "Text on the upright half, controls on the flat half.",
+            alt: "The plan: text on the upright half, controls on the flat half. It needs native fold detection, so it comes later.",
           },
         ],
       },
@@ -1940,7 +1940,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "ISIT on iPhone Duo case study | Alroy Ndhlovu",
       description:
-        "Adapting the InSpiritInTruth devotional app for Apple's foldable iPhone Duo: the research, what would break, and the proposed layouts.",
+        "Adapting the InSpiritInTruth devotional app for Apple's foldable iPhone Duo: the research, what would break, and the layouts shipping in 1.8.",
     },
   },
 ];

@@ -105,8 +105,8 @@ const POSTER_AT = {
   appstore_header_video: "3",
   "agentic-content/isit-promo": "1.5",
   "agentic-content/appstore-header": "3",
-  /* Fully open on Home, not the closed phone it starts on. */
-  "isit-iphone-duo/duo-unfold": "3.5",
+  /* Open on Home under its caption, not the closed phone it starts on. */
+  "isit-iphone-duo/duo-unfold": "5",
 };
 const POSTER_DEFAULT = "1";
 
