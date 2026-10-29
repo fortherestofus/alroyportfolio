@@ -183,6 +183,11 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "A 25-second vertical promo for a devotional app: real screens fan out, a feeling is typed, and a devotional is written for it.",
       },
       {
+        image: "isit_duo_unfold-poster.webp",
+        video: "/media/portfolio/isit_duo_unfold.mp4",
+        alt: "A devotional app on an iPhone Duo: the phone unfolds to two panes, turns upright, switches to dark mode and closes on the app's wordmark.",
+      },
+      {
         image: "social_sweep_demo-poster.webp",
         video: "/media/portfolio/social_sweep_demo.mp4",
         alt: "Walkthrough video made for a consumer insights company: a plain-language question in, a cited report out.",

@@ -1650,7 +1650,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Six App Store screenshots for a devotional app in light and dark, each a phone under its own headline.",
     },
     summary:
-      "A logo, an App Store page, a promo film and a set of story highlights, made by directing AI tools instead of pushing pixels.",
+      "A logo, an App Store page, a promo film, an iPhone Duo animation and a set of story highlights, made by directing AI tools instead of pushing pixels.",
     description:
       "Claude drove real design and video software through MCP and checked its own renders. My job was the brief, the taste and the no.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
@@ -1666,6 +1666,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: "Spotted at Culcha cover.",
       },
       { image: "agentic-content/appstore-header-poster.webp", alt: "App Store header video." },
+      { image: "isit-iphone-duo/duo-unfold-poster.webp", alt: "iPhone Duo animation." },
       { image: "agentic-content/strip-culcha-summer.webp", alt: "Culcha Summer cover." },
     ],
     chapters: [
@@ -1673,6 +1674,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "logo", label: "A logo" },
       { id: "store", label: "App Store page" },
       { id: "promo", label: "Promo film" },
+      { id: "duo", label: "iPhone Duo" },
       { id: "posters", label: "Story highlights" },
     ],
     blocks: [
@@ -1694,6 +1696,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           "xAI's image API and ChatGPT, for generated imagery.",
           "Goldie, for App Store screenshots from a real build.",
           "Remotion, for the header video and the promo film.",
+          "Playwright and ffmpeg, for the iPhone Duo animation.",
           "Pinterest, for references.",
         ],
       },
@@ -1765,6 +1768,21 @@ export const CASE_STUDIES: CaseStudy[] = [
         poster: "agentic-content/isit-promo-poster.webp",
         alt: "The 25-second vertical promo: real app screens fan out, a feeling is typed, a devotional is generated and the streak ticks up.",
         portrait: true,
+      },
+      {
+        id: "duo",
+        kind: "prose",
+        heading: "An iPhone Duo animation",
+        body: [
+          "No video editor: Claude wrote the fold as a 3D web page, rendered it frame by frame in a browser and encoded it. My notes set the captions and the order, and swapped in a real app capture where a mock overstated the app.",
+        ],
+      },
+      {
+        id: "duo",
+        kind: "video",
+        src: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
+        poster: "isit-iphone-duo/duo-unfold-poster.webp",
+        alt: "InSpiritInTruth on an iPhone Duo: the phone unfolds to two panes, turns upright, switches to dark mode and closes on the wordmark.",
       },
       {
         id: "posters",

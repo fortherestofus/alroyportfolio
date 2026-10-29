@@ -107,6 +107,7 @@ const POSTER_AT = {
   "agentic-content/appstore-header": "3",
   /* Open on Home under its caption, not the closed phone it starts on. */
   "isit-iphone-duo/duo-unfold": "5",
+  isit_duo_unfold: "5",
 };
 const POSTER_DEFAULT = "1";
 
