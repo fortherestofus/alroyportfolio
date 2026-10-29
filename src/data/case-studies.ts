@@ -1812,7 +1812,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     dates: "Oct 2026",
     hero: {
       image: "isit-iphone-duo/duo-unfold-poster.webp",
-      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home and devotional, turning upright, switching to dark mode, folding shut and ending on the InSpiritInTruth wordmark.",
+      alt: "An iPhone Duo unfolding from ISIT's outer screen to the two-pane home, a devotional open wide, turning upright, switching to dark mode, folding shut and ending on the InSpiritInTruth wordmark.",
       video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
