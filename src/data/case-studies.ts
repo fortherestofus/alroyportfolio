@@ -1840,12 +1840,11 @@ export const CASE_STUDIES: CaseStudy[] = [
     tags: ["UX research", "Adaptive layout", "Foldables", "iOS"],
     meta: ["Own product · InSpiritInTruth", "Research, design and build", "Oct 2026"],
     strip: [
-      { image: "isit-iphone-duo/hero-book.jpg", alt: "ISIT open like a book." },
+      { image: "isit-iphone-duo/duo-unfold-poster.webp", alt: "The Duo animation." },
       { image: "isit-iphone-duo/open-home-after.jpg", alt: "Two-pane home." },
       { image: "products/isit-home.png", alt: "ISIT on a normal phone." },
       { image: "isit-iphone-duo/open-reader-after.jpg", alt: "Two-pane devotional." },
       { image: "isit-iphone-duo/closed-reader-after.jpg", alt: "Reader, folded." },
-      { image: "isit-iphone-duo/tabletop-reader-after.jpg", alt: "Tabletop reader." },
     ],
     chapters: [
       { id: "brief", label: "The brief" },
@@ -1919,7 +1918,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "beforeAfter",
         heading: "Before and after",
         intro:
-          "Version 1.7 against 1.8, every pose at true point size. Photos capped at half the screen height, two panes split at the fold.",
+          "Version 1.7 against real 1.8 captures from the Duo simulator. Photos capped at half the screen height, two panes split at the fold. Tabletop comes later.",
         natural: true,
         pairs: [
           {
@@ -1939,18 +1938,6 @@ export const CASE_STUDIES: CaseStudy[] = [
             before: "isit-iphone-duo/open-reader-before.jpg",
             after: "isit-iphone-duo/open-reader-after.jpg",
             alt: "The article on one side, the key verse and supporting verses on the other.",
-          },
-          {
-            label: "Book",
-            before: "isit-iphone-duo/book-reader-before.jpg",
-            after: "isit-iphone-duo/book-reader-after.jpg",
-            alt: "Nothing crosses the fold: the devotional on one page, scripture on the other.",
-          },
-          {
-            label: "Tabletop, not built yet",
-            before: "isit-iphone-duo/tabletop-reader-before.jpg",
-            after: "isit-iphone-duo/tabletop-reader-after.jpg",
-            alt: "The plan: text on the upright half, controls on the flat half. It needs native fold detection, so it comes later.",
           },
         ],
       },
