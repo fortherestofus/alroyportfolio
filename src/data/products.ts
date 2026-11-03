@@ -259,7 +259,7 @@ export const PRODUCTS: Product[] = [
       problem:
         "Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.",
       approach:
-        "Feed you with what you have. Type, talk or snap the fridge; dietary choices are set once and enforced every time.",
+        "Cook with what you have. Type, talk or snap the fridge; dietary choices are set once and enforced every time.",
       /* RevenueCat, read 3 Nov 2026. */
       result:
         "47 active users in the last 28 days. The free tier was set from how often people actually cook, not from hope, so the upgrade lands at a real moment of need.",

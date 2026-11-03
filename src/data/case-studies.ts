@@ -250,12 +250,12 @@ export const CASE_STUDIES: CaseStudy[] = [
         items: [
           {
             value: "US$5k",
-            label: "A year in licence fees, not paid",
-            context: "The annual quote it replaced. The in-house build cost under R10,000.",
+            label: "Saved in licence fees, every year",
+            context: "The quote it replaced. Building it in-house cost under R10,000.",
           },
           {
             value: "R6.5–15k",
-            label: "A month, the memberships it sells in",
+            label: "A month, for the memberships that include it",
             context:
               "Three reports in Starter, unlimited in Unlimited, alongside Innovatr's other research tools.",
           },
@@ -266,8 +266,7 @@ export const CASE_STUDIES: CaseStudy[] = [
               "Social, search, commerce, reviews and the open web. Each study queries only what the question needs.",
           },
         ],
-        footnote:
-          "Prices from Innovatr's published membership tiers. It sells as part of a bundle, so no revenue is attributed to it here.",
+        footnote: "Prices from Innovatr's published membership tiers.",
       },
       {
         id: "screens",
@@ -294,7 +293,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Price it on its own from day one. Bundled into memberships, its revenue can't be measured, so the case still rests on cost saved.",
+          "I'd launch it with its own price, not only inside memberships. Then it would show what it earns, not just what it saved.",
         ],
       },
     ],
@@ -585,7 +584,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Put a person on follow-up from the first flight, and run fewer, longer flights. Cold leads needed a call, not another email.",
+          "I'd put a person on follow-up from the first flight, and run fewer, longer flights. Cold leads needed a call, not another email.",
         ],
       },
     ],
@@ -639,7 +638,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Reach up 47×, and the price down every month",
         intro:
-          "Start small at a new account's price. Test four objectives side by side to learn what each costs. Then drop what lost and fund what won.",
+          "I started small, tested four objectives side by side to learn what each cost, then dropped what lost and funded what won.",
         measure: "Reach, indexed to July",
         rows: [
           {
@@ -681,14 +680,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Reach indexed to month one; impressions and spend stay with the client. Some of the price drop is an account earning its own history.",
+          "Reach indexed to month one; impressions and spend stay with the client. Some of the price drop is simply the account maturing.",
       },
       {
         id: "offer",
         kind: "metrics",
-        heading: "The brochure was the whole finding",
+        heading: "The brochure made the difference",
         intro:
-          "Same audience, same platform, same form. One ad asked people to enquire; the other offered the 2026 brochure. Only one asked for something the reader already wanted.",
+          "Same audience, same platform, same form. One ad asked people to enquire; the other offered the 2026 brochure. Only one offered something the reader already wanted.",
         items: [
           {
             value: "36.6%",
@@ -698,7 +697,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "10–15%",
             label: "The LinkedIn norm",
-            context: "The brochure beat the band by more than the rest of the account missed it.",
+            context: "The brochure ran at more than double the top of that range.",
           },
           {
             value: "73%",
@@ -713,7 +712,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "The only variable was what the ad asked for: the cheapest thing on this page to copy, and the one that moved the most.",
+          "Only the offer changed. It cost nothing, and it moved results more than anything else.",
       },
       {
         id: "results",
@@ -770,8 +769,7 @@ export const CASE_STUDIES: CaseStudy[] = [
               "The signal that matters most on the platform: someone sending it to a person.",
           },
         ],
-        footnote:
-          "June 2025 – January 2026. The starting follower count wasn't recorded, so no growth is claimed.",
+        footnote: "June 2025 – January 2026.",
       },
       {
         id: "tiktok",
@@ -805,7 +803,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Search, for the people already looking",
         intro:
-          "The cheapest job on the list, and the one with the least argument attached: someone typing the name of a tour is not a person to be persuaded.",
+          "The cheapest job on the list: someone searching for a tour doesn't need persuading.",
         items: [
           {
             value: "~99%",
@@ -838,7 +836,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           "TikTok organic gets the brand found, and keeps working months later.",
           "TikTok ads turn that into a conversation: the cheapest qualified contact in the account.",
           "Google catches people already pricing a trip. Cheapest clicks, least persuasion.",
-          "LinkedIn sells the considered trip: the account's costliest contact, and its most considered.",
+          "LinkedIn sells the bigger, planned trip: the costliest contact in the account, and the most serious.",
           "None was asked to do another's job. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
         ],
       },
@@ -847,7 +845,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Brand awareness bought the priciest clicks, ten times the cheapest month's, and single-destination videos flopped. Broken tracking on both platforms means no conversion figure appears here.",
+          "Brand awareness bought the priciest clicks, ten times the cheapest month's, and single-destination videos flopped. Broken tracking on both platforms meant bookings couldn't be traced back to an ad.",
         ],
       },
       {
@@ -855,7 +853,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Fix conversion tracking before the first rand of spend. I could prove cost and reach on every channel, but not which one filled a tour.",
+          "I'd fix conversion tracking before spending the first rand. I could prove cost and reach on every channel, but not which one filled a tour.",
         ],
       },
     ],
@@ -1123,7 +1121,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Early signal",
         intro:
-          "Small numbers, read honestly. The question isn't scale yet; it's whether people want a devotional written for them.",
+          "It's early. What matters now isn't scale, but whether people want a devotional written for them.",
         items: [
           {
             value: "131",
@@ -1347,7 +1345,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The hard part: most trackers quietly lie",
         body: [
-          "Chrome calls an hour-long show “idle” and logs three minutes. A product that promises receipts can't flatter you, so four rewrites made media count, forgotten tabs stop, and nothing commits past the last proof you were awake.",
+          "Chrome calls an hour-long show “idle” and logs three minutes. An app that promises the truth can't flatter you, so after four rewrites, watching counts, forgotten tabs don't, and nothing is logged once you've walked away.",
         ],
       },
       {
@@ -1484,7 +1482,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Small volumes, reported as such: validation, not a trading record. The bulk order matters for who bought, not how many.",
+          "Small numbers, but they proved people would buy. The bulk order matters for who bought, not how many.",
       },
       {
         id: "proof",
@@ -1533,7 +1531,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Go after wholesale from day one instead of finding it by accident. One order proved the same setup serves a better customer.",
+          "I'd chase wholesale from day one instead of finding it by accident. Businesses buy more per order, and come back.",
         ],
       },
     ],
@@ -1688,7 +1686,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The part that is not a prompt",
         body: [
-          "React 19, Vite and GSAP. The agentic pass stands a page up fast; the shipping calls are human. The sequence runs on its own timers, so blocked autoplay can't stop the product cards appearing.",
+          "React 19, Vite and GSAP. AI gets a page standing fast; the final calls are mine. The sequence runs on its own timers, so blocked autoplay can't stop the product cards appearing.",
         ],
       },
       {
@@ -1696,7 +1694,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "Cost the hours as well as the tools. “One day” is honest but loose, and a client budgeting the next one needs the time, not just the bill.",
+          "I'd log the hours as well as the costs. “One day” is true, but a client planning the next one needs the exact time, not just the bill.",
         ],
       },
     ],
