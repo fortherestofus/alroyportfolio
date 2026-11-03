@@ -135,7 +135,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand with the founder, covering positioning, visual identity and go-to-market strategy.",
       },
       {
-        text: "Designed and built Social Sweep, a proprietary real-time social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced an annual enterprise software licence with an in-house product the company can now sell.",
+        text: "Designed and built Social Sweep, a proprietary social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced a US$8,000-a-year enterprise licence with an in-house build under R10,000, now sold in every Innovatr membership.",
       },
       {
         text: "Supported client innovation projects for Discovery Bank, DGB, Namibian Breweries and Rain, across CPG, financial services and telecoms.",
@@ -572,11 +572,11 @@ export const PRODUCT_NOTES: Record<string, string> = {
   Hakkan:
     "Specified and directed an agentic research pipeline: multi-platform retrieval synthesised into a cited, source-grounded report, then generation in the user's own learned voice. Rebuilding the evidence filter took verified human sources from 29% of citations to 57%; anything the model inferred is flagged rather than hidden.",
   InSpiritInTruth:
-    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass taking ~77% of the AI effort against ~22% on the writing, because an app that quotes scripture cannot afford to misquote it. Live on the App Store.",
+    "Retrieval-grounded generation against a fixed scripture corpus, with a verification pass taking ~77% of the AI effort, because an app that quotes scripture cannot afford to misquote it. Live on the App Store: 131 monthly active users, two paying subscribers in its first two months, 5.0 rating.",
   "tapa.":
-    "Multimodal input (text, voice and vision) resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first. Live on the App Store.",
+    "Multimodal input (text, voice and vision) resolved into a single constrained generation, with dietary rules set once and enforced as hard constraints rather than prompt suggestions. Offline-first. Live on the App Store: 47 monthly active users.",
   CaughtSlipping:
-    "Local-first behavioural tracking with no account and no server: everything stays on the device. Published on the Chrome Web Store.",
+    "Local-first behavioural tracking with no account and no server: everything stays on the device. Chrome Web Store: 183 installs and one uninstall in six months.",
 };
 
 /**

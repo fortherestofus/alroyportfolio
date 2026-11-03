@@ -291,7 +291,7 @@ export const PRODUCT_PITCH: Record<string, { problem: string; solution: string }
   InSpiritInTruth: {
     problem: "Devotional apps either water scripture down or assume you already know it.",
     solution:
-      "Generation grounded against a fixed scripture corpus, with a verification pass taking roughly 77% of the AI effort, because an app that quotes scripture cannot afford to misquote it.",
+      "Generation grounded against a fixed scripture corpus and verified before anyone reads it. 131 active users, two paying in two months, 5.0 on the App Store.",
   },
   "tapa.": {
     problem: "You have ingredients in the fridge and no idea what to cook with them.",
@@ -301,7 +301,7 @@ export const PRODUCT_PITCH: Record<string, { problem: string; solution: string }
   CaughtSlipping: {
     problem: "You know you are losing hours online. Nothing tells you honestly.",
     solution:
-      "Local-first behavioural tracking that calls you out. No account and no server, so everything stays on the device.",
+      "Local-first tracking that calls you out, with no account and no server. 183 installs and one uninstall in six months.",
   },
   Hakkan: {
     problem: "Content research takes days, and still comes out sounding like everyone else's.",
@@ -358,9 +358,9 @@ export const PROCESS_PROOF = [
     context: "Against $6,500+ quoted for the same brief produced conventionally",
   },
   {
-    value: "US$5,000 a year, replaced",
+    value: "US$8,000 a year, replaced",
     label: "A social listening licence, rebuilt in-house for under R10,000",
-    context: "Now a product the company can sell instead of a cost it carries",
+    context: "Now sold in every Innovatr membership, from R6,500 to R15,000 a month",
   },
 ] as const;
 

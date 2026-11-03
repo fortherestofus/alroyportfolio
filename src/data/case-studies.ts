@@ -251,7 +251,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "US$8k",
             label: "A year in licence fees, not paid",
-            context: "The annual quote for the third-party platform the team was about to sign.",
+            context: "The annual quote it replaced. The in-house build cost under R10,000.",
           },
           {
             value: "R6.5–15k",
