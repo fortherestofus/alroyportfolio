@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # Scratch output from `npm run resume:render`.
 .resume-pages.png
+
+# Feed images from scripts/build-social-image.mjs. Regenerated from the
+# data on demand, so they never go stale in the repo.
+/social/

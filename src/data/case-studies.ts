@@ -208,7 +208,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A finished Social Sweep report on Chinese versus German car brands in South Africa, leading with net sentiment, comments analysed and an executive summary.",
     },
     summary:
-      "Replaced a US$8,000-a-year licence with a tool I built. Now sold in every Innovatr membership.",
+      "Replaced a US$5,000-a-year licence with a tool I built. Now sold in every Innovatr membership.",
     description:
       "Built for Innovatr while I ran its brand and marketing. A build-versus-buy call that became a product.",
     tags: ["Build vs buy", "Product strategy", "AI product", "Research tooling"],
@@ -232,7 +232,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Build, not buy",
         body: [
-          "Innovatr was about to sign a US$8,000-a-year social listening contract. I proposed building it instead, and did, in a quarter: platform APIs feeding an AI layer, prototyped in Replit, built with Claude.",
+          "Innovatr was about to sign a US$5,000-a-year social listening contract. I proposed building it instead, and did, in a quarter: platform APIs feeding an AI layer, prototyped in Replit, built with Claude.",
         ],
       },
       {
@@ -249,7 +249,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         heading: "What building it instead of buying it was worth",
         items: [
           {
-            value: "US$8k",
+            value: "US$5k",
             label: "A year in licence fees, not paid",
             context: "The annual quote it replaced. The in-house build cost under R10,000.",
           },
@@ -301,7 +301,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Social Sweep case study | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu talked Innovatr out of a US$8,000-a-year social listening licence and built the tool in-house, now sold in every Innovatr membership.",
+        "How Alroy Ndhlovu talked Innovatr out of a US$5,000-a-year social listening licence and built the tool in-house, now sold in every Innovatr membership.",
     },
   },
   {
@@ -1883,7 +1883,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Making content agentically | Alroy Ndhlovu",
       description:
-        "A logo, an App Store page, a promo film and story highlights made by directing AI tools through MCP.",
+        "How Alroy Ndhlovu made a logo, an App Store page, a promo film and story highlights by directing Claude through real design software over MCP.",
     },
   },
   {

@@ -1,0 +1,25 @@
+---
+/**
+ * The same twelve slides at 4:5, for a boosted multi-image post.
+ * PNG only, rendered by scripts/build-social-image.mjs. Never printed.
+ *
+ * LinkedIn crops multi-image tiles to 4:5, so the landscape sheets
+ * cannot simply be cropped: each would lose more than half its width.
+ * These are the same markup and the same data, re-flowed by the
+ * `slides-body--portrait` overrides in linkedin.css — two and three
+ * column grids become one and two, and the type scale comes up to
+ * survive a tile about a sixth of a phone wide.
+ */
+import SlidesLayout from "../layouts/SlidesLayout.astro";
+import LinkedInSlides from "../components/LinkedInSlides.astro";
+
+const DESCRIPTION = "Alroy Ndhlovu — the document ad's twelve slides, cut to 4:5 for the feed.";
+---
+
+<SlidesLayout
+  title="Alroy Ndhlovu — Introduction (4:5)"
+  description={DESCRIPTION}
+  bodyClass="slides-body--portrait"
+>
+  <LinkedInSlides />
+</SlidesLayout>

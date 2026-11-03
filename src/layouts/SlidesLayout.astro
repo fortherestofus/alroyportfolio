@@ -16,9 +16,16 @@ interface Props {
   title: string;
   /** Becomes the PDF's document description. */
   description: string;
+  /**
+   * Set by the portrait route to "slides-body--portrait", which is what
+   * re-flows the same slides from 16:9 to 4:5. Orientation is a body
+   * class rather than a prop threaded through every slide, so the
+   * markup stays single-source.
+   */
+  bodyClass?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, bodyClass } = Astro.props;
 ---
 
 <!doctype html>
@@ -55,7 +62,7 @@ const { title, description } = Astro.props;
       crossorigin
     />
   </head>
-  <body class="slides-body">
+  <body class:list={["slides-body", bodyClass]}>
     <slot />
   </body>
 </html>

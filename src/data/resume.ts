@@ -135,7 +135,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand with the founder, covering positioning, visual identity and go-to-market strategy.",
       },
       {
-        text: "Designed and built Social Sweep, a proprietary social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced a US$8,000-a-year enterprise licence with an in-house build under R10,000, now sold in every Innovatr membership.",
+        text: "Designed and built Social Sweep, a proprietary social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced a US$5,000-a-year enterprise licence with an in-house build under R10,000, now sold in every Innovatr membership.",
       },
       {
         text: "Supported client innovation projects for Discovery Bank, DGB, Namibian Breweries and Rain, across CPG, financial services and telecoms.",

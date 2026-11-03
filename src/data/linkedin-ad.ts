@@ -358,7 +358,7 @@ export const PROCESS_PROOF = [
     context: "Against $6,500+ quoted for the same brief produced conventionally",
   },
   {
-    value: "US$8,000 a year, replaced",
+    value: "US$5,000 a year, replaced",
     label: "A social listening licence, rebuilt in-house for under R10,000",
     context: "Now sold in every Innovatr membership, from R6,500 to R15,000 a month",
   },

@@ -1186,3 +1186,673 @@ p {
   color: var(--ink-muted);
   margin-bottom: 3pt;
 }
+
+/* ------------------------------------------------------------
+   FEED IMAGE (/linkedin-social/, PNG only)
+
+   Sized for a thumb, not a reader. In a mobile feed this sheet
+   is shown at roughly a quarter of its printed size, so the
+   headline is set at 88pt, near three times the document
+   cover's, and everything else is sacrificed to it. Six words
+   is the budget.
+   ------------------------------------------------------------ */
+.social {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 340pt;
+}
+
+.social__text {
+  padding: 54pt 36pt 54pt var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 40 characters at 60pt sets in three lines inside the column, which
+   is what the rest of the card is budgeted around. Raising this pushes
+   it to four lines and the stat and footer fall off the sheet. */
+.social__headline {
+  font-size: 60pt;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: var(--weight-heading);
+  color: var(--ink-text);
+  margin: 0 0 24pt;
+  max-width: 18ch;
+}
+
+.social__stat {
+  font-size: 20pt;
+  line-height: 1.4;
+  color: var(--ink-muted);
+  margin: 0 0 10pt;
+  max-width: 40ch;
+}
+
+.social__source {
+  font-size: 13pt;
+  line-height: 1.3;
+  color: var(--ink-muted);
+  opacity: 0.65;
+  margin: 0;
+}
+
+.social__foot {
+  margin-top: auto;
+  padding-top: 26pt;
+  display: flex;
+  align-items: baseline;
+  gap: 14pt;
+  border-top: var(--hairline) solid var(--ink-line);
+}
+
+.social__name {
+  font-size: 18pt;
+  font-weight: var(--weight-heading);
+  color: var(--ink-text);
+}
+
+.social__role {
+  font-size: 14pt;
+  color: var(--ink-muted);
+}
+
+.social__site {
+  margin-left: auto;
+  font-size: 16pt;
+  font-weight: var(--weight-heading);
+  color: var(--accent-on-ink);
+}
+
+.social__portrait {
+  position: relative;
+  height: 100%;
+}
+
+.social__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+  display: block;
+}
+
+/* Carries the photograph's own fall to black across the seam, as on
+   the document cover. */
+.social__portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--ink-surface) 0%,
+    rgba(20, 19, 16, 0.7) 16%,
+    rgba(20, 19, 16, 0) 46%
+  );
+}
+
+/* ------------------------------------------------------------
+   FEED CARDS (/linkedin-cards/, PNG only)
+
+   4:5, which is the tallest ratio LinkedIn renders and the one
+   it crops multi-image tiles to. 810 x 1012pt prints at 2160 x
+   2700 through the 2x render, comfortably above the 1080 x 1350
+   LinkedIn wants.
+
+   Each tile shows around a sixth of a phone's width, so the
+   headline is set near 100pt and everything else is subordinate
+   to it. Six words is the budget.
+   ------------------------------------------------------------ */
+:root {
+  --card-w: 810pt;
+  --card-h: 1012pt;
+  --card-pad: 56pt;
+}
+
+.card {
+  position: relative;
+  width: var(--card-w);
+  height: var(--card-h);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card--ink {
+  background: var(--ink-surface);
+  color: var(--ink-text);
+}
+
+.card--light {
+  background: var(--bg);
+  color: var(--ink);
+  padding: var(--card-pad);
+}
+
+/* --- 1 · the hook ----------------------------------------- */
+.card__portrait {
+  position: absolute;
+  inset: 0;
+}
+
+.card__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  display: block;
+}
+
+/* The photograph falls to black at its edges on its own; this
+   carries that down the lower half so type sits on solid ground
+   rather than on a face. */
+.card__portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--ink-surface) 0%,
+    var(--ink-surface) 34%,
+    rgba(20, 19, 16, 0.86) 48%,
+    rgba(20, 19, 16, 0) 72%
+  );
+}
+
+.card__over {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 var(--card-pad) var(--card-pad);
+}
+
+.card__hook {
+  font-size: 100pt;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  font-weight: var(--weight-heading);
+  color: var(--ink-text);
+  margin: 0 0 22pt;
+}
+
+.card__source {
+  font-size: 19pt;
+  line-height: 1.35;
+  color: var(--ink-muted);
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* --- 2 · who is saying it --------------------------------- */
+.card__name {
+  font-size: 26pt;
+  font-weight: var(--weight-heading);
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  margin: 0 0 36pt;
+}
+
+/* `margin: auto 0` centres the claim in the space left between the
+   name and the facts, instead of letting all the slack pool into one
+   dead band in the middle of the card. */
+.card__claim {
+  font-size: 92pt;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+  margin: auto 0;
+}
+
+.card__facts {
+  padding-top: 30pt;
+  border-top: var(--rule) solid var(--ink);
+}
+
+.card__disciplines {
+  font-size: 26pt;
+  line-height: 1.3;
+  font-weight: var(--weight-heading);
+  color: var(--ink);
+  margin: 0 0 14pt;
+}
+
+.card__proof {
+  font-size: 21pt;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 0;
+}
+
+.card__site {
+  font-size: 30pt;
+  font-weight: var(--weight-heading);
+  color: var(--accent);
+  margin: 34pt 0 0;
+}
+
+/* ============================================================
+   PORTRAIT (/linkedin-portrait/, PNG only)
+
+   The same twelve slides at 4:5, which is the ratio LinkedIn
+   crops multi-image tiles to. Not a crop of the landscape
+   sheets: cropped, each would lose more than half its width.
+
+   Everything below is an override on the body class, so the
+   markup and the data stay single-source. The pattern is the
+   same throughout: columns halve, the type scale comes up
+   because a tile lands about a sixth of a phone wide, and
+   anything that only made sense side by side stacks.
+   ============================================================ */
+.slides-body--portrait .slide {
+  width: var(--card-w);
+  height: var(--card-h);
+  padding: 60pt 52pt;
+}
+
+/* The folio and the site mark sit in the bottom padding. At this size
+   16pt was not enough of a band and the last card on a tall slide ran
+   underneath them. */
+.slides-body--portrait .slide__body {
+  padding-bottom: 44pt;
+}
+
+/* Breathing room, now that there is height rather than width. */
+.slides-body--portrait .slide__head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10pt;
+  padding-bottom: 20pt;
+  margin-bottom: 34pt;
+}
+
+.slides-body--portrait h2.slide__title {
+  font-size: 62pt;
+  max-width: 16ch;
+}
+
+.slides-body--portrait .eyebrow {
+  font-size: 17pt;
+}
+
+.slides-body--portrait .folio,
+.slides-body--portrait .slide__mark {
+  font-size: 16pt;
+  bottom: 30pt;
+}
+
+/* --- 01 cover ---------------------------------------------- */
+/* `.slides-body--portrait .slide` outranks `.cover`, so the cover
+   inherits the sheet padding and the photograph ends up inset with a
+   frame of ink around it. The cover bleeds, in both orientations. */
+.slides-body--portrait .cover {
+  grid-template-columns: 1fr;
+  grid-template-rows: 330pt 1fr;
+  padding: 0;
+}
+
+.slides-body--portrait .cover__text {
+  padding: 44pt 52pt 52pt;
+  order: 2;
+}
+
+.slides-body--portrait .cover__name {
+  font-size: 24pt;
+  margin-bottom: 14pt;
+}
+
+.slides-body--portrait .cover__eyebrow {
+  margin-bottom: 16pt;
+}
+
+.slides-body--portrait .cover__headline {
+  font-size: 60pt;
+  max-width: 18ch;
+  margin-bottom: 24pt;
+}
+
+.slides-body--portrait .cover__standfirst {
+  font-size: 21pt;
+  max-width: 36ch;
+  margin-bottom: 0;
+}
+
+.slides-body--portrait .cover__foot {
+  font-size: 18pt;
+  padding-top: 22pt;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6pt;
+}
+
+.slides-body--portrait .cover__portrait {
+  order: 1;
+}
+
+.slides-body--portrait .cover__portrait img {
+  object-position: 50% 24%;
+}
+
+/* The scrim ran left to right across the landscape seam; here the
+   photograph sits above the type, so it has to fall downward. */
+.slides-body--portrait .cover__portrait::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 19, 16, 0) 52%,
+    rgba(20, 19, 16, 0.74) 82%,
+    var(--ink-surface) 100%
+  );
+}
+
+/* --- 02 intro ---------------------------------------------- */
+.slides-body--portrait .intro {
+  grid-template-columns: 1fr;
+  grid-template-rows: 250pt auto;
+  gap: 30pt;
+}
+
+.slides-body--portrait .intro__portrait {
+  order: 1;
+}
+
+.slides-body--portrait .intro__copy {
+  order: 2;
+  gap: 20pt;
+}
+
+.slides-body--portrait .intro__copy p {
+  font-size: 20pt;
+  line-height: 1.45;
+}
+
+.slides-body--portrait .intro__pull p {
+  font-size: 20pt;
+}
+
+.slides-body--portrait .intro__source {
+  font-size: 16pt;
+}
+
+/* --- 03 numbers -------------------------------------------- */
+.slides-body--portrait .stats {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.slides-body--portrait .stat {
+  padding: 26pt 24pt;
+}
+
+.slides-body--portrait .stat__value {
+  font-size: 58pt;
+}
+
+.slides-body--portrait .stat__label {
+  font-size: 21pt;
+}
+
+.slides-body--portrait .stat__context {
+  font-size: 17pt;
+}
+
+/* --- 04 disciplines ---------------------------------------- */
+.slides-body--portrait .disciplines {
+  grid-template-columns: 1fr;
+  gap: 13pt;
+}
+
+.slides-body--portrait .discipline__name {
+  font-size: 25pt;
+}
+
+.slides-body--portrait .discipline__blurb {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .discipline__number {
+  font-size: 16pt;
+}
+
+.slides-body--portrait .keyword {
+  font-size: 12pt;
+  padding: 5pt 9pt;
+}
+
+/* --- 05 range ---------------------------------------------- */
+.slides-body--portrait .range {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20pt;
+}
+
+.slides-body--portrait .range__label strong {
+  font-size: 20pt;
+}
+
+.slides-body--portrait .range__label span {
+  font-size: 16pt;
+}
+
+/* --- 06-07 case studies ------------------------------------ */
+.slides-body--portrait .study {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 30pt;
+}
+
+.slides-body--portrait .study__client {
+  font-size: 20pt;
+}
+
+.slides-body--portrait .study__heading {
+  font-size: 44pt;
+}
+
+.slides-body--portrait .study__body {
+  font-size: 21pt;
+}
+
+.slides-body--portrait .study__link {
+  font-size: 18pt;
+  white-space: normal;
+}
+
+.slides-body--portrait .metric__value {
+  font-size: 46pt;
+}
+
+.slides-body--portrait .metric__label {
+  font-size: 19pt;
+}
+
+.slides-body--portrait .metric__context {
+  font-size: 16pt;
+}
+
+/* --- 08 products ------------------------------------------- */
+.slides-body--portrait .products {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20pt;
+}
+
+.slides-body--portrait .product__name {
+  font-size: 28pt;
+}
+
+.slides-body--portrait .product__status {
+  font-size: 14pt;
+}
+
+.slides-body--portrait .product__platform {
+  font-size: 16pt;
+}
+
+/* A phone screenshot is far taller than this box, so a top-anchored
+   crop showed the status bar and nothing else. Taller, and biting a
+   little further down, puts actual interface in the frame. */
+.slides-body--portrait .product__shot {
+  height: 205pt;
+  margin-bottom: 13pt;
+}
+
+.slides-body--portrait .product__shot img {
+  object-position: 50% 20%;
+}
+
+.slides-body--portrait .product__problem {
+  font-size: 17pt;
+}
+
+.slides-body--portrait .product__solution {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .product__link {
+  font-size: 15pt;
+}
+
+/* --- 09 process -------------------------------------------- */
+.slides-body--portrait .process {
+  grid-template-columns: 1fr;
+  gap: 16pt;
+  margin-bottom: 20pt;
+}
+
+.slides-body--portrait .step__title {
+  font-size: 26pt;
+}
+
+.slides-body--portrait .step__blurb {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .step__number,
+.slides-body--portrait .step__stamp {
+  font-size: 16pt;
+}
+
+.slides-body--portrait .proofs {
+  grid-template-columns: 1fr;
+  gap: 11pt;
+}
+
+.slides-body--portrait .proof__value {
+  font-size: 21pt;
+}
+
+.slides-body--portrait .proof__label {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .proof__context {
+  font-size: 14pt;
+}
+
+/* --- 10 toolset -------------------------------------------- */
+.slides-body--portrait .tools {
+  grid-template-columns: 1fr;
+  gap: 22pt;
+}
+
+.slides-body--portrait .tools__label strong {
+  font-size: 22pt;
+}
+
+.slides-body--portrait .tools__note {
+  font-size: 16pt;
+}
+
+/* --- 11 trust ---------------------------------------------- */
+.slides-body--portrait .logos {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18pt;
+}
+
+.slides-body--portrait .logos__cell {
+  height: 66pt;
+}
+
+.slides-body--portrait .quotes {
+  grid-template-columns: 1fr;
+  gap: 14pt;
+}
+
+.slides-body--portrait .quote {
+  padding: 13pt 18pt;
+}
+
+.slides-body--portrait .quote__text {
+  font-size: 14pt;
+}
+
+.slides-body--portrait .quote__name {
+  font-size: 16pt;
+}
+
+.slides-body--portrait .quote__role {
+  font-size: 14pt;
+}
+
+/* --- 12 close ---------------------------------------------- */
+.slides-body--portrait .close {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  gap: 24pt;
+}
+
+.slides-body--portrait .close__heading {
+  font-size: 54pt;
+  margin-bottom: 22pt;
+}
+
+.slides-body--portrait .track__label {
+  font-size: 18pt;
+}
+
+.slides-body--portrait .track__body {
+  font-size: 18pt;
+}
+
+.slides-body--portrait .close__signoff {
+  font-size: 19pt;
+  margin-top: 20pt;
+}
+
+.slides-body--portrait .close__card {
+  padding: 24pt;
+}
+
+.slides-body--portrait .close__portrait {
+  width: 92pt;
+  height: 92pt;
+}
+
+.slides-body--portrait .close__name {
+  font-size: 24pt;
+}
+
+.slides-body--portrait .close__role {
+  font-size: 18pt;
+}
+
+.slides-body--portrait .contact {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .contact span {
+  font-size: 15pt;
+}
+
+.slides-body--portrait .contacts {
+  gap: 8pt;
+}
+
+.slides-body--portrait .contact {
+  padding-top: 8pt;
+}
+
+.slides-body--portrait .step {
+  padding: 16pt 20pt 18pt;
+}
+
+.slides-body--portrait .proof {
+  padding: 13pt 16pt;
+}

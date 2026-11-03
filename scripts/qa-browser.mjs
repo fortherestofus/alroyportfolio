@@ -83,10 +83,11 @@ const EXPECTED = {
   products: 4, // src/data/products.ts
   productShots: 18,
   sectionLotties: 5, // sections 02-06 carry an illustration; 01 and 07 do not
-  caseStudyCards: 4, // CLIENT_STUDIES — Thrifty, Innovatr, Filosofee, LumiSkin. The three
-  // products are reached from their card in section 05 instead.
+  caseStudyCards: 7, // CLIENT_STUDIES — Social Sweep, Innovatr, Thrifty, Filosofee, LumiSkin,
+  // the agentic content pipeline and ISIT on iPhone Duo. The products are
+  // reached from their card in section 05 instead.
   upcomingStudies: 0, // UPCOMING_STUDIES — empty now LumiSkin is written
-  stripShots: 15, // strip entries across the client studies, rendered twice for the marquee
+  stripShots: 32, // strip entries across the client studies, rendered twice for the marquee
 };
 
 /**
@@ -103,9 +104,13 @@ const CASE_STUDY_PATHS = [
   "/case-studies/innovatr/",
   "/case-studies/filosofee/",
   "/case-studies/lumiskin/",
+  "/case-studies/social-sweep/",
+  "/case-studies/agentic-content/",
+  "/case-studies/isit-iphone-duo/",
   "/products/hakkan/",
   "/products/inspiritintruth/",
   "/products/tapa/",
+  "/products/caughtslipping/",
 ];
 
 const results = [];
@@ -995,15 +1000,15 @@ async function checkPortfolioModal(browser, origin) {
     opened.visibleSlides === 1,
     `${opened.visibleSlides}`,
   );
-  record("[modal] a dot per shot", opened.dots === 6, `${opened.dots}`);
-  record("[modal] dots are actually visible", opened.sizedDots === 6, `${opened.sizedDots} sized`);
+  record("[modal] a dot per shot", opened.dots === 7, `${opened.dots}`);
+  record("[modal] dots are actually visible", opened.sizedDots === 7, `${opened.sizedDots} sized`);
   record("[modal] caption stays inside the panel", opened.captionInPanel);
   record(
     "[modal] the shot actually fills the stage",
     opened.mediaHeight > 300,
     `image rendered ${opened.mediaHeight}px tall`,
   );
-  record("[modal] counter reads correctly", opened.counter === "1 of 6", opened.counter);
+  record("[modal] counter reads correctly", opened.counter === "1 of 7", opened.counter);
   record("[modal] focus moves into the dialog", opened.focusInside);
   record("[modal] background scroll locks", opened.locked);
 
@@ -1026,14 +1031,14 @@ async function checkPortfolioModal(browser, origin) {
   const afterNext = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] next advances", afterNext === "2 of 6", afterNext);
+  record("[modal] next advances", afterNext === "2 of 7", afterNext);
 
   await page.locator("[data-portfolio-prev]").click();
   await page.waitForTimeout(250);
   const afterPrev = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] previous goes back", afterPrev === "1 of 6", afterPrev);
+  record("[modal] previous goes back", afterPrev === "1 of 7", afterPrev);
 
   record(
     "[modal] previous is disabled on the first shot",
@@ -1046,7 +1051,7 @@ async function checkPortfolioModal(browser, origin) {
   const afterKey = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] arrow keys navigate", afterKey === "2 of 6", afterKey);
+  record("[modal] arrow keys navigate", afterKey === "2 of 7", afterKey);
 
   // Focus trap: tabbing many times must never escape the dialog.
   let escaped = false;
