@@ -126,7 +126,7 @@ export const SECTIONS = [
     short: "Products",
     heading: "Products I've built",
     blurb:
-      "Product development and management is best understood when demonstrated. A few products I've built for myself: the thinking and story behind each, the tools used, and how I manage them now that they exist.",
+      "Product management is best shown, not told. Four products I've built and run: the problem, the decisions and the numbers.",
   },
   {
     id: "case-studies",
@@ -136,7 +136,7 @@ export const SECTIONS = [
     short: "Cases",
     heading: "Case studies",
     blurb:
-      "Work done for a business, and what it returned. The starting point, the thinking, the measured outcome — and what I would do differently.",
+      "Work done for a business, and what it returned. The starting point, the decisions, the measured outcome — and what I'd do differently.",
   },
   {
     id: "contact",
