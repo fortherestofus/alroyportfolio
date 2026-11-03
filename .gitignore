@@ -26,6 +26,6 @@ pnpm-debug.log*
 # Scratch output from `npm run resume:render`.
 .resume-pages.png
 
-# Feed images from scripts/build-social-image.mjs. Regenerated from the
-# data on demand, so they never go stale in the repo.
-/social/
+# The retired LinkedIn ad: a local copy of the PDF and its feed images.
+# Kept off the site and out of the repo; git history has the source.
+/linkedin-ad/

@@ -27,13 +27,8 @@ export default defineConfig({
    * second copy of the résumé at a URL nobody points at and split the
    * signal between them. They carry noindex too, and robots.txt
    * disallows the directory; this keeps them out of the sitemap.
-   * The /linkedin/ routes and their siblings are the same kind of thing, the source of
-   * the ad PDF and the feed images, and carry noindex for the same
-   * reason.
    */
-  integrations: [
-    sitemap({ filter: (page) => !page.includes("/resume/") && !page.includes("/linkedin") }),
-  ],
+  integrations: [sitemap({ filter: (page) => !page.includes("/resume/") })],
   vite: {
     plugins: [tailwindcss()],
   },
