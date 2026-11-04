@@ -211,6 +211,10 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "Social media graphic promoting a library of bi-monthly signal reports.",
       },
       {
+        image: "email-old-research-opener.jpg",
+        alt: "The opening of a marketing email for a consumer research company: a letter from the founder under the headline “Old research is dead. And most brands still haven't noticed.”, in coral and white on deep navy.",
+      },
+      {
         image: "innovatr_carousel.png",
         alt: "Social media carousel slide, “The old way: slow, expensive, unclear”, listing 6-8 week turnarounds and R200K study costs.",
       },

@@ -996,6 +996,9 @@ const schema = [
    */
   .cs__gallery--pair {
     grid-template-columns: minmax(0, 1fr);
+    /* A long capture split in two rarely halves evenly; each half ends
+       at its own height rather than stretching into an empty card. */
+    align-items: start;
   }
 
   @media (width >= 768px) {

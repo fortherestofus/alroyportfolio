@@ -489,6 +489,48 @@ export const CASE_STUDIES: CaseStudy[] = [
           "Sourced audience, not inbound enquiries. LinkedIn's delivery data below shows the ads landing on exactly these companies.",
       },
       {
+        id: "pipeline",
+        kind: "gallery",
+        heading: "Email that earns the open",
+        intro:
+          "Every lead the ads brought in got a sequence. I wrote and designed each email; this one, sent under the founder's name, makes the brand's argument in the inbox.",
+        pair: true,
+        shots: [
+          {
+            image: "innovatr/email-old-research-1.jpg",
+            alt: "The top half of an Innovatr email headed “Old research is dead. And most brands still haven't noticed.”, a letter from the founder followed by what one traditional study costs a South African brand: R500K–R900K for focus groups, R350K–R1.2M for a quant study and six to ten weeks to deliver.",
+          },
+          {
+            image: "innovatr/email-old-research-2.jpg",
+            alt: "The bottom half of the same email: the old way against the Innovatr way side by side, a “40x faster” callout, three market stats, the company's proof numbers, a teaser for the next email and a “See the Innovatr Way” button.",
+          },
+        ],
+      },
+      {
+        id: "pipeline",
+        kind: "metrics",
+        heading: "Opened and clicked above the norm",
+        items: [
+          {
+            value: "36.7%",
+            label: "Opens, onboarding sequence",
+            context: "Against a 30% target and a typical B2B rate of 30–35%.",
+          },
+          {
+            value: "4.1%",
+            label: "Clicks, onboarding sequence",
+            context: "Against a 3% target and a typical B2B rate of about 2.5%.",
+          },
+          {
+            value: "61.5%",
+            label: "Opens, outreach sequence",
+            context: "Close to double the typical B2B rate.",
+          },
+        ],
+        footnote:
+          "Zoho Campaigns, sent to leads from LinkedIn, April–July 2026. Bot opens filtered out.",
+      },
+      {
         id: "results",
         kind: "metrics",
         heading: "The ads landed in the right rooms",
@@ -576,7 +618,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Organic alone didn't reach: paid delivered ~166× its impressions. Nurture emails drew clicks at four times the norm but no replies. And every pause between flights reset LinkedIn's learning.",
+          "Organic alone didn't reach: paid delivered ~166× its impressions. The emails beat every open and click benchmark, but drew no replies. And every pause between flights reset LinkedIn's learning.",
         ],
       },
       {
