@@ -1,0 +1,68 @@
+---
+/**
+ * The light/dark switch.
+ *
+ * The site follows the visitor's device setting until they press this,
+ * then remembers their choice; see src/scripts/theme.ts. The icon shows
+ * the theme a press will switch to, and the label says so in words.
+ *
+ * It needs scripting to do anything, so without it the button is not
+ * rendered visible at all rather than sitting there inert.
+ */
+import { Moon, Sun } from "@lucide/astro";
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  aria-label="Switch to light mode"
+  title="Switch to light mode"
+>
+  <Sun class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true" />
+  <Moon class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" />
+</button>
+
+<script>
+  import "../scripts/theme";
+</script>
+
+<style>
+  .theme-toggle {
+    display: none;
+    place-items: center;
+    width: var(--control-md);
+    height: var(--control-md);
+    flex: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    color: var(--color-text-muted);
+    pointer-events: auto;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  :global(.js) .theme-toggle {
+    display: inline-grid;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .theme-toggle__icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 1.75;
+  }
+
+  /* On dark, offer the sun; on light, the moon. */
+  :global([data-theme="light"]) .theme-toggle__icon--sun,
+  :global(:root:not([data-theme="light"])) .theme-toggle__icon--moon {
+    display: none;
+  }
+</style>

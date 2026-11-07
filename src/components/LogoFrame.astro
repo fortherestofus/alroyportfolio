@@ -56,13 +56,14 @@ const RENDER_SIZE = 80;
      * background almost every mark was drawn for: dark ink on
      * transparency, or opaque with white already behind it. The one
      * kind this cannot serve is a mark inked in white on transparency,
-     * which gets the ink treatment below.
+     * which gets the ink treatment below. The backing stays light in both
+     * themes: a light page needs it for the same marks.
      */
-    background-color: var(--color-invert-surface);
+    background-color: var(--color-frame-light);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     overflow: hidden;
-    color: var(--color-invert-muted);
+    color: var(--color-frame-light-ink);
   }
 
   /*
@@ -81,7 +82,7 @@ const RENDER_SIZE = 80;
   }
 
   .frame[data-on-dark="true"] {
-    background-color: var(--color-bg);
+    background-color: var(--color-frame-dark);
     border-color: var(--color-border);
   }
 

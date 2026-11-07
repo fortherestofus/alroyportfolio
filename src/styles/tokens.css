@@ -6,18 +6,34 @@
    re-exported to Tailwind via the @theme block in global.css.
    ============================================================ */
 
-:root {
-  /*
-   * DARK-FIRST (decided with Alroy, 1 Aug 2026, replacing the original
-   * light-first direction). His previous site was dark, his portrait is
-   * shot on black, and the lively pthalo green only truly comes alive
-   * against ink. The brand palette is unchanged; what swapped is which
-   * end of it carries the page.
-   *
-   * Every value below is checked against #0d0d0d for WCAG AA by the
-   * contrast gate in scripts/qa-browser.mjs. Changing one without
-   * running that gate is how contrast regressions get shipped.
-   */
+/*
+ * COLOUR, in two themes.
+ *
+ * DARK-FIRST (decided with Alroy, 1 Aug 2026, replacing the original
+ * light-first direction). His previous site was dark, his portrait is
+ * shot on black, and the lively pthalo green only truly comes alive
+ * against ink. Dark is therefore the default: it is what a visitor gets
+ * with no preference, with scripting off, and on any element that asks
+ * for it with data-theme="dark" (the photo lightbox does, in both
+ * themes, because photographs are judged against black).
+ *
+ * LIGHT (added 7 Nov 2026) follows the visitor's device setting, or the
+ * nav toggle once they have used it; the inline script in BaseLayout
+ * sets data-theme on <html> before first paint. It is the same palette
+ * read the other way round, with one real change: the lively green is
+ * 2.1:1 on a light page, so the accent drops to a deep olive from the
+ * same family.
+ *
+ * The dark selector is `:root:not([data-theme="light"])` rather than a
+ * bare `:root` so the two blocks never compete on source order.
+ *
+ * Every value is checked for WCAG AA in both themes by the contrast
+ * gate in scripts/qa-browser.mjs. Changing one without running that
+ * gate is how contrast regressions get shipped.
+ */
+:root:not([data-theme="light"]),
+[data-theme="dark"] {
+  color-scheme: dark;
 
   /* --- Surfaces -------------------------------------------- */
   --color-bg: #0d0d0d; /* Blackish, the brand base */
@@ -40,31 +56,19 @@
 
   /* --- Accent: pthalo green family ------------------------- */
   --color-accent: #90a842; /* lively pthalo: the accent on dark, 7.3:1 */
-  --color-accent-deep: #123524; /* deep pthalo: filled blocks, not text */
   --color-accent-soft: rgba(144, 168, 66, 0.14); /* tinted chip backgrounds */
-  --color-accent-olive: #b5b325; /* rare gradient partner */
-
-  /* --- Goldie: the full brand ramp -------------------------- */
-  --color-gold: #f0b331; /* bright, 10.4:1 — micro-accents */
-  --color-gold-mid: #c2a142; /* 7.8:1 */
-  --color-gold-deep: #b58104; /* 5.7:1 */
-
+  --color-accent-hover: #b5b325; /* a filled accent button, hovered */
   /*
-   * Illustration skin tones. The section illustrations draw people, and
-   * a portfolio belonging to a Black man should not render them in
-   * neutral grey — the first themed pass did, and it read as lifeless.
-   * Caramel at 5.3:1 against the base, with a deeper tone for shadow at
-   * 3.3:1, which is enough separation to model a form.
+   * Text set on a filled accent block. Dark on the lively green: white
+   * would sit at about 1.6:1. The soft variant is for a secondary mark
+   * on the same block, like the step number in the active nav pill.
    */
-  --color-skin: #b07a4e;
-  --color-skin-shade: #8a5a37;
+  --color-on-accent: #0d0d0d;
+  --color-on-accent-soft: #123524;
 
   /*
-   * Inverted blocks. The light palette survives as a deliberate accent
-   * for the occasional bright section, and for logo frames: nearly
-   * every mark Alroy has was drawn for a white background, so giving
-   * the frames a warm-white backing makes all of them legible at once
-   * instead of special-casing the light ones and the dark ones.
+   * Inverted blocks: the other theme's surface, for the odd pill or
+   * hint that should stand out from the page it sits on.
    */
   --color-invert-surface: #f9f6f2;
   --color-invert-raised: #fdfbf7;
@@ -72,6 +76,97 @@
   --color-invert-muted: #4d4d4d;
   --color-invert-accent: #123524; /* deep green reads as the accent on light */
   --color-invert-border: rgba(13, 13, 13, 0.08);
+
+  /*
+   * Shadows, retuned for ink. A soft grey shadow is invisible on a dark
+   * page, so depth comes from a deeper drop plus a faint light hairline
+   * along the top edge, which is what actually reads as "raised" here.
+   */
+  --shadow-card: 0 1px 0 rgba(249, 246, 242, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 1px 0 rgba(249, 246, 242, 0.07) inset, 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-nav: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+  /*
+   * Hero collage. The opacity is a contrast budget, not a taste call:
+   * composited over the page base, an image layer at or below 0.44
+   * keeps even a pure-white pixel under the luminance white text needs
+   * for 4.5:1. 0.35 leaves margin for the muted blurb as well.
+   */
+  --collage-opacity: 0.35;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Warm paper rather than white, so white cards still lift off it. */
+  --color-bg: #f6f3ee;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #ece8e1;
+  --color-border: rgba(21, 21, 21, 0.12);
+  --color-border-control: rgba(21, 21, 21, 0.5); /* ~3.3:1, as on dark */
+
+  --color-text: #151515; /* 16.5:1 */
+  --color-text-muted: #4d4a44; /* 8:1 */
+  --color-text-faint: #66625a; /* 5.5:1, 5:1 on the sunken well */
+
+  /* Deep olive: 5.8:1 on the base, where the lively green is 2.1:1. */
+  --color-accent: #53661b;
+  --color-accent-soft: rgba(83, 102, 27, 0.12);
+  --color-accent-hover: #3f4f12;
+  --color-on-accent: #f9f6f2; /* 5.9:1 on the accent, 8.3:1 hovered */
+  --color-on-accent-soft: #dfe8b8; /* 5:1 on the accent */
+
+  --color-invert-surface: #151515;
+  --color-invert-raised: #1f1f1f;
+  --color-invert-text: #f6f3ee;
+  --color-invert-muted: #b8b3aa;
+  --color-invert-accent: #9cb64a;
+  --color-invert-border: rgba(246, 243, 238, 0.1);
+
+  /* On paper a soft grey drop is exactly what reads as raised. */
+  --shadow-card: 0 1px 2px rgba(21, 21, 21, 0.06), 0 8px 24px rgba(21, 21, 21, 0.08);
+  --shadow-card-hover: 0 1px 2px rgba(21, 21, 21, 0.08), 0 16px 40px rgba(21, 21, 21, 0.14);
+  --shadow-pill: 0 2px 8px rgba(21, 21, 21, 0.18);
+  --shadow-nav: 0 8px 30px rgba(21, 21, 21, 0.1);
+
+  /*
+   * The same budget run the other way: here it is the darkest pixel
+   * that has to stay light enough for near-black text to clear 4.5:1.
+   */
+  --collage-opacity: 0.35;
+}
+
+:root {
+  /* --- Colours that do not change with the theme ----------- */
+  --color-accent-deep: #123524; /* deep pthalo: filled blocks, not text */
+  --color-accent-olive: #b5b325; /* rare gradient partner */
+
+  /*
+   * Logo frames. Nearly every mark Alroy has was drawn for a white
+   * background, so the frames keep a warm-white backing in both themes,
+   * which makes all of them legible at once instead of special-casing
+   * the light ones and the dark ones. The few marks inked in white on
+   * transparency get the dark backing, also in both themes.
+   */
+  --color-frame-light: #f9f6f2;
+  --color-frame-light-ink: #4d4d4d;
+  --color-frame-dark: #0d0d0d;
+
+  /* --- Goldie: the full brand ramp -------------------------- */
+  --color-gold: #f0b331; /* bright, 10.4:1 on dark — micro-accents */
+  --color-gold-mid: #c2a142; /* 7.8:1 */
+  --color-gold-deep: #b58104; /* 5.7:1 */
+
+  /*
+   * Illustration skin tones. The section illustrations draw people, and
+   * a portfolio belonging to a Black man should not render them in
+   * neutral grey — the first themed pass did, and it read as lifeless.
+   * Caramel at 5.3:1 against the dark base, with a deeper tone for
+   * shadow at 3.3:1, which is enough separation to model a form.
+   */
+  --color-skin: #b07a4e;
+  --color-skin-shade: #8a5a37;
 
   /* --- Spacing: 8pt grid (4pt half-steps) ------------------ */
   --space-1: 4px;
@@ -154,13 +249,7 @@
    */
   --shot-strip-width-compact: 200px;
 
-  /*
-   * Hero collage. The opacity is a contrast budget, not a taste call:
-   * composited over the page base, an image layer at or below 0.44
-   * keeps even a pure-white pixel under the luminance white text needs
-   * for 4.5:1. 0.35 leaves margin for the muted blurb as well.
-   */
-  --collage-opacity: 0.35;
+  /* Hero collage geometry. Its opacity is themed, above. */
   --collage-tile-width: 300px;
   --collage-tilt: -8deg;
   --collage-bleed: 160px; /* how far the columns run past the hero's edges */
@@ -191,16 +280,6 @@
   --radius-well: 24px;
   --radius-block: 32px;
   --radius-pill: 999px;
-
-  /*
-   * Shadows, retuned for ink. A soft grey shadow is invisible on a dark
-   * page, so depth comes from a deeper drop plus a faint light hairline
-   * along the top edge, which is what actually reads as "raised" here.
-   */
-  --shadow-card: 0 1px 0 rgba(249, 246, 242, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-card-hover: 0 1px 0 rgba(249, 246, 242, 0.07) inset, 0 16px 40px rgba(0, 0, 0, 0.55);
-  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.5);
-  --shadow-nav: 0 8px 30px rgba(0, 0, 0, 0.5);
 
   /* --- Typography scale (fluid, rem-based) -----------------
    *

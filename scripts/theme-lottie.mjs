@@ -18,6 +18,12 @@
  * flat blobs, so they map to three distinct values rather than one —
  * enough separation to keep forms readable.
  *
+ * There are two sets, one per site theme. The light set
+ * (public/lottie/light/) keeps the colour mapping and flips only the
+ * neutrals back the way the originals had them: dark line work on light
+ * fills. The loader in SectionLottie.astro picks the set for the
+ * current theme and swaps when the theme changes.
+ *
  * Run: npm run lottie
  */
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
@@ -27,9 +33,7 @@ const SRC = new URL("../src/assets/lottie/", import.meta.url).pathname;
 const OUT = new URL("../public/lottie/", import.meta.url).pathname;
 
 /** Site tokens, duplicated here because a build script cannot read CSS. */
-const T = {
-  ink: [0.976, 0.965, 0.949], // --color-text
-  surface: [0.102, 0.102, 0.102], // --color-surface
+const BRAND = {
   skin: [0.69, 0.478, 0.306], // --color-skin, caramel
   skinShade: [0.541, 0.353, 0.216], // --color-skin-shade
   pthalo: [0.565, 0.659, 0.259], // --color-accent
@@ -39,14 +43,32 @@ const T = {
   goldDeep: [0.71, 0.506, 0.016], // --color-gold-deep
 };
 
+/** The neutrals, which are the only thing that differs between themes. */
+const THEMES = {
+  dark: {
+    out: OUT,
+    ink: [0.976, 0.965, 0.949], // --color-text on dark
+    surface: [0.102, 0.102, 0.102], // --color-surface on dark
+    panel: [0.976, 0.965, 0.949], // light panels: screens, paper, walls
+  },
+  light: {
+    out: join(OUT, "light"),
+    ink: [0.082, 0.082, 0.082], // --color-text on light
+    surface: [1, 1, 1], // --color-surface on light
+    panel: [0.925, 0.91, 0.882], // --color-surface-sunken on light
+  },
+};
+
+let T = { ...BRAND, ...THEMES.dark };
+
 /**
  * Source hex -> site colour. Keyed on the exact values these six files
  * use; anything unmapped is reported rather than silently passed
  * through, so a new illustration cannot quietly smuggle a hue in.
  */
-const MAP = {
-  "020202": T.ink, // line work: black on light becomes white on dark
-  ffffff: T.surface, // white fills become the page's raised surface
+const buildMap = () => ({
+  "020202": T.ink, // line work: the theme's text colour
+  ffffff: T.surface, // white fills: the theme's raised surface
 
   /*
    * Objects take the two brand families across their full range. The
@@ -66,11 +88,11 @@ const MAP = {
    * The two warm tones default to light surfaces — screens, paper,
    * panels — which is what they mostly are.
    */
-  efe4b5: T.ink, // cream  -> a light panel: screens, paper, walls
-  fef7cf: T.ink,
+  efe4b5: T.panel, // cream  -> a light panel: screens, paper, walls
+  fef7cf: T.panel,
   ff7c51: T.goldMid, // orange -> mid goldie, for warm objects
   fb8502: T.goldMid,
-};
+});
 
 /**
  * Skin is decided by layer, not by colour, and that distinction is the
@@ -138,12 +160,15 @@ const isPerson = (name) =>
     .split(/[^a-z]+/)
     .some((word) => PERSON.has(word));
 
-const SKIN_MAP = {
+const buildSkinMap = () => ({
   efe4b5: T.skin,
   fef7cf: T.skin,
   ff7c51: T.skinShade,
   fb8502: T.skinShade,
-};
+});
+
+let MAP = buildMap();
+let SKIN_MAP = buildSkinMap();
 
 const hex = (c) =>
   c
@@ -186,8 +211,6 @@ function walk(node, inPerson = false) {
   for (const key of Object.keys(node)) walk(node[key], here);
 }
 
-mkdirSync(OUT, { recursive: true });
-
 /**
  * One illustration per section that gets one. The spare
  * `online-job-illustration…` file in the source folder is a second take
@@ -207,18 +230,27 @@ if (files.length !== WANTED.size) {
   console.error(`\n✖ Expected ${WANTED.size} source animations, found ${files.length}.`);
   process.exit(1);
 }
-for (const file of files) {
-  const animation = JSON.parse(readFileSync(join(SRC, file), "utf8"));
-  walk(animation);
-  // Spaces in a filename become %20 in a URL; normalise on the way out.
-  const name = file.toLowerCase().replace(/[^a-z0-9.]+/g, "-");
-  writeFileSync(join(OUT, name), JSON.stringify(animation));
-  process.stdout.write(`  ${name}\n`);
-}
+for (const [theme, neutrals] of Object.entries(THEMES)) {
+  T = { ...BRAND, ...neutrals };
+  MAP = buildMap();
+  SKIN_MAP = buildSkinMap();
+  recoloured = 0;
+  skinned = 0;
+  mkdirSync(T.out, { recursive: true });
 
-console.log(
-  `\n✓ Recoloured ${recoloured} fills across ${files.length} animations (${skinned} skin).`,
-);
+  for (const file of files) {
+    const animation = JSON.parse(readFileSync(join(SRC, file), "utf8"));
+    walk(animation);
+    // Spaces in a filename become %20 in a URL; normalise on the way out.
+    const name = file.toLowerCase().replace(/[^a-z0-9.]+/g, "-");
+    writeFileSync(join(T.out, name), JSON.stringify(animation));
+    process.stdout.write(`  ${theme}/${name}\n`);
+  }
+
+  console.log(
+    `✓ ${theme}: recoloured ${recoloured} fills across ${files.length} animations (${skinned} skin).\n`,
+  );
+}
 if (unmapped.size > 0) {
   console.error(`\n✖ Unmapped colours: ${[...unmapped].join(", ")}`);
   console.error("Add them to MAP in scripts/theme-lottie.mjs so nothing ships off-palette.\n");

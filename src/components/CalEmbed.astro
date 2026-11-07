@@ -82,9 +82,13 @@ const FRAME_ID = "cal-booking";
   const NAMESPACE = "booking";
 
   /** Design values belong in the token layer, including the ones the iframe is told. */
-  function token(name: string): string {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  function token(name: string, from: Element = document.documentElement): string {
+    return getComputedStyle(from).getPropertyValue(name).trim();
   }
+
+  type Theme = "light" | "dark";
+  const currentTheme = (): Theme =>
+    document.documentElement.dataset.theme === "light" ? "light" : "dark";
 
   function loader(): CalFn {
     if (window.Cal) return window.Cal;
@@ -136,21 +140,48 @@ const FRAME_ID = "cal-booking";
 
     const booking = window.Cal!.ns![NAMESPACE];
 
+    /*
+     * Cal's readiness event, registered once for the namespace, rather
+     * than watching for an iframe to appear. If the script is blocked or
+     * fails this never fires, the fallback link stays exactly where it
+     * is, and the section still does its job.
+     */
+    booking("on", {
+      action: "linkReady",
+      callback: () => frame.setAttribute("data-cal-state", "ready"),
+    });
+
+    render(frame, calLink, booking);
+
+    /*
+     * Follow the site toggle. The booker takes its theme from its URL at
+     * load, and a later `ui` call does not repaint an open booker, so a
+     * switch replaces it with a fresh one in the new theme.
+     */
+    document.addEventListener("themechange", () => {
+      for (const embed of frame.querySelectorAll("cal-inline")) embed.remove();
+      frame.removeAttribute("data-cal-state");
+      render(frame, calLink, booking);
+    });
+  }
+
+  function render(frame: HTMLElement, calLink: string, booking: CalFn): void {
     booking("inline", {
       elementOrSelector: `#${frame.id}`,
       calLink,
       /*
        * These become query parameters on the iframe URL, so the booker
-       * boots dark. Passing the theme only through the `ui` call below
-       * delivers it by postMessage *after* load, which is where the
+       * boots in the page's theme. Passing the theme only through the
+       * `ui` call below delivers it by postMessage *after* load, which is
+       * where the
        * white flash everyone reports comes from. `ui.color-scheme` is
        * separate and also needed: without it the iframe canvas itself
-       * stays opaque white behind a dark booker.
+       * stays opaque behind the booker.
        */
       config: {
         layout: "month_view",
-        theme: "dark",
-        "ui.color-scheme": "dark",
+        theme: currentTheme(),
+        "ui.color-scheme": currentTheme(),
         /*
          * Cal scrolls itself into view when the booker advances a step.
          * On a page this long that yanks the reader around.
@@ -167,41 +198,39 @@ const FRAME_ID = "cal-booking";
      * the booker keeps Cal Sans, and the section is designed around
      * that rather than pretending otherwise.
      */
-    const dark = {
-      "cal-brand": token("--color-accent"),
-      "cal-brand-text": token("--color-invert-text"),
-      "cal-bg": token("--color-bg"),
-      "cal-bg-subtle": token("--color-surface"),
-      "cal-bg-emphasis": token("--color-surface"),
-      "cal-bg-muted": token("--color-surface-sunken"),
-      "cal-text": token("--color-text"),
-      "cal-text-emphasis": token("--color-text"),
-      "cal-text-subtle": token("--color-text-muted"),
-      "cal-text-muted": token("--color-text-faint"),
-      "cal-border": token("--color-border"),
-      "cal-border-subtle": token("--color-border"),
-      // Unitless zero: a length, and not a design value the linter should police.
-      "cal-border-booker-width": "0",
+    const palette = (theme: Theme) => {
+      // Each theme's values, read off a probe set to that theme.
+      const probe = document.createElement("div");
+      probe.dataset.theme = theme;
+      probe.hidden = true;
+      document.body.append(probe);
+      const read = (name: string) => token(name, probe);
+      const vars = {
+        "cal-brand": read("--color-accent"),
+        "cal-brand-text": read("--color-on-accent"),
+        "cal-bg": read("--color-bg"),
+        "cal-bg-subtle": read("--color-surface"),
+        "cal-bg-emphasis": read("--color-surface"),
+        "cal-bg-muted": read("--color-surface-sunken"),
+        "cal-text": read("--color-text"),
+        "cal-text-emphasis": read("--color-text"),
+        "cal-text-subtle": read("--color-text-muted"),
+        "cal-text-muted": read("--color-text-faint"),
+        "cal-border": read("--color-border"),
+        "cal-border-subtle": read("--color-border"),
+        // Unitless zero: a length, and not a design value the linter should police.
+        "cal-border-booker-width": "0",
+      };
+      probe.remove();
+      return vars;
     };
 
     booking("ui", {
-      theme: "dark",
+      theme: currentTheme(),
       layout: "month_view",
       hideEventTypeDetails: false,
       disableAutoScroll: true,
-      // Both themes carry the same palette, so a theme flip cannot unbrand it.
-      cssVarsPerTheme: { light: dark, dark },
-    });
-
-    /*
-     * Cal's own readiness event, rather than watching for an iframe to
-     * appear. If the script is blocked or fails this never fires, the
-     * fallback link stays exactly where it is, and the section still
-     * does its job.
-     */
-    booking("on", {
-      action: "linkReady",
-      callback: () => frame.setAttribute("data-cal-state", "ready"),
+      cssVarsPerTheme: { light: palette("light"), dark: palette("dark") },
     });
   }
 
@@ -255,8 +284,10 @@ const FRAME_ID = "cal-booking";
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
     background-color: var(--color-surface);
-    /* Cal reads this off the container to set the iframe's canvas. */
-    color-scheme: dark;
+    /*
+     * Cal reads color-scheme off the container to set the iframe's
+     * canvas. It is inherited from the theme block in tokens.css.
+     */
   }
 
   /*
@@ -322,7 +353,7 @@ const FRAME_ID = "cal-booking";
     min-height: var(--control-lg);
     padding-inline: var(--space-5);
     background-color: var(--color-accent);
-    color: var(--color-invert-text);
+    color: var(--color-on-accent);
     border-radius: var(--radius-pill);
     font-weight: var(--weight-heading);
     transition: background-color var(--duration-base) var(--ease-out);
@@ -330,7 +361,7 @@ const FRAME_ID = "cal-booking";
 
   .cal__fallback-link:hover,
   .cal__fallback-link:focus-visible {
-    background-color: var(--color-accent-olive);
+    background-color: var(--color-accent-hover);
   }
 
   .cal__alt {

@@ -207,9 +207,26 @@
     font-style: normal;
   }
 
+  /*
+   * An element that sets its own theme (the lightbox is always dark)
+   * has to restate the text colour too. Inherited text takes the
+   * computed colour from <body>, not the variable, so without this the
+   * light page's near-black text runs straight into a dark panel.
+   */
+  [data-theme] {
+    color: var(--color-text);
+  }
+
+  /* Set for two frames while the theme flips; see src/scripts/theme.ts. */
+  :root[data-theme-switching] *,
+  :root[data-theme-switching] *::before,
+  :root[data-theme-switching] *::after {
+    transition: none !important;
+  }
+
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-invert-text);
+    color: var(--color-on-accent);
   }
 
   :focus-visible {

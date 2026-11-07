@@ -6,6 +6,7 @@
  * and serialised here so pages never hand-write script tags.
  */
 import { SITE } from "../data/site";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -34,6 +35,8 @@ const {
 } = Astro.props;
 
 const canonical = new URL(path ?? Astro.url.pathname, SITE.url).href;
+/* The home page carries the toggle in its nav; every other page gets it here. */
+const pageToggle = !Astro.slots.has("nav");
 const ogImageUrl = new URL(ogImage, SITE.url).href;
 ---
 
@@ -53,6 +56,34 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
       document.documentElement.classList.add("js");
     </script>
 
+    <!--
+      Light or dark, decided before first paint so the page never
+      flashes the wrong one: a choice the visitor made with the toggle,
+      otherwise their device setting. The two colours on the meta tag
+      mirror --color-bg in each theme; the browser chrome reads them
+      before any CSS has loaded. See src/scripts/theme.ts for the rest.
+    -->
+    <meta name="theme-color" content="#0d0d0d" data-dark="#0d0d0d" data-light="#f6f3ee" />
+    <script is:inline>
+      (function () {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch {
+          // Blocked storage: fall through to the device setting.
+        }
+        const theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+        document.documentElement.dataset.theme = theme;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = meta.dataset[theme];
+      })();
+    </script>
+
     <!-- Google Tag Manager, as high in the head as possible per Google. -->
     <script is:inline define:vars={{ gtmId: SITE.gtmId }}>
       (function (w, d, s, l, i) {
@@ -70,7 +101,6 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
-    <meta name="theme-color" content="#0d0d0d" />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
@@ -126,6 +156,13 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     </noscript>
     <a href="#main" class="skip-link">Skip to content</a>
     <slot name="nav" />
+    {
+      pageToggle && (
+        <div class="page-tools">
+          <ThemeToggle />
+        </div>
+      )
+    }
     <main id="main">
       <slot />
     </main>
@@ -166,7 +203,7 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     z-index: 100;
     padding: var(--space-3) var(--space-4);
     background-color: var(--color-accent);
-    color: var(--color-invert-text);
+    color: var(--color-on-accent);
     border-radius: var(--radius-pill);
     font-size: var(--text-small);
     font-weight: var(--weight-heading);
@@ -175,5 +212,24 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
 
   .skip-link:focus-visible {
     transform: translateY(0);
+  }
+
+  /*
+   * Pages without the journey nav. Every one of them opens on a back
+   * link at the top left of a content-width column padded by
+   * --space-8, so the toggle sits on that same line at the right.
+   */
+  .page-tools {
+    position: absolute;
+    top: var(--space-8);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+    pointer-events: none;
   }
 </style>

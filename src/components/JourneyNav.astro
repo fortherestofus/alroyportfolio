@@ -13,11 +13,13 @@
 import { Image } from "astro:assets";
 import { MoveHorizontal } from "@lucide/astro";
 import wordmark from "../assets/brand/alroy-wordmark-white.png";
+import ThemeToggle from "./ThemeToggle.astro";
 import { SECTIONS, SITE } from "../data/site";
 
 /*
- * Alroy's own wordmark, white on transparency. It was unusable on the
- * light draft and is exactly right now the site is dark.
+ * Alroy's own wordmark, white on transparency. On the light theme a CSS
+ * invert turns it to near-black ink, which keeps one asset and keeps
+ * the script's edges exactly as drawn.
  */
 const BRAND_LOGO_HEIGHT = 48;
 ---
@@ -67,6 +69,10 @@ const BRAND_LOGO_HEIGHT = 48;
         </span>
       </div>
     </div>
+
+    <div class="jnav__tools">
+      <ThemeToggle />
+    </div>
   </div>
 </nav>
 
@@ -88,9 +94,9 @@ const BRAND_LOGO_HEIGHT = 48;
     margin-inline: auto;
     padding-inline: var(--space-5);
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   /*
@@ -107,6 +113,14 @@ const BRAND_LOGO_HEIGHT = 48;
     .jnav__brand {
       position: absolute;
       left: var(--space-5);
+      top: 50%;
+      translate: 0 -50%;
+    }
+
+    /* The toggle mirrors the brand, inside the reserve on the right. */
+    .jnav__tools {
+      position: absolute;
+      right: var(--space-5);
       top: 50%;
       translate: 0 -50%;
     }
@@ -136,6 +150,11 @@ const BRAND_LOGO_HEIGHT = 48;
     width: auto;
     height: var(--brand-mark-height);
     object-fit: contain;
+  }
+
+  /* White to near-black ink, the light theme's text colour. */
+  :global([data-theme="light"]) .jnav__logo {
+    filter: invert(0.92);
   }
 
   /* ---- Mobile: horizontally scrollable pill bar -------------- */
@@ -189,7 +208,7 @@ const BRAND_LOGO_HEIGHT = 48;
   }
 
   .jnav__link[aria-current="true"] {
-    color: var(--color-invert-text);
+    color: var(--color-on-accent);
     background-color: var(--color-accent);
     border-color: var(--color-accent);
   }
@@ -200,7 +219,7 @@ const BRAND_LOGO_HEIGHT = 48;
   }
 
   .jnav__link[aria-current="true"] .jnav__num {
-    color: var(--color-accent-deep);
+    color: var(--color-on-accent-soft);
   }
 
   /* The full label is desktop-only; the pill shows the short form. */
@@ -393,7 +412,7 @@ const BRAND_LOGO_HEIGHT = 48;
       height: var(--knob-pendant);
       border-radius: var(--radius-pill);
       background-color: var(--color-accent);
-      color: var(--color-invert-text);
+      color: var(--color-on-accent);
       box-shadow: var(--shadow-pill);
       pointer-events: auto;
       cursor: grab;

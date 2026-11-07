@@ -12,9 +12,9 @@
  * one being read, and paused whenever it is off screen.
  *
  * Colours are not the source files'. `npm run lottie` remaps the
- * originals' bright eight-colour palette onto the site tokens; see
- * scripts/theme-lottie.mjs for why that is a build step rather than a
- * runtime filter.
+ * originals' bright eight-colour palette onto the site tokens, once per
+ * theme; see scripts/theme-lottie.mjs for why that is a build step
+ * rather than a runtime filter. The light set lives in /lottie/light/.
  */
 interface Props {
   /** Filename in public/lottie, without the extension. */
@@ -132,10 +132,22 @@ const { name, label } = Astro.props;
       return playerPromise;
     };
 
+    /** The set that matches the page: /lottie/x.json or /lottie/light/x.json. */
+    const sourceFor = (path: string) =>
+      document.documentElement.dataset.theme === "light"
+        ? path.replace("/lottie/", "/lottie/light/")
+        : path;
+
+    const mounted = new Map<
+      HTMLElement,
+      { animation: LottieAnimation; visibility: IntersectionObserver }
+    >();
+
     const mount = async (holder: HTMLElement) => {
-      const source = holder.dataset.lottie;
-      if (!source || holder.dataset.state) return;
+      const path = holder.dataset.lottie;
+      if (!path || holder.dataset.state) return;
       holder.dataset.state = "loading";
+      const source = sourceFor(path);
 
       try {
         const [lottie, animationData] = await Promise.all([
@@ -170,6 +182,7 @@ const { name, label } = Astro.props;
           }
         });
         visibility.observe(holder);
+        mounted.set(holder, { animation, visibility });
       } catch {
         // A missing or malformed animation is not worth a broken page.
         holder.dataset.state = "failed";
@@ -188,5 +201,21 @@ const { name, label } = Astro.props;
     );
 
     for (const holder of holders) approach.observe(holder);
+
+    /*
+     * On a theme switch, reload whatever has already loaded from the
+     * other set. Anything not yet approached picks the right set when
+     * it is, so it needs nothing here.
+     */
+    document.addEventListener("themechange", () => {
+      for (const [holder, { animation, visibility }] of mounted) {
+        visibility.disconnect();
+        animation.destroy();
+        mounted.delete(holder);
+        holder.replaceChildren();
+        delete holder.dataset.state;
+        void mount(holder);
+      }
+    });
   }
 </script>

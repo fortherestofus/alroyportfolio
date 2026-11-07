@@ -78,7 +78,11 @@ for (const category of groups) {
 }
 ---
 
-<div class="pm" id="portfolio-modal" hidden>
+<!--
+  Dark in both themes: photographs and recordings are judged against
+  black, and a light lightbox fights every image it shows.
+-->
+<div class="pm" id="portfolio-modal" data-theme="dark" hidden>
   <div class="pm__scrim" data-portfolio-close></div>
 
   <div

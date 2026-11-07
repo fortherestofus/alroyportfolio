@@ -1124,10 +1124,25 @@ async function checkPortfolioModal(browser, origin) {
   await context.close();
 }
 
-async function checkContrast(browser, origin) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+/*
+ * Run in both themes, and on one page of each kind: the home page, the
+ * portfolio index, a project page and a case study. The light theme is
+ * a second palette, and every one of these has surfaces of its own.
+ */
+const CONTRAST_PAGES = ["/", "/work/", "/work/jenna-clifford/", "/case-studies/innovatr/"];
+
+async function checkContrast(browser, origin, scheme) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    colorScheme: scheme,
+  });
+  for (const path of CONTRAST_PAGES) await checkPageContrast(context, origin, scheme, path);
+  await context.close();
+}
+
+async function checkPageContrast(context, origin, scheme, path) {
   const page = await context.newPage();
-  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+  await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
 
   // Reveal everything, so hidden-then-faded text is measured too.
   await page.evaluate(async () => {
@@ -1141,9 +1156,22 @@ async function checkContrast(browser, origin) {
   });
 
   const failures = await page.evaluate(() => {
+    /*
+     * Two shapes come back. rgb()/rgba() carry 0-255 channels, but a
+     * colour-mix() background computes to `color(srgb r g b / a)` with
+     * 0-1 channels. Reading those as 0-255 turns every translucent
+     * surface black, which on the dark theme looked close enough to be
+     * right and on the light theme failed every label in the nav.
+     */
     const parse = (value) => {
       const nums = value.match(/[\d.]+/g)?.map(Number) ?? [];
-      return { r: nums[0] ?? 0, g: nums[1] ?? 0, b: nums[2] ?? 0, a: nums[3] ?? 1 };
+      const scale = value.startsWith("color(srgb") ? 255 : 1;
+      return {
+        r: (nums[0] ?? 0) * scale,
+        g: (nums[1] ?? 0) * scale,
+        b: (nums[2] ?? 0) * scale,
+        a: nums[3] ?? 1,
+      };
     };
 
     const channel = (c) => {
@@ -1226,14 +1254,14 @@ async function checkContrast(browser, origin) {
   });
 
   record(
-    "[contrast] all text meets WCAG AA",
+    `[contrast:${scheme}] all text on ${path} meets WCAG AA`,
     failures.length === 0,
     failures
       .map((f) => `"${f.text}" ${f.color} ${f.size}px = ${f.contrast}:1 (need ${f.required})`)
       .join(" | "),
   );
 
-  await context.close();
+  await page.close();
 }
 
 async function checkMobile(browser, origin, viewport) {
@@ -1383,7 +1411,10 @@ async function checkMobile(browser, origin, viewport) {
  * has to be a measured fact, not an intention.
  */
 async function checkLottie(browser, origin) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    colorScheme: "light",
+  });
   const page = await context.newPage();
 
   const requests = [];
@@ -1429,6 +1460,24 @@ async function checkLottie(browser, origin) {
     `${loadedNow} of ${EXPECTED.sectionLotties} loaded at section 02`,
   );
 
+  const loaded = requests.filter((url) => url.endsWith(".json"));
+  record(
+    "[lottie] the light theme loads the light set",
+    loaded.length > 0 && loaded.every((url) => url.includes("/lottie/light/")),
+    loaded.map((url) => new URL(url).pathname).join(", "),
+  );
+
+  // A switch swaps what has loaded for the dark set.
+  requests.length = 0;
+  await page.locator("[data-theme-toggle]").click();
+  await page.waitForTimeout(2000);
+  const swapped = requests.filter((url) => url.endsWith(".json"));
+  record(
+    "[lottie] switching to dark reloads the illustration from the dark set",
+    swapped.length > 0 && swapped.every((url) => !url.includes("/lottie/light/")),
+    swapped.map((url) => new URL(url).pathname).join(", ") || "nothing reloaded",
+  );
+
   await context.close();
 
   /*
@@ -1463,6 +1512,113 @@ async function checkLottie(browser, origin) {
   await quiet.close();
 }
 
+/*
+ * Light and dark: the device setting is followed, the choice is made
+ * before first paint, the toggle works and is remembered, and a choice
+ * that matches the device is forgotten so the site follows it again.
+ */
+async function checkTheme(browser, origin) {
+  const state = (page) =>
+    page.evaluate(() => ({
+      theme: document.documentElement.dataset.theme,
+      stored: window.localStorage.getItem("theme"),
+      meta: document.querySelector('meta[name="theme-color"]')?.getAttribute("content"),
+      bg: getComputedStyle(document.body).backgroundColor,
+      label: document.querySelector("[data-theme-toggle]")?.getAttribute("aria-label"),
+    }));
+
+  for (const scheme of ["dark", "light"]) {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      colorScheme: scheme,
+    });
+    const page = await context.newPage();
+
+    /*
+     * Read the theme at the first moment there is a body to paint, from
+     * a script that runs before any of the page's own modules.
+     */
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        window.__themeAtFirstPaint = document.documentElement.dataset.theme;
+      });
+    });
+
+    for (const path of ["/", "/work/"]) {
+      await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
+      const first = await page.evaluate(() => window.__themeAtFirstPaint);
+      const now = await state(page);
+      record(
+        `[theme] ${path} follows a ${scheme} device setting before first paint`,
+        first === scheme && now.theme === scheme && now.stored === null,
+        `first=${first} now=${now.theme} stored=${now.stored}`,
+      );
+      record(
+        `[theme] ${path} has a toggle on ${scheme}`,
+        (await page.locator("[data-theme-toggle]").count()) === 1 &&
+          (await page.locator("[data-theme-toggle]").isVisible()),
+      );
+    }
+
+    const other = scheme === "dark" ? "light" : "dark";
+    await page.locator("[data-theme-toggle]").click();
+    let now = await state(page);
+    record(
+      `[theme] the toggle switches ${scheme} to ${other} and remembers it`,
+      now.theme === other && now.stored === other,
+      JSON.stringify(now),
+    );
+    record(
+      `[theme] the toggle relabels itself and the browser chrome follows`,
+      now.label === `Switch to ${scheme} mode` &&
+        now.meta === (other === "light" ? "#f6f3ee" : "#0d0d0d"),
+      JSON.stringify(now),
+    );
+
+    await page.reload({ waitUntil: "networkidle" });
+    const first = await page.evaluate(() => window.__themeAtFirstPaint);
+    record(
+      `[theme] the ${other} choice survives a reload, from first paint`,
+      first === other,
+      `first=${first}`,
+    );
+
+    await page.locator("[data-theme-toggle]").click();
+    now = await state(page);
+    record(
+      `[theme] switching back to the device's ${scheme} forgets the choice`,
+      now.theme === scheme && now.stored === null,
+      JSON.stringify(now),
+    );
+
+    await context.close();
+  }
+
+  // The photo lightbox stays dark on the light theme, text included.
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    colorScheme: "light",
+  });
+  const page = await context.newPage();
+  await page.goto(`${origin}/work/`, { waitUntil: "networkidle" });
+  await page.locator("[data-open-portfolio]").first().click();
+  await page.waitForTimeout(600);
+  const lightbox = await page.evaluate(() => {
+    const modal = document.getElementById("portfolio-modal");
+    const title = modal?.querySelector("#portfolio-modal-title");
+    return {
+      bg: getComputedStyle(modal).getPropertyValue("--color-bg").trim(),
+      title: title ? getComputedStyle(title).color : null,
+    };
+  });
+  record(
+    "[theme] the lightbox stays dark on the light theme, with light text",
+    lightbox.bg === "#0d0d0d" && lightbox.title === "rgb(249, 246, 242)",
+    JSON.stringify(lightbox),
+  );
+  await context.close();
+}
+
 async function checkSeo(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await context.newPage();
@@ -1483,7 +1639,13 @@ async function checkSeo(browser, origin) {
 
   const PAGES = ["/", ...CASE_STUDY_PATHS, ...WORK_PATHS];
   for (const path of PAGES) {
-    await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
+    /*
+     * "load", not "networkidle": everything read here is in the HTML.
+     * A project page with a looping clip in view never goes idle,
+     * because Chrome stops reading the video once it has buffered
+     * enough and leaves the request open.
+     */
+    await page.goto(`${origin}${path}`, { waitUntil: "load" });
     const meta = await page.evaluate(() => {
       const attr = (selector, name) =>
         document.querySelector(selector)?.getAttribute(name)?.trim() ?? "";
@@ -1738,8 +1900,11 @@ async function checkTextZoom(browser, origin) {
   }
 }
 
-async function checkHeroContrast(browser, origin) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+async function checkHeroContrast(browser, origin, scheme) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    colorScheme: scheme,
+  });
   const page = await context.newPage();
   await page.goto(`${origin}/`, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
@@ -1798,17 +1963,21 @@ async function checkHeroContrast(browser, origin) {
         ctx.drawImage(bitmap, 0, 0);
         const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        let brightest = 0;
-        for (let i = 0; i < data.length; i += 4) {
-          const l = luminance(data[i], data[i + 1], data[i + 2]);
-          if (l > brightest) brightest = l;
-        }
-
+        /*
+         * The worst pixel is the one closest in luminance to the text:
+         * the brightest behind white text on dark, the darkest behind
+         * near-black text on light. Taking the lowest ratio over every
+         * pixel covers both without knowing which theme is running.
+         */
         const [tr, tg, tb] = color.match(/\d+/g).map(Number);
         const text = luminance(tr, tg, tb);
-        const hi = Math.max(text, brightest);
-        const lo = Math.min(text, brightest);
-        return { ratio: (hi + 0.05) / (lo + 0.05), brightest };
+        let ratio = Infinity;
+        for (let i = 0; i < data.length; i += 4) {
+          const l = luminance(data[i], data[i + 1], data[i + 2]);
+          const r = (Math.max(text, l) + 0.05) / (Math.min(text, l) + 0.05);
+          if (r < ratio) ratio = r;
+        }
+        return { ratio };
       },
       { dataUrl: `data:image/png;base64,${shot.toString("base64")}`, color: target.color },
     );
@@ -1819,9 +1988,9 @@ async function checkHeroContrast(browser, origin) {
      * threshold over its own background the background is too bright.
      */
     record(
-      `[hero] ${target.name} clears 4.5:1 over the collage`,
+      `[hero:${scheme}] ${target.name} clears 4.5:1 over the collage`,
       worst.ratio >= 4.5,
-      `${worst.ratio.toFixed(2)}:1 against the brightest pixel behind it`,
+      `${worst.ratio.toFixed(2)}:1 against the worst pixel behind it`,
     );
   }
 
@@ -2081,11 +2250,14 @@ try {
   await checkWorkPages(browser, origin);
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
-  await checkContrast(browser, origin);
+  await checkContrast(browser, origin, "dark");
+  await checkContrast(browser, origin, "light");
+  await checkTheme(browser, origin);
   await checkLottie(browser, origin);
   await checkSeo(browser, origin);
   await checkTextZoom(browser, origin);
-  await checkHeroContrast(browser, origin);
+  await checkHeroContrast(browser, origin, "dark");
+  await checkHeroContrast(browser, origin, "light");
   await checkReducedMotion(browser, origin);
   await checkBackgroundTabLoad(browser, origin);
   await checkNoScript(browser, origin);
