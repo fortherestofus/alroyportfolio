@@ -109,8 +109,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
   {
     company: "Independent",
     location: "Johannesburg, South Africa · Hybrid",
-    context:
-      "Trading as Dejamedia Company and Alroy Ndhlovu | The Brand. Consulting across brand, product and marketing.",
+    context: "Consulting across brand, product and marketing.",
     bullets: [
       {
         text: "Built and launched four products end to end: InSpiritInTruth and tapa. (mobile apps), CaughtSlipping (Chrome extension) and Hakkan (AI research tool, in beta), alongside Social Sweep for Innovatr.",
@@ -119,7 +118,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for organisations including the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, the African Agri Council, Total Sports, Jenna Clifford, Cash'n'Sport, Nembhard Inc, English Plus Academy and Deep Ocean.",
       },
       {
-        text: "Art-directed content for Jenna Clifford, covered the IAB Bookmark Awards in photo and video, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
+        text: "Art-directed content for Jenna Clifford, made the event video for the IAB Bookmark Awards, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
       },
       {
         text: "Trained or advised 1,200+ people and businesses, mainly through Meta's programmes with Digify Africa and the IFC.",

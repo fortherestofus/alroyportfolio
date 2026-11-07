@@ -104,11 +104,6 @@ export const PORTFOLIO: PortfolioCategory[] = [
         alt: "Apparel storefront scrolling from its hero through the t-shirt and hoodie categories to a product page.",
       },
       {
-        image: "website_video_dejamedia-poster.webp",
-        video: "/media/portfolio/website_video_dejamedia.mp4",
-        alt: "Dejamedia Company: the site for the studio I trade under, scrolling through its hero and services.",
-      },
-      {
         image: "website_video_ecommerce-poster.webp",
         video: "/media/portfolio/website_video_ecommerce.mp4",
         alt: "HerHerbHope: an online store for skincare and bath products.",
@@ -127,11 +122,6 @@ export const PORTFOLIO: PortfolioCategory[] = [
         image: "website_video_cashnsport-poster.jpg",
         video: "/media/portfolio/website_video_cashnsport.mp4",
         alt: "Cash'n'Sport: a news site on the business of African sport.",
-      },
-      {
-        image: "website_video_dejamedia_blog-poster.jpg",
-        video: "/media/portfolio/website_video_dejamedia_blog.mp4",
-        alt: "The Dejamedia blog: articles on marketing and running a business.",
       },
       {
         image: "website_video_isit-poster.jpg",
@@ -165,10 +155,6 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         image: "branding_logo_media.webp",
         alt: "Wordmark and figure mark set on an orange to teal gradient.",
-      },
-      {
-        image: "branding_corporate.webp",
-        alt: "Corporate business cards in gold foil, fanned on a dark surface.",
       },
       {
         image: "design_print_digital_2.webp",

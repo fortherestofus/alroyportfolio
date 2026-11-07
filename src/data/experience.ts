@@ -39,7 +39,7 @@ export const EXPERIENCE: Role[] = [
     company: "Independent",
     employment: "Self-employed",
     dates: "2018 – Present",
-    note: "Art direction for Jenna Clifford, event content for the IAB Bookmark Awards, a staff training film for Total Sports made end to end, and training for iHub, Meta and the IFC. Products built: InSpiritInTruth, tapa., CaughtSlipping, Hakkan and, for Innovatr, Social Sweep.",
+    note: "Art direction for Jenna Clifford, the event video for the IAB Bookmark Awards, a staff training film for Total Sports made end to end, and training for iHub, Meta and the IFC. Products built: InSpiritInTruth, tapa., CaughtSlipping, Hakkan and, for Innovatr, Social Sweep.",
     work: [
       { label: "Jenna Clifford", href: "/work/jenna-clifford/" },
       { label: "IAB Bookmark Awards", href: "/work/iab-bookmarks/" },

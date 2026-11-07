@@ -1015,15 +1015,15 @@ async function checkPortfolioModal(browser, origin) {
     opened.visibleSlides === 1,
     `${opened.visibleSlides}`,
   );
-  record("[modal] a dot per shot", opened.dots === 9, `${opened.dots}`);
-  record("[modal] dots are actually visible", opened.sizedDots === 9, `${opened.sizedDots} sized`);
+  record("[modal] a dot per shot", opened.dots === 8, `${opened.dots}`);
+  record("[modal] dots are actually visible", opened.sizedDots === 8, `${opened.sizedDots} sized`);
   record("[modal] caption stays inside the panel", opened.captionInPanel);
   record(
     "[modal] the shot actually fills the stage",
     opened.mediaHeight > 300,
     `image rendered ${opened.mediaHeight}px tall`,
   );
-  record("[modal] counter reads correctly", opened.counter === "1 of 9", opened.counter);
+  record("[modal] counter reads correctly", opened.counter === "1 of 8", opened.counter);
   record("[modal] focus moves into the dialog", opened.focusInside);
   record("[modal] background scroll locks", opened.locked);
 
@@ -1046,14 +1046,14 @@ async function checkPortfolioModal(browser, origin) {
   const afterNext = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] next advances", afterNext === "2 of 9", afterNext);
+  record("[modal] next advances", afterNext === "2 of 8", afterNext);
 
   await page.locator("[data-portfolio-prev]").click();
   await page.waitForTimeout(250);
   const afterPrev = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] previous goes back", afterPrev === "1 of 9", afterPrev);
+  record("[modal] previous goes back", afterPrev === "1 of 8", afterPrev);
 
   record(
     "[modal] previous is disabled on the first shot",
@@ -1066,7 +1066,7 @@ async function checkPortfolioModal(browser, origin) {
   const afterKey = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] arrow keys navigate", afterKey === "2 of 9", afterKey);
+  record("[modal] arrow keys navigate", afterKey === "2 of 8", afterKey);
 
   // Focus trap: tabbing many times must never escape the dialog.
   let escaped = false;

@@ -231,11 +231,11 @@ export const WORK: WorkProject[] = [
     name: "IAB Bookmark Awards 2023",
     client: "IAB South Africa",
     year: "2023",
-    role: "Event photo and video",
-    deliverables: ["Event photography", "Event video", "Social content"],
-    summary: "Photo and video from the awards night, cut for the IAB's social channels.",
+    role: "Event video",
+    deliverables: ["Event video", "Social content"],
+    summary: "Video from the awards night, cut for the IAB's social channels.",
     intro: [
-      "I covered the 2023 Bookmark Awards for IAB South Africa's social channels: the stage, the winners and the after-party. This is the video cut.",
+      "I made the event video for the 2023 Bookmark Awards, for IAB South Africa's social channels: the stage, the winners and the after-party.",
     ],
     cover: "iab-bookmarks-video-poster.jpg",
     preview: "/media/work/iab-bookmarks-preview.mp4",
@@ -252,7 +252,7 @@ export const WORK: WorkProject[] = [
     seo: {
       title: "IAB Bookmark Awards 2023: event video | Alroy Ndhlovu",
       description:
-        "Event photo and video from the IAB Bookmark Awards 2023 for IAB South Africa's social channels: the stage, the winners and the after-party.",
+        "The event video from the IAB Bookmark Awards 2023, made for IAB South Africa's social channels: the stage, the winners, the speeches and the after-party.",
     },
     featured: true,
   },
@@ -322,7 +322,7 @@ export const WORK: WorkProject[] = [
     role: "Design and build",
     deliverables: ["Web design", "Online stores", "Front-end build"],
     summary:
-      "Ten sites, recorded in the browser: online stores, a language school, an events festival, a news site and my own.",
+      "Eight sites, recorded in the browser: online stores, a language school, an events festival, a news site and my own.",
     intro: [
       "Sites I've designed and built, recorded in the browser so you can see them move. None of the recordings have sound.",
     ],
@@ -365,18 +365,6 @@ export const WORK: WorkProject[] = [
         alt: "Cash'n'Sport: a news site on the business of African sport.",
       },
       {
-        image: "website_video_dejamedia-poster.webp",
-        video: "/media/portfolio/website_video_dejamedia.mp4",
-        seconds: 20,
-        alt: "Dejamedia Company: the site for the studio I trade under.",
-      },
-      {
-        image: "website_video_dejamedia_blog-poster.jpg",
-        video: "/media/portfolio/website_video_dejamedia_blog.mp4",
-        seconds: 14,
-        alt: "The Dejamedia blog: articles on marketing and running a business.",
-      },
-      {
         image: "website_video_isit-poster.jpg",
         video: "/media/portfolio/website_video_isit.mp4",
         seconds: 11,
@@ -392,7 +380,7 @@ export const WORK: WorkProject[] = [
     seo: {
       title: "Websites I've designed and built | Alroy Ndhlovu",
       description:
-        "Ten websites I've designed and built, as screen recordings: online stores, a language school, an events festival, a sports business news site and my own.",
+        "Eight websites I've designed and built, as screen recordings: online stores, a language school, an events festival, a sports business news site and my own.",
     },
     featured: true,
   },

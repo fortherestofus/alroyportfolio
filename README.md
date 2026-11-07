@@ -310,7 +310,7 @@ Tracked from PRD §14. None of these block the build.
 ### Flagged for a decision
 
 - **The self-employed entry is dated differently to LinkedIn.** LinkedIn closes
-  the Dejamedia entry at Nov 2018 – Mar 2026; the site says "Independent
+  the old trading-name entry at Nov 2018 – Mar 2026; the site says "Independent
   Contractor · Various · 2018 – Present". The site is deliberately the open
   one — the consulting is ongoing (Thrifty Adventures still runs) — so this is
   noted rather than treated as an error. Say the word and it becomes a closed

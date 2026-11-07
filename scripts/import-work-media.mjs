@@ -365,6 +365,8 @@ const GALLERY = {
       poster: 1,
       audio: false,
       width: 1280,
+      // Stops before the footer, which credits a company that has closed.
+      until: 17,
     },
     {
       src: "Web Portfolio/FoE Showcase.mp4",
@@ -383,13 +385,6 @@ const GALLERY = {
     {
       src: "Web Portfolio/ISIT Showcase.mp4",
       name: "website_video_isit",
-      poster: 1,
-      audio: false,
-      width: 1280,
-    },
-    {
-      src: "Web Portfolio/Blog.mp4",
-      name: "website_video_dejamedia_blog",
       poster: 1,
       audio: false,
       width: 1280,
@@ -491,7 +486,7 @@ function frame(source, seconds, width, out, crop) {
   console.log(`· ${out.replace(ROOT, "")} ${kb(out)}`);
 }
 
-function clip(source, out, { width, audio, crf = 27, audioRate = "96k", maxrate }) {
+function clip(source, out, { width, audio, crf = 27, audioRate = "96k", maxrate, until }) {
   if (existsSync(out)) return console.log(`· ${out.replace(ROOT, "")} already there`);
   ensureDir(out);
   process.stdout.write(`· ${out.replace(ROOT, "")} … `);
@@ -499,6 +494,8 @@ function clip(source, out, { width, audio, crf = 27, audioRate = "96k", maxrate 
     "-y",
     "-i",
     source,
+    // `until` ends the clip early, in seconds.
+    ...(until ? ["-t", String(until)] : []),
     // Never upscale; H.264 needs even dimensions.
     "-vf",
     `scale='min(${width},iw)':-2`,

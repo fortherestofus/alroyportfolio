@@ -46,7 +46,7 @@ export function collageImage(file: string): ImageMetadata | null {
  */
 export const COLLAGE_COLUMNS: string[][] = [
   [
-    "branding_corporate.webp",
+    "branding_logo_dropinthebowl.jpg",
     "hakkan-report.jpg",
     "photography_editorial_mag.webp",
     "web-home-after.jpg",
