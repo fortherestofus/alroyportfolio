@@ -122,6 +122,7 @@ const WORK_PATHS = [
   "/work/iab-bookmarks/",
   "/work/smirnoff-at-home/",
   "/work/websites/",
+  "/work/eris-property-group/",
   "/work/mitch-sneakers/",
   "/work/filosofee/",
   "/work/gucci-at-home/",

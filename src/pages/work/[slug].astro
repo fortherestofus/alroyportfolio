@@ -66,12 +66,34 @@ const rest = lead ? project.items.slice(1) : project.items;
 
 /* Two columns when the page is mostly landscape frames, three otherwise. */
 const wideCount = rest.filter((item) => !isTall(item)).length;
-const columns = wideCount > rest.length / 2 ? 2 : 3;
+const columns = project.columns ?? (wideCount > rest.length / 2 ? 2 : 3);
+
+/*
+ * A banner-shaped still (a page cover, say) is unreadable at a third of
+ * the row, so it takes the whole row, the way a long film does.
+ */
+const isBanner = (item: WorkItem) => {
+  const still = shotImage(item.image);
+  return still ? still.width / still.height > 2 : false;
+};
+
+/*
+ * The gallery as sections: one per group where the project has them,
+ * otherwise a single untitled one, so both render through the same
+ * markup.
+ */
+const sections = project.groups
+  ? project.groups.map((group) => ({
+      ...group,
+      items: rest.filter((item) => item.group === group.name),
+    }))
+  : [{ name: undefined, note: undefined, items: rest }];
 
 /* The lightbox holds the stills only; clips play where they are. */
 const stills = rest.filter((item) => !item.video);
 const stillIndex = new Map(stills.map((item, index) => [item.image, index]));
 
+const BANNER_SIZES = "(min-width: 75rem) 72rem, 100vw";
 const STILL_SIZES =
   columns === 3
     ? "(min-width: 64rem) 24rem, (min-width: 40rem) 50vw, 100vw"
@@ -232,45 +254,60 @@ const schema = [
     }
 
     {
-      rest.length > 0 && (
-        <div class="wp__gallery" data-columns={columns}>
-          {rest.map((item) => {
-            if (item.video) {
-              const span = item.film && !isTall(item);
-              return (
-                <div class:list={["wp__item", span && "wp__item--span"]}>
-                  <WorkVideo item={item} displayWidth={span ? 1200 : columns === 3 ? 380 : 580} />
-                </div>
-              );
-            }
-            const still = shotImage(item.image);
-            return (
-              <div class="wp__item">
-                <button
-                  type="button"
-                  class="wp__open"
-                  data-open-portfolio={project.slug}
-                  data-open-index={stillIndex.get(item.image)}
-                  data-portfolio-title={project.name}
-                  aria-haspopup="dialog"
-                >
-                  {still ? (
-                    <Image
-                      src={still}
-                      alt={item.alt}
-                      widths={[400, 800, 1200].filter((w) => w <= still.width)}
-                      sizes={STILL_SIZES}
-                      quality={78}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <Placeholder label={`work/${item.image}`} ratio="4/5" />
-                  )}
-                </button>
+      sections.map(
+        (section) =>
+          section.items.length > 0 && (
+            <section class="wp__section" aria-label={section.name}>
+              {section.name && (
+                <header class="wp__group">
+                  <h2 class="wp__group-name">{section.name}</h2>
+                  {section.note && <p class="wp__group-note">{section.note}</p>}
+                </header>
+              )}
+              <div class="wp__gallery" data-columns={columns}>
+                {section.items.map((item) => {
+                  if (item.video) {
+                    const span = item.film && !isTall(item);
+                    return (
+                      <div class:list={["wp__item", span && "wp__item--span"]}>
+                        <WorkVideo
+                          item={item}
+                          displayWidth={span ? 1200 : columns === 3 ? 380 : 580}
+                        />
+                      </div>
+                    );
+                  }
+                  const still = shotImage(item.image);
+                  const banner = isBanner(item);
+                  return (
+                    <div class:list={["wp__item", banner && "wp__item--span"]}>
+                      <button
+                        type="button"
+                        class="wp__open"
+                        data-open-portfolio={project.slug}
+                        data-open-index={stillIndex.get(item.image)}
+                        data-portfolio-title={project.name}
+                        aria-haspopup="dialog"
+                      >
+                        {still ? (
+                          <Image
+                            src={still}
+                            alt={item.alt}
+                            widths={[400, 800, 1200, 1600].filter((w) => w <= still.width)}
+                            sizes={banner ? BANNER_SIZES : STILL_SIZES}
+                            quality={78}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Placeholder label={`work/${item.image}`} ratio="4/5" />
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </section>
+          ),
       )
     }
 
@@ -466,6 +503,34 @@ const schema = [
     .wp__gallery[data-columns="3"] {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+  }
+
+  /*
+   * Group headings, for a project that is several bodies of work. The
+   * first one sits where the gallery would have started; the rest put
+   * a section's worth of air between one group and the next.
+   */
+  .wp__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-9);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .wp__group-name {
+    font-size: var(--text-h3);
+  }
+
+  .wp__group-note {
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .wp__group + .wp__gallery {
+    margin-top: var(--space-5);
   }
 
   /* A long landscape film is watched, not glanced at: give it the row. */

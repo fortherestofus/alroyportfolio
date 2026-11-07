@@ -311,9 +311,8 @@ Tracked from PRD §14. None of these block the build.
 - [x] **Social Sweep screenshots** — received 1 Aug 2026 as
       `social_sweep_landing.jpg`, `social_sweep_report.jpg` and
       `social_sweep_charts.jpg`.
-- [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Eris
-      Property Group, Lights Film
-      School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
+- [ ] **Missing logos** into `src/assets/logos/`: Kelly-Anne Mealia, Lights
+      Film School, UXCEL, Codecademy, Total Sports, and a proper Meta mark (the one
       downloaded is the old Facebook primary logo). Until they arrive these fall
       back to a Lucide `building-2`/`graduation-cap` glyph in the same frame.
       _(Innovatr and CalArts received 1 Aug 2026.)_

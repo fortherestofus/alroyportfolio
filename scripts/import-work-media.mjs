@@ -316,6 +316,51 @@ const PROJECTS = {
       ],
     ],
   },
+  /*
+   * Fifteen of the 34 posts, three per mall, plus the two page covers.
+   * Chosen for range (food, fashion, health, tech, the Women's Month
+   * post every mall ran) rather than as a best-of, so the page shows
+   * how wide the brief was.
+   */
+  "eris-property-group": {
+    stills: [
+      ["Eris Propery Group/Chuma Mall/Chuma.png", "chuma-cover"],
+      [
+        "Eris Propery Group/Chuma Mall/Chuma Mall Posts (AUG 2024)/Legit 2 for 2.png",
+        "chuma-legit",
+      ],
+      [
+        "Eris Propery Group/Chuma Mall/Chuma Mall Posts (AUG 2024)/Real Fish and Chips.png",
+        "chuma-fish-and-chips",
+      ],
+      ["Eris Propery Group/Chuma Mall/Chuma Mall Posts (AUG 2024)/Pep Cell.png", "chuma-pep-cell"],
+      ["Eris Propery Group/Sechaba Mall/Sechaba.png", "sechaba-cover"],
+      ["Eris Propery Group/Sechaba Mall/Sechaba Mall Content (6)-AUG/Rage.png", "sechaba-rage"],
+      [
+        "Eris Propery Group/Sechaba Mall/Sechaba Mall Content (6)-AUG/The Crazy Store.png",
+        "sechaba-crazy-store",
+      ],
+      [
+        "Eris Propery Group/Sechaba Mall/Sechaba Mall Content (6)-AUG/Women's Month.png",
+        "sechaba-womens-month",
+      ],
+      ["Eris Propery Group/Letseng Mall Content (8)- AUG/Debonairs.png", "letseng-debonairs"],
+      [
+        "Eris Propery Group/Letseng Mall Content (8)- AUG/Fashion Threads.png",
+        "letseng-fashion-threads",
+      ],
+      ["Eris Propery Group/Letseng Mall Content (8)- AUG/Roots Butchery.png", "letseng-butchery"],
+      [
+        "Eris Propery Group/Mamotse Mall Content (6)- AUG/Mogapi Optometrist.png",
+        "mamotse-optometrist",
+      ],
+      ["Eris Propery Group/Mamotse Mall Content (6)- AUG/Nail Excellence.png", "mamotse-nails"],
+      ["Eris Propery Group/Mamotse Mall Content (6)- AUG/Pep Store.png", "mamotse-pep"],
+      ["Eris Propery Group/Taung Mall Contet (Aug)-6/Ackermans.png", "taung-ackermans"],
+      ["Eris Propery Group/Taung Mall Contet (Aug)-6/Studio 88.png", "taung-studio-88"],
+      ["Eris Propery Group/Taung Mall Contet (Aug)-6/Womans Month.png", "taung-womens-month"],
+    ],
+  },
 };
 
 /** Loose pieces for the by-medium galleries on the home page. */

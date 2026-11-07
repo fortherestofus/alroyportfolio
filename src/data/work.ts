@@ -38,6 +38,8 @@ export interface WorkItem {
   film?: boolean;
   /** Clip length in seconds, for the VideoObject markup. */
   seconds?: number;
+  /** The heading it sits under, when the project is split into groups. */
+  group?: string;
 }
 
 export interface WorkProject {
@@ -58,6 +60,18 @@ export interface WorkProject {
   /** Short silent loop the tile plays on hover, under public/. */
   preview?: string;
   items: WorkItem[];
+  /**
+   * Splits the gallery under headings, in this order, for a project
+   * that is several bodies of work in one (five malls, say). Items name
+   * their group; the note is one line under the heading.
+   */
+  groups?: { name: string; note?: string }[];
+  /**
+   * Overrides the column count the page works out from the media. It
+   * counts a square post as landscape, which suits a page of mostly
+   * wide frames but leaves a page of square posts at two big columns.
+   */
+  columns?: 2 | 3;
   links?: { label: string; href: string; external?: boolean }[];
   seo: { title: string; description: string };
   /** Shown on the home page; the rest are on /work/. */
@@ -383,6 +397,128 @@ export const WORK: WorkProject[] = [
         "Eight websites I've designed and built, as screen recordings: online stores, a language school, an events festival, a sports business news site and my own.",
     },
     featured: true,
+  },
+  {
+    slug: "eris-property-group",
+    name: "Eris Property Group",
+    client: "Eris Property Group",
+    year: "2024",
+    role: "Social media content and page management",
+    deliverables: [
+      "Social media content",
+      "Post design",
+      "Page covers",
+      "Community management",
+      "Reporting",
+    ],
+    summary:
+      "Social media for five of Eris Property Group's shopping centres: 34 posts for more than twenty of their tenants in one month.",
+    intro: [
+      "Eris Property Group develops and manages property across South Africa, shopping centres among it. On a short-term support contract in August 2024, I ran social media content and page management for five of its malls: Chuma, Letseng, Mamotse, Sechaba and Taung.",
+      "A mall's page sells what is inside it, so most posts promote a tenant: national chains like Pick n Pay, Pep and Debonairs, and local businesses like the pharmacy, the butcher and the nail salon. It was agency work in miniature: more than twenty brands, each in its own colours and voice, across five pages that each had to stay recognisably the mall's own.",
+      "August is Women's Month in South Africa, and every mall marked it. Alongside the posts, I managed each page's community and reported on how it performed.",
+    ],
+    cover: "eris-property-group-sechaba-rage.jpg",
+    columns: 3,
+    groups: [
+      { name: "Chuma Mall", note: "9 posts and the page cover." },
+      { name: "Sechaba Mall", note: "7 posts and the page cover." },
+      { name: "Letseng Mall", note: "8 posts." },
+      { name: "Mamotse Mall", note: "6 posts." },
+      { name: "Taung Mall", note: "4 posts." },
+    ],
+    items: [
+      {
+        group: "Chuma Mall",
+        image: "eris-property-group-chuma-cover.jpg",
+        alt: "Chuma Mall's page cover: “Convenient shopping for all” over four shoppers on yellow, with 50+ stores, 750 free parking bays and the taxi rank listed beneath.",
+      },
+      {
+        group: "Chuma Mall",
+        image: "eris-property-group-chuma-legit.jpg",
+        alt: "Legit's Women's Month “Take 2 sale”: a denim jacket and jeans hung over a chair against pink.",
+      },
+      {
+        group: "Chuma Mall",
+        image: "eris-property-group-chuma-fish-and-chips.jpg",
+        alt: "Real Fish & Chips: “Sort out that hunger fast fast!” beside wings, chips and russians.",
+      },
+      {
+        group: "Chuma Mall",
+        image: "eris-property-group-chuma-pep-cell.jpg",
+        alt: "Pep Cell: the Xiaomi Redmi A3 with its storage, memory and battery listed beside it.",
+      },
+      {
+        group: "Sechaba Mall",
+        image: "eris-property-group-sechaba-cover.jpg",
+        alt: "Sechaba Mall's page cover: “Shop local, shop Sechaba” beside a laughing woman in sunglasses, on red and yellow.",
+      },
+      {
+        group: "Sechaba Mall",
+        image: "eris-property-group-sechaba-rage.jpg",
+        alt: "Rage: “Sunny days await”, a model by a pool beside a close-up of woven sandals.",
+      },
+      {
+        group: "Sechaba Mall",
+        image: "eris-property-group-sechaba-crazy-store.jpg",
+        alt: "The Crazy Store: “Shop crazy”, a child with painted hands and a spread of craft supplies on orange.",
+      },
+      {
+        group: "Sechaba Mall",
+        image: "eris-property-group-sechaba-womens-month.jpg",
+        alt: "Sechaba Mall's Women's Month post: a woman in a headwrap dancing outdoors, captioned “Celebrating women”.",
+      },
+      {
+        group: "Letseng Mall",
+        image: "eris-property-group-letseng-debonairs.jpg",
+        alt: "Debonairs Pizza: “Try something amazing” over a slice pulling melted cheese.",
+      },
+      {
+        group: "Letseng Mall",
+        image: "eris-property-group-letseng-fashion-threads.jpg",
+        alt: "Fashion Threads: a model in a red dress on deep red, the store's name set in a fashion serif.",
+      },
+      {
+        group: "Letseng Mall",
+        image: "eris-property-group-letseng-butchery.jpg",
+        alt: "Roots Butchery: “High quality meat” and “best price in town” on a dark board of raw cuts.",
+      },
+      {
+        group: "Mamotse Mall",
+        image: "eris-property-group-mamotse-optometrist.jpg",
+        alt: "Mogapi Optometrist: “Affordable and accessible eye care” beside a smiling man in glasses.",
+      },
+      {
+        group: "Mamotse Mall",
+        image: "eris-property-group-mamotse-nails.jpg",
+        alt: "Nail Excellence: a manicured hand behind a white circle carrying the salon's name.",
+      },
+      {
+        group: "Mamotse Mall",
+        image: "eris-property-group-mamotse-pep.jpg",
+        alt: "Pep: “New season, new bedding” over a made bed, with two detail shots set into it.",
+      },
+      {
+        group: "Taung Mall",
+        image: "eris-property-group-taung-ackermans.jpg",
+        alt: "Ackermans: a collage of children's denim outfits and close-ups, “Denim” across the middle.",
+      },
+      {
+        group: "Taung Mall",
+        image: "eris-property-group-taung-studio-88.jpg",
+        alt: "Studio 88: “Shop soccer season!” beside a player in a Real Madrid training top.",
+      },
+      {
+        group: "Taung Mall",
+        image: "eris-property-group-taung-womens-month.jpg",
+        alt: "Taung Mall's Women's Month post: a painted, flower-crowned portrait of a woman above a row of faces, on yellow.",
+      },
+    ],
+    seo: {
+      title: "Eris Property Group: mall social media | Alroy Ndhlovu",
+      description:
+        "Social media for five Eris Property Group shopping centres: 34 posts for more than twenty tenant brands, page covers and community management.",
+    },
   },
   {
     slug: "mitch-sneakers",

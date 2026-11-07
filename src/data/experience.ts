@@ -187,14 +187,17 @@ export const EXPERIENCE: Role[] = [
     company: "Eris Property Group",
     employment: "Freelance",
     dates: "Aug 2024",
-    // TODO(alroy): logo missing, see README.
-    note: "Ran social media for five of the group's shopping centres: content creation, community management and analytics.",
+    logoFile: "eris.png",
+    note: "Social media content and page management for five of the group's shopping centres on a short-term support contract: 34 posts for more than twenty tenant brands in a month, plus community management and reporting.",
     skills: [
       "Social media management",
-      "Content creation",
+      "Social media content",
+      "Graphic design",
+      "Retail marketing",
+      "Multi-brand content",
       "Community management",
-      "Social media analytics",
     ],
+    work: [{ label: "The work", href: "/work/eris-property-group/" }],
   },
   {
     title: "Digital Media & Marketing Consultant",
