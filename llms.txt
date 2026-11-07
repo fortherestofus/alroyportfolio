@@ -14,9 +14,9 @@ He has worked with brands and organisations including Meta, Total Sports, Jenna 
 
 ## What he does
 
-- **Brand** — Positioning, identity and art direction, and the content that carries a brand across every touchpoint.
-- **Product** — Apps, SaaS, online stores and AI tools taken from problem to shipped and then run: discovery, UX/UI, build, automation and the roadmap.
-- **Marketing** — Campaigns, paid media and go-to-market plans built on audience insight and performance data, tuned for measurable growth.
+- **Brand** — Brand strategy, positioning, visual identity, art direction and content.
+- **Product** — Product management and UX/UI design for apps, SaaS, online stores and AI tools, from discovery to launch.
+- **Marketing** — Digital marketing, paid media, CRM, email and go-to-market plans, measured on leads and growth.
 
 ## Case studies
 
@@ -26,9 +26,9 @@ Client work, each written up with the problem, the decisions, the measured outco
 - [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): 61% of ad delivery on decision-makers, at a third of the B2B median cost per lead.
 - [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Lead forms at 3× the LinkedIn norm, and 3.1 million organic views on TikTok.
 - [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): A streetwear brand built end to end: sales in month one, then a first wholesale order.
-- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A premium product site in a day for under $300, against $6,500+ the usual way.
+- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A premium product site built in a day for under $300, against $6,500+ for a conventional build.
 - [Making content agentically](https://alroyndhlovu.com/case-studies/agentic-content/) (Sep – Oct 2026): A logo, an App Store page, two films and covers, made by directing AI tools.
-- [ISIT on iPhone Duo](https://alroyndhlovu.com/case-studies/isit-iphone-duo/) (Oct 2026): Apple's foldable has five poses. I found what would break in ISIT before readers did, and redesigned it for the fold.
+- [ISIT on iPhone Duo](https://alroyndhlovu.com/case-studies/isit-iphone-duo/) (Oct 2026): I tested my devotional app against the five poses of Apple's foldable iPhone and redesigned the layouts that broke.
 
 ## Portfolio
 
@@ -50,25 +50,25 @@ Art direction, photography, video, websites and packaging, one page per project.
 
 Software he owns and shipped end to end. Each entry is the problem, the approach and the result, with a full build story where one is written.
 
-- **InSpiritInTruth** (iOS and Android, Live) — Take your faith into your own hands. Devotionals written for whatever you're carrying, alongside the shared readings and the whole Bible. It complements tradition rather than replacing it. No feed, no ads.
+- **InSpiritInTruth** (iOS and Android, Live) — Take your faith into your own hands. A devotional app that writes a devotional for what you're going through, alongside the daily readings and the full Bible. There's no feed and no ads.
   - Problem: The devotional has not changed in generations: one text, written for everyone. The communal side of faith is well served. The personal side gets a template.
   - Approach: Share what you're carrying and get a devotional rooted in scripture, fact-checked before you read it. The home screen learns the themes you return to.
   - Result: 131 active users in the last 28 days, two paying subscribers in its first two months, and a 5.0 App Store rating from six reviews.
   - Build story: https://alroyndhlovu.com/products/inspiritintruth/
   - Download on the App Store: https://apps.apple.com/app/inspiritintruth-devotional/id6795657774
-- **tapa.** (iOS and Android, Live) — What can I cook with this? Type, say or snap what's in your kitchen and get a real meal back, your diet enforced as a hard rule. Variety from the same shelf, minus the deciding.
+- **tapa.** (iOS and Android, Live) — What can I cook with this? Type, say or photograph what's in your kitchen and get a recipe back that fits your diet.
   - Problem: Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.
   - Approach: Cook with what you have. Type, talk or snap the fridge; dietary choices are set once and enforced every time.
   - Result: 47 active users in the last 28 days. The free tier was set from how often people actually cook, not from hope, so the upgrade lands at a real moment of need.
   - Build story: https://alroyndhlovu.com/products/tapa/
   - Download on the App Store: https://apps.apple.com/app/tapa-cook-what-you-have/id6795631556
-- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. A sarcastically honest friend in your browser that calls out the procrastinator and warns the workaholic. Everything stays on your device.
+- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. A Chrome extension that tracks where your browsing time goes, calls out procrastination and warns you when you're overworking. All data stays on your device.
   - Problem: Screen-time tools live on the phone and only nag the distracted. The browser is where work and distraction both happen, and nobody warns the overworked.
   - Approach: Hold both accountable: track where the hours go and call you out, then flip to Caught Grinding when productive turns into overworking.
   - Result: 183 installs and one uninstall in its first six months: 99% kept it. No account, no server, everything stays on your device.
   - Build story: https://alroyndhlovu.com/products/caughtslipping/
   - Get it on the Chrome Web Store: https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg
-- **Hakkan** (Web, Beta) — Worth listening to. A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.
+- **Hakkan** (Web, Beta) — Worth listening to. A research and writing assistant. It gathers what people are saying about a topic into a cited report, then helps you write from it in your own voice.
   - Problem: “Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.
   - Approach: Research before writing: a cited report as the source of truth, your own voice to write from it, and a trends module to stay current.
   - Result: Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.
@@ -78,7 +78,7 @@ Software he owns and shipped end to end. Each entry is the problem, the approach
 
 Each entry names what it actually was — an article he wrote, a programme he helped design, an exhibition his work appeared in — rather than grouping them all as press.
 
-- **GQ South Africa** (Bylined article, 2025) — Wrote the GQ South Africa piece on branding as a business's extroversion, drawing on the four brands he runs himself. https://gq.co.za/wealth/career-advice/2025-08-14-how-to-build-a-brand-that-truly-connects/
+- **GQ South Africa** (Bylined article, 2025) — Wrote a GQ South Africa article on building a brand that connects with people, drawing on the four brands he has built. https://gq.co.za/wealth/career-advice/2025-08-14-how-to-build-a-brand-that-truly-connects/
 - **We Are Victoria Falls** (National programme, 2022–23) — One of three digital specialists who designed Let's Get Digital, Zimbabwe's national tourism upskilling programme, run with the Ministry of Tourism and Hospitality Industry and supported by the World Bank Group. He also built the learning platform holding its courses and recordings. https://wearevictoriafalls.com/training/
 - **Julie Miller Investment Art Institute** (Exhibition, 2019) — Had a work shown at Africa's Art Collective Seasons at the Mall of Africa, an exhibition of more than 500 pieces by 130 African artists that was toured in VR for international buyers. https://www.citizen.co.za/fourways-review/news-headlines/2019/03/20/mall-africa-julie-miller-investment-art-institute-smash-distance-barriers-name-art/
 
