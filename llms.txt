@@ -6,7 +6,7 @@
 
 Alroy Ndhlovu is a marketing, branding, business technology and product consultant based in South Africa, with over 12 years of experience. He works end to end across strategy, brand, paid media, content and product design, and ships his own software rather than only advising on it: he writes the specification, chooses the stack and directs coding agents such as Claude Code rather than writing the code by hand.
 
-He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital & Power and the African Agri Council.
+He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, IAB South Africa, the IFC, Energy Capital & Power and the African Agri Council.
 
 - Website: https://alroyndhlovu.com
 - Email: hello@alroyndhlovu.com
@@ -14,47 +14,64 @@ He has worked with brands and organisations including Meta, Total Sports, Jenna 
 
 ## What he does
 
-- **Product Development** — Apps and SaaS taken from problem to shipped product: discovery, UX/UI, build and the roadmap that follows.
-- **Business Tech Solutions** — Automation, AI and eCommerce systems that cut manual work, streamline operations and scale with the business.
-- **Marketing & Strategy** — Campaigns and go-to-market plans built on audience insight and performance data, tuned for measurable growth.
-- **Branding** — Product and corporate identity: positioning, visual systems and the content that carries them across every touchpoint.
+- **Brand** — Positioning, identity and art direction, and the content that carries a brand across every touchpoint.
+- **Product** — Apps, SaaS, online stores and AI tools taken from problem to shipped and then run: discovery, UX/UI, build, automation and the roadmap.
+- **Marketing** — Campaigns, paid media and go-to-market plans built on audience insight and performance data, tuned for measurable growth.
 
 ## Case studies
 
 Client work, each written up with the problem, the decisions, the measured outcome and what he would do differently.
 
-- [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Lead forms converting at three times the LinkedIn norm and 3.1 million organic views on TikTok, for a travel brand taken from scattered to deliberate across four channels. TikTok and Instagram were grown on what was already there; LinkedIn and search were built from nothing.
-- [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): Replaced an annual enterprise software licence with a tool built in-house, now a product the company can sell, and ran paid media at around three times better cost per lead than the B2B median. The rebrand and marketing engine behind a research business, in seven months.
-- [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): Sales in the first month, local and international, then a 20-unit bulk order from another brand. A clothing brand built end to end: product, store, payments, photography.
-- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): Built in a day for under $300, against $6,500+ for the same job without AI, on a brief a meme said was too expensive to build.
+- [Social Sweep](https://alroyndhlovu.com/case-studies/social-sweep/) (Mar 2026 – Sep 2026): Replaced a US$5,000-a-year licence with a tool I built. Now sold in every Innovatr membership.
+- [Innovatr](https://alroyndhlovu.com/case-studies/innovatr/) (Mar 2026 – Sep 2026): 61% of ad delivery on decision-makers, at a third of the B2B median cost per lead.
+- [Thrifty Adventures](https://alroyndhlovu.com/case-studies/thrifty-adventures/) (Jul 2025 – Jan 2026): Lead forms at 3× the LinkedIn norm, and 3.1 million organic views on TikTok.
+- [Filosofee](https://alroyndhlovu.com/case-studies/filosofee/) (2024 – present): A streetwear brand built end to end: sales in month one, then a first wholesale order.
+- [LumiSkin](https://alroyndhlovu.com/case-studies/lumiskin/) (Mar 2026): A premium product site in a day for under $300, against $6,500+ the usual way.
+- [Making content agentically](https://alroyndhlovu.com/case-studies/agentic-content/) (Sep – Oct 2026): A logo, an App Store page, two films and covers, made by directing AI tools.
+- [ISIT on iPhone Duo](https://alroyndhlovu.com/case-studies/isit-iphone-duo/) (Oct 2026): Apple's foldable has five poses. I found what would break in ISIT before readers did, and redesigned it for the fold.
+
+## Portfolio
+
+Art direction, photography, video, websites and packaging, one page per project. All of it: https://alroyndhlovu.com/work/
+
+- [Jenna Clifford](https://alroyndhlovu.com/work/jenna-clifford/): Art direction and content for a jewellery brand: portraits, and a shoot staged as a tea party. Role: Art direction and content.
+- [Kelly-Ann Mealia](https://alroyndhlovu.com/work/kelly-ann-mealia/) for Kelly-Ann Mealia, co-founder of Energy Capital & Power: Photography, video and posts for the LinkedIn brand of Energy Capital & Power's co-founder. Role: LinkedIn personal brand.
+- [Alabanza Fashion Boutique](https://alroyndhlovu.com/work/alabanza/): Studio photography for a fashion boutique's online store and social pages. Role: Content direction and photography.
+- [IAB Bookmark Awards 2023](https://alroyndhlovu.com/work/iab-bookmarks/) for IAB South Africa: Video from the awards night, cut for the IAB's social channels. Role: Event video.
+- [Smirnoff, at home](https://alroyndhlovu.com/work/smirnoff-at-home/) (self-initiated): A content series for Smirnoff Infusions: poolside, on a lounger and in the water. Role: Concept, styling, photography and video.
+- [Websites](https://alroyndhlovu.com/work/websites/): Eight sites, recorded in the browser: online stores, a language school, an events festival, a news site and my own. Role: Design and build.
+- [Mitch Sneakers](https://alroyndhlovu.com/work/mitch-sneakers/): Photo and video for a sneaker brand's social media and website. Role: Photo and video content.
+- [Filosofee](https://alroyndhlovu.com/work/filosofee/): Art direction and content for a streetwear label's store and social pages, and the store itself. Role: Art direction, content and online store.
+- [Gucci, at home](https://alroyndhlovu.com/work/gucci-at-home/) (self-initiated): A content series for Gucci sunglasses: hard light, deep shadow and a bookshelf. Role: Concept, lighting, photography and video.
+- [Botanik wine labels](https://alroyndhlovu.com/work/botanik/) (concept): Label concepts for a wine range: each bottle carries its own landscape or botanical print. Role: Packaging design.
 
 ## Products he has built
 
 Software he owns and shipped end to end. Each entry is the problem, the approach and the result, with a full build story where one is written.
 
-- **Hakkan** (Web, Beta) — Worth listening to. A content research and creation assistant, built to fight AI slop. Pick a topic you want to lead, and Hakkan researches the real conversation into a cited report: a source of truth you create content from, in a voice it learns from you. A trends module keeps you current.
-  - Problem: “Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.
-  - Approach: Research before writing. Hakkan builds a cited report on your topic as the source of truth, learns your own voice to write from it, and keeps you on the pulse with a trends module.
-  - Result: Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.
-  - Build story: https://alroyndhlovu.com/products/hakkan/
-- **InSpiritInTruth** (iOS and Android, Live) — Take your faith into your own hands. Faith has always been communal: same readings, same routines, and a template feel to the personal side. InSpiritInTruth complements tradition rather than replacing it: devotionals written for whatever you are carrying, and chosen over time for what you keep coming back to, alongside the shared devotions and the whole Bible everyone knows. No attention-chasing feed, no ads.
+- **InSpiritInTruth** (iOS and Android, Live) — Take your faith into your own hands. Devotionals written for whatever you're carrying, alongside the shared readings and the whole Bible. It complements tradition rather than replacing it. No feed, no ads.
   - Problem: The devotional has not changed in generations: one text, written for everyone. The communal side of faith is well served. The personal side gets a template.
-  - Approach: Complement tradition, don't replace it. Share what you are carrying and get a devotional written for that, rooted first in scripture, with shared devotions and the full Bible keeping the communal thread. The home screen then leans toward the themes you actually read and the devotionals you have had written for you.
-  - Result: Verification takes ~77% of the AI effort against ~22% on the writing. An app that quotes scripture cannot afford to misquote it.
+  - Approach: Share what you're carrying and get a devotional rooted in scripture, fact-checked before you read it. The home screen learns the themes you return to.
+  - Result: 131 active users in the last 28 days, two paying subscribers in its first two months, and a 5.0 App Store rating from six reviews.
   - Build story: https://alroyndhlovu.com/products/inspiritintruth/
   - Download on the App Store: https://apps.apple.com/app/inspiritintruth-devotional/id6795657774
-- **tapa.** (iOS and Android, Live) — What can I cook with this? The daily what-do-I-eat problem, solved with what is already in your kitchen. Type it, say it or take a pic of your ingredients and get real meals back: variety from the same shelf, dietary choices enforced as hard rules. Cooking made simple, and the power back to you.
+- **tapa.** (iOS and Android, Live) — What can I cook with this? Type, say or snap what's in your kitchen and get a real meal back, your diet enforced as a hard rule. Variety from the same shelf, minus the deciding.
   - Problem: Deciding what to eat is the daily tax on being an adult. Recipe sites answer it with fifty results.
-  - Approach: Feed you with what you have, wherever you are. Type, talk or take a pic of the fridge and get variety from the same ingredients, dietary choices set once and enforced as hard rules.
-  - Result: Convenience and variety, minus the deciding. The free tier was set from how often people actually cook, not from hope.
+  - Approach: Cook with what you have. Type, talk or snap the fridge; dietary choices are set once and enforced every time.
+  - Result: 47 active users in the last 28 days. The free tier was set from how often people actually cook, not from hope, so the upgrade lands at a real moment of need.
   - Build story: https://alroyndhlovu.com/products/tapa/
   - Download on the App Store: https://apps.apple.com/app/tapa-cook-what-you-have/id6795631556
-- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. A sarcastically honest friend that keeps you in check, calling out the procrastinator and warning the workaholic. It lives in the browser, where the work happens and the distraction finds you. Everything stays on your device.
-  - Problem: The browser is where work gets done, so it is also where distraction is bound to be found. And screen-time tools only nag one kind of slipper: the distracted, never the overworked.
-  - Approach: Hold both accountable. It tracks where the hours go and calls you out like a friend would. Then it flips, and Caught Grinding warns you when productive has quietly become overworking.
-  - Result: Live on the Chrome Web Store. No account, no server: everything stays on your device.
+- **CaughtSlipping** (Chrome extension, Live) — The browser extension that calls you out. A sarcastically honest friend in your browser that calls out the procrastinator and warns the workaholic. Everything stays on your device.
+  - Problem: Screen-time tools live on the phone and only nag the distracted. The browser is where work and distraction both happen, and nobody warns the overworked.
+  - Approach: Hold both accountable: track where the hours go and call you out, then flip to Caught Grinding when productive turns into overworking.
+  - Result: 183 installs and one uninstall in its first six months: 99% kept it. No account, no server, everything stays on your device.
   - Build story: https://alroyndhlovu.com/products/caughtslipping/
   - Get it on the Chrome Web Store: https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg
+- **Hakkan** (Web, Beta) — Worth listening to. A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.
+  - Problem: “Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.
+  - Approach: Research before writing: a cited report as the source of truth, your own voice to write from it, and a trends module to stay current.
+  - Result: Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.
+  - Build story: https://alroyndhlovu.com/products/hakkan/
 
 ## Published, exhibited and recognised
 
@@ -66,8 +83,8 @@ Each entry names what it actually was — an article he wrote, a programme he he
 
 ## Recent experience
 
-- **Independent Contractor**, Various (2018 – Present)
-- **Brand & Marketing Manager**, Innovatr (Mar 2026 – Sep 2026)
+- **Brand, Product & Marketing Consultant**, Independent (2018 – Present)
+- **Brand & Marketing Manager and Product Lead (Social Sweep)**, Innovatr (Mar 2026 – Sep 2026)
 - **Digital Marketing Consultant**, Thrifty Adventures (Jul 2025 – Mar 2026)
 - **Web Design Specialist**, Deep Ocean (Oct 2024 – Oct 2025)
 - **Web Design Specialist**, English Plus Academy (Oct 2024 – Mar 2025)
