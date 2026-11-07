@@ -126,7 +126,7 @@ export const SECTIONS = [
     short: "Products",
     heading: "Products I've built",
     blurb:
-      "Product management is best shown, not told. Four products I've built and run: the problem, the decisions and the numbers.",
+      "Product management is best shown, not told. Four products I've built and run, each with the full story behind it: the problem, the decisions and the numbers.",
   },
   {
     id: "case-studies",

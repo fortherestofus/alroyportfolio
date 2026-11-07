@@ -13,8 +13,7 @@ import WhoIsAlroy from "../components/WhoIsAlroy.astro";
 import ExperienceList from "../components/ExperienceList.astro";
 import EducationGroups from "../components/EducationGroups.astro";
 import PortfolioGrid from "../components/PortfolioGrid.astro";
-import ProductShowcase from "../components/ProductShowcase.astro";
-import CaseStudyStack from "../components/CaseStudyStack.astro";
+import CardStack from "../components/CardStack.astro";
 import ContactSection from "../components/ContactSection.astro";
 import CalEmbed from "../components/CalEmbed.astro";
 import HeroCollage from "../components/HeroCollage.astro";
@@ -171,8 +170,8 @@ const schema = [
         {section.id === "experience" && <ExperienceList />}
         {section.id === "education" && <EducationGroups />}
         {section.id === "portfolio" && <PortfolioGrid />}
-        {section.id === "products" && <ProductShowcase />}
-        {section.id === "case-studies" && <CaseStudyStack />}
+        {section.id === "products" && <CardStack kind="products" />}
+        {section.id === "case-studies" && <CardStack kind="studies" />}
         {section.id === "contact" && <ContactSection />}
         {section.id === "contact" && <CalEmbed slot="wide" />}
       </JourneySection>

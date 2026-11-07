@@ -247,6 +247,12 @@
    * buys its height rather than being given it.
    */
   --shot-strip-width-compact: 200px;
+  /*
+   * The product cards' strip, set by height: phone captures are tall
+   * and narrow, and at the case study strip's 125px they would be
+   * slivers. Every product shape shares it, so the cards level.
+   */
+  --shot-strip-product-height: 200px;
 
   /* Hero collage geometry. Its opacity is themed, above. */
   --collage-tile-width: 300px;

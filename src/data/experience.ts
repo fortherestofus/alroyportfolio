@@ -43,9 +43,10 @@ export interface Role {
    */
   skills?: string[];
   /**
-   * Where to see the work from this role: project pages and case
-   * studies. Shown as links under the note, so the history and the
-   * portfolio point at each other.
+   * Where to see the work from this role: project pages, case
+   * studies, or the live thing on the client's own site. Shown as
+   * links under the note, so the history and the portfolio point at
+   * each other. An absolute URL opens in a new tab.
    */
   work?: { label: string; href: string }[];
 }
@@ -152,6 +153,7 @@ export const EXPERIENCE: Role[] = [
       "Domain management",
       "Website maintenance",
     ],
+    work: [{ label: "The site", href: "https://deepocean.solutions/" }],
   },
   {
     title: "Web Design Specialist",
@@ -183,7 +185,7 @@ export const EXPERIENCE: Role[] = [
   {
     title: "Social Media Specialist",
     company: "Eris Property Group",
-    employment: "Contract",
+    employment: "Freelance",
     dates: "Aug 2024",
     // TODO(alroy): logo missing, see README.
     note: "Ran social media for five of the group's shopping centres: content creation, community management and analytics.",
@@ -244,6 +246,7 @@ export const EXPERIENCE: Role[] = [
       "SME consulting",
       "Tourism marketing",
     ],
+    work: [{ label: "The training", href: "https://wearevictoriafalls.com/training/" }],
   },
   {
     title: "Meta Certified Lead Trainer & Consultant",

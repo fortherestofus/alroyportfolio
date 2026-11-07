@@ -39,7 +39,12 @@ import { EXPERIENCE } from "../data/experience";
             <ul class="roles__work" aria-label={`Work from ${role.company}`}>
               {role.work.map((link) => (
                 <li>
-                  <a href={link.href}>
+                  <a
+                    href={link.href}
+                    {...(/^https?:/.test(link.href)
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
                     {link.label}
                     <ArrowUpRight class="roles__work-icon" aria-hidden="true" />
                   </a>

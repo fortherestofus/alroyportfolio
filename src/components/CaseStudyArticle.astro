@@ -25,6 +25,7 @@ import Placeholder from "./Placeholder.astro";
 import LogoFrame from "./LogoFrame.astro";
 import SiteFooter from "./SiteFooter.astro";
 import { caseImage, studyPath, studyHome, type CaseStudy } from "../data/case-studies";
+import { PRODUCTS } from "../data/products";
 import { SITE } from "../data/site";
 
 interface Props {
@@ -58,6 +59,19 @@ const PAIR_SHOT_WIDTH = 1400;
 const SHOT_QUALITY = 80;
 
 const heroImage = caseImage(study.hero?.image);
+
+/*
+ * A product's page also carries what its homepage card used to: where
+ * to get it and what it is built with. The card is a preview now (see
+ * CardStack), so this is the one place those live.
+ */
+const product =
+  study.kind === "product" ? PRODUCTS.find((entry) => entry.caseStudy === study.slug) : undefined;
+const visit = study.website
+  ? { href: study.website, label: product?.link?.label ?? "Visit the site" }
+  : product?.link
+    ? { href: product.link.url, label: product.link.label }
+    : undefined;
 /*
  * A hero clip needs its poster as a plain URL rather than an <Image>,
  * so it goes through getImage. Touching `image.src` instead would hand
@@ -164,10 +178,10 @@ const schema = [
       </ul>
 
       {
-        study.website && (
+        visit && (
           <p class="cs__visit">
-            <a href={study.website} target="_blank" rel="noopener noreferrer">
-              Visit the site
+            <a href={visit.href} target="_blank" rel="noopener noreferrer">
+              {visit.label}
               <ArrowUpRight class="cs__visit-icon" aria-hidden="true" />
             </a>
           </p>
@@ -444,6 +458,21 @@ const schema = [
         ))
       }
     </div>
+
+    {
+      product && (
+        <section class="cs__built" aria-labelledby="built-with">
+          <h2 class="cs__built-heading" id="built-with">
+            Built with
+          </h2>
+          <ul class="cs__built-list">
+            {product.stack.map((tech) => (
+              <li class="cs__tag">{tech}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     <footer class="cs__foot">
       <p class="cs__foot-line">
@@ -1112,6 +1141,24 @@ const schema = [
 
   .cs__gallery--wide .cs__shot :global(.placeholder) {
     height: 100%;
+  }
+
+  /* --- Built with (product pages) --------------------------------- */
+  .cs__built {
+    margin-top: var(--space-9);
+  }
+
+  .cs__built-heading {
+    font-size: var(--text-h3);
+  }
+
+  .cs__built-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
   }
 
   /* --- Footer ------------------------------------------------------- */

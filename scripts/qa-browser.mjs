@@ -81,7 +81,7 @@ const EXPECTED = {
   testimonials: 3, // src/data/testimonials.ts
   clientLogos: 7, // CLIENT_LOGOS, rendered twice for the seamless marquee
   products: 4, // src/data/products.ts
-  productShots: 18,
+  productShots: 18, // distinct captures across the product strips, before any repeat
   sectionLotties: 5, // sections 02-06 carry an illustration; 01 and 07 do not
   caseStudyCards: 7, // CLIENT_STUDIES — Social Sweep, Innovatr, Thrifty, Filosofee, LumiSkin,
   // the agentic content pipeline and ISIT on iPhone Duo. The products are
@@ -601,15 +601,29 @@ async function checkDesktop(browser, origin, viewport) {
     studyRows: document.querySelectorAll(".study__row").length,
     services: document.querySelectorAll("[data-service]").length,
     testimonials: document.querySelectorAll(".who__quote").length,
-    products: document.querySelectorAll(".product").length,
-    productShots: document.querySelectorAll(".product__shot").length,
-    caseStudyCards: document.querySelectorAll(".stack__card").length,
+    products: document.querySelectorAll(".stack--products .stack__card").length,
+    /*
+     * A product strip repeats its captures until it is long enough to
+     * loop, so count the distinct images rather than the frames.
+     */
+    productShots: new Set(
+      [...document.querySelectorAll(".stack--products .stack__shot img")].map((img) =>
+        img.getAttribute("src"),
+      ),
+    ).size,
+    productCtas: document.querySelectorAll(".stack--products .stack__cta").length,
+    caseStudyCards: document.querySelectorAll(".stack--studies .stack__card").length,
     upcomingStudies: document.querySelectorAll(".stack__upcoming-item").length,
-    stripShots: document.querySelectorAll(".stack__shot").length,
+    stripShots: document.querySelectorAll(".stack--studies .stack__shot").length,
     /* Every overview card must reach the page it promises. */
-    deadCaseLinks: [...document.querySelectorAll(".stack__cta")].filter(
-      (a) => !a.getAttribute("href")?.startsWith("/case-studies/"),
-    ).length,
+    deadCaseLinks: [
+      ...[...document.querySelectorAll(".stack--studies .stack__cta")].filter(
+        (a) => !a.getAttribute("href")?.startsWith("/case-studies/"),
+      ),
+      ...[...document.querySelectorAll(".stack--products .stack__cta")].filter(
+        (a) => !a.getAttribute("href")?.startsWith("/products/"),
+      ),
+    ].length,
     clientLogos: document.querySelectorAll(".strip__item").length,
     brokenImages: [...document.querySelectorAll("img")].filter(
       (img) => img.complete && img.naturalWidth === 0,
@@ -631,6 +645,7 @@ async function checkDesktop(browser, origin, viewport) {
   expect("client marquee is doubled", content.clientLogos, EXPECTED.clientLogos * 2);
   expect(`${EXPECTED.products} products`, content.products, EXPECTED.products);
   expect(`${EXPECTED.productShots} product shots`, content.productShots, EXPECTED.productShots);
+  expect("every product card links to its build story", content.productCtas, EXPECTED.products);
 
   /*
    * Screenshots arrive at whatever size the device or window happened
@@ -642,10 +657,7 @@ async function checkDesktop(browser, origin, viewport) {
    */
   const shotGaps = await page.evaluate(() => {
     const problems = [];
-    const RAILS = [
-      [".product__rail", ".product__shot"],
-      [".stack__track", ".stack__shot"],
-    ];
+    const RAILS = [[".stack__track", ".stack__shot"]];
     const rails = RAILS.flatMap(([container, item]) =>
       [...document.querySelectorAll(container)].map((el) => [el, item]),
     );
@@ -679,7 +691,7 @@ async function checkDesktop(browser, origin, viewport) {
     return problems;
   });
   record(
-    `[${tag}] product shots fill uniform frames`,
+    `[${tag}] strip shots fill uniform frames`,
     shotGaps.length === 0,
     shotGaps.slice(0, 4).join("; "),
   );
@@ -697,7 +709,7 @@ async function checkDesktop(browser, origin, viewport) {
   // The strip renders the list twice so the marquee loop has no seam.
   expect("case study strip is doubled", content.stripShots, EXPECTED.stripShots * 2);
   record(
-    `[${tag}] every case study card links to its page`,
+    `[${tag}] every stacked card links to its page`,
     content.deadCaseLinks === 0,
     `${content.deadCaseLinks} card(s) point elsewhere`,
   );
@@ -735,54 +747,47 @@ async function checkDesktop(browser, origin, viewport) {
    */
   const deadCtas = await page.evaluate(async () => {
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-    const cards = [...document.querySelectorAll(".stack__card")];
     const problems = [];
-    for (let i = 0; i < cards.length; i++) {
-      const cta = cards[i].querySelector(".stack__cta");
-      if (!cta) continue;
-      const next = cards[i + 1] ?? document.querySelector(".stack__upcoming");
-      if (next) {
-        // Scroll so this card is fully presented and the next has not covered it.
-        const nextTop = next.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: Math.max(0, nextTop - window.innerHeight), behavior: "instant" });
-      } else {
-        cta.scrollIntoView({ block: "center", behavior: "instant" });
-      }
-      await wait(200);
-      let box = cta.getBoundingClientRect();
-      // Static regimes may need a nudge to bring the CTA into view.
-      if (box.bottom > window.innerHeight || box.top < 0) {
-        cta.scrollIntoView({ block: "center", behavior: "instant" });
+    for (const stack of document.querySelectorAll(".stack")) {
+      const cards = [...stack.querySelectorAll(".stack__card")];
+      const kind = stack.classList.contains("stack--products") ? "product" : "case study";
+      for (let i = 0; i < cards.length; i++) {
+        const cta = cards[i].querySelector(".stack__cta");
+        if (!cta) continue;
+        const next = cards[i + 1] ?? stack.querySelector(".stack__upcoming");
+        if (next) {
+          // Scroll so this card is fully presented and the next has not covered it.
+          const nextTop = next.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: Math.max(0, nextTop - window.innerHeight), behavior: "instant" });
+        } else {
+          cta.scrollIntoView({ block: "center", behavior: "instant" });
+        }
         await wait(200);
-        box = cta.getBoundingClientRect();
-      }
-      const visible = box.top >= 0 && box.bottom <= window.innerHeight;
-      const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
-      if (!visible || !hit || !(cta === hit || cta.contains(hit))) {
-        problems.push(
-          `card ${i} CTA ${visible ? "covered by " + (hit?.className || hit?.tagName || "nothing") : "outside the viewport"}`,
-        );
+        let box = cta.getBoundingClientRect();
+        // Static regimes may need a nudge to bring the CTA into view.
+        if (box.bottom > window.innerHeight || box.top < 0) {
+          cta.scrollIntoView({ block: "center", behavior: "instant" });
+          await wait(200);
+          box = cta.getBoundingClientRect();
+        }
+        const visible = box.top >= 0 && box.bottom <= window.innerHeight;
+        const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+        if (!visible || !hit || !(cta === hit || cta.contains(hit))) {
+          problems.push(
+            `${kind} card ${i} CTA ${visible ? "covered by " + (hit?.className || hit?.tagName || "nothing") : "outside the viewport"}`,
+          );
+        }
       }
     }
     window.scrollTo({ top: 0, behavior: "instant" });
     return problems;
   });
   record(
-    `[${tag}] every case study CTA is clickable when its card is on top`,
+    `[${tag}] every stacked card's CTA is clickable when the card is on top`,
     deadCtas.length === 0,
     deadCtas.join("; "),
   );
 
-  const missingStacks = await page.evaluate(() =>
-    [...document.querySelectorAll(".product")]
-      .filter((p) => p.querySelectorAll(".product__tech").length === 0)
-      .map((p) => p.querySelector(".product__name")?.textContent?.trim() ?? "?"),
-  );
-  record(
-    `[${tag}] every product lists its stack`,
-    missingStacks.length === 0,
-    missingStacks.join(", "),
-  );
   record(`[${tag}] every date renders`, content.emptyDates === 0, `${content.emptyDates} empty`);
   record(`[${tag}] no broken images`, content.brokenImages === 0, `${content.brokenImages} broken`);
 
@@ -1737,6 +1742,7 @@ async function checkSeo(browser, origin) {
         ogTitle: attr('meta[property="og:title"]', "content"),
         ogImage: attr('meta[property="og:image"]', "content"),
         h1s: document.querySelectorAll("h1").length,
+        builtWith: document.querySelectorAll(".cs__built-list li").length,
         types: parsed.map((entry) => entry["@type"]),
         broken,
         graph: JSON.stringify(parsed),
@@ -1750,6 +1756,10 @@ async function checkSeo(browser, origin) {
      * home page was shipping an 86-character title and a 207-character
      * description, both of which looked fine in the markup.
      */
+    // The homepage card is a preview; the build stack lives here now.
+    if (path.startsWith("/products/")) {
+      record(`[product ${path}] lists what it is built with`, meta.builtWith > 0);
+    }
     record(
       `[seo ${path}] title is 30-60 characters`,
       meta.title.length >= 30 && meta.title.length <= 60,

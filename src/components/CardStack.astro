@@ -1,13 +1,19 @@
 ---
 /**
- * Section 06: the case study overview cards (PRD §6.05).
+ * The layered cards, used twice: section 05 (products) and section 06
+ * (client case studies, PRD §6.05).
  *
  * Cards stack and peel as you scroll, matching
  * `screenshots/case study overview (must be scrollable stacked cards).jpg`.
  *
  * Every card sticks at the same point, so each one arrives directly over
- * the one before it: the reader looks at one case study at a time, in
- * one place, and scrolling moves between them rather than past them.
+ * the one before it: the reader looks at one item at a time, in one
+ * place, and scrolling moves between them rather than past them.
+ *
+ * Products moved onto this from a long column of full write-ups (about
+ * 4,700px for four products, 7 Nov 2026). A card here is a preview,
+ * not the record: the problem, the approach, the stack and the store
+ * link all live on the product's own page, which the card links to.
  *
  * `position: sticky`, not a ScrollTrigger pin, for the same reasons the
  * two-column pin is (see JourneySection): no pin-spacer, so no jump at
@@ -17,6 +23,7 @@
  * Cards must be opaque for this to read at all — a translucent card
  * would show the one it is covering straight through.
  */
+import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
@@ -28,10 +35,93 @@ import {
   studyPath,
   type Focus,
 } from "../data/case-studies";
+import { PRODUCTS, productImage, caseStudyLink } from "../data/products";
+
+interface Props {
+  kind: "studies" | "products";
+}
+
+const { kind } = Astro.props;
+
+type Shape = "screen" | "phone" | "panel";
+
+interface StackItem {
+  name: string;
+  logoFile?: string;
+  /** Top right of the card: the dates, or a product's status. */
+  meta: string;
+  summary: string;
+  /** One measured line under the summary, where there is one. */
+  proof?: string;
+  tags: string[];
+  description: string;
+  /** The dark pill: the page this card is a preview of. */
+  cta?: { label: string; href: string };
+  /** A quieter way out, to somewhere off the site. */
+  external?: { label: string; href: string };
+  focus?: Focus[];
+  shape: Shape;
+  strip: { image: ImageMetadata | null | undefined; label: string }[];
+}
+
+/*
+ * Enough shots in one copy of a strip to run past the edge of the card.
+ * A strip shorter than its viewport shows a gap at the end of every
+ * loop, and four phone captures are well short of a card's width.
+ */
+const MIN_PER_COPY: Record<Shape, number> = { phone: 8, panel: 5, screen: 3 };
+const fill = <T,>(list: T[], shape: Shape): T[] => {
+  if (list.length === 0) return list;
+  const out = [...list];
+  while (out.length < MIN_PER_COPY[shape]) out.push(...list);
+  return out;
+};
+
+const items: StackItem[] =
+  kind === "studies"
+    ? CLIENT_STUDIES.map((study) => ({
+        name: study.name,
+        logoFile: study.logoFile,
+        meta: study.dates,
+        summary: study.summary,
+        tags: study.tags,
+        description: study.description,
+        cta: { label: "case study", href: studyPath(study) },
+        focus: study.focus,
+        shape: "screen",
+        strip: (study.strip ?? []).map((shot) => ({
+          image: caseImage(shot.image),
+          label: shot.image,
+        })),
+      }))
+    : PRODUCTS.map((product) => {
+        const story = caseStudyLink(product.caseStudy);
+        return {
+          name: product.name,
+          meta: `${product.status} · ${product.platform}`,
+          summary: product.tagline,
+          proof: product.proof,
+          tags: [product.category, ...product.stack.slice(0, 3)],
+          description: product.description,
+          cta: story ? { label: "how it was built", href: story } : undefined,
+          external: product.link
+            ? { label: product.link.label, href: product.link.url }
+            : undefined,
+          shape: product.shape,
+          strip: fill(
+            product.shots.map((shot) => ({
+              image: productImage(shot.image),
+              label: `products/${shot.image}`,
+            })),
+            product.shape,
+          ),
+        };
+      });
 
 /*
  * The filter, so a hirer for one discipline reaches their proof first.
- * Hidden until the script runs: without it the buttons would do nothing.
+ * Case studies only: four products need no sorting. Hidden until the
+ * script runs: without it the buttons would do nothing.
  */
 const FILTERS: { id: "all" | Focus; label: string }[] = [
   { id: "all", label: "All" },
@@ -40,97 +130,124 @@ const FILTERS: { id: "all" | Focus; label: string }[] = [
   { id: "marketing", label: "Marketing" },
 ];
 const count = (id: "all" | Focus) =>
-  id === "all"
-    ? CLIENT_STUDIES.length
-    : CLIENT_STUDIES.filter((study) => study.focus?.includes(id)).length;
+  id === "all" ? items.length : items.filter((item) => item.focus?.includes(id)).length;
 
-/* Strip shots are small and never shown large. */
-const STRIP_HEIGHT = 320;
+/*
+ * Strip shots are small and never shown large. Case study shots are
+ * sized for the short screen-shaped strip; product strips run taller,
+ * because a phone capture at that height would be a sliver.
+ */
+const STRIP_HEIGHT = kind === "products" ? 440 : 320;
 const STRIP_QUALITY = 70;
 ---
 
-<div class="stack-filter" role="group" aria-label="Filter case studies" data-stack-filter hidden>
-  {
-    FILTERS.map((filter, index) => (
-      <button
-        type="button"
-        class="stack-filter__pill"
-        data-filter={filter.id}
-        aria-pressed={index === 0 ? "true" : "false"}
-      >
-        {filter.label}
-        <span class="stack-filter__count">{count(filter.id)}</span>
-      </button>
-    ))
-  }
-</div>
+{
+  kind === "studies" && (
+    <div
+      class="stack-filter"
+      role="group"
+      aria-label="Filter case studies"
+      data-stack-filter
+      hidden
+    >
+      {FILTERS.map((filter, index) => (
+        <button
+          type="button"
+          class="stack-filter__pill"
+          data-filter={filter.id}
+          aria-pressed={index === 0 ? "true" : "false"}
+        >
+          {filter.label}
+          <span class="stack-filter__count">{count(filter.id)}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
 
-<div class="stack">
+<div class:list={["stack", `stack--${kind}`]}>
   {
-    CLIENT_STUDIES.map((study) => (
+    items.map((item) => (
       <article
-        class:list={["stack__card", !study.strip?.length && "stack__card--no-strip"]}
-        data-focus={(study.focus ?? []).join(" ")}
+        class:list={["stack__card", !item.strip.length && "stack__card--no-strip"]}
+        data-focus={(item.focus ?? []).join(" ")}
         data-reveal
       >
         <header class="stack__head">
           <p class="stack__project">
-            {study.logoFile && <LogoFrame file={study.logoFile} round />}
-            <span>[ {study.name} ]</span>
+            {item.logoFile && <LogoFrame file={item.logoFile} round />}
+            <span>[ {item.name} ]</span>
           </p>
-          <p class="stack__dates">[ {study.dates} ]</p>
+          <p class="stack__dates">[ {item.meta} ]</p>
         </header>
 
         <div class="stack__body">
           <div class="stack__lead">
             <h3 class="stack__summary" data-reveal-item>
-              {study.summary}
+              {item.summary}
             </h3>
+            {item.proof && (
+              <p class="stack__proof" data-reveal-item>
+                {item.proof}
+              </p>
+            )}
             <ul class="stack__tags" data-reveal-item>
-              {study.tags.map((tag) => (
+              {item.tags.map((tag) => (
                 <li class="stack__tag">{tag}</li>
               ))}
             </ul>
           </div>
 
           <div class="stack__side" data-reveal-item>
-            <p class="stack__descriptor">{study.description}</p>
-            <a class="stack__cta" href={studyPath(study)}>
-              case study
-              <ArrowUpRight class="stack__cta-icon" aria-hidden="true" />
-            </a>
+            <p class="stack__descriptor">{item.description}</p>
+            <p class="stack__actions">
+              {item.cta && (
+                <a class="stack__cta" href={item.cta.href}>
+                  {item.cta.label}
+                  <ArrowUpRight class="stack__cta-icon" aria-hidden="true" />
+                </a>
+              )}
+              {item.external && (
+                <a
+                  class="stack__external"
+                  href={item.external.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.external.label}
+                  <ArrowUpRight class="stack__external-icon" aria-hidden="true" />
+                </a>
+              )}
+            </p>
           </div>
         </div>
 
         {/*
          * The strip is decorative: every shot on it appears again, with
-         * a real caption, on the case study page it links to. Rendering
-         * it twice makes the loop seamless, and the whole thing is
-         * hidden from assistive tech rather than read out as sixteen
-         * unlabelled images between the summary and the link.
+         * a real caption, on the page the card links to. Rendering it
+         * twice makes the loop seamless, and the whole thing is hidden
+         * from assistive tech rather than read out as sixteen unlabelled
+         * images between the summary and the link.
          */}
-        <div class="stack__viewport" aria-hidden="true" hidden={!study.strip?.length}>
-          <div class="stack__track">
+        <div class="stack__viewport" aria-hidden="true" hidden={!item.strip.length}>
+          <div class:list={["stack__track", `stack__track--${item.shape}`]}>
             {[0, 1].map((copy) =>
-              (study.strip ?? []).map((shot) => {
-                const image = caseImage(shot.image);
-                return (
-                  <span class="stack__shot" data-copy={copy}>
-                    {image ? (
-                      <Image
-                        src={image}
-                        alt=""
-                        height={STRIP_HEIGHT}
-                        quality={STRIP_QUALITY}
-                        densities={[1]}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Placeholder label={shot.image} ratio="16/10" />
-                    )}
-                  </span>
-                );
-              }),
+              item.strip.map((shot) => (
+                <span class="stack__shot" data-copy={copy}>
+                  {shot.image ? (
+                    <Image
+                      src={shot.image}
+                      alt=""
+                      height={STRIP_HEIGHT}
+                      quality={STRIP_QUALITY}
+                      densities={[1]}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Placeholder label={shot.label} ratio="16/10" />
+                  )}
+                </span>
+              )),
             )}
           </div>
         </div>
@@ -139,7 +256,7 @@ const STRIP_QUALITY = 70;
   }
 
   {
-    UPCOMING_STUDIES.length > 0 && (
+    kind === "studies" && UPCOMING_STUDIES.length > 0 && (
       <aside class="stack__upcoming" data-reveal>
         <p class="eyebrow">Being written</p>
         <ul class="stack__upcoming-list">
@@ -307,9 +424,49 @@ const STRIP_QUALITY = 70;
     white-space: nowrap;
   }
 
+  /* The measured line on a product card: what it has actually done. */
+  .stack__proof {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
   .stack__descriptor {
     font-size: var(--text-small);
     color: var(--color-text-muted);
+  }
+
+  .stack__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    margin-top: var(--space-4);
+  }
+
+  /* Off-site, so quieter than the pill: a text link with the same arrow. */
+  .stack__external {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .stack__external:hover,
+  .stack__external:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .stack__external-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
   }
 
   .stack__cta {
@@ -317,7 +474,6 @@ const STRIP_QUALITY = 70;
     align-items: center;
     gap: var(--space-2);
     min-height: var(--control-lg);
-    margin-top: var(--space-4);
     padding-inline: var(--space-5);
     background-color: var(--color-invert-surface);
     color: var(--color-invert-text);
@@ -401,6 +557,24 @@ const STRIP_QUALITY = 70;
     height: 100%;
   }
 
+  /*
+   * Product strips: one height for every shape, so a card of phone
+   * captures and a card of browser captures level to the same size,
+   * and each frame takes the shape of the thing it shows.
+   */
+  .stack--products .stack__shot {
+    width: auto;
+    height: var(--shot-strip-product-height);
+  }
+
+  .stack__track--phone .stack__shot {
+    aspect-ratio: var(--shot-phone-ratio);
+  }
+
+  .stack__track--panel .stack__shot {
+    aspect-ratio: var(--shot-panel-ratio);
+  }
+
   @keyframes stack-scroll {
     to {
       /* Exactly one copy of the list, so the seam is invisible. */
@@ -468,6 +642,10 @@ const STRIP_QUALITY = 70;
 
     .stack__side {
       text-align: right;
+    }
+
+    .stack__actions {
+      justify-content: flex-end;
     }
   }
 
@@ -575,25 +753,39 @@ const STRIP_QUALITY = 70;
 
 <script>
   /*
-   * Decide whether the peel can actually work here.
+   * Decide whether the peel can actually work here, for each stack on
+   * the page (products and case studies) on its own.
    *
-   * The cards pin at `--nav-height + --space-5 + index * --space-4`, so
-   * the deepest card in the stack has the least room beneath it. If the
-   * tallest card is taller than that room, its bottom — and the link
-   * that is the whole point of the card — can never come into view, so
-   * the stack falls back to ordinary scrolling.
+   * The cards pin at `--nav-height + --space-4`, so a card taller than
+   * the room beneath that point can never show its bottom — and the
+   * link that is the whole point of the card — so the stack falls back
+   * to ordinary scrolling.
    *
    * Measured rather than assumed: card height depends on how long a
    * given summary happens to be, which is content, not layout, and the
    * media query this replaces could only ever guess at it.
    */
-  const stack = document.querySelector<HTMLElement>(".stack");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const wide = window.matchMedia("(width >= 1024px)");
 
-  if (stack) {
+  /*
+   * Levelling the cards changes how tall the page is, and this can
+   * happen well after load — the first honest measurement is only
+   * available once the real typeface has replaced the fallback.
+   * Anything holding cached scroll geometry (the timeline nav, and
+   * ScrollTrigger behind it) is then measuring a page that no longer
+   * exists, and scrubbing lands in the wrong place.
+   *
+   * So when the layout actually changes, say so. A resize event is the
+   * signal every scroll library already listens for. `syncing` stops
+   * the event this dispatches from re-entering the handler that
+   * dispatched it.
+   */
+  let syncing = false;
+
+  function setUp(stack: HTMLElement) {
     const cards = [...stack.querySelectorAll<HTMLElement>(".stack__card")];
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const wide = window.matchMedia("(width >= 1024px)");
-
+    if (cards.length === 0) return;
     const last = cards[cards.length - 1];
 
     /**
@@ -617,7 +809,8 @@ const STRIP_QUALITY = 70;
        * old ones, refusing to peel on viewports that had room to spare.
        */
       const top = Number.parseFloat(getComputedStyle(last).top) || 0;
-      const tallest = Math.max(...cards.map((card) => card.getBoundingClientRect().height));
+      const visible = cards.filter((card) => !card.hidden);
+      const tallest = Math.max(...visible.map((card) => card.getBoundingClientRect().height));
       const air = Number.parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--space-4"),
       );
@@ -625,21 +818,7 @@ const STRIP_QUALITY = 70;
       return { fits: top + tallest + air <= window.innerHeight, tallest };
     };
 
-    /**
-     * Levelling the cards changes how tall the page is, and this can
-     * happen well after load — the first honest measurement is only
-     * available once the real typeface has replaced the fallback.
-     * Anything holding cached scroll geometry (the timeline nav, and
-     * ScrollTrigger behind it) is then measuring a page that no longer
-     * exists, and scrubbing lands in the wrong place.
-     *
-     * So when the layout actually changes, say so. A resize event is
-     * the signal every scroll library already listens for. `syncing`
-     * stops the event this dispatches from re-entering the handler
-     * that dispatched it.
-     */
     const signature = () => `${stack.className}|${stack.style.getPropertyValue("--stack-card-h")}`;
-    let syncing = false;
 
     const notifyIfChanged = (before: string) => {
       if (signature() === before || syncing) return;
@@ -652,11 +831,11 @@ const STRIP_QUALITY = 70;
      * Three settings, tried in order, so the peel survives a short
      * window instead of being switched off by one.
      *
-     * Full card first. If that cannot fit under the deepest pin point,
-     * drop the decorative strip and try again — that is worth about two
-     * hundred pixels and costs nothing the page needs. Only if a card
-     * still cannot show its own link does the stack give up and scroll
-     * like everything else.
+     * Full card first. If that cannot fit under the pin point, drop the
+     * decorative strip and try again — that is worth about two hundred
+     * pixels and costs nothing the page needs. Only if a card still
+     * cannot show its own link does the stack give up and scroll like
+     * everything else.
      */
     const apply = () => {
       if (!wide.matches || reduced.matches) {
@@ -695,12 +874,13 @@ const STRIP_QUALITY = 70;
     apply();
 
     /*
-     * The discipline filter. Hiding cards changes how tall the stack
-     * is, so it re-runs the same levelling and says so with a resize,
-     * exactly as a font swap does.
+     * The discipline filter, which sits directly before the stack it
+     * sorts. Hiding cards changes how tall the stack is, so it re-runs
+     * the same levelling and says so with a resize, exactly as a font
+     * swap does.
      */
-    const filter = document.querySelector<HTMLElement>("[data-stack-filter]");
-    if (filter) {
+    const filter = stack.previousElementSibling;
+    if (filter instanceof HTMLElement && filter.matches("[data-stack-filter]")) {
       const pills = [...filter.querySelectorAll<HTMLButtonElement>("[data-filter]")];
       filter.hidden = false;
       pills.forEach((pill) =>
@@ -730,4 +910,6 @@ const STRIP_QUALITY = 70;
     });
     document.fonts?.ready.then(apply);
   }
+
+  document.querySelectorAll<HTMLElement>(".stack").forEach(setUp);
 </script>

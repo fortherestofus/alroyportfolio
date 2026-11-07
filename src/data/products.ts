@@ -62,8 +62,13 @@ export interface Product {
   category: string;
   tagline: string;
   description: string;
-  /** Shipping state, shown as a chip. */
+  /** Shipping state, shown on the card. */
   status: string;
+  /**
+   * One measured line for the card, from the same sources as
+   * `story.result` (which the product page carries in full).
+   */
+  proof: string;
   platform: string;
   /**
    * What it is actually built with, read off each repo's package.json
@@ -125,6 +130,7 @@ export const PRODUCTS: Product[] = [
     description:
       "Devotionals written for whatever you're carrying, alongside the shared readings and the whole Bible. It complements tradition rather than replacing it. No feed, no ads.",
     status: "Live",
+    proof: "131 monthly active users · 5.0 on the App Store",
     platform: "iOS and Android",
     link: {
       url: "https://apps.apple.com/app/inspiritintruth-devotional/id6795657774",
@@ -187,6 +193,7 @@ export const PRODUCTS: Product[] = [
     description:
       "Type, say or snap what's in your kitchen and get a real meal back, your diet enforced as a hard rule. Variety from the same shelf, minus the deciding.",
     status: "Live",
+    proof: "47 monthly active users",
     platform: "iOS and Android",
     link: {
       url: "https://apps.apple.com/app/tapa-cook-what-you-have/id6795631556",
@@ -232,6 +239,7 @@ export const PRODUCTS: Product[] = [
     description:
       "A sarcastically honest friend in your browser that calls out the procrastinator and warns the workaholic. Everything stays on your device.",
     status: "Live",
+    proof: "183 installs, and 99% kept it",
     platform: "Chrome extension",
     link: {
       url: "https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg",
@@ -281,6 +289,7 @@ export const PRODUCTS: Product[] = [
     description:
       "A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.",
     status: "Beta",
+    proof: "Real voices in citations up from 29% to 57%",
     platform: "Web",
     stack: [
       "Next.js 16",
