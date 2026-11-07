@@ -12,6 +12,7 @@ import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
 import { PRODUCTS, productImage, caseStudyLink } from "../data/products";
+import { CASE_STUDIES, studyPath } from "../data/case-studies";
 
 /*
  * Phone screenshots are tall and only ever shown small, so they are
@@ -31,6 +32,7 @@ const slug = (name: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/-$/, "");
+const socialSweep = CASE_STUDIES.find((study) => study.slug === "social-sweep");
 ---
 
 <div class="products">
@@ -137,6 +139,18 @@ const slug = (name: string) =>
       </article>
     ))
   }
+
+  {
+    socialSweep && (
+      <a class="products__more" href={studyPath(socialSweep)}>
+        <span>
+          Plus <strong>Social Sweep</strong>, the social listening product I led for Innovatr: built
+          instead of bought, now sold in every membership.
+        </span>
+        <ArrowUpRight class="products__more-icon" aria-hidden="true" />
+      </a>
+    )
+  }
 </div>
 
 <style>
@@ -144,6 +158,36 @@ const slug = (name: string) =>
     display: flex;
     flex-direction: column;
     gap: var(--space-7);
+  }
+
+  .products__more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--control-md);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .products__more strong {
+    color: var(--color-text);
+  }
+
+  .products__more:hover {
+    border-color: var(--color-accent);
+  }
+
+  .products__more-icon {
+    flex: none;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-accent);
   }
 
   .product {

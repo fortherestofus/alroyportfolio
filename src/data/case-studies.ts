@@ -137,6 +137,8 @@ export type Block =
     }
   | { kind: "pending"; heading: string; note: string };
 
+export type Focus = "brand" | "product" | "marketing";
+
 export interface CaseStudy {
   slug: string;
   name: string;
@@ -158,6 +160,12 @@ export interface CaseStudy {
   summary: string;
   description: string;
   tags: string[];
+  /**
+   * Which of the three disciplines the work evidences, for the filter
+   * on the overview. A hirer for one of them should reach their proof
+   * in one click rather than reading past the other two.
+   */
+  focus?: Focus[];
   meta: string[];
   website?: string;
   /** Filename in src/assets/logos, badged as a circular client mark. */
@@ -212,8 +220,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "Built for Innovatr while I ran its brand and marketing. A build-versus-buy call that became a product.",
     tags: ["Build vs buy", "Product strategy", "AI product", "Research tooling"],
+    focus: ["product"],
     logoFile: "innovatr.jpg",
-    meta: ["Client · Innovatr", "Proposed, scoped and built", "Mar – Sep 2026"],
+    meta: ["Client · Innovatr", "Product lead: planned, built and maintained", "Mar – Sep 2026"],
     strip: [
       { image: "innovatr/social_sweep_landing.jpg", alt: "Social Sweep's question screen." },
       { image: "innovatr/social_sweep_report.jpg", alt: "A finished Social Sweep report." },
@@ -316,6 +325,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "Rebrand, CRM and paid engine for a consumer research consultancy, in seven months.",
     tags: ["Rebranding", "Content", "Paid media", "Lead sourcing", "Marketing automation"],
+    focus: ["brand", "marketing"],
     logoFile: "innovatr.jpg",
     meta: ["Client · Innovatr", "Brand & Marketing Manager", "Mar – Sep 2026"],
     strip: [
@@ -649,6 +659,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "A South African tour operator. I gave each of four channels one job, and turned attention into leads.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
+    focus: ["marketing"],
     logoFile: "thrifty.jpeg",
     meta: [
       "Client · Thrifty Adventures",
@@ -1469,6 +1480,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "Range, store, payments, shoot and marketing for a South African streetwear label.",
     tags: ["E-commerce", "Brand", "Product design", "Photography", "AI production"],
+    focus: ["brand", "product", "marketing"],
     meta: ["Own brand", "Product, store and growth", "2024 – present"],
     website: "https://www.filosofee.shop",
     strip: [
@@ -1597,6 +1609,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "A meme said this brief was too expensive to build. AI and the right tools said otherwise.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
+    focus: ["brand"],
     meta: ["Self-directed", "Build challenge", "Mar 2026"],
     website: "https://deft-pasca-8eec5e.netlify.app",
     strip: [
@@ -1759,6 +1772,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "Claude drove real design and video software through MCP. My job was the brief, the taste and the no.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
+    focus: ["brand", "marketing"],
     meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: direction and QA", "Sep – Oct 2026"],
     strip: [
       { image: "agentic-content/strip-aux.webp", alt: "Aux Affair logo." },
@@ -1941,6 +1955,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description:
       "ISIT is my devotional app. I researched the Duo, mocked every pose at true size and built the fix. It ships in 1.8.",
     tags: ["UX research", "Adaptive layout", "Foldables", "iOS"],
+    focus: ["product"],
     meta: ["Own product · InSpiritInTruth", "Research, design and build", "Oct 2026"],
     strip: [
       { image: "isit-iphone-duo/duo-unfold-poster.webp", alt: "The Duo animation." },

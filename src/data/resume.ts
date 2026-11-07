@@ -47,16 +47,6 @@ export interface RoleDetail {
   context?: string;
   bullets: ResumeBullet[];
   /**
-   * Render as a single line — title, company, dates — with no bullets.
-   *
-   * Used for the pre-2018 roles, which have no description anywhere to
-   * write from. A bullet invented to fill the space would say nothing
-   * the title has not already said, and three of them in a row at the
-   * foot of the document cost a page that the recent work needs. Standard
-   * "earlier experience" practice, and a parser still gets every field.
-   */
-  compact?: boolean;
-  /**
    * Sub-roles held at the same employer, newest first. Digify Africa is
    * four positions over two and a half years; collapsing them loses the
    * progression from assistant lead to lead, and splitting them into
@@ -96,6 +86,20 @@ export const RESUME = {
 } as const;
 
 /**
+ * The product-led lead, for product management applications. The same
+ * record told in a different order: product first, with the brand and
+ * marketing depth framed as what most product managers have to hire in.
+ * Every figure is one the default summary or the case studies already
+ * carry.
+ */
+export const RESUME_PRODUCT = {
+  headline:
+    "Product Management & UX Design · Marketing & Brand Strategy · AI-Native Product Builder",
+  summary:
+    "Product, brand and marketing lead with 12+ years taking products from idea to market. Built and launched four products in 2026, writing the specification, choosing the stack and directing coding agents such as Claude Code: InSpiritInTruth, a devotional app with 131 monthly active users, its first paying subscribers and a 5.0 App Store rating; tapa., a recipe app; CaughtSlipping, a Chrome extension with 183 installs; and Hakkan, an AI research tool. Led Social Sweep at Innovatr from the build-versus-buy case to launch and upkeep, replacing a US$5,000-a-year licence; it now sells in every Innovatr membership. Earlier ran e-commerce end to end at Reka Afrika and iBags: suppliers, product range, presentation and the online store. Brings the go-to-market depth product teams usually hire in: positioning, paid acquisition at roughly three times better cost per lead than the B2B median, and CRM and marketing automation.",
+} as const;
+
+/**
  * The achievement bullets, keyed by company.
  *
  * Order does not matter here — the page walks EXPERIENCE and looks each
@@ -103,16 +107,22 @@ export const RESUME = {
  */
 export const ROLE_DETAILS: RoleDetail[] = [
   {
-    company: "Various",
+    company: "Independent",
     location: "Johannesburg, South Africa · Hybrid",
     context:
-      "Trading as Dejamedia Company and Alroy Ndhlovu | The Brand. Consulting across marketing, brand and business technology.",
+      "Trading as Dejamedia Company and Alroy Ndhlovu | The Brand. Consulting across brand, product and marketing.",
     bullets: [
+      {
+        text: "Built and launched four products end to end: InSpiritInTruth and tapa. (mobile apps), CaughtSlipping (Chrome extension) and Hakkan (AI research tool, in beta), alongside Social Sweep for Innovatr.",
+      },
       {
         text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for organisations including the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, the African Agri Council, Total Sports, Jenna Clifford, Cash'n'Sport, Nembhard Inc, English Plus Academy and Deep Ocean.",
       },
       {
-        text: "Served 1,200+ projects and clients across 12+ years, spanning paid media, brand identity, UX/UI design, e-commerce builds on WordPress, Shopify and Webflow, and CRM and marketing automation.",
+        text: "Art-directed content for Jenna Clifford, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
+      },
+      {
+        text: "Trained or advised 1,200+ people and businesses, mainly through Meta's programmes with Digify Africa and the IFC.",
       },
       {
         text: "Delivered the LumiSkin brand site, covering concept, AI production, front-end and motion, in a single day for under $300, against $6,500+ quoted for the same brief produced conventionally.",
@@ -129,13 +139,13 @@ export const ROLE_DETAILS: RoleDetail[] = [
       "Consumer intelligence platform whose flagship product, Test24, returns real consumer insight in 24 hours for brand and innovation teams.",
     bullets: [
       {
+        text: "Product lead for Social Sweep, a proprietary social listening product: made the build-versus-buy case, then planned, built and maintained it. Replaced a US$5,000-a-year licence with an in-house build under R10,000, now sold in every Innovatr membership.",
+      },
+      {
         text: "Led brand strategy and growth marketing: owned paid media and demand generation across LinkedIn, Google and Meta, developed multi-format content, and built the CRM and marketing automation workflows behind a qualified pipeline.",
       },
       {
         text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand with the founder, covering positioning, visual identity and go-to-market strategy.",
-      },
-      {
-        text: "Designed and built Social Sweep, a proprietary social listening product: API integrations across every major platform feeding an analysis and reporting pipeline. Replaced a US$5,000-a-year enterprise licence with an in-house build under R10,000, now sold in every Innovatr membership.",
       },
       {
         text: "Supported client innovation projects for Discovery Bank, DGB, Namibian Breweries and Rain, across CPG, financial services and telecoms.",
@@ -217,11 +227,11 @@ export const ROLE_DETAILS: RoleDetail[] = [
     ],
   },
   {
-    company: "Kelly-Anne Mealia",
+    company: "Kelly-Ann Mealia",
+    context: "Co-founder and Chairperson of Energy Capital & Power.",
     bullets: [
       {
-        text: "Ran brand and social media management for the client on an ongoing freelance basis.",
-        inferred: true,
+        text: "Managed her LinkedIn personal brand: created the content, produced video and photography, and managed her community.",
       },
     ],
   },
@@ -273,21 +283,17 @@ export const ROLE_DETAILS: RoleDetail[] = [
   },
   {
     company: "Reka Afrika",
-    compact: true,
     bullets: [
       {
-        text: "Ran digital media, marketing and e-commerce for the business.",
-        inferred: true,
+        text: "Ran e-commerce end to end: sourced suppliers, chose and maintained the product range, photographed and marketed the products, and built the website and online store.",
       },
     ],
   },
   {
     company: "iBags.co.za",
-    compact: true,
     bullets: [
       {
-        text: "Managed web content and e-commerce operations for the online retailer across a four-year tenure.",
-        inferred: true,
+        text: "Ran e-commerce end to end for four years: sourced suppliers, chose and maintained the product range, kept the website and product presentation current, and worked with the agency that ran marketing.",
       },
     ],
   },
@@ -377,6 +383,8 @@ export const COMPETENCIES = [
     label: "Product & UX",
     items: [
       "Product management",
+      "Product range management",
+      "E-commerce merchandising",
       "Product marketing",
       "Product positioning",
       "Product design",

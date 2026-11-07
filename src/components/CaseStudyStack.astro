@@ -21,18 +21,56 @@ import { Image } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
 import LogoFrame from "./LogoFrame.astro";
-import { CLIENT_STUDIES, UPCOMING_STUDIES, caseImage, studyPath } from "../data/case-studies";
+import {
+  CLIENT_STUDIES,
+  UPCOMING_STUDIES,
+  caseImage,
+  studyPath,
+  type Focus,
+} from "../data/case-studies";
+
+/*
+ * The filter, so a hirer for one discipline reaches their proof first.
+ * Hidden until the script runs: without it the buttons would do nothing.
+ */
+const FILTERS: { id: "all" | Focus; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "brand", label: "Brand" },
+  { id: "product", label: "Product" },
+  { id: "marketing", label: "Marketing" },
+];
+const count = (id: "all" | Focus) =>
+  id === "all"
+    ? CLIENT_STUDIES.length
+    : CLIENT_STUDIES.filter((study) => study.focus?.includes(id)).length;
 
 /* Strip shots are small and never shown large. */
 const STRIP_HEIGHT = 320;
 const STRIP_QUALITY = 70;
 ---
 
+<div class="stack-filter" role="group" aria-label="Filter case studies" data-stack-filter hidden>
+  {
+    FILTERS.map((filter, index) => (
+      <button
+        type="button"
+        class="stack-filter__pill"
+        data-filter={filter.id}
+        aria-pressed={index === 0 ? "true" : "false"}
+      >
+        {filter.label}
+        <span class="stack-filter__count">{count(filter.id)}</span>
+      </button>
+    ))
+  }
+</div>
+
 <div class="stack">
   {
     CLIENT_STUDIES.map((study) => (
       <article
         class:list={["stack__card", !study.strip?.length && "stack__card--no-strip"]}
+        data-focus={(study.focus ?? []).join(" ")}
         data-reveal
       >
         <header class="stack__head">
@@ -118,6 +156,54 @@ const STRIP_QUALITY = 70;
 </div>
 
 <style>
+  .stack-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .stack-filter[hidden] {
+    display: none;
+  }
+
+  .stack-filter__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .stack-filter__pill:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .stack-filter__pill[aria-pressed="true"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: var(--color-accent-soft);
+  }
+
+  .stack-filter__count {
+    font-size: var(--text-chip);
+    color: var(--color-text-muted);
+  }
+
+  .stack__card[hidden] {
+    display: none;
+  }
+
   .stack {
     display: flex;
     flex-direction: column;
@@ -607,6 +693,29 @@ const STRIP_QUALITY = 70;
     };
 
     apply();
+
+    /*
+     * The discipline filter. Hiding cards changes how tall the stack
+     * is, so it re-runs the same levelling and says so with a resize,
+     * exactly as a font swap does.
+     */
+    const filter = document.querySelector<HTMLElement>("[data-stack-filter]");
+    if (filter) {
+      const pills = [...filter.querySelectorAll<HTMLButtonElement>("[data-filter]")];
+      filter.hidden = false;
+      pills.forEach((pill) =>
+        pill.addEventListener("click", () => {
+          const chosen = pill.dataset.filter ?? "all";
+          pills.forEach((other) => other.setAttribute("aria-pressed", String(other === pill)));
+          cards.forEach((card) => {
+            const focus = (card.dataset.focus ?? "").split(" ");
+            card.hidden = chosen !== "all" && !focus.includes(chosen);
+          });
+          apply();
+          window.dispatchEvent(new Event("resize"));
+        }),
+      );
+    }
 
     /*
      * Re-measure on resize, and once fonts have settled: a card's height

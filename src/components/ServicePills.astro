@@ -8,12 +8,11 @@
  * service rather than empty, so the line never appears from nowhere and
  * shifts the layout underneath it.
  */
-import { LayoutGrid, Bot, TrendingUp, Palette } from "@lucide/astro";
+import { LayoutGrid, TrendingUp, Palette } from "@lucide/astro";
 import { SERVICES, type ServiceIcon } from "../data/services";
 
 const ICONS: Record<ServiceIcon, typeof TrendingUp> = {
   "layout-grid": LayoutGrid,
-  bot: Bot,
   "trending-up": TrendingUp,
   palette: Palette,
 };

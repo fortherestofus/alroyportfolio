@@ -6,8 +6,8 @@
  * the row falls back to a Lucide glyph in the same frame, so a missing
  * mark never blocks the build.
  *
- * Ordered by start date, newest first, under the standing Independent
- * Contractor entry. Adding a row here is all it takes; the section
+ * Ordered by start date, newest first, under the standing independent
+ * consulting entry. Adding a row here is all it takes; the section
  * renders straight from this array.
  */
 export interface Role {
@@ -29,18 +29,19 @@ export interface Role {
 
 export const EXPERIENCE: Role[] = [
   {
-    title: "Independent Contractor",
-    company: "Various",
+    title: "Brand, Product & Marketing Consultant",
+    company: "Independent",
     employment: "Self-employed",
     dates: "2018 – Present",
-    note: "Consulting across marketing, brand and business technology.",
+    note: "Art direction for Jenna Clifford, a staff training film for Total Sports made end to end, and training for iHub, Meta and the IFC. Products built: InSpiritInTruth, tapa., CaughtSlipping, Hakkan and, for Innovatr, Social Sweep.",
   },
   {
-    title: "Brand & Marketing Manager",
+    title: "Brand & Marketing Manager and Product Lead (Social Sweep)",
     company: "Innovatr",
     employment: "Full-time",
     dates: "Mar 2026 – Sep 2026",
     logoFile: "innovatr.jpg",
+    note: "Rebrand, CRM and paid engine for a consumer research platform, and Social Sweep from business case to launch.",
   },
   {
     title: "Digital Marketing Consultant",
@@ -48,6 +49,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Jul 2025 – Mar 2026",
     logoFile: "thrifty.jpeg",
+    note: "Paid and organic across LinkedIn, TikTok and Google for a South African tour operator.",
   },
   {
     title: "Web Design Specialist",
@@ -55,6 +57,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Freelance",
     dates: "Oct 2024 – Oct 2025",
     logoFile: "Deep-Ocean-Logo.jpeg",
+    note: "Designed and built the company website, then ran its email, domains and maintenance.",
   },
   {
     title: "Web Design Specialist",
@@ -62,6 +65,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Oct 2024 – Mar 2025",
     logoFile: "EPA-logo.jpeg",
+    note: "Redesigned the academy's website and moved its hosting to carry planned growth.",
   },
   {
     title: "Digital Marketing Consultant",
@@ -69,6 +73,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Aug 2024 – Nov 2024",
     logoFile: "aac.png",
+    note: "Digital marketing for the council and its African Agri Investment Indaba.",
   },
   {
     title: "Social Media Specialist",
@@ -76,6 +81,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Aug 2024",
     // TODO(alroy): logo missing, see README.
+    note: "Social media for five of the group's shopping centres: content, community and analytics.",
   },
   {
     title: "Digital Media & Marketing Consultant",
@@ -83,13 +89,15 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Nov 2023 – Mar 2024",
     logoFile: "ECP_logo_internal_1Round-150x150-1.png",
+    note: "Campaigns for its flagship international events, and PR training for delegates of Equatorial Guinea's Ministry of Mines and Hydrocarbons.",
   },
   {
     title: "Brand & Social Media Management",
-    company: "Kelly-Anne Mealia",
+    company: "Kelly-Ann Mealia",
     employment: "Freelance",
     dates: "Sep 2022 – Apr 2024",
     // TODO(alroy): logo missing, see README.
+    note: "Managed the LinkedIn brand of Energy Capital & Power's co-founder: content, video, photography and community.",
   },
   {
     title: "Digital Marketing Consultant",
@@ -97,6 +105,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "May 2022 – Oct 2023",
     logoFile: "IFC.jpeg",
+    note: "A digital marketing curriculum for about 50 tourism businesses, and one-to-one consulting for about 20.",
   },
   {
     title: "Meta Certified Lead Trainer & Consultant",
@@ -104,19 +113,22 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Jul 2020 – Nov 2022",
     logoFile: "Digify-Africa.png",
+    note: "Trained 1,000+ people on Meta's products as a certified lead trainer.",
   },
   {
-    title: "Digital Media, Marketing & E-Commerce",
+    title: "Product, Marketing & E-Commerce Manager",
     company: "Reka Afrika",
     employment: "Full-time",
     dates: "Jul 2017 – Oct 2018",
     logoFile: "reka-afrika.jpeg",
+    note: "Sourced suppliers, ran the product range and its marketing, and built the online store.",
   },
   {
-    title: "Web Content & E-Commerce Manager",
+    title: "E-Commerce & Product Manager",
     company: "iBags.co.za",
     employment: "Full-time",
     dates: "Apr 2013 – Jun 2017",
     logoFile: "ibags.jpeg",
+    note: "Ran e-commerce end to end for four years: suppliers, product range and the website.",
   },
 ];

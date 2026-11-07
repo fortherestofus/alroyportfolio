@@ -28,7 +28,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "Worked with Alroy for 2+ years. He's extremely professional and has a variety of talents you can make use of. He's like a Swiss army knife lol. Wherever his profile fit, he'd always be first in mind to put onto a project.",
-    name: "Kelly-Ann Ayuk",
+    name: "Kelly-Ann Mealia",
     role: "Co-Founder and Chairperson",
     organisation: "Energy Capital & Power",
   },

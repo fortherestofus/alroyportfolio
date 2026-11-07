@@ -60,6 +60,11 @@ const DOCUMENTS = [
     label: "ATS résumé",
   },
   {
+    route: "/resume/product/",
+    file: "alroy-ndhlovu-resume-product.pdf",
+    label: "Product résumé",
+  },
+  {
     route: "/resume/visual/",
     file: "alroy-ndhlovu-resume-visual.pdf",
     label: "Visual résumé",

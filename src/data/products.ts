@@ -119,56 +119,6 @@ export function caseStudyLink(slug?: string): string | null {
 
 export const PRODUCTS: Product[] = [
   {
-    name: "Hakkan",
-    category: "Content Research & Development",
-    tagline: "Worth listening to.",
-    description:
-      "A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.",
-    status: "Beta",
-    platform: "Web",
-    stack: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Tailwind v4",
-      "Supabase",
-      "Vercel AI SDK",
-      "Claude + Grok",
-      "Paddle",
-      "Recharts",
-      "Sentry",
-      "Claude Code",
-    ],
-    shape: "screen",
-    story: {
-      problem:
-        "“Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.",
-      approach:
-        "Research before writing: a cited report as the source of truth, your own voice to write from it, and a trends module to stay current.",
-      result:
-        "Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.",
-    },
-    caseStudy: "hakkan",
-    shots: [
-      {
-        image: "hakkan-report.jpg",
-        alt: "Hakkan research report showing themes and a sentiment split.",
-      },
-      {
-        image: "hakkan-research.jpg",
-        alt: "Hakkan gathering the conversation across social platforms and the open web.",
-      },
-      {
-        image: "hakkan-personas.jpg",
-        alt: "Hakkan persona view, grouping the voices found in the research.",
-      },
-      {
-        image: "hakkan-visual-report.jpg",
-        alt: "Hakkan visual report, charting where the evidence and the sentiment diverge.",
-      },
-    ],
-  },
-  {
     name: "InSpiritInTruth",
     category: "Faith & Devotion",
     tagline: "Take your faith into your own hands.",
@@ -322,6 +272,56 @@ export const PRODUCTS: Product[] = [
         alt: "Work mode showing hours focused against a balance check.",
       },
       { image: "caught-sites.jpg", alt: "The full list of sites visited during work mode." },
+    ],
+  },
+  {
+    name: "Hakkan",
+    category: "Content Research & Development",
+    tagline: "Worth listening to.",
+    description:
+      "A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.",
+    status: "Beta",
+    platform: "Web",
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind v4",
+      "Supabase",
+      "Vercel AI SDK",
+      "Claude + Grok",
+      "Paddle",
+      "Recharts",
+      "Sentry",
+      "Claude Code",
+    ],
+    shape: "screen",
+    story: {
+      problem:
+        "“Slop” made Oxford's 2024 Word of the Year shortlist: fluent AI content that knows nothing. Writing tools that start from a blank page produce it by design.",
+      approach:
+        "Research before writing: a cited report as the source of truth, your own voice to write from it, and a trends module to stay current.",
+      result:
+        "Rebuilding the evidence filter took real human voices from 29% of citations to 57%. Anything the model inferred is flagged, not hidden.",
+    },
+    caseStudy: "hakkan",
+    shots: [
+      {
+        image: "hakkan-report.jpg",
+        alt: "Hakkan research report showing themes and a sentiment split.",
+      },
+      {
+        image: "hakkan-research.jpg",
+        alt: "Hakkan gathering the conversation across social platforms and the open web.",
+      },
+      {
+        image: "hakkan-personas.jpg",
+        alt: "Hakkan persona view, grouping the voices found in the research.",
+      },
+      {
+        image: "hakkan-visual-report.jpg",
+        alt: "Hakkan visual report, charting where the evidence and the sentiment diverge.",
+      },
     ],
   },
 ];

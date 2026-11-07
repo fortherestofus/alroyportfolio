@@ -145,7 +145,7 @@ export const SECTIONS = [
     short: "Contact",
     heading: "Contact",
     blurb:
-      "I'm open for work. If you like what I do and want me on your team or project, reach out.",
+      "I'm open to brand, marketing and product roles, full-time or contract. If you like what I do and want me on your team or project, reach out.",
   },
 ] as const;
 

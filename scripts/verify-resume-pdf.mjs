@@ -34,6 +34,7 @@ const ROOT = new URL("..", import.meta.url).pathname;
 const PUBLIC = join(ROOT, "public");
 
 const ATS = "alroy-ndhlovu-resume.pdf";
+const ATS_PRODUCT = "alroy-ndhlovu-resume-product.pdf";
 const VISUAL = "alroy-ndhlovu-resume-visual.pdf";
 
 /**
@@ -121,55 +122,63 @@ function normalise(text) {
 
 // ---------------------------------------------------------------- ATS
 
-const ats = await extract(ATS).catch((error) => {
-  failures.push(`${ATS} could not be opened: ${error.message}`);
-  return null;
-});
+for (const file of [ATS, ATS_PRODUCT]) {
+  const ats = await extract(file).catch((error) => {
+    failures.push(`${file} could not be opened: ${error.message}`);
+    return null;
+  });
 
-if (ats) {
-  const flat = normalise(ats.text);
-  const pageOne = normalise(ats.pages[0] ?? "");
+  if (ats) {
+    const flat = normalise(ats.text);
+    const pageOne = normalise(ats.pages[0] ?? "");
 
-  for (const needle of REQUIRED_ON_PAGE_ONE) {
+    for (const needle of REQUIRED_ON_PAGE_ONE) {
+      check(
+        pageOne.includes(normalise(needle)),
+        `${file}: "${needle}" is not extractable from page 1 — a parser would not find it.`,
+      );
+    }
+
+    for (const heading of REQUIRED_HEADINGS) {
+      check(
+        flat.toUpperCase().includes(heading),
+        `${file}: section heading "${heading}" is missing.`,
+      );
+    }
+
+    for (const role of EXPERIENCE) {
+      check(
+        flat.includes(normalise(role.company)),
+        `${file}: company "${role.company}" is missing.`,
+      );
+      check(
+        flat.includes(normalise(role.dates)),
+        `${file}: dates "${role.dates}" for ${role.company} are missing.`,
+      );
+    }
+
     check(
-      pageOne.includes(normalise(needle)),
-      `${ATS}: "${needle}" is not extractable from page 1 — a parser would not find it.`,
+      pageOne.length >= MIN_PAGE_ONE_CHARS,
+      `${file}: page 1 extracted only ${pageOne.length} characters (floor is ${MIN_PAGE_ONE_CHARS}). ` +
+        `The page may look right and still be unreadable — check that the webfont is embedding a ` +
+        `ToUnicode map, and fall back to a system font for this document if it is not.`,
+    );
+
+    check(
+      ats.pages.length <= MAX_ATS_PAGES,
+      `${file}: ${ats.pages.length} pages, budget is ${MAX_ATS_PAGES}.`,
+    );
+
+    check(
+      ats.bytes <= MAX_ATS_BYTES,
+      `${file}: ${Math.round(ats.bytes / 1024)} KB, budget is ${Math.round(MAX_ATS_BYTES / 1024)} KB.`,
+    );
+
+    notes.push(
+      `${file}: ${ats.pages.length} pages, ${Math.round(ats.bytes / 1024)} KB, ` +
+        `${flat.length} extractable characters (${pageOne.length} on page 1).`,
     );
   }
-
-  for (const heading of REQUIRED_HEADINGS) {
-    check(flat.toUpperCase().includes(heading), `${ATS}: section heading "${heading}" is missing.`);
-  }
-
-  for (const role of EXPERIENCE) {
-    check(flat.includes(normalise(role.company)), `${ATS}: company "${role.company}" is missing.`);
-    check(
-      flat.includes(normalise(role.dates)),
-      `${ATS}: dates "${role.dates}" for ${role.company} are missing.`,
-    );
-  }
-
-  check(
-    pageOne.length >= MIN_PAGE_ONE_CHARS,
-    `${ATS}: page 1 extracted only ${pageOne.length} characters (floor is ${MIN_PAGE_ONE_CHARS}). ` +
-      `The page may look right and still be unreadable — check that the webfont is embedding a ` +
-      `ToUnicode map, and fall back to a system font for this document if it is not.`,
-  );
-
-  check(
-    ats.pages.length <= MAX_ATS_PAGES,
-    `${ATS}: ${ats.pages.length} pages, budget is ${MAX_ATS_PAGES}.`,
-  );
-
-  check(
-    ats.bytes <= MAX_ATS_BYTES,
-    `${ATS}: ${Math.round(ats.bytes / 1024)} KB, budget is ${Math.round(MAX_ATS_BYTES / 1024)} KB.`,
-  );
-
-  notes.push(
-    `${ATS}: ${ats.pages.length} pages, ${Math.round(ats.bytes / 1024)} KB, ` +
-      `${flat.length} extractable characters (${pageOne.length} on page 1).`,
-  );
 }
 
 // ------------------------------------------------------------- VISUAL
@@ -210,4 +219,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("\n✓ Résumé PDFs verified: both parse, and the ATS one carries every field.\n");
+console.log(
+  "\n✓ Résumé PDFs verified: all three parse, and both ATS versions carry every field.\n",
+);
