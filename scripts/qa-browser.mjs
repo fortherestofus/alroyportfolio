@@ -113,6 +113,21 @@ const CASE_STUDY_PATHS = [
   "/products/caughtslipping/",
 ];
 
+/** Portfolio project pages, plus the index that lists them. */
+const WORK_PATHS = [
+  "/work/",
+  "/work/jenna-clifford/",
+  "/work/kelly-ann-mealia/",
+  "/work/alabanza/",
+  "/work/iab-bookmarks/",
+  "/work/smirnoff-at-home/",
+  "/work/websites/",
+  "/work/mitch-sneakers/",
+  "/work/filosofee/",
+  "/work/gucci-at-home/",
+  "/work/botanik/",
+];
+
 const results = [];
 const record = (name, passed, detail = "") => results.push({ name, passed, detail });
 
@@ -889,7 +904,7 @@ async function checkImageWeight(browser, origin) {
    * page itself and quietly pass over the largest assets on the site.
    */
   const scrolledKb = totalKb;
-  for (const id of ["uxui", "web", "branding", "content", "photography"]) {
+  for (const id of ["uxui", "web", "branding", "content", "photography", "video"]) {
     await page.locator(`[data-open-portfolio="${id}"]`).click();
     await page.waitForTimeout(400);
     const shots = await page.locator("[data-portfolio-next]").count();
@@ -942,7 +957,7 @@ async function checkPortfolioModal(browser, origin) {
   await page.waitForTimeout(400);
 
   const cards = await page.locator("[data-open-portfolio]").count();
-  record("[modal] 5 category cards", cards === 5, `${cards}`);
+  record("[modal] 6 category cards", cards === 6, `${cards}`);
 
   // Nothing in the gallery should be fetched before it is opened.
   const preOpen = await page.evaluate(
@@ -1000,15 +1015,15 @@ async function checkPortfolioModal(browser, origin) {
     opened.visibleSlides === 1,
     `${opened.visibleSlides}`,
   );
-  record("[modal] a dot per shot", opened.dots === 7, `${opened.dots}`);
-  record("[modal] dots are actually visible", opened.sizedDots === 7, `${opened.sizedDots} sized`);
+  record("[modal] a dot per shot", opened.dots === 9, `${opened.dots}`);
+  record("[modal] dots are actually visible", opened.sizedDots === 9, `${opened.sizedDots} sized`);
   record("[modal] caption stays inside the panel", opened.captionInPanel);
   record(
     "[modal] the shot actually fills the stage",
     opened.mediaHeight > 300,
     `image rendered ${opened.mediaHeight}px tall`,
   );
-  record("[modal] counter reads correctly", opened.counter === "1 of 7", opened.counter);
+  record("[modal] counter reads correctly", opened.counter === "1 of 9", opened.counter);
   record("[modal] focus moves into the dialog", opened.focusInside);
   record("[modal] background scroll locks", opened.locked);
 
@@ -1031,14 +1046,14 @@ async function checkPortfolioModal(browser, origin) {
   const afterNext = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] next advances", afterNext === "2 of 7", afterNext);
+  record("[modal] next advances", afterNext === "2 of 9", afterNext);
 
   await page.locator("[data-portfolio-prev]").click();
   await page.waitForTimeout(250);
   const afterPrev = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] previous goes back", afterPrev === "1 of 7", afterPrev);
+  record("[modal] previous goes back", afterPrev === "1 of 9", afterPrev);
 
   record(
     "[modal] previous is disabled on the first shot",
@@ -1051,7 +1066,7 @@ async function checkPortfolioModal(browser, origin) {
   const afterKey = await page.evaluate(() =>
     document.querySelector("[data-portfolio-counter]").textContent.trim(),
   );
-  record("[modal] arrow keys navigate", afterKey === "2 of 7", afterKey);
+  record("[modal] arrow keys navigate", afterKey === "2 of 9", afterKey);
 
   // Focus trap: tabbing many times must never escape the dialog.
   let escaped = false;
@@ -1466,7 +1481,7 @@ async function checkSeo(browser, origin) {
     `${(llms?.match(/\/case-studies\//g) ?? []).length} links`,
   );
 
-  const PAGES = ["/", ...CASE_STUDY_PATHS];
+  const PAGES = ["/", ...CASE_STUDY_PATHS, ...WORK_PATHS];
   for (const path of PAGES) {
     await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
     const meta = await page.evaluate(() => {
@@ -1559,7 +1574,7 @@ async function checkSeo(browser, origin) {
    * it is invisible from any single page.
    */
   const seen = { titles: new Map(), descriptions: new Map() };
-  for (const path of ["/", ...CASE_STUDY_PATHS]) {
+  for (const path of ["/", ...CASE_STUDY_PATHS, ...WORK_PATHS]) {
     await page.goto(`${origin}${path}`, { waitUntil: "domcontentloaded" });
     const pair = await page.evaluate(() => ({
       title: document.title,
@@ -1580,6 +1595,65 @@ async function checkSeo(browser, origin) {
     dupeDescriptions.join(" | "),
   );
 
+  await context.close();
+}
+
+/**
+ * The portfolio pages on a phone: nothing spills sideways, everything
+ * tappable is thumb-sized, and every clip behaves as promised — a
+ * poster until it plays, muted to start, and a "Sound on" button for
+ * each one that has a sound track.
+ */
+async function checkWorkPages(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const page = await context.newPage();
+  const problems = [];
+  page.on("console", (msg) => {
+    if (["error", "warning"].includes(msg.type())) problems.push(msg.text());
+  });
+  page.on("pageerror", (error) => problems.push(error.message));
+
+  for (const path of WORK_PATHS) {
+    await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
+    const result = await page.evaluate(() => {
+      const undersized = [];
+      for (const el of document.querySelectorAll("a, button")) {
+        const box = el.getBoundingClientRect();
+        if (box.width === 0 || box.height === 0) continue;
+        if (box.height < 43.5)
+          undersized.push(
+            `${(el.textContent ?? "").trim().slice(0, 20)} ${Math.round(box.height)}px`,
+          );
+      }
+      const videos = [...document.querySelectorAll("[data-work-video] video")];
+      return {
+        overflow: document.documentElement.scrollWidth > window.innerWidth,
+        undersized,
+        videos: videos.length,
+        unmuted: videos.filter((v) => !v.muted).length,
+        posterless: videos.filter((v) => !v.getAttribute("poster")).length,
+        preloading: videos.filter((v) => v.getAttribute("preload") !== "none").length,
+        soundButtons: document.querySelectorAll("[data-sound-toggle]").length,
+        altless: [...document.querySelectorAll("main img")].filter(
+          (img) => img.getAttribute("alt") === null,
+        ).length,
+      };
+    });
+    record(`[work ${path}] no horizontal overflow at 375px`, !result.overflow);
+    record(
+      `[work ${path}] every tap target >= 44px`,
+      result.undersized.length === 0,
+      result.undersized.slice(0, 4).join(" | "),
+    );
+    record(
+      `[work ${path}] clips start muted, with a poster, loading nothing`,
+      result.unmuted === 0 && result.posterless === 0 && result.preloading === 0,
+      `${result.videos} clips, ${result.unmuted} unmuted, ${result.posterless} without a poster, ${result.preloading} preloading`,
+    );
+    record(`[work ${path}] every image has alt text`, result.altless === 0, `${result.altless}`);
+  }
+
+  record("[work] no console errors or warnings", problems.length === 0, problems.join(" | "));
   await context.close();
 }
 
@@ -2004,6 +2078,7 @@ const browser = await chromium.launch();
 try {
   for (const viewport of DESKTOP_VIEWPORTS) await checkDesktop(browser, origin, viewport);
   for (const viewport of MOBILE_VIEWPORTS) await checkMobile(browser, origin, viewport);
+  await checkWorkPages(browser, origin);
   await checkImageWeight(browser, origin);
   await checkPortfolioModal(browser, origin);
   await checkContrast(browser, origin);

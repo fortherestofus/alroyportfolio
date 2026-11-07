@@ -1,0 +1,216 @@
+---
+/**
+ * One project, as a card that links to its page.
+ *
+ * The cover is cropped to 4:5, the shape most of this work was shot in,
+ * so a grid of fashion portraits and a grid of screen recordings line
+ * up the same way. Projects with video carry a short silent loop that
+ * plays over the cover on hover (src/scripts/work-video.ts); it is not
+ * fetched until then.
+ *
+ * Spec work carries its label on the card itself, so nobody has to open
+ * the page to learn that a brand did not commission it.
+ */
+import { Image } from "astro:assets";
+import { ArrowUpRight } from "@lucide/astro";
+import { shotImage } from "../data/portfolio";
+import { workLine, workPath, type WorkProject } from "../data/work";
+import Placeholder from "./Placeholder.astro";
+
+interface Props {
+  project: WorkProject;
+  /** `sizes` for the cover, matching the grid it sits in. */
+  sizes: string;
+  /** The first row on a page can load straight away. */
+  eager?: boolean;
+}
+
+const { project, sizes, eager = false } = Astro.props;
+const cover = shotImage(project.cover);
+
+/*
+ * The box is 4:5. Sizing a landscape cover by width would leave it too
+ * short to fill the box and the browser would upscale it, so a cover
+ * wider than 4:5 is sized by height instead.
+ */
+const ratio = cover ? cover.width / cover.height : 0.8;
+/* How much wider than the box the image must be to cover it. */
+const overscan = ratio > 0.8 ? ratio * 1.25 : 1;
+const coverWidths = cover
+  ? [360, 720].map((width) => Math.min(cover.width, Math.round(width * overscan)))
+  : [];
+/*
+ * `sizes` describes the box, but a wide cover is drawn wider than its
+ * box, so each slot's length is scaled by the same overscan. Only the
+ * trailing length of each comma-separated slot changes; the media
+ * conditions in front of it are left alone.
+ */
+const coverSizes =
+  overscan === 1
+    ? sizes
+    : sizes
+        .split(",")
+        .map((slot) =>
+          slot.replace(
+            /(\d+(?:\.\d+)?)(px|vw|rem)\s*$/,
+            (_, n: string, unit: string) => `${Math.round(Number(n) * overscan)}${unit}`,
+          ),
+        )
+        .join(",");
+---
+
+<a class="wt" href={workPath(project)} data-work-tile>
+  <span class="wt__media">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt=""
+          widths={coverWidths}
+          sizes={coverSizes}
+          quality={72}
+          loading={eager ? "eager" : "lazy"}
+        />
+      ) : (
+        <Placeholder label={`work/${project.cover}`} ratio="4/5" />
+      )
+    }
+    {
+      project.preview && (
+        <video
+          class="wt__preview"
+          data-src={project.preview}
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-hidden="true"
+          tabindex="-1"
+        />
+      )
+    }
+    {project.label && <span class="wt__label">{project.label}</span>}
+  </span>
+  <span class="wt__meta">
+    <span class="wt__name">
+      {project.name}
+      <ArrowUpRight class="wt__icon" aria-hidden="true" />
+    </span>
+    <span class="wt__line">{workLine(project)}</span>
+  </span>
+</a>
+
+<style>
+  .wt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: 100%;
+    color: var(--color-text);
+  }
+
+  .wt__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .wt__media :global(img),
+  .wt__preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wt__media :global(img) {
+    transition: scale var(--duration-slow) var(--ease-out);
+  }
+
+  .wt__preview {
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .wt.is-previewing .wt__preview {
+    opacity: 1;
+  }
+
+  .wt:hover .wt__media,
+  .wt:focus-visible .wt__media {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .wt:hover .wt__media :global(img) {
+    scale: 1.03;
+  }
+
+  .wt__label {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding-inline: var(--space-3);
+    background-color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+    color: var(--color-text);
+  }
+
+  .wt__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .wt__name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-body);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .wt:hover .wt__name,
+  .wt:focus-visible .wt__name {
+    color: var(--color-accent);
+  }
+
+  .wt__icon {
+    flex: none;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .wt__line {
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wt__media :global(img),
+    .wt__preview {
+      transition: none;
+    }
+
+    .wt:hover .wt__media :global(img) {
+      scale: none;
+    }
+  }
+</style>

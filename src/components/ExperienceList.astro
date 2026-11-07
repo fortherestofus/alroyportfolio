@@ -3,6 +3,7 @@
  * Section 02: the roles as a vertical timeline, most recent first.
  * Rows stagger in on scroll via the shared reveal mechanism.
  */
+import { ArrowUpRight } from "@lucide/astro";
 import LogoFrame from "./LogoFrame.astro";
 import { EXPERIENCE } from "../data/experience";
 ---
@@ -20,6 +21,18 @@ import { EXPERIENCE } from "../data/experience";
             {role.employment && <span class="roles__employment">{role.employment}</span>}
           </p>
           {role.note && <p class="roles__note">{role.note}</p>}
+          {role.work && (
+            <ul class="roles__work" aria-label={`Work from ${role.company}`}>
+              {role.work.map((link) => (
+                <li>
+                  <a href={link.href}>
+                    {link.label}
+                    <ArrowUpRight class="roles__work-icon" aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <p class="roles__dates">{role.dates}</p>
@@ -88,6 +101,42 @@ import { EXPERIENCE } from "../data/experience";
     margin-top: var(--space-2);
     font-size: var(--text-small);
     color: var(--color-text-muted);
+  }
+
+  /*
+   * Small type, full-size targets: each link keeps the 44px control
+   * height so a thumb can hit it, without looking like a button row.
+   */
+  .roles__work {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+    margin: var(--space-1) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles__work a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .roles__work a:hover,
+  .roles__work a:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .roles__work-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
   }
 
   .roles__dates {

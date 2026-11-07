@@ -23,6 +23,7 @@ import { ArrowDown } from "@lucide/astro";
 import { SITE, SECTIONS, SOCIAL } from "../data/site";
 import { CLIENT_STUDIES, PRODUCT_STUDIES, studyPath } from "../data/case-studies";
 import { SERVICES } from "../data/services";
+import { WORK, workPath } from "../data/work";
 
 /*
  * Structured data for the home page (PRD §9, GEO/AIO).
@@ -90,6 +91,17 @@ const schema = [
    * single ItemList would tell an engine they are the same kind of
    * thing.
    */
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Portfolio",
+    itemListElement: WORK.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE.url}${workPath(project)}`,
+      name: project.name,
+    })),
+  },
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -173,6 +185,7 @@ const schema = [
 <script>
   import "../scripts/journey";
   import "../scripts/portfolio";
+  import "../scripts/work-video";
 </script>
 
 <style>

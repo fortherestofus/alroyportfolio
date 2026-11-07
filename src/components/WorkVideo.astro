@@ -1,0 +1,162 @@
+---
+/**
+ * A clip on a project page.
+ *
+ * Every clip starts muted, because sound a visitor did not ask for is
+ * the fastest way to lose them, and muted is also the only way a
+ * browser will let a clip start on its own. Clips that have a sound
+ * track get a plain "Sound on" button over the frame, so turning it on
+ * is one obvious tap rather than a hunt through the native controls.
+ *
+ * Two behaviours, set by the data:
+ *  - a short loop plays by itself while it is on screen and stops when
+ *    it leaves (src/scripts/work-video.ts), unless the visitor has asked
+ *    for reduced motion;
+ *  - a film (anything long enough to be watched rather than glanced at)
+ *    waits for the play button.
+ * Both keep the native controls, which is what satisfies WCAG 2.2.2:
+ * anything that moves can be paused.
+ *
+ * `preload="none"` plus a poster means a clip costs one image until
+ * someone actually plays it.
+ */
+import { getImage } from "astro:assets";
+import { Volume2, VolumeX } from "@lucide/astro";
+import { shotImage } from "../data/portfolio";
+import type { WorkItem } from "../data/work";
+
+interface Props {
+  item: WorkItem;
+  /** Widest the poster is ever drawn, in CSS px; doubled for retina. */
+  displayWidth: number;
+  class?: string;
+}
+
+const { item, displayWidth, class: className } = Astro.props;
+const still = shotImage(item.image);
+const poster = still
+  ? await getImage({
+      src: still,
+      width: Math.min(still.width, displayWidth * 2),
+      quality: 70,
+      format: "webp",
+    })
+  : null;
+const ratio = still ? `${still.width} / ${still.height}` : "16 / 9";
+/* Width over height as a plain number, for capping a tall clip's width. */
+const r = still ? (still.width / still.height).toFixed(4) : "1.7778";
+const tall = still ? still.height > still.width : false;
+---
+
+<figure
+  class:list={["wv", tall && "wv--tall", className]}
+  data-work-video
+  data-mode={item.film ? "film" : "loop"}
+>
+  <div class="wv__frame" style={`aspect-ratio: ${ratio}; --r: ${r}`}>
+    <video
+      class="wv__video"
+      src={item.video}
+      poster={poster?.src}
+      preload="none"
+      controls
+      muted
+      playsinline
+      loop={!item.film}
+      aria-label={item.alt}></video>
+    {
+      item.sound && (
+        <button type="button" class="wv__sound" data-sound-toggle aria-pressed="false">
+          <VolumeX class="wv__sound-icon wv__sound-icon--off" aria-hidden="true" />
+          <Volume2 class="wv__sound-icon wv__sound-icon--on" aria-hidden="true" />
+          <span data-sound-label>Sound on</span>
+        </button>
+      )
+    }
+  </div>
+  <figcaption class="wv__caption">{item.alt}</figcaption>
+</figure>
+
+<style>
+  .wv {
+    margin: 0;
+  }
+
+  .wv__frame {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+    border-radius: var(--radius-sm);
+  }
+
+  /*
+   * A phone-shaped clip never needs to be taller than the screen. The
+   * cap goes on the width, derived from the clip's own ratio, so the
+   * frame shrinks whole instead of cropping.
+   */
+  .wv--tall .wv__frame {
+    width: min(100%, calc(85svh * var(--r)));
+    margin-inline: auto;
+  }
+
+  .wv__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /*
+   * Top corner, clear of the native control bar along the bottom edge.
+   * High contrast against any frame, since the footage behind it can
+   * be anything from a white studio to a dark stage.
+   */
+  .wv__sound {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    padding-inline: var(--space-4);
+    background-color: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .wv__sound:hover,
+  .wv__sound:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .wv__sound-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .wv__sound-icon--on,
+  .wv__sound[aria-pressed="true"] .wv__sound-icon--off {
+    display: none;
+  }
+
+  .wv__sound[aria-pressed="true"] .wv__sound-icon--on {
+    display: block;
+  }
+
+  .wv__caption {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+</style>

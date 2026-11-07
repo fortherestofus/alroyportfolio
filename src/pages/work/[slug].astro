@@ -1,0 +1,550 @@
+---
+/**
+ * A portfolio project: /work/<slug>/.
+ *
+ * Mostly media. The header says who it was for, what Alroy did and
+ * what was made, in a credits block a reviewer can take in at a glance,
+ * then gets out of the way.
+ *
+ * Layout follows the media rather than one fixed grid:
+ *  - when the project leads with a phone-shaped clip, it sits beside
+ *    the header text, the way it would be seen on a phone;
+ *  - a landscape lead runs the full width under the header;
+ *  - everything else flows into columns that keep each still at its own
+ *    proportions, so a 4:5 portrait, a square post and a 16:9 frame can
+ *    share a page without any of them being cropped. A long landscape
+ *    film breaks out across all the columns.
+ * Stills open the shared lightbox at the one that was clicked.
+ */
+import { Image, getImage } from "astro:assets";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "@lucide/astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import PortfolioModal from "../../components/PortfolioModal.astro";
+import WorkVideo from "../../components/WorkVideo.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import { shotImage } from "../../data/portfolio";
+import { WORK, workPath, type WorkItem, type WorkProject } from "../../data/work";
+import { SITE } from "../../data/site";
+
+export function getStaticPaths() {
+  return WORK.map((project, index) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: WORK[(index - 1 + WORK.length) % WORK.length],
+      next: WORK[(index + 1) % WORK.length],
+    },
+  }));
+}
+
+interface Props {
+  project: WorkProject;
+  prev: WorkProject;
+  next: WorkProject;
+}
+
+const { project, prev, next } = Astro.props;
+const path = workPath(project);
+
+const isTall = (item: WorkItem) => {
+  const still = shotImage(item.image);
+  return still ? still.height > still.width : false;
+};
+
+/*
+ * A clip at the front of the list is the lead; a still never is. The
+ * exception is a page that is nothing but landscape clips (the
+ * websites), where every one is equal and they simply share the grid.
+ */
+const first = project.items[0];
+const allWideClips = project.items.every((item) => item.video && !isTall(item));
+const lead = first?.video && !allWideClips ? first : undefined;
+const tallLead = lead && isTall(lead) ? lead : undefined;
+const wideLead = lead && !tallLead ? lead : undefined;
+const rest = lead ? project.items.slice(1) : project.items;
+
+/* Two columns when the page is mostly landscape frames, three otherwise. */
+const wideCount = rest.filter((item) => !isTall(item)).length;
+const columns = wideCount > rest.length / 2 ? 2 : 3;
+
+/* The lightbox holds the stills only; clips play where they are. */
+const stills = rest.filter((item) => !item.video);
+const stillIndex = new Map(stills.map((item, index) => [item.image, index]));
+
+const STILL_SIZES =
+  columns === 3
+    ? "(min-width: 64rem) 24rem, (min-width: 40rem) 50vw, 100vw"
+    : "(min-width: 64rem) 36rem, (min-width: 40rem) 50vw, 100vw";
+
+/* ---- Structured data ------------------------------------------------ */
+
+const coverStill = shotImage(project.cover);
+const ogImage = coverStill
+  ? (await getImage({ src: coverStill, width: 1200, quality: 80, format: "jpeg" })).src
+  : undefined;
+
+/*
+ * The date these pages went up. VideoObject requires an upload date,
+ * and the honest one for a self-hosted file is when it was published
+ * here, not when it was shot.
+ */
+const PUBLISHED = "2026-11-07";
+
+const videos = await Promise.all(
+  project.items
+    .filter((item) => item.video)
+    .map(async (item) => {
+      const still = shotImage(item.image);
+      const thumb = still
+        ? (await getImage({ src: still, width: 1280, quality: 75, format: "jpeg" })).src
+        : undefined;
+      return {
+        "@type": "VideoObject",
+        // Unique per video: the part of the caption before its colon.
+        name: `${project.name}: ${item.alt.split(":")[0]}`,
+        description: item.alt,
+        uploadDate: PUBLISHED,
+        contentUrl: new URL(item.video!, SITE.url).href,
+        ...(thumb ? { thumbnailUrl: new URL(thumb, SITE.url).href } : {}),
+        ...(item.seconds ? { duration: `PT${item.seconds}S` } : {}),
+      };
+    }),
+);
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.name,
+    abstract: project.summary,
+    description: project.intro.join(" "),
+    author: { "@id": `${SITE.url}/#alroy` },
+    url: new URL(path, SITE.url).href,
+    keywords: project.deliverables.join(", "),
+    ...(project.client
+      ? { sourceOrganization: { "@type": "Organization", name: project.client } }
+      : {}),
+    ...(ogImage ? { image: new URL(ogImage, SITE.url).href } : {}),
+    isPartOf: { "@type": "CollectionPage", url: new URL("/work/", SITE.url).href },
+    ...(videos.length > 0 ? { video: videos } : {}),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Portfolio",
+        item: new URL("/work/", SITE.url).href,
+      },
+      { "@type": "ListItem", position: 3, name: project.name },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={project.seo.title}
+  description={project.seo.description}
+  path={path}
+  schema={schema}
+  ogImage={ogImage}
+  ogImageAlt={project.items.find((item) => item.image === project.cover)?.alt}
+>
+  <article class="wp">
+    <header class:list={["wp__head", tallLead && "wp__head--aside"]}>
+      <div class="wp__text">
+        <a class="wp__back" href="/work/">
+          <ArrowLeft class="wp__icon" aria-hidden="true" />
+          All projects
+        </a>
+
+        {project.label && <p class="wp__label">{project.label}</p>}
+        <h1 class="wp__title">{project.name}</h1>
+        <p class="wp__summary">{project.summary}</p>
+
+        <dl class="wp__credits">
+          {
+            project.client && (
+              <div>
+                <dt>Client</dt>
+                <dd>{project.client}</dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>My role</dt>
+            <dd>{project.role}</dd>
+          </div>
+          <div>
+            <dt>Deliverables</dt>
+            <dd>{project.deliverables.join(", ")}</dd>
+          </div>
+          {
+            project.year && (
+              <div>
+                <dt>Year</dt>
+                <dd>{project.year}</dd>
+              </div>
+            )
+          }
+        </dl>
+
+        {project.intro.map((paragraph) => <p class="wp__intro">{paragraph}</p>)}
+
+        {
+          project.links && (
+            <ul class="wp__links">
+              {project.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    {link.label}
+                    <ArrowUpRight class="wp__icon" aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+
+      {
+        tallLead && (
+          <div class="wp__aside">
+            <WorkVideo item={tallLead} displayWidth={420} />
+          </div>
+        )
+      }
+    </header>
+
+    {
+      wideLead && (
+        <div class="wp__lead">
+          <WorkVideo item={wideLead} displayWidth={1200} />
+        </div>
+      )
+    }
+
+    {
+      rest.length > 0 && (
+        <div class="wp__gallery" data-columns={columns}>
+          {rest.map((item) => {
+            if (item.video) {
+              const span = item.film && !isTall(item);
+              return (
+                <div class:list={["wp__item", span && "wp__item--span"]}>
+                  <WorkVideo item={item} displayWidth={span ? 1200 : columns === 3 ? 380 : 580} />
+                </div>
+              );
+            }
+            const still = shotImage(item.image);
+            return (
+              <div class="wp__item">
+                <button
+                  type="button"
+                  class="wp__open"
+                  data-open-portfolio={project.slug}
+                  data-open-index={stillIndex.get(item.image)}
+                  data-portfolio-title={project.name}
+                  aria-haspopup="dialog"
+                >
+                  {still ? (
+                    <Image
+                      src={still}
+                      alt={item.alt}
+                      widths={[400, 800, 1200].filter((w) => w <= still.width)}
+                      sizes={STILL_SIZES}
+                      quality={78}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Placeholder label={`work/${item.image}`} ratio="4/5" />
+                  )}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )
+    }
+
+    <nav class="wp__more" aria-label="More projects">
+      <a class="wp__step" href={workPath(prev)}>
+        <span class="wp__step-dir">
+          <ArrowLeft class="wp__icon" aria-hidden="true" />
+          Previous
+        </span>
+        <span class="wp__step-name">{prev.name}</span>
+      </a>
+      <a class="wp__step wp__step--next" href={workPath(next)}>
+        <span class="wp__step-dir">
+          Next
+          <ArrowRight class="wp__icon" aria-hidden="true" />
+        </span>
+        <span class="wp__step-name">{next.name}</span>
+      </a>
+    </nav>
+  </article>
+
+  {
+    stills.length > 0 && (
+      <PortfolioModal
+        groups={[
+          {
+            id: project.slug,
+            shots: stills.map((item) => ({ image: item.image, alt: item.alt })),
+          },
+        ]}
+      />
+    )
+  }
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<script>
+  import "../../scripts/journey";
+  import "../../scripts/portfolio";
+  import "../../scripts/work-video";
+</script>
+
+<style>
+  .wp {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-5) var(--space-10);
+  }
+
+  /* --- Header --------------------------------------------------- */
+  .wp__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  @media (width >= 1024px) {
+    .wp__head--aside {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: start;
+    }
+
+    .wp__aside {
+      position: sticky;
+      top: var(--space-6);
+    }
+  }
+
+  .wp__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .wp__back:hover,
+  .wp__back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .wp__icon {
+    flex: none;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  /* Its own line under the back link, sized to its text. */
+  .wp__label {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    min-height: var(--control-sm);
+    margin-top: var(--space-5);
+    padding-inline: var(--space-3);
+    background-color: var(--color-accent-soft);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-chip);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  .wp__title {
+    margin-top: var(--space-4);
+  }
+
+  .wp__summary {
+    margin-top: var(--space-4);
+    max-width: var(--measure);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    color: var(--color-accent);
+  }
+
+  .wp__credits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-4) var(--space-6);
+    margin: var(--space-6) 0 0;
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .wp__credits dt {
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .wp__credits dd {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-small);
+    color: var(--color-text);
+  }
+
+  .wp__intro {
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+  }
+
+  .wp__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wp__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+  }
+
+  /* --- Media ---------------------------------------------------- */
+  .wp__lead {
+    margin-top: var(--space-8);
+  }
+
+  /*
+   * Rows, not masonry. Columns of differing heights read top to bottom
+   * and leave a ragged hole at the end; rows read left to right, in the
+   * same order the lightbox steps through. Each still keeps its own
+   * proportions, so nothing is cropped, and a row simply aligns to the
+   * top when a square post sits beside a portrait.
+   */
+  .wp__gallery {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-6) var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  @media (width >= 640px) {
+    .wp__gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 1024px) {
+    .wp__gallery[data-columns="3"] {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* A long landscape film is watched, not glanced at: give it the row. */
+  .wp__item--span {
+    grid-column: 1 / -1;
+  }
+
+  .wp__open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+    border-radius: var(--radius-sm);
+    cursor: zoom-in;
+  }
+
+  .wp__open :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: scale var(--duration-slow) var(--ease-out);
+  }
+
+  .wp__open:hover :global(img),
+  .wp__open:focus-visible :global(img) {
+    scale: 1.02;
+  }
+
+  /* --- Previous / next ------------------------------------------ */
+  .wp__more {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-9);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .wp__step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-height: var(--control-lg);
+    color: var(--color-text);
+  }
+
+  .wp__step--next {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .wp__step-dir {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--color-text-faint);
+  }
+
+  .wp__step-name {
+    font-size: var(--text-h4);
+    font-weight: var(--weight-heading);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .wp__step:hover .wp__step-name,
+  .wp__step:focus-visible .wp__step-name {
+    color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wp__open :global(img) {
+      transition: none;
+    }
+
+    .wp__open:hover :global(img),
+    .wp__open:focus-visible :global(img) {
+      scale: none;
+    }
+  }
+</style>

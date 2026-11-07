@@ -28,6 +28,7 @@ import { TESTIMONIALS, CLIENT_LOGOS } from "../../data/testimonials";
 import { EXPERIENCE } from "../../data/experience";
 import { EDUCATION } from "../../data/education";
 import { PORTFOLIO, shotImage } from "../../data/portfolio";
+import { WORK, workPath } from "../../data/work";
 import { PRODUCTS, productImage, caseStudyLink } from "../../data/products";
 import { CASE_STUDIES, caseImage, studyPath } from "../../data/case-studies";
 import { logo } from "../../data/logos";
@@ -64,6 +65,8 @@ const DESCRIPTION = `Portfolio résumé for Alroy Ndhlovu. ${RESUME.headline}. W
 const WIDE = 820;
 const HALF = 500;
 const DEVICE = 340;
+/* A project cover, three across the 178mm column: ~220px, at 1.5x. */
+const COVER = 330;
 ---
 
 <ResumeLayout
@@ -228,10 +231,38 @@ const DEVICE = 340;
         </p>
         <h2 class="block__title">Portfolio</h2>
         <p class="block__blurb">
-          Selected work across UX/UI, web, branding, content and photography. The full galleries,
-          including the clips, are on the site.
+          Projects first, each with its own page of photographs, films or sites. Then selected
+          pieces by medium. The clips play on the site.
         </p>
       </header>
+
+      <section class="gallery">
+        <h3 class="gallery__title">
+          Projects
+          <span class="gallery__count">alroyndhlovu.com/work</span>
+        </h3>
+        <div class="projects">
+          {
+            WORK.map((project) => {
+              const cover = shotImage(project.cover);
+              return (
+                <a class="project" href={`${SITE.url}${workPath(project)}`} data-keep>
+                  {cover && (
+                    <span class="project__cover">
+                      <Image src={cover} alt="" width={COVER} loading="eager" />
+                    </span>
+                  )}
+                  <span class="project__name">{project.name}</span>
+                  <span class="project__role">
+                    {project.label ? `${project.label} · ` : ""}
+                    {project.role}
+                  </span>
+                </a>
+              );
+            })
+          }
+        </div>
+      </section>
 
       {
         PORTFOLIO.map((category) => (
@@ -774,6 +805,49 @@ const DEVICE = 340;
     font-weight: var(--resume-weight-heading);
     color: var(--resume-accent);
     break-after: avoid;
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: var(--resume-gap-4);
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: var(--resume-gap-1);
+    break-inside: avoid;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .project__cover {
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid var(--resume-rule);
+    border-radius: var(--resume-radius);
+    background-color: var(--resume-surface);
+  }
+
+  .project__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project__name {
+    font-size: var(--resume-text-small);
+    font-weight: var(--resume-weight-heading);
+    color: var(--resume-ink);
+  }
+
+  .project__role {
+    font-size: var(--resume-text-small);
+    color: var(--resume-ink-faint);
   }
 
   .gallery__grid {

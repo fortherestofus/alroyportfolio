@@ -25,6 +25,12 @@ export interface Role {
   employment?: "Full-time" | "Contract" | "Freelance" | "Self-employed";
   /** Optional one-liner shown under the title. */
   note?: string;
+  /**
+   * Where to see the work from this role: project pages and case
+   * studies. Shown as links under the note, so the history and the
+   * portfolio point at each other.
+   */
+  work?: { label: string; href: string }[];
 }
 
 export const EXPERIENCE: Role[] = [
@@ -33,7 +39,14 @@ export const EXPERIENCE: Role[] = [
     company: "Independent",
     employment: "Self-employed",
     dates: "2018 – Present",
-    note: "Art direction for Jenna Clifford, a staff training film for Total Sports made end to end, and training for iHub, Meta and the IFC. Products built: InSpiritInTruth, tapa., CaughtSlipping, Hakkan and, for Innovatr, Social Sweep.",
+    note: "Art direction for Jenna Clifford, event content for the IAB Bookmark Awards, a staff training film for Total Sports made end to end, and training for iHub, Meta and the IFC. Products built: InSpiritInTruth, tapa., CaughtSlipping, Hakkan and, for Innovatr, Social Sweep.",
+    work: [
+      { label: "Jenna Clifford", href: "/work/jenna-clifford/" },
+      { label: "IAB Bookmark Awards", href: "/work/iab-bookmarks/" },
+      { label: "Alabanza", href: "/work/alabanza/" },
+      { label: "Mitch Sneakers", href: "/work/mitch-sneakers/" },
+      { label: "Websites", href: "/work/websites/" },
+    ],
   },
   {
     title: "Brand & Marketing Manager and Product Lead (Social Sweep)",
@@ -42,6 +55,10 @@ export const EXPERIENCE: Role[] = [
     dates: "Mar 2026 – Sep 2026",
     logoFile: "innovatr.jpg",
     note: "Rebrand, CRM and paid engine for a consumer research platform, and Social Sweep from business case to launch.",
+    work: [
+      { label: "Case study", href: "/case-studies/innovatr/" },
+      { label: "Social Sweep", href: "/case-studies/social-sweep/" },
+    ],
   },
   {
     title: "Digital Marketing Consultant",
@@ -50,6 +67,7 @@ export const EXPERIENCE: Role[] = [
     dates: "Jul 2025 – Mar 2026",
     logoFile: "thrifty.jpeg",
     note: "Paid and organic across LinkedIn, TikTok and Google for a South African tour operator.",
+    work: [{ label: "Case study", href: "/case-studies/thrifty-adventures/" }],
   },
   {
     title: "Web Design Specialist",
@@ -66,6 +84,7 @@ export const EXPERIENCE: Role[] = [
     dates: "Oct 2024 – Mar 2025",
     logoFile: "EPA-logo.jpeg",
     note: "Redesigned the academy's website and moved its hosting to carry planned growth.",
+    work: [{ label: "The site", href: "/work/websites/" }],
   },
   {
     title: "Digital Marketing Consultant",
@@ -98,6 +117,7 @@ export const EXPERIENCE: Role[] = [
     dates: "Sep 2022 – Apr 2024",
     // TODO(alroy): logo missing, see README.
     note: "Managed the LinkedIn brand of Energy Capital & Power's co-founder: content, video, photography and community.",
+    work: [{ label: "The work", href: "/work/kelly-ann-mealia/" }],
   },
   {
     title: "Digital Marketing Consultant",

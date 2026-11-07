@@ -5,6 +5,7 @@ import { CLIENT_STUDIES, studyPath } from "../data/case-studies";
 import { PRODUCTS, caseStudyLink } from "../data/products";
 import { EXPERIENCE } from "../data/experience";
 import { FEATURES } from "../data/features";
+import { WORK, workPath } from "../data/work";
 
 /**
  * llms.txt (PRD §9) — a plain-markdown brief for AI answer engines.
@@ -33,7 +34,7 @@ export const GET: APIRoute = () => {
     "",
     SITE.bio,
     "",
-    `He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, the IFC, Energy Capital & Power and the African Agri Council.`,
+    `He has worked with brands and organisations including Meta, Total Sports, Jenna Clifford, IAB South Africa, the IFC, Energy Capital & Power and the African Agri Council.`,
     "",
     `- Website: ${SITE.url}`,
     `- Email: ${SITE.email}`,
@@ -49,6 +50,15 @@ export const GET: APIRoute = () => {
     "",
     ...CLIENT_STUDIES.map(
       (study) => `- [${study.name}](${url(studyPath(study))}) (${study.dates}): ${study.summary}`,
+    ),
+    "",
+    "## Portfolio",
+    "",
+    `Art direction, photography, video, websites and packaging, one page per project. All of it: ${url("/work/")}`,
+    "",
+    ...WORK.map(
+      (project) =>
+        `- [${project.name}](${url(workPath(project))})${project.label ? ` (${project.label.toLowerCase()})` : project.client && project.client !== project.name ? ` for ${project.client}` : ""}: ${project.summary} Role: ${project.role}.`,
     ),
     "",
     "## Products he has built",

@@ -119,7 +119,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for organisations including the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, the African Agri Council, Total Sports, Jenna Clifford, Cash'n'Sport, Nembhard Inc, English Plus Academy and Deep Ocean.",
       },
       {
-        text: "Art-directed content for Jenna Clifford, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
+        text: "Art-directed content for Jenna Clifford, covered the IAB Bookmark Awards in photo and video, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
       },
       {
         text: "Trained or advised 1,200+ people and businesses, mainly through Meta's programmes with Digify Africa and the IFC.",

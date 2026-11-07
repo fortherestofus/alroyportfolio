@@ -26,7 +26,8 @@
     "qa": "npm run check && npm run lint && npm run lint:tokens && npm run format:check && npm run build && npm run check:links && npm run check:redirects && npm run resume:verify && npm run qa:browser",
     "qa:browser": "node scripts/qa-browser.mjs",
     "lottie": "node scripts/theme-lottie.mjs",
-    "video": "node scripts/optimize-video.mjs"
+    "video": "node scripts/optimize-video.mjs",
+    "media:import": "node scripts/import-work-media.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

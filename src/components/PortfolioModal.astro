@@ -13,7 +13,19 @@
 import { Image, getImage } from "astro:assets";
 import { X, ChevronLeft, ChevronRight } from "@lucide/astro";
 import Placeholder from "./Placeholder.astro";
-import { PORTFOLIO, shotImage } from "../data/portfolio";
+import { PORTFOLIO, shotImage, type PortfolioCategory } from "../data/portfolio";
+
+interface Props {
+  /**
+   * The galleries this modal can open. The home page and /work/ pass
+   * nothing and get the by-medium categories; a project page passes its
+   * own stills as a single group, so the same carousel, focus trap and
+   * keyboard handling serve both.
+   */
+  groups?: Pick<PortfolioCategory, "id" | "shots">[];
+}
+
+const { groups = PORTFOLIO } = Astro.props;
 
 /*
  * The panel is capped at --width-content (1200px) and the image is
@@ -50,7 +62,7 @@ function slideSize(image: { width: number; height: number }) {
  * poster shipped at source weight and a dead copy went along with it.
  */
 const posters = new Map<string, string>();
-for (const category of PORTFOLIO) {
+for (const category of groups) {
   for (const shot of category.shots) {
     if (!shot.video) continue;
     const image = shotImage(shot.image);
@@ -87,7 +99,7 @@ for (const category of PORTFOLIO) {
 
     <div class="pm__stage" data-portfolio-stage>
       {
-        PORTFOLIO.map((category) => (
+        groups.map((category) => (
           <div class="pm__group" data-portfolio-group={category.id} hidden>
             {category.shots.map((shot) => {
               const image = shotImage(shot.image);

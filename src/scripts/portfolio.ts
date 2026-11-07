@@ -135,12 +135,16 @@ if (modal && panel && stage && titleEl && counterEl && dotsEl && prevButton && n
     slides = Array.from(group.querySelectorAll<HTMLElement>("[data-portfolio-slide]"));
     openedBy = trigger;
 
-    titleEl!.textContent = trigger.querySelector(".work__name")?.textContent ?? "Portfolio";
+    titleEl!.textContent =
+      trigger.dataset.portfolioTitle ??
+      trigger.querySelector(".work__name")?.textContent ??
+      "Portfolio";
     buildDots(slides.length);
 
     modal!.hidden = false;
     lockScroll();
-    show(0);
+    // A project page opens its lightbox on the still that was clicked.
+    show(Number(trigger.dataset.openIndex ?? 0));
 
     // Focus the dialog itself, so a screen reader announces the title
     // rather than dropping the user onto the first control.

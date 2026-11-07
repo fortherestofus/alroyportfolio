@@ -99,7 +99,7 @@ ErrorDocument 404 /404.html
     Header set Cache-Control "public, immutable"
   </FilesMatch>
 
-  <FilesMatch "\.(png|jpe?g|webp|avif|svg|ico)$">
+  <FilesMatch "\.(png|jpe?g|webp|avif|svg|ico|mp4)$">
     ExpiresDefault "access plus 6 months"
   </FilesMatch>
 

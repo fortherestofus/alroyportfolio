@@ -1,0 +1,156 @@
+---
+/**
+ * The by-medium galleries: one small card per category, each opening
+ * the shared modal carousel. Used on the home page under the projects
+ * and on /work/.
+ *
+ * The card is a button rather than a link because it opens a dialog in
+ * place; focus returns to it on close. The `.work__name` class is what
+ * the modal script reads for the dialog title.
+ */
+import { Image } from "astro:assets";
+import Placeholder from "./Placeholder.astro";
+import { PORTFOLIO, shotImage } from "../data/portfolio";
+
+interface Props {
+  /** `sizes` for the covers, matching the grid they sit in. */
+  sizes: string;
+}
+
+const { sizes } = Astro.props;
+---
+
+<ul class="mc">
+  {
+    PORTFOLIO.map((category) => {
+      const cover = shotImage(category.cover);
+      const count = category.shots.length;
+      return (
+        <li>
+          <button
+            type="button"
+            class="mc__card"
+            data-open-portfolio={category.id}
+            aria-haspopup="dialog"
+          >
+            <span class="mc__cover">
+              {cover ? (
+                <Image
+                  src={cover}
+                  alt=""
+                  widths={[320, 640].filter((w) => w <= cover.width)}
+                  sizes={sizes}
+                  quality={70}
+                  loading="lazy"
+                />
+              ) : (
+                <Placeholder label={`portfolio/${category.cover}`} ratio="3/2" />
+              )}
+            </span>
+            <span class="mc__meta">
+              <span class="work__name">{category.name}</span>
+              <span class="mc__count">
+                {count} {count === 1 ? "piece" : "pieces"}
+              </span>
+            </span>
+          </button>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .mc {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (width >= 640px) {
+    .mc {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .mc__card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    text-align: left;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .mc__card:hover,
+  .mc__card:focus-visible {
+    border-color: var(--color-accent);
+    translate: 0 -2px;
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .mc__cover {
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: var(--color-surface-sunken);
+  }
+
+  .mc__cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale var(--duration-slow) var(--ease-out);
+  }
+
+  .mc__card:hover .mc__cover :global(img) {
+    scale: 1.04;
+  }
+
+  .mc__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .work__name {
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+  }
+
+  .mc__count {
+    font-size: var(--text-chip);
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mc__card,
+    .mc__cover :global(img) {
+      transition: none;
+    }
+
+    .mc__card:hover,
+    .mc__card:focus-visible {
+      translate: none;
+    }
+
+    .mc__card:hover .mc__cover :global(img) {
+      scale: none;
+    }
+  }
+</style>

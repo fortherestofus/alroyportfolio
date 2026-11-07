@@ -1,0 +1,161 @@
+---
+/**
+ * /work/: every project, then the same work by medium.
+ *
+ * The home page shows the featured projects; this is the full list,
+ * and the page to send someone who asks "can I see your portfolio?".
+ * It lives at /work/ rather than /portfolio/ because /portfolio/ is the
+ * old WordPress namespace, which .htaccess redirects to the home page.
+ */
+import { ArrowLeft } from "@lucide/astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import WorkTile from "../../components/WorkTile.astro";
+import MediumCards from "../../components/MediumCards.astro";
+import PortfolioModal from "../../components/PortfolioModal.astro";
+import { WORK, workPath } from "../../data/work";
+import { SITE } from "../../data/site";
+
+/* Three across from a laptop up, two below that. */
+const TILE_SIZES = "(min-width: 64rem) 23rem, 45vw";
+const CARD_SIZES = "(min-width: 64rem) 23rem, (min-width: 40rem) 30vw, 45vw";
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Portfolio | ${SITE.name}`,
+    url: new URL("/work/", SITE.url).href,
+    author: { "@id": `${SITE.url}/#alroy` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: WORK.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: new URL(workPath(project), SITE.url).href,
+        name: project.name,
+      })),
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+      { "@type": "ListItem", position: 2, name: "Portfolio" },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={`Portfolio of brand, content and web work | ${SITE.name}`}
+  description="Art direction, photography, video, websites and packaging by Alroy Ndhlovu, for brands including Jenna Clifford, IAB South Africa and Alabanza."
+  path="/work/"
+  schema={schema}
+>
+  <div class="wk">
+    <header class="wk__head">
+      <a class="wk__back" href="/#portfolio">
+        <ArrowLeft class="wk__icon" aria-hidden="true" />
+        Back to home
+      </a>
+      <h1 class="wk__title">Portfolio</h1>
+      <p class="wk__intro">
+        Work for clients and a few projects of my own: art direction, photography, video, websites
+        and packaging. Each project has its own page. Everything else is grouped by medium below.
+      </p>
+    </header>
+
+    <section class="wk__section" aria-labelledby="projects-heading">
+      <h2 id="projects-heading" class="wk__heading">Projects</h2>
+      <ul class="wk__grid">
+        {
+          WORK.map((project, index) => (
+            <li>
+              <WorkTile project={project} sizes={TILE_SIZES} eager={index < 3} />
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="wk__section" aria-labelledby="medium-heading">
+      <h2 id="medium-heading" class="wk__heading">By medium</h2>
+      <MediumCards sizes={CARD_SIZES} />
+    </section>
+  </div>
+
+  <PortfolioModal />
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<script>
+  import "../../scripts/journey";
+  import "../../scripts/portfolio";
+  import "../../scripts/work-video";
+</script>
+
+<style>
+  .wk {
+    max-width: var(--width-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-5) var(--space-10);
+  }
+
+  .wk__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .wk__back:hover,
+  .wk__back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .wk__icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
+  }
+
+  .wk__title {
+    margin-top: var(--space-5);
+  }
+
+  .wk__intro {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .wk__section {
+    margin-top: var(--space-9);
+  }
+
+  .wk__heading {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-h3);
+  }
+
+  /* Two across even on a phone: one per row made the section a long scroll. */
+  .wk__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (width >= 1024px) {
+    .wk__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

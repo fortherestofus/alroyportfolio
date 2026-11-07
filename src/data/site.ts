@@ -116,7 +116,7 @@ export const SECTIONS = [
     short: "Portfolio",
     heading: "Portfolio",
     blurb:
-      "How I've put all that education and experience to work. Selected work across UX/UI, web, branding, content and photography. Open a category to page through the shots.",
+      "How I've put all that education and experience to work. Start with a project, or browse everything by medium: UX/UI, web, branding, content, photography and video.",
   },
   {
     id: "products",
