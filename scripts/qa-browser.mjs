@@ -359,13 +359,34 @@ async function checkDesktop(browser, origin, viewport) {
    * difference between this passing always and passing most of the
    * time.
    */
+  /*
+   * Two reads agreeing is only proof of rest if frames ran between
+   * them. The handle eases on requestAnimationFrame, and when the page
+   * goes a moment without a frame, two reads 50ms apart agree because
+   * nothing was drawn, not because it arrived; the next frame then
+   * moves it out from under the press. That was the "hit=HEADER.hero"
+   * failure. So each read waits for two real frames, and the box is
+   * only trusted once the pendant is what sits under its centre.
+   */
+  const frames = () =>
+    page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+    );
+
   const settledKnobBox = async () => {
     let previous = null;
-    for (let attempt = 0; attempt < 40; attempt++) {
+    for (let attempt = 0; attempt < 60; attempt++) {
+      await frames();
       const box = await page.locator(".jnav__knob-pendant").boundingBox();
       if (!box) return null;
-      if (previous && Math.abs(box.x - previous.x) < 0.5 && Math.abs(box.y - previous.y) < 0.5) {
-        return box;
+      const still =
+        previous && Math.abs(box.x - previous.x) < 0.5 && Math.abs(box.y - previous.y) < 0.5;
+      if (still) {
+        const onTarget = await page.evaluate(
+          ([x, y]) => !!document.elementFromPoint(x, y)?.closest(".jnav__knob-pendant"),
+          [box.x + box.width / 2, box.y + box.height / 2],
+        );
+        if (onTarget) return box;
       }
       previous = box;
       await page.waitForTimeout(50);
@@ -397,10 +418,25 @@ async function checkDesktop(browser, origin, viewport) {
     );
     await page.mouse.move(knobBox.x + knobBox.width / 2, knobBox.y + knobBox.height / 2);
     await page.mouse.down();
+    // The press has to have landed before the moves mean anything.
+    await page
+      .waitForFunction(
+        () => document.getElementById("journey-knob")?.dataset.dragging === "true",
+        null,
+        { timeout: 2000 },
+      )
+      .catch(() => {});
     await page.mouse.move(trackBox.x + trackBox.width * 0.55, knobBox.y + knobBox.height / 2, {
       steps: 18,
     });
-    await page.waitForTimeout(220);
+    /*
+     * Pointer moves are delivered with animation frames, so how soon
+     * they arrive depends on the machine. Wait for the scroll itself,
+     * up to a limit, rather than for a fixed 220ms.
+     */
+    await page
+      .waitForFunction((from) => window.scrollY > from + 500, before, { timeout: 3000 })
+      .catch(() => {});
     const during = await page.evaluate(() => window.scrollY);
     await page.mouse.up();
     await page.waitForTimeout(320);
@@ -437,18 +473,38 @@ async function checkDesktop(browser, origin, viewport) {
     const nav = document.getElementById("journey-nav");
 
     const read = () => ({ top: parseFloat(knob.style.top) || 0, d: base.getAttribute("d") });
+    const frame = () => new Promise((r) => requestAnimationFrame(() => r()));
+
+    /*
+     * The handle eases toward its target a frame at a time, so a fixed
+     * wait reads it wherever it has got to when frames are slow. Wait
+     * instead until it has stopped: the same position across five real
+     * frames, within a generous limit.
+     */
+    const settle = async () => {
+      const deadline = window.performance.now() + 4000;
+      let previous = read();
+      let still = 0;
+      while (window.performance.now() < deadline && still < 5) {
+        await frame();
+        const now = read();
+        still = Math.abs(now.top - previous.top) < 0.05 && now.d === previous.d ? still + 1 : 0;
+        previous = now;
+      }
+      return previous;
+    };
 
     window.scrollTo({ top: 0, behavior: "instant" });
-    await wait(700);
-    const atStart = read();
+    await wait(300);
+    const atStart = await settle();
 
     const middle = document.getElementById("portfolio");
     window.scrollTo({
       top: middle.getBoundingClientRect().top + window.scrollY - nav.offsetHeight,
       behavior: "instant",
     });
-    await wait(900);
-    const atMiddle = read();
+    await wait(300);
+    const atMiddle = await settle();
 
     return { atStart, atMiddle };
   });
