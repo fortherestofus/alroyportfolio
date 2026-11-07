@@ -151,6 +151,20 @@ The script refuses to publish from a dirty working tree, so whatever is live is
 always traceable to a commit on `main`. It rebuilds the branch from scratch each
 time, so files deleted from the build disappear from the deployed site too.
 
+Hostinger picks up a push to `deploy` within a minute or two; there is no
+separate step to trigger it.
+
+**If the push fails with `HTTP 408`:** GitHub dropped an upload that was too
+large to send in one go over HTTPS (it happened on 7 Nov 2026, when the
+project pages first shipped about 117MB of new video). Raising
+`http.postBuffer` does not help. The deploy commit is already made locally, so
+publish the same tree in parts: check out `origin/deploy` in a temporary
+worktree, `git checkout <deploy commit> -- <folder>` a folder or two at a time
+(the `media/` folders first), commit and push each, then make the tree match
+the deploy commit exactly and push that last. Pushes of about 45MB went
+through. Only the last push changes what visitors see, because the earlier
+ones only add files.
+
 `.github/workflows/ci.yml` runs the same QA gates on every push. It does not
 deploy — it is there to catch anything that slipped through locally.
 
