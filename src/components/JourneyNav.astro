@@ -153,7 +153,7 @@ const BRAND_LOGO_HEIGHT = 48;
   }
 
   /* White to near-black ink, the light theme's text colour. */
-  :global([data-theme="light"]) .jnav__logo {
+  :global(:root:not([data-theme="dark"])) .jnav__logo {
     filter: invert(0.92);
   }
 

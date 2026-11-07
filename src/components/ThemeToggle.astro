@@ -61,8 +61,8 @@ import { Moon, Sun } from "@lucide/astro";
   }
 
   /* On dark, offer the sun; on light, the moon. */
-  :global([data-theme="light"]) .theme-toggle__icon--sun,
-  :global(:root:not([data-theme="light"])) .theme-toggle__icon--moon {
+  :global(:root:not([data-theme="dark"])) .theme-toggle__icon--sun,
+  :global([data-theme="dark"]) .theme-toggle__icon--moon {
     display: none;
   }
 </style>

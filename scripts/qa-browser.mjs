@@ -1185,13 +1185,25 @@ async function checkPortfolioModal(browser, origin) {
  * portfolio index, a project page and a case study. The light theme is
  * a second palette, and every one of these has surfaces of its own.
  */
+/**
+ * A browser context showing the site in one theme. Light is the
+ * default whatever the device says, so dark is reached the way a
+ * visitor reaches it: a stored toggle choice, set before any page
+ * script runs. The device setting is set to match as well, which costs
+ * nothing and keeps the browser's own UI in step.
+ */
+async function themedContext(browser, theme, options = {}) {
+  const context = await browser.newContext({ ...options, colorScheme: theme });
+  if (theme === "dark") {
+    await context.addInitScript(() => window.localStorage.setItem("theme", "dark"));
+  }
+  return context;
+}
+
 const CONTRAST_PAGES = ["/", "/work/", "/work/jenna-clifford/", "/case-studies/innovatr/"];
 
 async function checkContrast(browser, origin, scheme) {
-  const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-    colorScheme: scheme,
-  });
+  const context = await themedContext(browser, scheme, { viewport: { width: 1440, height: 900 } });
   for (const path of CONTRAST_PAGES) await checkPageContrast(context, origin, scheme, path);
   await context.close();
 }
@@ -1467,9 +1479,10 @@ async function checkMobile(browser, origin, viewport) {
  * has to be a measured fact, not an intention.
  */
 async function checkLottie(browser, origin) {
+  // A dark device, to prove the default light set loads regardless.
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
-    colorScheme: "light",
+    colorScheme: "dark",
   });
   const page = await context.newPage();
 
@@ -1518,7 +1531,7 @@ async function checkLottie(browser, origin) {
 
   const loaded = requests.filter((url) => url.endsWith(".json"));
   record(
-    "[lottie] the light theme loads the light set",
+    "[lottie] the default light theme loads the light set",
     loaded.length > 0 && loaded.every((url) => url.includes("/lottie/light/")),
     loaded.map((url) => new URL(url).pathname).join(", "),
   );
@@ -1569,9 +1582,9 @@ async function checkLottie(browser, origin) {
 }
 
 /*
- * Light and dark: the device setting is followed, the choice is made
- * before first paint, the toggle works and is remembered, and a choice
- * that matches the device is forgotten so the site follows it again.
+ * Light and dark: light is the default whatever the device says, the
+ * choice is made before first paint, the toggle works and is
+ * remembered, and switching back to light forgets the choice.
  */
 async function checkTheme(browser, origin) {
   const state = (page) =>
@@ -1583,83 +1596,85 @@ async function checkTheme(browser, origin) {
       label: document.querySelector("[data-theme-toggle]")?.getAttribute("aria-label"),
     }));
 
+  /*
+   * Read the theme at the first moment there is a body to paint, from
+   * a script that runs before any of the page's own modules.
+   */
+  const watchFirstPaint = (page) =>
+    page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        window.__themeAtFirstPaint = document.documentElement.dataset.theme;
+      });
+    });
+
   for (const scheme of ["dark", "light"]) {
     const context = await browser.newContext({
       viewport: { width: 1440, height: 900 },
       colorScheme: scheme,
     });
     const page = await context.newPage();
-
-    /*
-     * Read the theme at the first moment there is a body to paint, from
-     * a script that runs before any of the page's own modules.
-     */
-    await page.addInitScript(() => {
-      document.addEventListener("DOMContentLoaded", () => {
-        window.__themeAtFirstPaint = document.documentElement.dataset.theme;
-      });
-    });
+    await watchFirstPaint(page);
 
     for (const path of ["/", "/work/"]) {
       await page.goto(`${origin}${path}`, { waitUntil: "networkidle" });
       const first = await page.evaluate(() => window.__themeAtFirstPaint);
       const now = await state(page);
       record(
-        `[theme] ${path} follows a ${scheme} device setting before first paint`,
-        first === scheme && now.theme === scheme && now.stored === null,
+        `[theme] ${path} opens light on a ${scheme} device, before first paint`,
+        first === "light" && now.theme === "light" && now.stored === null,
         `first=${first} now=${now.theme} stored=${now.stored}`,
       );
       record(
-        `[theme] ${path} has a toggle on ${scheme}`,
+        `[theme] ${path} has a toggle on a ${scheme} device`,
         (await page.locator("[data-theme-toggle]").count()) === 1 &&
           (await page.locator("[data-theme-toggle]").isVisible()),
       );
     }
-
-    const other = scheme === "dark" ? "light" : "dark";
-    await page.locator("[data-theme-toggle]").click();
-    let now = await state(page);
-    record(
-      `[theme] the toggle switches ${scheme} to ${other} and remembers it`,
-      now.theme === other && now.stored === other,
-      JSON.stringify(now),
-    );
-    record(
-      `[theme] the toggle relabels itself and the browser chrome follows`,
-      now.label === `Switch to ${scheme} mode` &&
-        now.meta === (other === "light" ? "#f6f3ee" : "#0d0d0d"),
-      JSON.stringify(now),
-    );
-
-    await page.reload({ waitUntil: "networkidle" });
-    const first = await page.evaluate(() => window.__themeAtFirstPaint);
-    record(
-      `[theme] the ${other} choice survives a reload, from first paint`,
-      first === other,
-      `first=${first}`,
-    );
-
-    await page.locator("[data-theme-toggle]").click();
-    now = await state(page);
-    record(
-      `[theme] switching back to the device's ${scheme} forgets the choice`,
-      now.theme === scheme && now.stored === null,
-      JSON.stringify(now),
-    );
-
     await context.close();
   }
 
-  // The photo lightbox stays dark on the light theme, text included.
-  const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-    colorScheme: "light",
-  });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
-  await page.goto(`${origin}/work/`, { waitUntil: "networkidle" });
-  await page.locator("[data-open-portfolio]").first().click();
-  await page.waitForTimeout(600);
-  const lightbox = await page.evaluate(() => {
+  await watchFirstPaint(page);
+  await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+
+  await page.locator("[data-theme-toggle]").click();
+  let now = await state(page);
+  record(
+    "[theme] the toggle switches light to dark and remembers it",
+    now.theme === "dark" && now.stored === "dark",
+    JSON.stringify(now),
+  );
+  record(
+    "[theme] the toggle relabels itself and the browser chrome follows",
+    now.label === "Switch to light mode" && now.meta === "#0d0d0d",
+    JSON.stringify(now),
+  );
+
+  await page.reload({ waitUntil: "networkidle" });
+  const first = await page.evaluate(() => window.__themeAtFirstPaint);
+  record(
+    "[theme] the dark choice survives a reload, from first paint",
+    first === "dark",
+    `first=${first}`,
+  );
+
+  await page.locator("[data-theme-toggle]").click();
+  now = await state(page);
+  record(
+    "[theme] switching back to light forgets the choice",
+    now.theme === "light" && now.stored === null && now.meta === "#f6f3ee",
+    JSON.stringify(now),
+  );
+  await context.close();
+
+  // The photo lightbox stays dark on the light theme, text included.
+  const lightContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const lightPage = await lightContext.newPage();
+  await lightPage.goto(`${origin}/work/`, { waitUntil: "networkidle" });
+  await lightPage.locator("[data-open-portfolio]").first().click();
+  await lightPage.waitForTimeout(600);
+  const lightbox = await lightPage.evaluate(() => {
     const modal = document.getElementById("portfolio-modal");
     const title = modal?.querySelector("#portfolio-modal-title");
     return {
@@ -1672,7 +1687,7 @@ async function checkTheme(browser, origin) {
     lightbox.bg === "#0d0d0d" && lightbox.title === "rgb(249, 246, 242)",
     JSON.stringify(lightbox),
   );
-  await context.close();
+  await lightContext.close();
 }
 
 async function checkSeo(browser, origin) {
@@ -1957,10 +1972,7 @@ async function checkTextZoom(browser, origin) {
 }
 
 async function checkHeroContrast(browser, origin, scheme) {
-  const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-    colorScheme: scheme,
-  });
+  const context = await themedContext(browser, scheme, { viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   await page.goto(`${origin}/`, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
@@ -2290,6 +2302,17 @@ async function checkNoScript(browser, origin) {
     "[no-js] reveal content is not left hidden",
     parseFloat(revealOpacity) > 0.9,
     `opacity ${revealOpacity}`,
+  );
+
+  // No script means no stored choice: the default light theme, logo inverted to ink.
+  const look = await page.evaluate(() => ({
+    bg: getComputedStyle(document.body).backgroundColor,
+    logo: getComputedStyle(document.querySelector(".jnav__logo") ?? document.body).filter,
+  }));
+  record(
+    "[no-js] the page renders in the default light theme",
+    look.bg === "rgb(246, 243, 238)" && look.logo.startsWith("invert"),
+    JSON.stringify(look),
   );
 
   await context.close();

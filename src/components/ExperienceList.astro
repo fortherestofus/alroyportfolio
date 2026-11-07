@@ -21,6 +21,20 @@ import { EXPERIENCE } from "../data/experience";
             {role.employment && <span class="roles__employment">{role.employment}</span>}
           </p>
           {role.note && <p class="roles__note">{role.note}</p>}
+          {role.highlights && (
+            <ul class="roles__highlights">
+              {role.highlights.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ul>
+          )}
+          {role.skills && (
+            <ul class="roles__skills" aria-label={`Skills used at ${role.company}`}>
+              {role.skills.map((skill) => (
+                <li>{skill}</li>
+              ))}
+            </ul>
+          )}
           {role.work && (
             <ul class="roles__work" aria-label={`Work from ${role.company}`}>
               {role.work.map((link) => (
@@ -101,6 +115,48 @@ import { EXPERIENCE } from "../data/experience";
     margin-top: var(--space-2);
     font-size: var(--text-small);
     color: var(--color-text-muted);
+  }
+
+  .roles__highlights {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-4);
+    list-style: disc;
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+    max-width: var(--measure);
+  }
+
+  .roles__highlights li::marker {
+    color: var(--color-accent);
+  }
+
+  /*
+   * The keywords, set as one quiet line rather than a row of chips:
+   * there to be read by a recruiter skimming and matched by a search
+   * engine, without outweighing the sentences above them.
+   */
+  .roles__skills {
+    display: flex;
+    flex-wrap: wrap;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-eyebrow);
+    line-height: var(--leading-small);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    max-width: var(--measure);
+  }
+
+  /* Trailing, so a wrapped line never starts with a stray dot. */
+  .roles__skills li:not(:last-child)::after {
+    content: "·";
+    padding-inline: var(--space-2);
   }
 
   /*

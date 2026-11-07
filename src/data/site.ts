@@ -96,7 +96,7 @@ export const SECTIONS = [
     short: "Work",
     heading: "Work experience",
     blurb:
-      "Twelve plus years across marketing, media, e-commerce and technology. Contract and consulting work for global organisations and ambitious brands.",
+      "Twelve plus years in digital marketing, brand management, product management and e-commerce. Full-time roles, contracts and consulting for global organisations and ambitious brands.",
   },
   {
     id: "education",

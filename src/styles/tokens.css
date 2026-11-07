@@ -9,29 +9,27 @@
 /*
  * COLOUR, in two themes.
  *
- * DARK-FIRST (decided with Alroy, 1 Aug 2026, replacing the original
- * light-first direction). His previous site was dark, his portrait is
- * shot on black, and the lively pthalo green only truly comes alive
- * against ink. Dark is therefore the default: it is what a visitor gets
- * with no preference, with scripting off, and on any element that asks
- * for it with data-theme="dark" (the photo lightbox does, in both
- * themes, because photographs are judged against black).
+ * LIGHT-FIRST (decided with Alroy, 7 Nov 2026). Light is what every
+ * visitor gets until they use the nav toggle, whatever their device
+ * setting, and what renders with scripting off. The inline script in
+ * BaseLayout sets data-theme on <html> before first paint from the
+ * stored choice. Light is the dark palette read the other way round,
+ * with one real change: the lively green is 2.1:1 on a light page, so
+ * the accent drops to a deep olive from the same family.
  *
- * LIGHT (added 7 Nov 2026) follows the visitor's device setting, or the
- * nav toggle once they have used it; the inline script in BaseLayout
- * sets data-theme on <html> before first paint. It is the same palette
- * read the other way round, with one real change: the lively green is
- * 2.1:1 on a light page, so the accent drops to a deep olive from the
- * same family.
+ * DARK was the original direction (1 Aug 2026): his previous site was
+ * dark, his portrait is shot on black, and the pthalo green comes alive
+ * against ink. It is one click away, and it is also what any element
+ * gets that asks for it with data-theme="dark" (the photo lightbox does,
+ * in both themes, because photographs are judged against black).
  *
- * The dark selector is `:root:not([data-theme="light"])` rather than a
+ * The light selector is `:root:not([data-theme="dark"])` rather than a
  * bare `:root` so the two blocks never compete on source order.
  *
  * Every value is checked for WCAG AA in both themes by the contrast
  * gate in scripts/qa-browser.mjs. Changing one without running that
  * gate is how contrast regressions get shipped.
  */
-:root:not([data-theme="light"]),
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -96,6 +94,7 @@
   --collage-opacity: 0.35;
 }
 
+:root:not([data-theme="dark"]),
 [data-theme="light"] {
   color-scheme: light;
 

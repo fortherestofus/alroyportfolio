@@ -134,9 +134,9 @@ const { name, label } = Astro.props;
 
     /** The set that matches the page: /lottie/x.json or /lottie/light/x.json. */
     const sourceFor = (path: string) =>
-      document.documentElement.dataset.theme === "light"
-        ? path.replace("/lottie/", "/lottie/light/")
-        : path;
+      document.documentElement.dataset.theme === "dark"
+        ? path
+        : path.replace("/lottie/", "/lottie/light/");
 
     const mounted = new Map<
       HTMLElement,

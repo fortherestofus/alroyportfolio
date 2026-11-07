@@ -58,26 +58,22 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
 
     <!--
       Light or dark, decided before first paint so the page never
-      flashes the wrong one: a choice the visitor made with the toggle,
-      otherwise their device setting. The two colours on the meta tag
-      mirror --color-bg in each theme; the browser chrome reads them
-      before any CSS has loaded. See src/scripts/theme.ts for the rest.
+      flashes the wrong one: dark only if the visitor chose it with the
+      toggle, light otherwise, whatever the device setting. The two
+      colours on the meta tag mirror --color-bg in each theme; the
+      browser chrome reads them before any CSS has loaded. See
+      src/scripts/theme.ts for the rest.
     -->
-    <meta name="theme-color" content="#0d0d0d" data-dark="#0d0d0d" data-light="#f6f3ee" />
+    <meta name="theme-color" content="#f6f3ee" data-dark="#0d0d0d" data-light="#f6f3ee" />
     <script is:inline>
       (function () {
         let stored = null;
         try {
           stored = localStorage.getItem("theme");
         } catch {
-          // Blocked storage: fall through to the device setting.
+          // Blocked storage: fall through to the default.
         }
-        const theme =
-          stored === "light" || stored === "dark"
-            ? stored
-            : window.matchMedia("(prefers-color-scheme: light)").matches
-              ? "light"
-              : "dark";
+        const theme = stored === "dark" ? "dark" : "light";
         document.documentElement.dataset.theme = theme;
         const meta = document.querySelector('meta[name="theme-color"]');
         if (meta) meta.content = meta.dataset[theme];

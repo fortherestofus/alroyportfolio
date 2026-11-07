@@ -1,41 +1,29 @@
 /**
  * Light and dark.
  *
+ * Light is the default for everyone, whatever their device setting (a
+ * decision, not an oversight: see the note at the top of tokens.css).
  * The first decision is made before paint, by the inline script in
- * BaseLayout: a stored choice if there is one, otherwise the device
- * setting. This module takes over from there:
+ * BaseLayout: dark if the visitor stored it, light otherwise. This
+ * module takes over from there:
  *
- * - The toggle flips the theme and remembers it. If the new theme is the
- *   same as the device setting, the stored choice is cleared instead, so
- *   the site goes back to following the device. Nobody gets stuck on a
- *   choice they made once.
- * - With nothing stored, a change to the device setting (an automatic
- *   evening switch, say) is followed live.
+ * - The toggle flips the theme and remembers it. Choosing light again
+ *   clears the stored choice rather than storing "light", so nothing
+ *   lingers that would outlive a later change of default.
  * - Anything that cannot be themed with CSS alone (the booking embed,
  *   the section illustrations) listens for `themechange` on document.
  */
 export type Theme = "light" | "dark";
 
 const KEY = "theme";
+const DEFAULT: Theme = "light";
 const root = document.documentElement;
-const system = window.matchMedia("(prefers-color-scheme: light)");
 
-const systemTheme = (): Theme => (system.matches ? "light" : "dark");
-
-export const currentTheme = (): Theme => (root.dataset.theme === "light" ? "light" : "dark");
-
-function stored(): Theme | null {
-  try {
-    const value = localStorage.getItem(KEY);
-    return value === "light" || value === "dark" ? value : null;
-  } catch {
-    return null;
-  }
-}
+export const currentTheme = (): Theme => (root.dataset.theme === "dark" ? "dark" : "light");
 
 function remember(theme: Theme): void {
   try {
-    if (theme === systemTheme()) localStorage.removeItem(KEY);
+    if (theme === DEFAULT) localStorage.removeItem(KEY);
     else localStorage.setItem(KEY, theme);
   } catch {
     // Private mode or blocked storage: the switch still works for this page.
@@ -80,8 +68,4 @@ document.addEventListener("click", (event) => {
   const next: Theme = currentTheme() === "dark" ? "light" : "dark";
   remember(next);
   apply(next);
-});
-
-system.addEventListener("change", () => {
-  if (!stored()) apply(systemTheme());
 });
