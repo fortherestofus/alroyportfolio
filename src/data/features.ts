@@ -1,6 +1,5 @@
 /**
- * Where the work has shown up — press, programmes and exhibitions
- * (section 01, closing block).
+ * Recognition: press, programmes and exhibitions (section 01).
  *
  * Not a logo wall, deliberately. Section 01 already ends on the client
  * marquee, and a second row of marks inches above it would read as the
@@ -46,16 +45,16 @@ export const FEATURES: Feature[] = [
     outlet: "GQ South Africa",
     kind: "Bylined article",
     year: "2025",
-    what: "Wrote the piece on branding as a business's extroversion — the principles that carried across four brands of my own, for readers who are not natural extroverts.",
+    what: "An article I wrote on building a brand that connects with people, drawing on the four brands I've built.",
     thirdPerson:
-      "Wrote the GQ South Africa piece on branding as a business's extroversion, drawing on the four brands he runs himself.",
+      "Wrote a GQ South Africa article on building a brand that connects with people, drawing on the four brands he has built.",
     href: "https://gq.co.za/wealth/career-advice/2025-08-14-how-to-build-a-brand-that-truly-connects/",
   },
   {
     outlet: "We Are Victoria Falls",
     kind: "National programme",
     year: "2022–23",
-    what: "One of three specialists who designed Let's Get Digital, Zimbabwe's tourism upskilling programme, with the Ministry of Tourism and the World Bank Group. I built the platform holding the courses and recordings.",
+    what: "I was one of three specialists who designed Let's Get Digital, Zimbabwe's tourism training programme with the Ministry of Tourism and the World Bank Group, and I built its course platform.",
     thirdPerson:
       "One of three digital specialists who designed Let's Get Digital, Zimbabwe's national tourism upskilling programme, run with the Ministry of Tourism and Hospitality Industry and supported by the World Bank Group. He also built the learning platform holding its courses and recordings.",
     href: "https://wearevictoriafalls.com/training/",
@@ -64,7 +63,7 @@ export const FEATURES: Feature[] = [
     outlet: "Julie Miller Investment Art Institute",
     kind: "Exhibition",
     year: "2019",
-    what: "A piece of mine shown at Africa's Art Collective Seasons, Mall of Africa — 500+ works by 130 African artists, toured in VR so international buyers could walk it remotely.",
+    what: "My work was shown at Africa's Art Collective Seasons at the Mall of Africa, among 500+ works by 130 African artists, with a VR tour for international buyers.",
     thirdPerson:
       "Had a work shown at Africa's Art Collective Seasons at the Mall of Africa, an exhibition of more than 500 pieces by 130 African artists that was toured in VR for international buyers.",
     href: "https://www.citizen.co.za/fourways-review/news-headlines/2019/03/20/mall-africa-julie-miller-investment-art-institute-smash-distance-barriers-name-art/",

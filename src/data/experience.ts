@@ -120,7 +120,7 @@ export const EXPERIENCE: Role[] = [
     employment: "Contract",
     dates: "Jul 2025 – Mar 2026",
     logoFile: "thrifty.jpeg",
-    note: "Built the paid and organic marketing for a South African tour operator from scratch across LinkedIn, TikTok and Google, giving each channel one job in turning attention into leads.",
+    note: "Set up paid and organic marketing from scratch for a South African tour operator across LinkedIn, TikTok and Google, focused on lead generation.",
     highlights: [
       "LinkedIn lead forms converted at 36.6% against a 10–15% benchmark; a brochure offer drove 73% of all leads.",
       "3.1 million organic TikTok views, 38% of them from search, and TikTok ads at 0.97% click-through against a 0.52% median.",

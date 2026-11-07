@@ -15,25 +15,25 @@ export const SERVICES: Service[] = [
   {
     name: "Brand",
     icon: "palette",
-    description:
-      "Positioning, identity and art direction, and the content that carries a brand across every touchpoint.",
+    description: "Brand strategy, positioning, visual identity, art direction and content.",
   },
   {
     name: "Product",
     icon: "layout-grid",
     description:
-      "Apps, SaaS, online stores and AI tools taken from problem to shipped and then run: discovery, UX/UI, build, automation and the roadmap.",
+      "Product management and UX/UI design for apps, SaaS, online stores and AI tools, from discovery to launch.",
   },
   {
     name: "Marketing",
     icon: "trending-up",
     description:
-      "Campaigns, paid media and go-to-market plans built on audience insight and performance data, tuned for measurable growth.",
+      "Digital marketing, paid media, CRM, email and go-to-market plans, measured on leads and growth.",
   },
 ];
 
 /** Headline numbers shown in the proof row. */
 export const STATS = [
   { value: "12+", label: "Years of experience" },
-  { value: "1,200+", label: "People and businesses trained and advised" },
+  { value: "1,200+", label: "People trained and advised" },
+  { value: "25+", label: "Businesses served" },
 ] as const;

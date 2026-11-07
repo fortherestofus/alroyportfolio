@@ -218,7 +218,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     summary:
       "Replaced a US$5,000-a-year licence with a tool I built. Now sold in every Innovatr membership.",
     description:
-      "Built for Innovatr while I ran its brand and marketing. A build-versus-buy call that became a product.",
+      "An AI social listening tool I proposed, built and maintained for Innovatr while running its marketing.",
     tags: ["Build vs buy", "Product strategy", "AI product", "Research tooling"],
     focus: ["product"],
     logoFile: "innovatr.jpg",
@@ -229,9 +229,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       { image: "innovatr/social_sweep_charts.jpg", alt: "The Social Sweep evidence view." },
     ],
     chapters: [
-      { id: "decision", label: "Build, not buy" },
+      { id: "decision", label: "Building instead of buying" },
       { id: "product", label: "The product" },
-      { id: "worth", label: "What it was worth" },
+      { id: "worth", label: "Savings" },
       { id: "screens", label: "Inside the tool" },
       { id: "next", label: "Do differently" },
     ],
@@ -239,23 +239,23 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "decision",
         kind: "prose",
-        heading: "Build, not buy",
+        heading: "Building instead of buying",
         body: [
-          "Innovatr was about to sign a US$5,000-a-year social listening contract. I proposed building it instead, and did, in a quarter: platform APIs feeding an AI layer, prototyped in Replit, built with Claude.",
+          "Innovatr was about to sign a US$5,000-a-year social listening contract. I proposed building a tool instead and delivered it in three months: platform APIs feeding an AI analysis layer, prototyped in Replit and built with Claude.",
         ],
       },
       {
         id: "product",
         kind: "prose",
-        heading: "One question in, receipts out",
+        heading: "How it works",
         body: [
-          "Ask a plain-language question; it picks the platforms worth reading and returns a report where every claim links to a real comment. No dashboards, no boolean queries.",
+          "You ask a question in plain language. The tool picks the relevant platforms and returns a report in which every claim links to a real comment, with no dashboards or boolean search queries to learn.",
         ],
       },
       {
         id: "worth",
         kind: "metrics",
-        heading: "What building it instead of buying it was worth",
+        heading: "Savings and revenue",
         items: [
           {
             value: "US$5k",
@@ -302,7 +302,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "I'd launch it with its own price, not only inside memberships. Then it would show what it earns, not just what it saved.",
+          "I'd also sell it on its own, outside the memberships, so its revenue could be measured separately.",
         ],
       },
     ],
@@ -323,7 +323,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
     summary: "61% of ad delivery on decision-makers, at a third of the B2B median cost per lead.",
     description:
-      "Rebrand, CRM and paid engine for a consumer research consultancy, in seven months.",
+      "Rebrand, website, CRM, email and LinkedIn Ads for a consumer research company, in seven months.",
     tags: ["Rebranding", "Content", "Paid media", "Lead sourcing", "Marketing automation"],
     focus: ["brand", "marketing"],
     logoFile: "innovatr.jpg",
@@ -349,7 +349,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "branding", label: "Brand & website" },
       { id: "content", label: "Reports into content" },
       { id: "ads", label: "Ad creative" },
-      { id: "pipeline", label: "The pipeline" },
+      { id: "pipeline", label: "Marketing system" },
       { id: "results", label: "Results" },
       { id: "honest", label: "What didn't work" },
       { id: "next", label: "Do differently" },
@@ -360,7 +360,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "The starting point",
         body: [
-          "The product was different; the site wasn't. It led with “Stop Guessing. Launch Better Innovation.”, a line any agency could use. No paid programme, almost no inbound.",
+          "The website led with “Stop Guessing. Launch Better Innovation.”, a generic line that didn't explain what made the product different. There was no paid advertising and very little inbound interest.",
         ],
       },
       {
@@ -368,7 +368,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "beforeAfter",
         heading: "Brand and website",
         intro:
-          "From generic promise to argument: “Old research is dead. Stop being told. Start asking why.” Something to disagree with, with the proof right under it.",
+          "The new positioning led with “Old research is dead. Stop being told. Start asking why.”, followed directly by proof points.",
         pairs: [
           {
             label: "Home",
@@ -401,7 +401,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Turning research into content",
         intro:
-          "Every study produced findings nobody outside the client ever saw. These put them in public, doing what the product does: state a claim, then put the evidence under it.",
+          "Innovatr's studies produced findings that only clients saw. I turned them into public content that states a finding and shows the data behind it.",
         shots: [
           {
             image: "innovatr/carousel-drinking-1.png",
@@ -434,7 +434,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "gallery",
         heading: "Ad creative",
         intro:
-          "The same argument, built to be scrolled past. “The Innovatr Way” took on the legacy model: decades unchanged, six-week turnarounds, six-figure studies.",
+          "The ad campaign “The Innovatr Way” compared Innovatr with traditional research firms and their six-week turnarounds and six-figure study costs.",
         shots: [
           {
             image: "innovatr/carousel-way-1.png",
@@ -458,7 +458,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Same message, two formats",
         intro:
-          "“The Innovatr Way” ran as a carousel and as a video. The argument was identical; only the format changed, and the result moved with it.",
+          "“The Innovatr Way” ran as both a carousel and a video with the same message. The video performed far better.",
         items: [
           {
             value: "0.68%",
@@ -473,37 +473,36 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Same account and message. Format, not message, made the difference, so video took the attention job.",
+          "Same account and message, so the difference came from the format. Video was then used for awareness.",
       },
       {
         id: "pipeline",
         kind: "metrics",
         heading: "Building the marketing system",
         intro:
-          "There was no list of buyers. We built one into a CRM and wired email, LinkedIn ads and remarketing to it, so ads aim at named companies, not the platform's guesses.",
+          "There was no list of potential buyers. We built one in a CRM and connected it to email, LinkedIn Ads and remarketing, so the ads targeted named companies.",
         items: [
           {
             value: "0 → live",
             label: "CRM built in six months",
-            context:
-              "De-duplicated by email across every source. A segmented system where none existed.",
+            context: "Contacts from every source, de-duplicated by email and segmented.",
           },
           {
             value: "Account-based",
             label: "Targeting on named organisations",
             context:
-              "The market mapped company by company, so account-based targeting could exist. Volumes stay with the client.",
+              "The market was mapped company by company to make account-based targeting possible. Volumes are confidential.",
           },
         ],
         footnote:
-          "Sourced audience, not inbound enquiries. LinkedIn's delivery data below shows the ads landing on exactly these companies.",
+          "This was a sourced audience rather than inbound enquiries. LinkedIn's delivery data below shows the ads reached these companies.",
       },
       {
         id: "pipeline",
         kind: "gallery",
-        heading: "Email that earns the open",
+        heading: "Email sequences",
         intro:
-          "Every lead the ads brought in got a sequence. I wrote and designed each email; this one, sent under the founder's name, makes the brand's argument in the inbox.",
+          "Every lead from the ads entered an email sequence. I wrote and designed each email; this one was sent under the founder's name.",
         pair: true,
         shots: [
           {
@@ -519,7 +518,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "pipeline",
         kind: "metrics",
-        heading: "Opened and clicked above the norm",
+        heading: "Email results",
         items: [
           {
             value: "36.7%",
@@ -543,9 +542,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "results",
         kind: "metrics",
-        heading: "The ads landed in the right rooms",
+        heading: "Who the ads reached",
         intro:
-          "The first test isn't clicks. It's whether the ads reached people who can sign off a study, by LinkedIn's own delivery data.",
+          "LinkedIn's delivery data shows whether the ads reached people with the authority to commission a study.",
         items: [
           {
             value: "61%",
@@ -556,7 +555,7 @@ export const CASE_STUDIES: CaseStudy[] = [
             value: "14 of 22",
             label: "Top companies by delivery were targets",
             context:
-              "The country's major banks, insurers and consultancies. The names stay with the client.",
+              "Major South African banks, insurers and consultancies. Names are confidential.",
           },
           {
             value: "56%",
@@ -569,9 +568,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "results",
         kind: "trend",
-        heading: "Leads got better every flight",
+        heading: "Lead quality by campaign flight",
         intro:
-          "Short flights, each tightening who saw the forms. The measure isn't lead count, which stays with the client, but how many arrived on a work email.",
+          "Each short campaign flight narrowed the audience. Lead quality is measured as the share of leads using a work email; lead counts are confidential.",
         measure: "Work-email share of leads",
         rows: [
           {
@@ -584,29 +583,29 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Refined flight",
             value: 91,
             display: "91%",
-            note: "Vertical targeting on the mapped accounts. Most of the newest cohort squarely in the ICP.",
+            note: "Industry targeting on the mapped accounts. Most new leads matched the ideal customer profile (ICP).",
           },
         ],
-        footnote: "Lead counts and budget stay with the client.",
+        footnote: "Lead counts and budget are confidential.",
       },
       {
         id: "results",
         kind: "metrics",
-        heading: "Every cost beat the market",
+        heading: "Costs against LinkedIn benchmarks",
         intro:
-          "Video bought attention, carousels bought conversions. Each is scored on its own job against LinkedIn's published B2B norms.",
+          "Video was used for awareness and carousels for conversions. Each is compared with LinkedIn's published B2B benchmarks.",
         items: [
           {
             value: "~3×",
             label: "Better cost per lead than the B2B median",
             context:
-              "A third of LinkedIn's published B2B gated-lead median. The absolute figure stays with the client.",
+              "A third of LinkedIn's published B2B median cost per lead. The actual figure is confidential.",
           },
           {
             value: "52%",
             label: "Cheaper per click than the norm",
             context:
-              "Against LinkedIn's published B2B click costs; cheaper still blended account-wide.",
+              "Compared with LinkedIn's published B2B click costs, and lower again across the whole account.",
           },
           {
             value: "61%",
@@ -621,14 +620,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Form completion ran 46–57% against a 10–13% benchmark. No flight passed five weeks, short of LinkedIn's optimisation runway, so these are early figures.",
+          "Form completion was 46–57% against a 10–13% benchmark. No flight ran longer than five weeks, which is short for LinkedIn's optimisation, so these are early results.",
       },
       {
         id: "honest",
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Organic alone didn't reach: paid delivered ~166× its impressions. The emails beat every open and click benchmark, but drew no replies. And every pause between flights reset LinkedIn's learning.",
+          "Organic posts reached few people; paid ads delivered about 166 times the impressions. The emails beat every open and click benchmark but got no replies, and each pause between flights reset LinkedIn's learning phase.",
         ],
       },
       {
@@ -636,7 +635,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "I'd put a person on follow-up from the first flight, and run fewer, longer flights. Cold leads needed a call, not another email.",
+          "I'd assign someone to call new leads from the first flight, and run fewer, longer flights. Cold leads needed a phone call more than another email.",
         ],
       },
     ],
@@ -657,7 +656,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
     summary: "Lead forms at 3× the LinkedIn norm, and 3.1 million organic views on TikTok.",
     description:
-      "A South African tour operator. I gave each of four channels one job, and turned attention into leads.",
+      "Paid and organic marketing for a South African tour operator across LinkedIn, TikTok and Google.",
     tags: ["Paid media", "Organic social", "Search", "Lead generation", "Channel strategy"],
     focus: ["marketing"],
     logoFile: "thrifty.jpeg",
@@ -667,13 +666,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Jul 2025 – Jan 2026",
     ],
     chapters: [
-      { id: "start", label: "The wrong channel" },
-      { id: "testing", label: "Opening it up" },
+      { id: "start", label: "Starting point" },
+      { id: "testing", label: "Testing" },
       { id: "offer", label: "The brochure" },
       { id: "results", label: "LinkedIn results" },
       { id: "tiktok", label: "TikTok" },
       { id: "google", label: "Search" },
-      { id: "mix", label: "The mix" },
+      { id: "mix", label: "Channel roles" },
       { id: "honest", label: "What didn't work" },
       { id: "next", label: "Do differently" },
     ],
@@ -681,24 +680,24 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "start",
         kind: "prose",
-        heading: "The channel nobody picks for travel",
+        heading: "Starting point",
         body: [
-          "Social existed; paid didn't: no campaigns, no tracking. LinkedIn looks wrong for holidays people pay for themselves. Seven months of spend say it works, just not for the reason I expected.",
+          "The company had social media accounts but no paid campaigns or tracking. LinkedIn seemed an unlikely channel for personal holidays, but seven months of results showed it worked, for a different reason than I expected.",
         ],
       },
       {
         id: "testing",
         kind: "trend",
-        heading: "Reach up 47×, and the price down every month",
+        heading: "Reach up 47× while costs fell each month",
         intro:
-          "I started small, tested four objectives side by side to learn what each cost, then dropped what lost and funded what won.",
+          "I started with a small budget, tested four campaign objectives side by side, then moved budget to the best performers.",
         measure: "Reach, indexed to July",
         rows: [
           {
             label: "Jul 2025",
             value: 1,
             display: "1×",
-            note: "The baseline. A new account pays the most it will ever pay.",
+            note: "The baseline. New ad accounts pay the highest costs.",
           },
           { label: "Aug 2025", value: 8.2, display: "8×", note: "Clicks 58% cheaper than July." },
           {
@@ -733,14 +732,14 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "Reach indexed to month one; impressions and spend stay with the client. Some of the price drop is simply the account maturing.",
+          "Reach is indexed to month one; impressions and spend are confidential. Part of the cost drop comes from the account maturing.",
       },
       {
         id: "offer",
         kind: "metrics",
-        heading: "The brochure made the difference",
+        heading: "The brochure offer",
         intro:
-          "Same audience, same platform, same form. One ad asked people to enquire; the other offered the 2026 brochure. Only one offered something the reader already wanted.",
+          "Two ads ran to the same audience with the same form. One asked people to enquire; the other offered the 2026 brochure.",
         items: [
           {
             value: "36.6%",
@@ -755,23 +754,21 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "73%",
             label: "Of all leads came from the brochure ask",
-            context: "The stronger offer carried the account.",
+            context: "The brochure ad produced most of the account's leads.",
           },
           {
             value: "+39%",
             label: "Cost per lead, everything else",
-            context:
-              "The weaker ask cost two-fifths more per lead. Absolute costs stay with the client.",
+            context: "Other ads cost about 40% more per lead. Actual costs are confidential.",
           },
         ],
-        footnote:
-          "Only the offer changed. It cost nothing, and it moved results more than anything else.",
+        footnote: "Only the offer changed, and it improved results more than any other test.",
       },
       {
         id: "results",
         kind: "metrics",
-        heading: "What seven months bought",
-        intro: "From no paid presence on the channel at all.",
+        heading: "LinkedIn results",
+        intro: "Starting with no paid presence on LinkedIn.",
         items: [
           {
             value: "0.97%",
@@ -791,7 +788,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "16",
             label: "Campaigns across six objectives",
-            context: "Seven months, one channel, every rand tracked.",
+            context: "Seven months on LinkedIn, with all spend tracked.",
           },
         ],
         footnote:
@@ -802,13 +799,12 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "3.1 million views, and 38% of them from search",
         intro:
-          "TikTok already had an audience; the work was making it findable. Destinations shot plainly and captioned as the questions people type, so old posts keep earning.",
+          "TikTok already had an audience, so the focus was search. Destination videos were captioned with the questions people search for, which keeps older posts getting views.",
         items: [
           {
             value: "38.1%",
             label: "Of views came from search",
-            context:
-              "People looking for a destination and finding Thrifty, rather than being served it.",
+            context: "People searching for a destination found Thrifty's videos.",
           },
           {
             value: "3.1M",
@@ -818,8 +814,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "7,200",
             label: "Shares",
-            context:
-              "The signal that matters most on the platform: someone sending it to a person.",
+            context: "Shares are a strong engagement signal on TikTok.",
           },
         ],
         footnote: "June 2025 – January 2026.",
@@ -827,25 +822,25 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "tiktok",
         kind: "metrics",
-        heading: "And then paid, to start conversations",
+        heading: "TikTok ads for conversations",
         intro:
-          "One destination, one video, one objective: get a person into a message thread. A week of delivery, priced per conversation started.",
+          "Each ad featured one destination, with the aim of starting a message conversation. The test ran for one week, measured by cost per conversation.",
         items: [
           {
             value: "Cheapest",
             label: "Qualified contact in the account",
-            context:
-              "Weighted across all nine videos, not the best one. Costs stay with the client.",
+            context: "Averaged across all nine videos. Costs are confidential.",
           },
           {
             value: "9",
             label: "Destination videos in one week's test",
-            context: "Each priced per conversation started, so the winners were provable in days.",
+            context:
+              "Each measured by cost per conversation, so the best performers were clear within days.",
           },
           {
             value: "43%",
             label: "Of conversations from the best video",
-            context: "Bali and Thailand, at essentially the account average per conversation.",
+            context: "Bali and Thailand, at about the account's average cost per conversation.",
           },
         ],
         footnote:
@@ -854,15 +849,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "google",
         kind: "metrics",
-        heading: "Search, for the people already looking",
+        heading: "Google Ads",
         intro:
-          "The cheapest job on the list: someone searching for a tour doesn't need persuading.",
+          "Google Ads reached people already searching for tours, at the lowest cost per click.",
         items: [
           {
             value: "~99%",
             label: "Below the travel median cost per click",
             context:
-              "Against the $2.14 median in the 2026 benchmark set. The absolute cost stays with the client.",
+              "Against the $2.14 median in the 2026 benchmark set. The actual cost is confidential.",
           },
           {
             value: "8.04%",
@@ -877,20 +872,19 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         footnote:
-          "WordStream's 2026 US benchmarks. Most volume here is display and Performance Max, and SA clicks cost less, so part of the gap is the market.",
+          "WordStream's 2026 US benchmarks. Most volume came from display and Performance Max, and South African clicks cost less, so part of the difference is the market.",
       },
       {
         id: "mix",
         kind: "checklist",
-        heading: "What each channel was actually for",
-        intro:
-          "A holiday isn't bought in one motion, and each channel is good at a different part of it.",
+        heading: "The role of each channel",
+        intro: "Each channel worked best at a different stage of the booking decision.",
         items: [
-          "TikTok organic gets the brand found, and keeps working months later.",
-          "TikTok ads turn that into a conversation: the cheapest qualified contact in the account.",
-          "Google catches people already pricing a trip. Cheapest clicks, least persuasion.",
-          "LinkedIn sells the bigger, planned trip: the costliest contact in the account, and the most serious.",
-          "None was asked to do another's job. The brochure that made LinkedIn work would have died on TikTok, and the destination video that pulls conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
+          "TikTok organic content builds awareness and keeps getting views for months.",
+          "TikTok ads start conversations, at the lowest cost per qualified contact in the account.",
+          "Google Ads reaches people already comparing trips, with the cheapest clicks.",
+          "LinkedIn sells larger, planned trips, with the highest cost per contact and the most serious enquiries.",
+          "Content didn't transfer between channels: the destination video that started conversations on TikTok drew 0.10% click-through as a LinkedIn ad.",
         ],
       },
       {
@@ -898,7 +892,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What didn't work",
         body: [
-          "Brand awareness bought the priciest clicks, ten times the cheapest month's, and single-destination videos flopped. Broken tracking on both platforms meant bookings couldn't be traced back to an ad.",
+          "Brand awareness campaigns produced the most expensive clicks, ten times the cheapest month, and single-destination videos underperformed. Tracking problems on both platforms meant bookings couldn't be linked to specific ads.",
         ],
       },
       {
@@ -926,11 +920,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "A Hakkan report: 965 items cited and 903 real voices across seven platforms, with the sentiment split beneath.",
     },
     summary:
-      "A content discovery and creation assistant built to fight AI slop. It explores your topic into a cited report, then helps you create from it in your own voice.",
+      "A research and writing assistant that turns what people are saying about a topic into a cited report, then helps you write from it in your own voice.",
     description:
-      "Hakkan (発刊, “to publish”) turns the real conversation on a topic into a cited report, then helps you create from it in your own voice.",
+      "Hakkan (発刊, “to publish”) collects online discussion about a topic into a cited report, then helps you write from it in your own voice.",
     tags: ["Product build", "AI engineering", "UX", "Content discovery"],
-    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    meta: [
+      "Own product",
+      "Solo: product, design and copy, built with coding agents",
+      "Jul 2026 – present",
+    ],
     strip: [
       { image: "products/hakkan-research.jpg", alt: "Hakkan's search screen." },
       { image: "products/hakkan-report.jpg", alt: "A Hakkan report with receipts." },
@@ -940,25 +938,25 @@ export const CASE_STUDIES: CaseStudy[] = [
     chapters: [
       { id: "why", label: "Why it exists" },
       { id: "how", label: "How it works" },
-      { id: "hard", label: "The hard part" },
-      { id: "honest", label: "Honest by construction" },
+      { id: "hard", label: "Evidence filter" },
+      { id: "honest", label: "Quality rules" },
       { id: "screens", label: "The screens" },
     ],
     blocks: [
       {
         id: "why",
         kind: "prose",
-        heading: "The problem: content stopped knowing anything",
+        heading: "Why it exists",
         body: [
-          "Since late 2024, more new articles are written by AI than by people (Graphite, 2025): fluent text that knows nothing. Hakkan starts from the real conversation instead. The model is never the source.",
+          "Since late 2024, more new articles have been written by AI than by people (Graphite, 2025), and much of it has no real sources. Hakkan starts from real discussions, and the AI model is never used as a source.",
         ],
       },
       {
         id: "how",
         kind: "prose",
-        heading: "How it works: topic, report, your voice",
+        heading: "How it works",
         body: [
-          "Give it a topic and it builds a visual report: themes, sentiment, every quote cited. Then you create from it, in a voice learned from your own writing.",
+          "Enter a topic and it builds a visual report of themes and sentiment, with every quote cited. You then write from the report in a voice learned from your own writing.",
         ],
       },
       {
@@ -966,42 +964,40 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "metrics",
         heading: "Where it listens",
         intro:
-          "Searching everywhere for every question is slow, expensive and mostly noise. The work is picking the right places.",
+          "Searching every source for every question is slow and expensive and returns mostly noise, so Hakkan picks sources for each question.",
         items: [
           {
             value: "Per question",
-            label: "Sources are chosen, not swept blindly",
-            context:
-              "Your question is split into sub-queries, and only the sources that carry it are kept.",
+            label: "Source selection",
+            context: "Each question is split into sub-queries, and only relevant sources are kept.",
           },
           {
             value: "Then deeper",
-            label: "Routed legs the sweep cannot reach",
+            label: "Specialist sources",
             context:
-              "It adds what the sweep misses: review sites for travel, Hacker News for developers.",
+              "It adds sources the main search misses, such as review sites for travel and Hacker News for developers.",
           },
           {
             value: "Yours",
-            label: "Depth is a user choice",
-            context:
-              "How wide and how far back a run reaches is set by the person asking, not by a limit the tool invented.",
+            label: "Adjustable depth",
+            context: "The user sets how wide and how far back each search goes.",
           },
         ],
       },
       {
         id: "hard",
         kind: "prose",
-        heading: "The hard part: teaching the filter to value people",
+        heading: "Improving the evidence filter",
         body: [
-          "The first evidence filter killed real voices: verbose articles scored high, while a short reply like “Why need a nanny if I won’t have a job” died as off-topic. The fix: judge a comment against what it replies to.",
+          "The first evidence filter removed too many real comments: long articles scored high, while a short reply like “Why need a nanny if I won’t have a job” was marked off-topic. The fix was to judge each comment against the post it replies to.",
         ],
       },
       {
         id: "hard",
         kind: "trend",
-        heading: "Human voice in the evidence, measured at every stage",
+        heading: "Human sources in citations",
         intro:
-          "The bar: 40% of everything cited had to be a real human utterance rather than a publication. Getting there took four attempts.",
+          "The target was for 40% of citations to come from real people rather than publications. It took four attempts.",
         measure: "Voice ratio",
         rowLabel: "Stage",
         rows: [
@@ -1015,52 +1011,49 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Live streaming",
             value: 29,
             display: "29%",
-            note: "Real runs. Better, and still losing voices in the filter.",
+            note: "Live runs. Better, but the filter still removed real comments.",
           },
           {
             label: "Facts added",
             value: 19,
             display: "19%",
-            note: "More article evidence diluted the voices. The filter was the bottleneck.",
+            note: "More article sources lowered the share of human comments. The filter was the bottleneck.",
           },
           {
             label: "Filter rewritten",
             value: 57,
             display: "57%",
-            note: "Comments judged as comments. Well past the bar.",
+            note: "Comments judged in context. Well above the target.",
           },
         ],
-        footnote:
-          "Measured on live runs against a 40% bar set before the work started, not tuned to hit it.",
+        footnote: "Measured on live runs against a 40% target set before the work started.",
       },
       {
         id: "honest",
         kind: "metrics",
-        heading: "Honest by construction",
-        intro:
-          "“No slop” is enforced in code, not tone of voice. Three refusals built into the product:",
+        heading: "Quality rules",
+        intro: "Quality rules are enforced in code. Three are built into the product:",
         items: [
           {
             value: "3-way",
-            label: "Every number is classified",
+            label: "Labelled numbers",
             context:
-              "Grounded, from your writing, or model-derived. Only the last is flagged, never blocked.",
+              "Every number is marked as sourced, from your writing, or model-derived. Model-derived numbers are flagged.",
           },
           {
             value: "0",
-            label: "Virality predictions",
+            label: "No virality predictions",
             context:
-              "No outcome data, so predictions are refused. It shows what actually broke out instead.",
+              "Without outcome data it won't predict virality. It shows what has already performed well instead.",
           },
           {
             value: "Scoped",
-            label: "Every claim names its sample",
-            context:
-              "“60% of the voices in this report” is measured and true. “60% of people” is neither.",
+            label: "Sample sizes stated",
+            context: "Claims say “60% of the voices in this report”, never “60% of people”.",
           },
         ],
         footnote:
-          "Same rule inside the business: a hard cost-per-run ceiling enforced in code, so the depth users get stays sustainable on both sides.",
+          "A fixed cost limit per run is also enforced in code to keep the service affordable to run.",
       },
       {
         id: "screens",
@@ -1103,11 +1096,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Three InSpiritInTruth screens: the devotionals library, the home screen, and the in-app Bible.",
     },
     summary:
-      "A devotional app for a more personal faith: written for what you're carrying today, and engineered never to misquote scripture. 131 active users, 5.0 on the App Store.",
+      "A devotional app that writes a devotional for what you're going through and checks every scripture reference. 131 active users and a 5.0 App Store rating.",
     description:
-      "For the overwhelmed, the curious, the unchurched and the devoted. It keeps tradition's shared rhythm and adds the personal side.",
+      "Made for people at every stage of faith. It keeps the shared daily readings and adds personal devotionals.",
     tags: ["Product build", "Personalisation", "UX", "AI engineering"],
-    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    meta: [
+      "Own product",
+      "Solo: product, design and copy, built with coding agents",
+      "Jul 2026 – present",
+    ],
     strip: [
       { image: "products/isit-home.png", alt: "ISIT home screen." },
       { image: "products/isit-personalise.png", alt: "The personalisation step." },
@@ -1118,7 +1115,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     chapters: [
       { id: "why", label: "Why it exists" },
-      { id: "how", label: "The personalisation" },
+      { id: "how", label: "Fact-checking" },
       { id: "signal", label: "Early signal" },
       { id: "screens", label: "The screens" },
     ],
@@ -1126,17 +1123,17 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "why",
         kind: "prose",
-        heading: "A format that never changed",
+        heading: "Why it exists",
         body: [
-          "Barna finds 56% of Christians say their spiritual life is entirely private, yet a devotional is one page for everyone. ISIT keeps the shared readings and the Bible, then writes one for what you're carrying.",
+          "Barna found that 56% of Christians say their spiritual life is entirely private, yet devotionals are written the same for everyone. ISIT includes the shared readings and the Bible, and writes a devotional for each person's situation.",
         ],
       },
       {
         id: "how",
         kind: "prose",
-        heading: "Personalisation with a safety net",
+        heading: "Checking every devotional",
         body: [
-          "Spiritual guidance can't hallucinate. Every devotional is fact-checked against the live web before anyone reads it, and a cheaper, edgier model was tested and turned down twice.",
+          "Every devotional is fact-checked against live web search before anyone reads it. I tested a cheaper model twice and rejected it both times.",
         ],
       },
       {
@@ -1144,7 +1141,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "trend",
         heading: "Where the AI effort goes",
         intro:
-          "Most AI products spend everything on generation. ISIT spends most of it checking that the generation told the truth.",
+          "Most of ISIT's AI processing goes into checking the generated text rather than writing it.",
         measure: "Share of effort",
         rowLabel: "Stage",
         rows: [
@@ -1167,14 +1164,14 @@ export const CASE_STUDIES: CaseStudy[] = [
             note: "The closing reflection pass.",
           },
         ],
-        footnote: "Verification is the one cost this product will not cut to protect a margin.",
+        footnote: "Verification is the one cost I won't reduce to improve margins.",
       },
       {
         id: "signal",
         kind: "metrics",
         heading: "Early signal",
         intro:
-          "It's early. What matters now isn't scale, but whether people want a devotional written for them.",
+          "It's early, and the main question is whether people want a devotional written for them.",
         items: [
           {
             value: "131",
@@ -1184,12 +1181,12 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "5.0",
             label: "App Store rating, six reviews",
-            context: "Four of six praise its simplicity; two, the personalisation.",
+            context: "Four of the six reviews mention its simplicity and two the personalisation.",
           },
           {
             value: "2",
             label: "Paying subscribers in two months",
-            context: "Since launch in late August, with a free tier that stays useful.",
+            context: "Since launch in late August, with a useful free tier.",
           },
         ],
         footnote: "RevenueCat and App Store Connect, read 3 November 2026.",
@@ -1243,11 +1240,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "Three tapa. screens: entering what is in the fridge, the home screen, and a finished recipe.",
     },
     summary:
-      "Adulting, minus one decision. It feeds you with what you have, wherever you are: one meal from your own ingredients, your diet respected, the power back to you.",
+      "A recipe app that suggests one meal from the ingredients you have, within your dietary rules.",
     description:
-      "One question: “what can I cook with this?” Type, say or snap what you have and get one considered recipe, not fifty.",
+      "It answers one question: “What can I cook with this?” Type, say or photograph your ingredients and get one recipe back.",
     tags: ["Product build", "UX", "Simplicity", "Pricing"],
-    meta: ["Own product", "Solo: product, design, code, copy", "Jul 2026 – present"],
+    meta: [
+      "Own product",
+      "Solo: product, design and copy, built with coding agents",
+      "Jul 2026 – present",
+    ],
     strip: [
       { image: "products/tapa-home.jpg", alt: "tapa. home." },
       { image: "products/tapa-generate.jpg", alt: "Entering ingredients." },
@@ -1256,51 +1257,51 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     chapters: [
       { id: "why", label: "Why it exists" },
-      { id: "simple", label: "Simple on purpose" },
-      { id: "fair", label: "Fair on purpose" },
+      { id: "simple", label: "Design choices" },
+      { id: "fair", label: "Free tier" },
       { id: "screens", label: "The screens" },
     ],
     blocks: [
       {
         id: "why",
         kind: "prose",
-        heading: "The mental load nobody prices in",
+        heading: "Why it exists",
         body: [
-          "68% of Americans call deciding what to eat their biggest mealtime challenge (Wakefield Research). tapa. deletes the decision: show it the fridge, get one meal that respects your diet.",
+          "68% of Americans say deciding what to eat is their biggest mealtime challenge (Wakefield Research). tapa. makes the decision: show it your fridge and get one meal that fits your diet.",
         ],
       },
       {
         id: "simple",
         kind: "metrics",
-        heading: "Simple on purpose",
-        intro:
-          "Every number in the product is small, and each one is a decision to leave something out:",
+        heading: "Kept simple",
+        intro: "The app is deliberately limited:",
         items: [
           {
             value: "3 → 1",
-            label: "Ways in, one recipe out",
-            context: "Type, say or snap; one recipe back. Choice is the load the app removes.",
+            label: "Three inputs, one recipe",
+            context: "Type, speak or take a photo, and get one recipe back.",
           },
           {
             value: "1×",
-            label: "Set your constraints once",
-            context: "Allergies, diet, household, skill: set once, applied every time.",
+            label: "Settings saved once",
+            context:
+              "Allergies, diet, household size and skill level are set once and applied to every recipe.",
           },
           {
             value: "3",
-            label: "Recipes of history",
-            context: "Enough to revisit last night, not a database to manage.",
+            label: "Short recipe history",
+            context: "Enough to find last night's meal without managing a library.",
           },
         ],
         footnote:
-          "Same discipline in the code: recipes belong to an account, not a device, so a shared phone never leaks one person's history.",
+          "Recipes are stored per account rather than per device, so people sharing a phone don't see each other's history.",
       },
       {
         id: "fair",
         kind: "trend",
-        heading: "Pricing it against how people actually cook",
+        heading: "Setting the free tier",
         intro:
-          "Too generous and nobody meets the upgrade; too tight and it's a demo. Finding the honest free tier took three moves in two days.",
+          "The free tier had to be useful without removing the reason to upgrade. It took three changes in two days.",
         measure: "Free recipes per week",
         rowLabel: "Iteration",
         rows: [
@@ -1308,23 +1309,23 @@ export const CASE_STUDIES: CaseStudy[] = [
             label: "Launch",
             value: 3,
             display: "3",
-            note: "The median cook makes 3–4 dinners a week, so free covered everything.",
+            note: "The typical cook makes 3–4 dinners a week, so the free tier covered everything.",
           },
           {
             label: "Revision",
             value: 1,
             display: "1",
-            note: "Too far the other way. Live for about an hour before the reasoning was rechecked.",
+            note: "Too restrictive. It was live for about an hour before I changed it.",
           },
           {
             label: "Settled",
             value: 2,
             display: "2",
-            note: "Real weekly value free; regular cooks meet the upgrade when they need it.",
+            note: "Useful every week for free; frequent cooks reach the upgrade when they need more.",
           },
         ],
         footnote:
-          "Upsell copy is generated from the config that enforces it, so the app only promises what it delivers.",
+          "Upgrade messages are generated from the same settings that enforce the limits, so they always match what the app does.",
       },
       {
         id: "screens",
@@ -1365,11 +1366,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       device: "panel",
     },
     summary:
-      "A browser extension that holds the procrastinator and the workaholic accountable. 183 installs, one uninstall, no account and no server.",
+      "A Chrome extension that tracks browsing time and flags both procrastination and overwork. 183 installs and one uninstall, with no account or server.",
     description:
-      "Your phone nags you about screen time; your laptop, where the work and the distraction live, doesn't. CaughtSlipping is a sarcastically honest friend that tracks where the hours went.",
+      "Phones report screen time, but laptops, where most work and distraction happen, usually don't. CaughtSlipping tracks where your browsing hours go and comments on them with a sarcastic tone.",
     tags: ["Product build", "Chrome extension", "Behaviour design", "Privacy"],
-    meta: ["Own product", "Solo: product, design, code, copy", "Live on the Chrome Web Store"],
+    meta: [
+      "Own product",
+      "Solo: product, design and copy, built with coding agents",
+      "Live on the Chrome Web Store",
+    ],
     website: "https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg",
     strip: [
       { image: "products/caught-today.jpg", alt: "The daily verdict." },
@@ -1379,50 +1384,50 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     chapters: [
       { id: "why", label: "Why it exists" },
-      { id: "hard", label: "The hard part" },
-      { id: "grinding", label: "The other slipper" },
-      { id: "free", label: "The gate I deleted" },
+      { id: "hard", label: "Time tracking" },
+      { id: "grinding", label: "Work Mode" },
+      { id: "free", label: "Paywall" },
       { id: "screens", label: "The screens" },
     ],
     blocks: [
       {
         id: "why",
         kind: "prose",
-        heading: "Two kinds of slipper, one blind spot",
+        heading: "Why it exists",
         body: [
-          "Screen-time tools nag the distracted, never the overworked, and they live on the phone. CaughtSlipping lives in the browser: a verdict with attitude, walled-off tabs past your limit, a pause before a relapse.",
+          "Most screen-time tools only target distraction, and most run on phones. CaughtSlipping runs in the browser. It gives a daily verdict, blocks sites once you pass your limit and adds a pause before you go back to them.",
         ],
       },
       {
         id: "hard",
         kind: "prose",
-        heading: "The hard part: most trackers quietly lie",
+        heading: "Accurate time tracking",
         body: [
-          "Chrome calls an hour-long show “idle” and logs three minutes. An app that promises the truth can't flatter you, so after four rewrites, watching counts, forgotten tabs don't, and nothing is logged once you've walked away.",
+          "Chrome marks an hour of video watching as “idle” and logs only three minutes. After four rewrites, the tracker counts time spent watching, ignores forgotten tabs and stops logging when you step away.",
         ],
       },
       {
         id: "grinding",
         kind: "metrics",
-        heading: "Caught Grinding: the alter ego",
-        intro: "Work Mode flips it: a Workaholic Check anchored to health research, not a vibe.",
+        heading: "Caught Grinding: Work Mode",
+        intro: "Work Mode adds a Workaholic Check based on health research.",
         items: [
           {
             value: "55h",
-            label: "The line that ends the argument",
+            label: "Health threshold",
             context:
-              "The WHO and ILO's health-risk line: 35% higher stroke risk. Cross it and the verdict jumps to workaholic, source on screen.",
+              "The WHO and ILO threshold linked to a 35% higher stroke risk. Past it, the verdict changes to workaholic and shows the source.",
           },
           {
             value: "Your hours",
-            label: "Not a hardcoded evening",
+            label: "Your own schedule",
             context:
-              "After-hours reads your own schedule: YouTube at 10am Tuesday isn't 9pm Saturday.",
+              "After-hours is based on your working hours, so YouTube at 10am on a Tuesday counts differently from 9pm on a Saturday.",
           },
           {
             value: "0 bytes",
-            label: "Leaves your device",
-            context: "No account, no backend. It can't sell what it never collects.",
+            label: "Private by design",
+            context: "No account and no server. Your data never leaves your device.",
           },
         ],
         footnote: "Four verdict tiers, from chill to workaholic.",
@@ -1430,9 +1435,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "free",
         kind: "prose",
-        heading: "The gate I built, then deleted",
+        heading: "Removing the paywall",
         body: [
-          "Blocking and limits first shipped behind a paywall: selling the diagnosis and charging for the cure. The free tier was a guilt machine with no exit, so licensing came out and everything went free.",
+          "Blocking and limits first launched as paid features, so free users could see the problem but not fix it. I removed licensing and made every feature free.",
         ],
       },
       {
@@ -1491,17 +1496,17 @@ export const CASE_STUDIES: CaseStudy[] = [
     chapters: [
       { id: "build", label: "Building it" },
       { id: "proof", label: "Proof" },
-      { id: "media", label: "Cutting the cost" },
-      { id: "stickers", label: "What I killed" },
+      { id: "media", label: "Imagery" },
+      { id: "stickers", label: "Stickers" },
       { id: "next", label: "Do differently" },
     ],
     blocks: [
       {
         id: "build",
         kind: "prose",
-        heading: "The whole thing, not a piece of it",
+        heading: "Everything from range to store",
         body: [
-          "Most people who can design a shirt can't take a card payment; most who can build a store have never priced a garment. I did both: range, store, Paystack and PayPal, photography and marketing.",
+          "I handled every part of the business: the range, the online store, Paystack and PayPal payments, the photography and the marketing.",
         ],
       },
       {
@@ -1516,13 +1521,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "proof",
         kind: "metrics",
-        heading: "What validated it",
-        intro: "A brand is an opinion until somebody pays for it. Two things settled the question.",
+        heading: "Early sales",
+        intro: "Two early results showed there was demand.",
         items: [
           {
             value: "Month one",
             label: "First sales",
-            context: "Local and international, from the store rather than from friends.",
+            context: "Local and international orders through the online store.",
           },
           {
             value: "20 units",
@@ -1531,36 +1536,35 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
           {
             value: "2",
-            label: "Revenue lines it proved",
+            label: "Revenue lines",
             context: "Direct-to-consumer, and business-to-business off the same production setup.",
           },
         ],
         footnote:
-          "Small numbers, but they proved people would buy. The bulk order matters for who bought, not how many.",
+          "The numbers are small, but they show people will buy. The bulk order mattered most because it came from a business.",
       },
       {
         id: "proof",
         kind: "prose",
-        heading: "The order that changed the business",
+        heading: "First wholesale order",
         body: [
-          "A tour operator ordered twenty branded units, Filosofee's first wholesale order. It proved the same setup serves a better customer: B2B buys more per order and comes back on a schedule.",
+          "A tour operator ordered twenty branded units, Filosofee's first wholesale order. It showed the same production setup could serve business customers, who buy more per order and reorder regularly.",
         ],
       },
       {
         id: "media",
         kind: "prose",
-        heading: "A shoot you pay for once",
+        heading: "Reusing the product shoot",
         body: [
-          "The product shoot was the brand's biggest first-year cost and its best assets. So it became the reference: generated imagery extends that look to the volume social needs.",
+          "The product shoot was the brand's biggest first-year cost and produced its best images. I now use it as the reference for AI-generated imagery, which supplies the volume social media needs in the same look.",
         ],
       },
       {
         id: "media",
         kind: "gallery",
         pair: true,
-        heading: "Photographed, then extended",
-        intro:
-          "Left: the studio shoot. Right: generated, working from it. Same brand, one of them costing a day and a crew.",
+        heading: "Studio shoot and generated images",
+        intro: "Left: the studio shoot. Right: an image generated from it.",
         shots: [
           {
             image: "filosofee/real-vs-ai.jpg",
@@ -1575,18 +1579,16 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "stickers",
         kind: "prose",
-        heading: "The line I stopped",
+        heading: "Dropping stickers",
         body: [
-          "Stickers carried the same pick, pack and courier admin as a hoodie, at a fraction of the value. I cut them and moved the effort to garments and wholesale, which earn several times more.",
+          "Stickers took as much packing and courier admin as a hoodie for a fraction of the value, so I dropped them and focused on garments and wholesale.",
         ],
       },
       {
         id: "next",
         kind: "prose",
         heading: "What I'd do differently",
-        body: [
-          "I'd chase wholesale from day one instead of finding it by accident. Businesses buy more per order, and come back.",
-        ],
+        body: ["I'd pursue wholesale from the start. Businesses buy more per order and reorder."],
       },
     ],
     seo: {
@@ -1605,9 +1607,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       alt: "The LumiSkin hero: a chameleon shifts to lavender to match the soap beside it as the Aurora Petal card slides in.",
       video: "/media/portfolio/website_video_lumiskin.mp4",
     },
-    summary: "A premium product site in a day for under $300, against $6,500+ the usual way.",
+    summary:
+      "A premium product site built in a day for under $300, against $6,500+ for a conventional build.",
     description:
-      "A meme said this brief was too expensive to build. AI and the right tools said otherwise.",
+      "A concept site for a skincare brand, built in one day with AI tools for under $300.",
     tags: ["Art direction", "AI production", "Front-end", "Motion"],
     focus: ["brand"],
     meta: ["Self-directed", "Build challenge", "Mar 2026"],
@@ -1619,7 +1622,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { image: "lumiskin/hero-peach.jpg", alt: "" },
     ],
     chapters: [
-      { id: "dare", label: "The dare" },
+      { id: "dare", label: "The challenge" },
       { id: "idea", label: "The idea" },
       { id: "make", label: "Making it" },
       { id: "cost", label: "What it cost" },
@@ -1630,36 +1633,36 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "dare",
         kind: "prose",
-        heading: "Designers dream it. Developers price it.",
+        heading: "The challenge",
         body: [
-          "A meme mocked a concept site where a chameleon takes the colour of the bottle beside it: lovely, but a studio and a render farm, so it dies. I wanted to know if that was still true. It isn't: one day, under $300.",
+          "A meme joked that a concept site, with a chameleon changing colour to match the bottle beside it, was too expensive to build because it needed a studio and 3D rendering. I tested whether that was still true and built it in one day for under $300.",
         ],
       },
       {
         id: "dare",
         kind: "video",
         heading: "The meme that started it",
-        intro: "The concept site on top, the verdict underneath.",
+        intro: "The original concept and the meme about it.",
         src: "/media/case-studies/lumiskin-inspiration.mp4",
         poster: "lumiskin/inspiration-poster.webp",
         portrait: true,
         alt: "A split screen: above, a concept site for Chroma Juice where a chameleon shifts through berry, orange and green to match each bottle; below, the canyon-swing meme with two people in blue jackets labelled Programmer and Developer standing over a seated man labelled Designer.",
         footnote:
-          "Not my work. Included as the thing being answered, and credited to @uiux_sumeet, whose watermark is on the clip.",
+          "Not my work. Shown for context and credited to @uiux_sumeet, whose watermark is on the clip.",
       },
       {
         id: "idea",
         kind: "prose",
-        heading: "A hero that earns the word premium",
+        heading: "The concept",
         body: [
-          "I moved it to cosmetics, a category built on colour. The chameleon takes a bar's colour and the product card lands on the match. Every expensive part stayed: live animal, three colourways, macro work, a 30-second film.",
+          "I applied the idea to skincare: the chameleon changes to match a soap bar's colour and the matching product card appears. I kept every costly element: a live animal, three colourways, macro shots and a 30-second film.",
         ],
       },
       {
         id: "idea",
         kind: "video",
-        heading: "One mechanic, three colourways",
-        intro: "The whole idea is a transition, so here it is running rather than as three frames.",
+        heading: "The three colourways",
+        intro: "The concept depends on the transition, so it's shown as video.",
         src: "/media/portfolio/website_video_lumiskin.mp4",
         poster: "lumiskin/hero-aurora.jpg",
         alt: "The LumiSkin hero cycling through all three colourways: the chameleon shifts to lavender, pink and amber to match Aurora Petal, Jade Mist and Peach Quartz, each with its product card.",
@@ -1667,27 +1670,27 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "make",
         kind: "prose",
-        heading: "Generated, not shot",
+        heading: "Generated images and video",
         body: [
-          "Nothing was photographed or filmed. Stills first, then animated, then a site built with an agentic IDE. Locking cheap stills first meant the film never re-rolled 30 seconds for one wrong soap.",
+          "Nothing was photographed or filmed. I generated the stills first, animated them, then built the site with an agentic IDE. Approving the cheaper stills first avoided regenerating the 30-second film for small errors.",
         ],
       },
       {
         id: "cost",
         kind: "metrics",
-        heading: "What it actually cost",
-        intro: "All subscription or per-second pricing rather than a quote.",
+        heading: "What it cost",
+        intro: "Subscription and per-second pricing only.",
         items: [
           {
             value: "< $300",
-            label: "All in",
+            label: "Total cost",
             context:
               "Subscriptions plus generation, including the agentic IDE used to build the site.",
           },
           {
             value: "1 day",
             label: "Start to working site",
-            context: "One person. No crew, no studio, no handler, no CGI house, no animal.",
+            context: "One person, with no crew, studio, animal handler or CGI studio.",
           },
           {
             value: "16 + 24s",
@@ -1702,15 +1705,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "cost",
         kind: "metrics",
-        heading: "What the conventional route would have cost",
+        heading: "Conventional cost estimate",
         intro:
-          "Published 2026 market rates for the same three jobs. Benchmarks, not quotes anyone gave for this project.",
+          "Published 2026 market rates for the same three jobs. These are benchmarks, not quotes for this project.",
         items: [
           {
             value: "$6,500+",
             label: "Conservative total",
             context:
-              "Taking the bottom of every range below, and still excluding the animal handler this concept needs.",
+              "Using the lowest figure in each range below, and excluding the animal handler this concept would need.",
           },
           {
             value: "$3,000 – $15,000",
@@ -1729,19 +1732,19 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
           {
             value: "~20×",
-            label: "The gap",
-            context: "Between the cheapest conventional route and what this cost.",
+            label: "Difference",
+            context: "Between the cheapest conventional option and the actual cost.",
           },
         ],
         footnote:
-          "2026 pricing surveys. Those ranges also buy a crew, usage rights and accountability, so this compares output only.",
+          "Sources: 2026 pricing surveys. Those prices also include a crew, usage rights and accountability, so this compares output only.",
       },
       {
         id: "build",
         kind: "prose",
-        heading: "The part that is not a prompt",
+        heading: "How the site was built",
         body: [
-          "React 19, Vite and GSAP. AI gets a page standing fast; the final calls are mine. The sequence runs on its own timers, so blocked autoplay can't stop the product cards appearing.",
+          "Built with React 19, Vite and GSAP. AI tools produced the first version quickly and I made the final design decisions. The animation runs on its own timers, so the product cards still appear if the browser blocks autoplay.",
         ],
       },
       {
@@ -1749,7 +1752,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "What I'd do differently",
         body: [
-          "I'd log the hours as well as the costs. “One day” is true, but a client planning the next one needs the exact time, not just the bill.",
+          "I'd track the hours as well as the costs. It took one day, but a client planning a similar project would need exact time figures.",
         ],
       },
     ],
@@ -1770,7 +1773,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
     summary: "A logo, an App Store page, two films and covers, made by directing AI tools.",
     description:
-      "Claude drove real design and video software through MCP. My job was the brief, the taste and the no.",
+      "I directed Claude Code as it worked design and video software over MCP, and reviewed every round.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
     focus: ["brand", "marketing"],
     meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: direction and QA", "Sep – Oct 2026"],
@@ -1800,9 +1803,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "approach",
         kind: "prose",
-        heading: "Directing, not drawing",
+        heading: "My role",
         body: [
-          "I set the brief and the constraints. Claude Code worked the tools, rendered what it made, looked at it and fixed it before I saw it. Every piece ran the same loop: research, an approved plan, then rounds of notes.",
+          "I set the brief and the constraints. Claude Code operated the tools, checked its own renders and fixed problems before showing me. Each piece followed the same process: research, a plan I approved, then rounds of my notes.",
         ],
       },
       {
@@ -1824,7 +1827,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A logo for Aux Affair",
         body: [
-          "Aux Affair is a gathering over music, food and conversation. I wanted a rounded lowercase a whose tail runs out as an aux cable to a plug. The first render read as a q; flicking the stroke up fixed it.",
+          "Aux Affair is a gathering built around music, food and conversation. The brief was a rounded lowercase a whose tail becomes an aux cable ending in a plug. The first version looked like a q, so the stroke was turned upward.",
         ],
       },
       {
@@ -1858,9 +1861,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "store",
         kind: "prose",
-        heading: "An App Store page, to spec",
+        heading: "An App Store page",
         body: [
-          "For InSpiritInTruth: screenshots from a release build, checked against Apple's specs, with copy leading on what competitors can't claim. A 12-second header loop built in Remotion.",
+          "For InSpiritInTruth: App Store screenshots from a release build, checked against Apple's specifications, with headlines on features competitors don't have, plus a 12-second header video built in Remotion.",
         ],
       },
       {
@@ -1875,7 +1878,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "A 25-second promo film",
         body: [
-          "Built on Remotion with a motion-reel kit whose critic scored every draft; the final scored 8 or higher on all eight criteria. My notes drove version two: real screens in the hook, bigger captions, the whole phone in frame.",
+          "Built in Remotion with a motion kit that scored every draft against eight criteria; the final version scored 8 or higher on each. My notes shaped version two: real app screens at the start, bigger captions and the whole phone in frame.",
         ],
       },
       {
@@ -1891,7 +1894,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "An iPhone Duo animation",
         body: [
-          "No video editor: Claude built the fold as a 3D web page around my own captures from the Duo simulator, rendered it frame by frame in a browser and encoded it. My notes set the captions and the order, and held out for real screens over mocks.",
+          "Made without a video editor. Claude built the folding animation as a 3D web page around my captures from the Duo simulator, rendered it frame by frame in a browser and encoded it to video. I set the captions and the order, and asked for real screens instead of mock-ups.",
         ],
       },
       {
@@ -1906,7 +1909,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "Story highlights for Culcha",
         body: [
-          "Made in ChatGPT, steered by a Pinterest board and one rule per cover: one palette, one type treatment, one idea. ChatGPT did the rendering; I did the directing.",
+          "Made in ChatGPT from a Pinterest reference board. Each cover uses one palette, one type treatment and one idea. I directed the look and approved each cover.",
         ],
       },
       {
@@ -1951,9 +1954,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
-      "Apple's foldable has five poses. I found what would break in ISIT before readers did, and redesigned it for the fold.",
+      "I tested my devotional app against the five poses of Apple's foldable iPhone and redesigned the layouts that broke.",
     description:
-      "ISIT is my devotional app. I researched the Duo, mocked every pose at true size and built the fix. It ships in 1.8.",
+      "I researched Apple's foldable iPhone Duo, mocked up every pose at true size and redesigned my devotional app for it. The update ships in version 1.8.",
     tags: ["UX research", "Adaptive layout", "Foldables", "iOS"],
     focus: ["product"],
     meta: ["Own product · InSpiritInTruth", "Research, design and build", "Oct 2026"],
@@ -1975,9 +1978,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "brief",
         kind: "prose",
-        heading: "A new phone shape, an app built for one",
+        heading: "The new phone and the problem",
         body: [
-          "The iPhone Duo went on sale on 23 October 2026. ISIT was designed for one tall screen and locked to portrait. The question was what breaks when the phone opens.",
+          "The iPhone Duo went on sale on 23 October 2026. ISIT was designed for one tall screen and locked to portrait. I needed to find what would break when the phone opened.",
         ],
       },
       {
@@ -1998,7 +2001,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             value: "27.1",
             label: "SDK to fill the screen",
-            context: "Apps built earlier run letterboxed, and many don't behave yet.",
+            context: "Apps built earlier run letterboxed, and many don't work properly yet.",
           },
         ],
         footnote:
@@ -2019,8 +2022,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         id: "today",
         kind: "gallery",
         heading: "ISIT on a normal phone",
-        intro:
-          "One column, one tall screen. It works well here, and the outer screen barely changes it.",
+        intro: "The single-column layout works well on the outer screen.",
         device: "phone",
         shots: [
           { image: "products/isit-home.png", alt: "Home: a devotional chosen for you." },

@@ -415,10 +415,8 @@ export const WORK: WorkProject[] = [
     summary:
       "Agency-side social media for five of Eris Property Group's shopping centres: content for the stores inside them, community management and paid boosts.",
     intro: [
-      "Eris Property Group develops and manages property across South Africa, shopping centres among it. On a short-term support contract in August 2024, I ran social media content and page management for five of its malls: Chuma, Letseng, Mamotse, Sechaba and Taung.",
-      "A mall's page sells what is inside it, so I created posts for the stores in each mall, from national chains like Pick n Pay, Pep and Debonairs to local businesses like the pharmacy, the butcher and the nail salon, and published them to the respective pages. This was agency work: more than twenty brands at once, each in its own colours and voice, across five pages that each had to stay recognisably the mall's own.",
-      "August is Women's Month in South Africa, and every mall marked it. Alongside the content I managed each page's community, ran occasional paid boosts and reported on how the pages performed.",
-      "Below is a selection, grouped by mall.",
+      "Eris Property Group develops and manages property across South Africa. In August 2024, on a short-term support contract, I handled social media for five of its malls: Chuma, Letseng, Mamotse, Sechaba and Taung.",
+      "I designed posts for more than twenty stores across the malls, from Pick n Pay, Pep and Debonairs to local pharmacies, butchers and salons, and published them to the respective pages. I also managed each page's community, ran occasional paid boosts and reported on performance. Below is a selection, grouped by mall.",
     ],
     cover: "eris-property-group-sechaba-rage.jpg",
     columns: 3,

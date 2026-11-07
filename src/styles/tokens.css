@@ -253,6 +253,8 @@
    * slivers. Every product shape shares it, so the cards level.
    */
   --shot-strip-product-height: 200px;
+  /* A card in a horizontal rail (section 01's recognition row). */
+  --rail-card-width: 280px;
 
   /* Hero collage geometry. Its opacity is themed, above. */
   --collage-tile-width: 300px;

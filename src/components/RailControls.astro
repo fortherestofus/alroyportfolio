@@ -1,0 +1,90 @@
+---
+/**
+ * Previous / next buttons for a horizontal rail, with an optional
+ * "1 / 3" count. Hidden until src/scripts/rail.ts confirms the row
+ * actually overflows, so a reader with no script, or a screen wide
+ * enough to show every card, never sees buttons that do nothing.
+ */
+import { ChevronLeft, ChevronRight } from "@lucide/astro";
+
+interface Props {
+  /** What one card is, for the button labels: "testimonial". */
+  label: string;
+  /** Show the position count. Only meaningful at one card per view. */
+  count?: boolean;
+}
+
+const { label, count = false } = Astro.props;
+---
+
+<div class="rail-controls" data-rail-controls hidden>
+  <button
+    type="button"
+    class="rail-controls__button"
+    data-rail-prev
+    aria-label={`Previous ${label}`}
+  >
+    <ChevronLeft class="rail-controls__icon" aria-hidden="true" />
+  </button>
+  {count && <span class="rail-controls__count" data-rail-count aria-live="polite" />}
+  <button type="button" class="rail-controls__button" data-rail-next aria-label={`Next ${label}`}>
+    <ChevronRight class="rail-controls__icon" aria-hidden="true" />
+  </button>
+</div>
+
+<script>
+  import "../scripts/rail";
+</script>
+
+<style>
+  .rail-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .rail-controls[hidden] {
+    display: none;
+  }
+
+  .rail-controls__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-md);
+    height: var(--control-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .rail-controls__button:hover:not(:disabled),
+  .rail-controls__button:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .rail-controls__button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .rail-controls__icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    stroke-width: 2;
+  }
+
+  .rail-controls__count {
+    min-width: var(--control-md);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

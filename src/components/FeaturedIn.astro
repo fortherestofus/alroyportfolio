@@ -1,18 +1,13 @@
 ---
 /**
- * "Where the work has shown up" — the press, programme and exhibition
- * cards that close section 01, between the testimonials and the client
- * marquee.
+ * "Recognition": the press, programme and exhibition cards in section
+ * 01, between the testimonials and the client marquee.
  *
- * Stacked full-width, not a three-column grid. Section 01 renders in
- * the journey's content column, which is about 640px: three tracks
- * across it come out at 204px each, which is narrower than these
- * descriptions can survive. Stacking also matches `.who__quote`
- * directly above, so the two proof blocks read as a pair rather than as
- * two components that happen to be adjacent.
- *
- * The head borrows `.product__head`'s shape — name left, meta right —
- * which keeps each card to three short rows instead of five.
+ * A horizontal rail of fixed-width cards that peeks the next one. The
+ * column is about 640px, so three across would leave each card 200px,
+ * too narrow for its line; stacked, the three were a screen of height
+ * on their own. The rail behaviour lives in src/scripts/rail.ts and the
+ * buttons in the heading row above (WhoIsAlroy).
  *
  * The whole card is the target. The anchor wraps the outlet name so the
  * accessible name is the publication rather than "read more", and a
@@ -23,7 +18,7 @@ import { ArrowUpRight } from "@lucide/astro";
 import { FEATURES } from "../data/features";
 ---
 
-<ul class="feat">
+<ul class="feat" data-rail-track tabindex="0" aria-label="Recognition">
   {
     FEATURES.map((feature) => (
       <li class="feat__card" data-reveal-item>
@@ -50,21 +45,35 @@ import { FEATURES } from "../data/features";
 <style>
   .feat {
     display: flex;
-    flex-direction: column;
     gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border-radius: var(--radius-card);
   }
 
-  /* Matches .who__quote, which sits directly above this block. */
+  .feat::-webkit-scrollbar {
+    display: none;
+  }
+
+  .feat:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  /* No shadow: the scroll container would clip it. */
   .feat__card {
     position: relative;
+    flex: 0 0 var(--rail-card-width);
+    max-width: 85%;
+    scroll-snap-align: start;
     padding: var(--space-5);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
     transition: border-color var(--duration-base) var(--ease-out);
   }
 
@@ -73,12 +82,12 @@ import { FEATURES } from "../data/features";
     border-color: var(--color-accent);
   }
 
+  /* Narrow cards: the outlet, then its kind and year beneath. */
   .feat__head {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-2) var(--space-4);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
   }
 
   .feat__outlet {

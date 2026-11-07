@@ -468,6 +468,23 @@ function initJourneyNav(): void {
     });
   });
 
+  /*
+   * In-page shortcuts outside the nav (the "Jump to" row in section 01)
+   * travel the same way a nav label does, so the landing point clears
+   * the nav and the wire follows along.
+   */
+  document.querySelectorAll<HTMLAnchorElement>("[data-jump]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const id = link.getAttribute("href")?.slice(1);
+      const section = id ? document.getElementById(id) : null;
+      if (!section) return;
+
+      event.preventDefault();
+      scrollToOffset(anchorFor(section));
+      history.replaceState(null, "", `#${id}`);
+    });
+  });
+
   /* ---- Landing on a section from another page -------------------- */
   /*
    * Arriving at /#products used to leave you thousands of pixels past

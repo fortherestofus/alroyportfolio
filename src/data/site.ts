@@ -126,7 +126,7 @@ export const SECTIONS = [
     short: "Products",
     heading: "Products I've built",
     blurb:
-      "Product management is best shown, not told. Four products I've built and run, each with the full story behind it: the problem, the decisions and the numbers.",
+      "Four products I've built and run myself, from the first idea to the App Store and Chrome Web Store. Each card links to how it was built.",
   },
   {
     id: "case-studies",
@@ -136,7 +136,7 @@ export const SECTIONS = [
     short: "Cases",
     heading: "Case studies",
     blurb:
-      "Work done for a business, and what it returned. The starting point, the decisions, the measured outcome — and what I'd do differently.",
+      "Client and personal projects: the brief, what I did, the measured results and what I'd change next time.",
   },
   {
     id: "contact",

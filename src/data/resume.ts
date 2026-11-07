@@ -129,7 +129,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Art-directed content for Jenna Clifford, made the event video for the IAB Bookmark Awards, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
       },
       {
-        text: "Trained or advised 1,200+ people and businesses, mainly through Meta's programmes with Digify Africa and the IFC.",
+        text: "Trained and advised 1,200+ people, mainly through Meta's programmes with Digify Africa and the IFC, and served 25+ businesses as clients.",
       },
       {
         text: "Delivered the LumiSkin brand site, covering concept, AI production, front-end and motion, in a single day for under $300, against $6,500+ quoted for the same brief produced conventionally.",

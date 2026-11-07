@@ -4,9 +4,10 @@
  * row of stats and quick links, then testimonials and the client strip.
  */
 import { Image } from "astro:assets";
-import { Sparkles, Download, ArrowUpRight } from "@lucide/astro";
+import { Sparkles, Download, ArrowUpRight, ArrowDown } from "@lucide/astro";
 import ServicePills from "./ServicePills.astro";
 import FeaturedIn from "./FeaturedIn.astro";
+import RailControls from "./RailControls.astro";
 import LogoStrip from "./LogoStrip.astro";
 import portrait from "../assets/images/Alroy-Ndhlovu-FOE.jpeg";
 import { SITE, SOCIAL } from "../data/site";
@@ -78,6 +79,20 @@ const QUICK_LINKS = [
   },
 ];
 
+/*
+ * Shortcuts to the sections a hirer usually wants first. The nav lists
+ * all seven, but on a phone it shows two or three at a time, and this
+ * section is long; five direct routes under the bio save the scroll.
+ * Not all seven, which would only repeat the nav.
+ */
+const JUMPS = [
+  { id: "experience", label: "Work experience" },
+  { id: "portfolio", label: "Portfolio" },
+  { id: "products", label: "Products" },
+  { id: "case-studies", label: "Case studies" },
+  { id: "contact", label: "Book a call" },
+];
+
 // Rendered at 2x the 160px frame for retina.
 const PORTRAIT_SIZE = 320;
 ---
@@ -104,6 +119,22 @@ const PORTRAIT_SIZE = 320;
       presence and driving profitability through data-driven, audience-focused work.
     </p>
   </div>
+
+  <nav class="who__jump" aria-label="Jump to a section" data-reveal>
+    <span class="who__jump-label">Jump to</span>
+    <ul class="who__jump-list">
+      {
+        JUMPS.map((jump) => (
+          <li>
+            <a class="who__jump-link" href={`#${jump.id}`} data-jump>
+              {jump.label}
+              <ArrowDown class="who__jump-icon" aria-hidden="true" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 
   <div class="who__block" data-reveal>
     <h3 class="who__subheading">What I do</h3>
@@ -143,12 +174,23 @@ const PORTRAIT_SIZE = 320;
     </ul>
   </div>
 
-  <div class="who__block" data-reveal>
-    <h3 class="who__subheading">What people say</h3>
-    <ul class="who__quotes">
+  {
+    /*
+     * The two proof blocks run as rails rather than stacks: three
+     * testimonials and three recognition cards stacked were most of the
+     * section's height. One quote per view with a count, and a row of
+     * cards that peeks the next one. Neither moves on its own.
+     */
+  }
+  <section class="who__block" aria-labelledby="who-quotes" data-reveal data-rail>
+    <div class="who__head">
+      <h3 class="who__subheading" id="who-quotes">What people say</h3>
+      <RailControls label="testimonial" count />
+    </div>
+    <ul class="who__quotes" data-rail-track tabindex="0" aria-label="Testimonials">
       {
-        TESTIMONIALS.map((testimonial) => (
-          <li class="who__quote" data-reveal-item>
+        TESTIMONIALS.map((testimonial, index) => (
+          <li class="who__quote" aria-label={`${index + 1} of ${TESTIMONIALS.length}`}>
             <blockquote>
               <p>{testimonial.quote}</p>
             </blockquote>
@@ -162,21 +204,22 @@ const PORTRAIT_SIZE = 320;
         ))
       }
     </ul>
-  </div>
+  </section>
 
   {
     /*
-     * Third-party proof runs quotes → published work → clients, which is
-     * the order a sceptical reader asks for it: what people say, where it
-     * has been printed or shown, and who paid for it. The marquee stays
-     * last because a moving strip is the only one of the three that can
-     * close the section.
+     * "Recognition" rather than "Featured in" or "As seen on": those
+     * labels mean press logos, and only one of these is press. See
+     * src/data/features.ts.
      */
   }
-  <div class="who__block" data-reveal>
-    <h3 class="who__subheading">Where the work has shown up</h3>
+  <section class="who__block" aria-labelledby="who-recognition" data-reveal data-rail>
+    <div class="who__head">
+      <h3 class="who__subheading" id="who-recognition">Recognition</h3>
+      <RailControls label="item" />
+    </div>
     <FeaturedIn />
-  </div>
+  </section>
 
   <div class="who__block" data-reveal>
     <LogoStrip />
@@ -211,6 +254,69 @@ const PORTRAIT_SIZE = 320;
   .who__subheading {
     font-size: var(--text-h3);
     margin-bottom: var(--space-4);
+  }
+
+  /* Heading left, rail controls right. */
+  .who__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .who__head .who__subheading {
+    margin-bottom: 0;
+  }
+
+  /* --- Jump links ------------------------------------------- */
+  .who__jump {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: calc(-1 * var(--space-4));
+  }
+
+  .who__jump-label {
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    font-weight: var(--weight-heading);
+    color: var(--color-text-faint);
+  }
+
+  .who__jump-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .who__jump-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-md);
+    font-size: var(--text-small);
+    font-weight: var(--weight-heading);
+    color: var(--color-accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .who__jump-link:hover,
+  .who__jump-link:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .who__jump-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    stroke-width: 2;
   }
 
   /* --- Proof row -------------------------------------------- */
@@ -276,21 +382,42 @@ const PORTRAIT_SIZE = 320;
   }
 
   /* --- Testimonials ----------------------------------------- */
+  /*
+   * One quote per view. A native scroll-snap row, so swipe, trackpad
+   * and arrow keys work without the script; the buttons are extra. No
+   * shadow on these cards: the scroll container would clip it.
+   */
   .who__quotes {
     display: flex;
-    flex-direction: column;
     gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border-radius: var(--radius-card);
+  }
+
+  .who__quotes::-webkit-scrollbar {
+    display: none;
+  }
+
+  .who__quotes:focus-visible {
+    outline-offset: var(--space-1);
   }
 
   .who__quote {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
     padding: var(--space-5);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
   }
 
   .who__quote blockquote {

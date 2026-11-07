@@ -128,7 +128,7 @@ export const PRODUCTS: Product[] = [
     category: "Faith & Devotion",
     tagline: "Take your faith into your own hands.",
     description:
-      "Devotionals written for whatever you're carrying, alongside the shared readings and the whole Bible. It complements tradition rather than replacing it. No feed, no ads.",
+      "A devotional app that writes a devotional for what you're going through, alongside the daily readings and the full Bible. There's no feed and no ads.",
     status: "Live",
     proof: "131 monthly active users · 5.0 on the App Store",
     platform: "iOS and Android",
@@ -191,7 +191,7 @@ export const PRODUCTS: Product[] = [
     category: "Food & Cooking",
     tagline: "What can I cook with this?",
     description:
-      "Type, say or snap what's in your kitchen and get a real meal back, your diet enforced as a hard rule. Variety from the same shelf, minus the deciding.",
+      "Type, say or photograph what's in your kitchen and get a recipe back that fits your diet.",
     status: "Live",
     proof: "47 monthly active users",
     platform: "iOS and Android",
@@ -237,9 +237,9 @@ export const PRODUCTS: Product[] = [
     category: "Focus & Productivity",
     tagline: "The browser extension that calls you out.",
     description:
-      "A sarcastically honest friend in your browser that calls out the procrastinator and warns the workaholic. Everything stays on your device.",
+      "A Chrome extension that tracks where your browsing time goes, calls out procrastination and warns you when you're overworking. All data stays on your device.",
     status: "Live",
-    proof: "183 installs, and 99% kept it",
+    proof: "183 installs, one uninstall",
     platform: "Chrome extension",
     link: {
       url: "https://chromewebstore.google.com/detail/ncepfdipljmhbhehjegfemndcgaclnlg",
@@ -287,9 +287,9 @@ export const PRODUCTS: Product[] = [
     category: "Content Research & Development",
     tagline: "Worth listening to.",
     description:
-      "A research and writing assistant built to fight AI slop. It turns the real conversation on your topic into a cited report, then helps you write from it in your own voice.",
+      "A research and writing assistant. It gathers what people are saying about a topic into a cited report, then helps you write from it in your own voice.",
     status: "Beta",
-    proof: "Real voices in citations up from 29% to 57%",
+    proof: "Human sources in citations up from 29% to 57%",
     platform: "Web",
     stack: [
       "Next.js 16",
