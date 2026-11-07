@@ -55,8 +55,9 @@ Add it to `src/data/experience.ts` in date order, then add a matching entry to
 `npm run resume`. If the names do not match, the role still prints — it just
 prints without bullets, which is the failure you want rather than a crash.
 
-Both PDFs read the same bullets. The visual one shows the first three; the ATS
-one shows all of them, so put the strongest first.
+Both PDFs read the same bullets. The visual one shows the first three (or
+`visualBullets` where a role sets it); the ATS one shows all of them, so put the
+strongest first.
 
 ## Keywords
 

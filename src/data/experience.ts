@@ -188,11 +188,12 @@ export const EXPERIENCE: Role[] = [
     employment: "Freelance",
     dates: "Aug 2024",
     logoFile: "eris.png",
-    note: "Social media content and page management for five of the group's shopping centres on a short-term support contract: 34 posts for more than twenty tenant brands in a month, plus community management and reporting.",
+    note: "Agency-side social media for five of the group's shopping centres on a short-term support contract: posts for more than twenty of their stores, page covers, community management and occasional paid boosts.",
     skills: [
       "Social media management",
       "Social media content",
       "Graphic design",
+      "Paid social",
       "Retail marketing",
       "Multi-brand content",
       "Community management",

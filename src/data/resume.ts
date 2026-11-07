@@ -16,6 +16,8 @@
  *
  * Source: Alroy's LinkedIn role descriptions (read 20 Oct 2026),
  * cross-checked against the measured outcomes in case-studies.ts.
+ * Innovatr and Eris Property Group were rewritten from his own account
+ * of each role (7 Nov 2026), which supersedes the LinkedIn text.
  * Where a figure appears in both, the case study wins: those numbers
  * are quoted from the ad reports and are the ones that can be checked.
  *
@@ -46,6 +48,12 @@ export interface RoleDetail {
    */
   context?: string;
   bullets: ResumeBullet[];
+  /**
+   * How many bullets the visual CV prints for this role; it defaults to
+   * the first three. Raised for a role whose scope is the point, so the
+   * CV does not quietly cut half of what the job was.
+   */
+  visualBullets?: number;
   /**
    * Sub-roles held at the same employer, newest first. Digify Africa is
    * four positions over two and a half years; collapsing them loses the
@@ -82,7 +90,7 @@ export const RESUME = {
    * readers want the same thing here.
    */
   summary:
-    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, and builds the CRM and marketing automation behind them. Builds software AI-natively rather than by hand: writes the specification, chooses the stack, directs coding agents such as Claude Code and reviews what they produce. Four products taken from discovery to launch in 2026: two mobile apps live on the App Store, a published Chrome extension and an AI research tool. Hands-on platform work in WordPress, Shopify, WooCommerce, Squarespace and Webflow. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
+    "Marketing, brand and product consultant with 12+ years across brand strategy, growth and performance marketing, product management, UX/UI design and business technology. Runs integrated go-to-market campaigns and paid media across Meta, Google, LinkedIn and TikTok, and builds the CRM, email marketing and marketing automation behind them. Builds software AI-natively rather than by hand: writes the specification, chooses the stack, directs coding agents such as Claude Code and reviews what they produce. Four products taken from discovery to launch in 2026: two mobile apps live on the App Store, a published Chrome extension and an AI research tool. Hands-on platform work in WordPress, Shopify, WooCommerce, Squarespace and Webflow. Delivered for the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, Innovatr and the African Agri Council. Lead-form conversion at 36.6% against a 10–15% benchmark, paid acquisition at roughly three times better cost per lead than the B2B median, and an enterprise software licence replaced by a tool built in-house.",
 } as const;
 
 /**
@@ -115,7 +123,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
         text: "Built and launched four products end to end: InSpiritInTruth and tapa. (mobile apps), CaughtSlipping (Chrome extension) and Hakkan (AI research tool, in beta), alongside Social Sweep for Innovatr.",
       },
       {
-        text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for organisations including the IFC (World Bank Group), Meta, Digify Africa, Energy Capital & Power, the African Agri Council, Total Sports, Jenna Clifford, Cash'n'Sport, Nembhard Inc, English Plus Academy and Deep Ocean.",
+        text: "Delivered brand strategy, content strategy, integrated campaigns, marketing optimisation and business process automation for clients including Total Sports, Jenna Clifford, Cash'n'Sport and Nembhard Inc, alongside the contracts listed below.",
       },
       {
         text: "Art-directed content for Jenna Clifford, made the event video for the IAB Bookmark Awards, made Total Sports' staff training video on fitting running shoes end to end, and delivered training for iHub.",
@@ -133,21 +141,25 @@ export const ROLE_DETAILS: RoleDetail[] = [
   },
   {
     company: "Innovatr",
+    visualBullets: 5,
     location: "Johannesburg, South Africa · Hybrid",
     context:
-      "Consumer intelligence platform whose flagship product, Test24, returns real consumer insight in 24 hours for brand and innovation teams.",
+      "Consumer intelligence platform; clients include Discovery Bank, DGB, Namibian Breweries and Rain.",
     bullets: [
       {
-        text: "Product lead for Social Sweep, a proprietary social listening product: made the build-versus-buy case, then planned, built and maintained it. Replaced a US$5,000-a-year licence with an in-house build under R10,000, now sold in every Innovatr membership.",
+        text: "Product lead for Social Sweep, a proprietary AI social listening product: made the build-versus-buy case, then planned, built and maintained it. Replaced a US$5,000-a-year licence with an in-house build under R10,000; it now sells in every Innovatr membership.",
       },
       {
-        text: "Led brand strategy and growth marketing: owned paid media and demand generation across LinkedIn, Google and Meta, developed multi-format content, and built the CRM and marketing automation workflows behind a qualified pipeline.",
+        text: "Owned digital marketing end to end. Ran LinkedIn Ads with account-based marketing (ABM): 61% of delivery reached decision-makers, at a third of the B2B median cost per lead (CPL).",
       },
       {
-        text: "Ran paid acquisition at roughly three times better cost per lead (CPL) than the B2B median, and led the rebrand with the founder, covering positioning, visual identity and go-to-market strategy.",
+        text: "Built the CRM from nothing and the marketing automation behind it, then wrote and designed every email sequence in Zoho Campaigns: 36.7% opens and 4.1% clicks on onboarding, against typical B2B rates of 30–35% and 2.5%.",
       },
       {
-        text: "Supported client innovation projects for Discovery Bank, DGB, Namibian Breweries and Rain, across CPG, financial services and telecoms.",
+        text: "Ran social media and content marketing, turning proprietary research into LinkedIn carousels, video and ad creative; the same message as video drew 0.68% click-through against 0.24% as a carousel.",
+      },
+      {
+        text: "Led the rebrand with the founder (positioning, visual identity and go-to-market strategy), wrote the brand guidelines, produced the brand assets, and redesigned and maintained the company website.",
       },
     ],
   },
@@ -175,7 +187,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
     location: "Remote",
     bullets: [
       {
-        text: "Designed and built the company website, and provided ongoing technical support across email infrastructure, domain registration and maintenance.",
+        text: "Designed and built the website for Deep Ocean Integrated Solutions, an Angolan oil and gas services company (deepocean.solutions), then ran its business email, domains and maintenance.",
       },
     ],
   },
@@ -184,10 +196,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
     location: "Remote",
     bullets: [
       {
-        text: "Redesigned the academy's website and migrated the hosting infrastructure to a provider able to carry planned business growth.",
-      },
-      {
-        text: "Stayed on as consultant on call for web development and online business technology support.",
+        text: "Redesigned the academy's website and migrated its hosting to a provider able to carry planned growth, then stayed on call for web development and business technology support.",
       },
     ],
   },
@@ -209,7 +218,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
     location: "South Africa · Remote",
     bullets: [
       {
-        text: "Short-term contract developing and coordinating social media for five of the group's shopping centres: content development, community management, and data and analytics.",
+        text: "Agency-side, multi-brand social media for five shopping centres on a short-term support contract: created posts for more than twenty tenant brands (Pick n Pay, Pep, Debonairs, local pharmacies and butchers) within each one's identity, and ran community management, occasional paid boosts and reporting.",
       },
     ],
   },
@@ -240,7 +249,7 @@ export const ROLE_DETAILS: RoleDetail[] = [
       "The We Are Victoria Falls programme, sponsored by the IFC in partnership with Zimbabwe Tourism, helping tourism SMEs recover after COVID.",
     bullets: [
       {
-        text: "Developed the digital marketing curriculum and content for roughly 50 tourism SMEs across the programme.",
+        text: "Developed the digital marketing curriculum and content for roughly 50 tourism SMEs across the programme, published on its training site, wearevictoriafalls.com.",
       },
       {
         text: "Delivered one-on-one consulting to around 20 businesses selected for additional support, equipping them with the tools to rebuild demand.",
@@ -340,6 +349,7 @@ export const COMPETENCIES = [
       "LinkedIn Ads",
       "TikTok Ads",
       "Demand generation",
+      "Account-based marketing (ABM)",
       "Lead generation",
       "Conversion rate optimisation (CRO)",
       "A/B testing",
@@ -499,6 +509,7 @@ export const TOOLS = [
       { name: "Google Analytics 4" },
       { name: "Google Tag Manager" },
       { name: "Google Search Console", assumed: true },
+      { name: "Zoho Campaigns" },
       { name: "HubSpot", assumed: true },
       { name: "Mailchimp", assumed: true },
       { name: "Paddle" },
@@ -610,6 +621,7 @@ export const KEYWORD_TARGETS = [
       "performance marketing",
       "paid media",
       "demand generation",
+      "account-based",
       "lead generation",
       "conversion rate",
       "marketing automation",

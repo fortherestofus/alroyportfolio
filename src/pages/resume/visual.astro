@@ -22,7 +22,7 @@
  */
 import { Image } from "astro:assets";
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
-import { SITE, SOCIAL } from "../../data/site";
+import { SITE, SOCIAL, SECTIONS } from "../../data/site";
 import { SERVICES, STATS } from "../../data/services";
 import { TESTIMONIALS, CLIENT_LOGOS } from "../../data/testimonials";
 import { EXPERIENCE } from "../../data/experience";
@@ -136,9 +136,9 @@ const COVER = 330;
           >
         </p>
         <h2 class="block__title">Work experience</h2>
+        {/* The site's own section intro, so the two never drift apart. */}
         <p class="block__blurb">
-          Twelve plus years across marketing, media, e-commerce and technology. Contract and
-          consulting work for global organisations and ambitious brands.
+          {SECTIONS.find((section) => section.id === "experience")?.blurb}
         </p>
       </header>
 
@@ -163,7 +163,7 @@ const COVER = 330;
                   </p>
                   {detail && detail.bullets.length > 0 && (
                     <ul class="role__bullets">
-                      {detail.bullets.slice(0, 3).map((bullet) => (
+                      {detail.bullets.slice(0, detail.visualBullets ?? 3).map((bullet) => (
                         <li>{bullet.text}</li>
                       ))}
                     </ul>
@@ -302,7 +302,7 @@ const COVER = 330;
         </p>
         <h2 class="block__title">Products I've built</h2>
         <p class="block__blurb">
-          Four products taken from problem to shipped, solo: product, design, code and copy. The
+          Four products taken from problem to shipped, solo: product, design, build and copy. The
           full build story behind each one is on the site.
         </p>
       </header>

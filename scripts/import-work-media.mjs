@@ -317,7 +317,8 @@ const PROJECTS = {
     ],
   },
   /*
-   * Fifteen of the 34 posts, three per mall, plus the two page covers.
+   * Fifteen posts, three per mall, plus the two page covers, from the
+   * sample of the month's work in the folder.
    * Chosen for range (food, fashion, health, tech, the Women's Month
    * post every mall ran) rather than as a best-of, so the page shows
    * how wide the brief was.
