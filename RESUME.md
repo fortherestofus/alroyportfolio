@@ -134,14 +134,14 @@ fails before deploy rather than after.
 
 Yes, better than expected — but do not submit it.
 
-Measured: it yields 14,976 extractable characters, and the name, headline,
+Measured: it yields 15,968 extractable characters, and the name, headline,
 contact line and every role with its dates and bullets come out in the right
 order. The only garbling is in the portfolio caption grid, where two columns
 weld onto one line, and captions carry no field data.
 
 So it will not embarrass you if it ends up in a parser. It is still the wrong
-file to send one: 15 pages, 6 MB, and a black background that prints as fifteen
-solid dark sheets. Send `alroy-ndhlovu-resume.pdf` to anything with a form, and
+file to send one: 18 pages and 10 MB, with images and cards a parser has no use
+for. Send `alroy-ndhlovu-resume.pdf` to anything with a form, and
 the visual one to a person.
 
 ## Notes on the two designs
@@ -159,7 +159,7 @@ context lines pinned to whatever follows. Holding all thirteen together wasted
 most of a sheet on the gaps left behind.
 
 The visual document has none of those constraints and reproduces the site:
-black, the hero with portrait and stats, logo-marked roles, the galleries,
+light, the hero with portrait and stats, logo-marked roles, the galleries,
 product cards framed to match what they are pictures of, and case-study cards
 that link back. Images there keep their own aspect ratio rather than being
 cropped to a common strip — the one thing a portfolio has to do is let someone

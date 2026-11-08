@@ -50,8 +50,8 @@ const MIME = {
 /**
  * `preferCSSPageSize` hands page geometry to the @page rule in each
  * document, which is the only way the two can differ: the ATS sheet
- * prints at A4 with 16mm margins, and the visual one at A4 with none,
- * so its black reaches the edge of the paper.
+ * prints at A4 with 16mm margins all round, and the visual one with
+ * 16mm top and bottom and its side padding set in the sheet.
  */
 const DOCUMENTS = [
   {

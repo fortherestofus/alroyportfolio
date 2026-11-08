@@ -14,9 +14,8 @@
  * in the PDF on the next `npm run resume` with no edit here.
  *
  * The parser rules that govern ats.astro do not apply. Nothing on this
- * page is trying to be indexed: it has images, cards, grids and a black
- * background, and it links back into the site for the long version of
- * every story. If this file lands in an ATS it will parse badly, which
+ * page is trying to be indexed: it has images, cards and grids, and
+ * it links back into the site for the long version of every story. If this file lands in an ATS it will parse badly, which
  * is why the ATS version exists and why only its path is the one the
  * site's Résumé button serves.
  */
@@ -69,11 +68,7 @@ const DEVICE = 340;
 const COVER = 330;
 ---
 
-<ResumeLayout
-  title="Alroy Ndhlovu Portfolio Résumé"
-  description={DESCRIPTION}
-  bodyClass="resume-body--dark"
->
+<ResumeLayout title="Alroy Ndhlovu Portfolio Résumé" description={DESCRIPTION}>
   <main class="resume resume--visual sheet">
     {/* ---------------------------------------------------- COVER */}
     <section class="cover" data-keep>
@@ -464,18 +459,20 @@ const COVER = 330;
 
 <style>
   /* --------------------------------------------------------
-     Zero page margin so the black bleeds to the paper edge;
-     the sheet carries its own padding instead. The literal
-     restates --resume-page-margin, since var() is not
-     reliably resolved inside @page.
+     Top and bottom margins on every sheet, so nothing sits on
+     a printer's unprintable edge when the flow crosses a page.
+     The sides stay in the sheet's padding, which lets a page
+     break cut cleanly. The literal restates
+     --resume-page-margin, since var() is not reliably resolved
+     inside @page.
      -------------------------------------------------------- */
   @page {
     size: A4;
-    margin: 0;
+    margin: 16mm 0;
   }
 
   .sheet {
-    padding: 16mm;
+    padding: 0 16mm;
     display: flex;
     flex-direction: column;
     gap: var(--resume-gap-8);
@@ -499,10 +496,10 @@ const COVER = 330;
    * The cover owns its page, so it should fill it.
    *
    * It is the one section that keeps a forced break, which left the
-   * bottom half of page one as dead black. Centred in the full content
+   * bottom half of page one as dead space. Centred in the full content
    * height, the same material reads as a title page instead of as a
-   * section that ran out early. 265mm is A4 less the sheet's 16mm
-   * padding top and bottom.
+   * section that ran out early. 265mm is A4 less the 16mm page
+   * margin top and bottom.
    */
   .cover {
     display: flex;
@@ -1076,6 +1073,7 @@ const COVER = 330;
   }
 
   .quote blockquote {
+    margin: 0;
     font-size: var(--resume-text-meta);
   }
 

@@ -10,7 +10,7 @@
    Chromium, so everything here is paged media. The screen is only ever
    a preview of the paper.
 
-   Why a separate sheet rather than global.css: the site is a dark,
+   Why a separate sheet rather than global.css: the site is an
    animated, full-bleed document and the résumé is neither. Sharing the
    base styles meant overriding almost all of them, and an override that
    misses turns into a black A4 page nobody notices until it is printed.
@@ -23,11 +23,11 @@
 :root {
   /* --- Paper ------------------------------------------------
      The site's invert palette, which already exists for the few
-     light surfaces on the page. The résumé is that palette's
-     largest use: warm white stock, near-black ink, the deep
-     pthalo as the only accent.
+     light surfaces on the page, on pure white: Chromium leaves
+     the page margins white, so any tint would show a seam. Then
+     near-black ink, with the deep pthalo as the only accent.
      ---------------------------------------------------------- */
-  --resume-paper: #fdfbf7;
+  --resume-paper: #ffffff;
   --resume-ink: #14130f;
   --resume-ink-muted: #51504a;
   --resume-ink-faint: #6e6c64;
@@ -66,7 +66,7 @@
 
   /*
    * Restated here rather than imported from tokens.css, which pulls in
-   * the dark theme these documents exist to avoid. Same two values:
+   * the whole site theme these documents exist to avoid. Same two values:
    * Apfel Grotezk ships Regular and Mittel and nothing heavier, so a
    * stray 700 would render as faux bold or as a missing file.
    */
@@ -91,37 +91,6 @@
   --resume-radius: 6pt;
   --resume-radius-lg: 10pt;
   --resume-surface: rgba(20, 19, 15, 0.03);
-}
-
-/* ============================================================
-   THE DARK DOCUMENT
-
-   The visual résumé reproduces the website, and the website is
-   black. Set on the body rather than the sheet so the colour
-   reaches the edge of every printed page, including the gaps a
-   page break opens up.
-
-   These are the site's own values from tokens.css, restated
-   rather than imported: importing tokens.css would pull the
-   whole theme — @theme block, Tailwind layer and all — into a
-   document that needs eight custom properties from it.
-
-   Screen-first by design. This is the version sent to a person
-   who will open it, and a dark PDF read on a laptop is the
-   website; the same file on office paper is a solid black A4.
-   The ATS version is the one built to be printed.
-   ============================================================ */
-
-.resume-body--dark {
-  --resume-paper: #0d0d0d;
-  --resume-ink: #f9f6f2;
-  --resume-ink-muted: #a8a49b;
-  --resume-ink-faint: #8a857b;
-  --resume-rule: rgba(249, 246, 242, 0.14);
-  --resume-rule-strong: rgba(249, 246, 242, 0.38);
-  --resume-accent: #90a842;
-  --resume-accent-tint: rgba(144, 168, 66, 0.14);
-  --resume-surface: #1a1a1a;
 }
 
 /* ============================================================

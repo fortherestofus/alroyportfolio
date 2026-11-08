@@ -3,7 +3,7 @@
  * The shell both résumé documents print inside.
  *
  * Deliberately not BaseLayout: that one carries GTM, the timeline nav,
- * Lenis smooth scroll, reveal animations and a dark full-bleed body —
+ * Lenis smooth scroll, reveal animations and a full-bleed body —
  * every one of which is either noise or actively wrong on paper. This
  * is the whole document: charset, fonts, the print layer, nothing else.
  *
@@ -20,15 +20,9 @@ interface Props {
   title: string;
   /** Sets the PDF's document description; recruiters do read it. */
   description: string;
-  /**
-   * The visual document passes "resume-body--dark" to flip the whole
-   * palette at body level, so the black reaches the edge of every page
-   * including the gaps a page break opens.
-   */
-  bodyClass?: string;
 }
 
-const { title, description, bodyClass } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
@@ -64,7 +58,7 @@ const { title, description, bodyClass } = Astro.props;
       crossorigin
     />
   </head>
-  <body class:list={["resume-body", bodyClass]}>
+  <body class="resume-body">
     <slot />
   </body>
 </html>
