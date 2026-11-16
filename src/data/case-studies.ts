@@ -1771,33 +1771,34 @@ export const CASE_STUDIES: CaseStudy[] = [
       image: "agentic-content/hero-store-sheet.jpg",
       alt: "Six App Store screenshots for a devotional app in light and dark, each a phone under its own headline.",
     },
-    summary: "A logo, an App Store page, two films and covers, made by directing AI tools.",
+    summary:
+      "A logo redesign, an App Store header, two product promos and Instagram highlights, assembled with AI tools.",
     description:
-      "I directed Claude Code as it worked design and video software over MCP, and reviewed every round.",
+      "I had done this by hand. I brought the brief and the assets, ran the tools, and judged every round.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
     focus: ["brand", "marketing"],
-    meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: direction and QA", "Sep – Oct 2026"],
+    meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: brief, assembly and review", "Sep – Oct 2026"],
     strip: [
       { image: "agentic-content/strip-aux.webp", alt: "Aux Affair logo." },
-      { image: "agentic-content/strip-afro-culcha.webp", alt: "Afro Culcha cover." },
+      { image: "agentic-content/strip-afro-culcha.webp", alt: "Afro Culcha highlight." },
       { image: "agentic-content/hero-store-sheet.jpg", alt: "App Store screenshots." },
-      { image: "agentic-content/strip-lean-back.webp", alt: "Lean Back cover." },
-      { image: "agentic-content/isit-promo-poster.webp", alt: "Promo film." },
+      { image: "agentic-content/strip-lean-back.webp", alt: "Lean Back highlight." },
+      { image: "agentic-content/isit-promo-poster.webp", alt: "Product promo." },
       {
         image: "agentic-content/strip-spotted-at-culcha.webp",
-        alt: "Spotted at Culcha cover.",
+        alt: "Spotted at Culcha highlight.",
       },
       { image: "agentic-content/appstore-header-poster.webp", alt: "App Store header video." },
-      { image: "isit-iphone-duo/duo-unfold-poster.webp", alt: "iPhone Duo animation." },
-      { image: "agentic-content/strip-culcha-summer.webp", alt: "Culcha Summer cover." },
+      { image: "isit-iphone-duo/duo-unfold-poster.webp", alt: "iPhone Duo promo." },
+      { image: "agentic-content/strip-culcha-summer.webp", alt: "Culcha Summer highlight." },
     ],
     chapters: [
       { id: "approach", label: "The approach" },
-      { id: "logo", label: "A logo" },
-      { id: "store", label: "App Store page" },
-      { id: "promo", label: "Promo film" },
+      { id: "logo", label: "A redesign" },
+      { id: "store", label: "App Store header" },
+      { id: "promo", label: "Product promo" },
       { id: "duo", label: "iPhone Duo" },
-      { id: "posters", label: "Story highlights" },
+      { id: "posters", label: "Highlights" },
     ],
     blocks: [
       {
@@ -1805,7 +1806,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         kind: "prose",
         heading: "My role",
         body: [
-          "I set the brief and the constraints. Claude Code operated the tools, checked its own renders and fixed problems before showing me. Each piece followed the same process: research, a plan I approved, then rounds of my notes.",
+          "I had made this kind of work by hand for years, which is what I used to brief, correct and finish it. Claude Code ran the tools and fixed problems before showing me. Each piece was the same: research, a plan I approved, then rounds of my notes.",
         ],
       },
       {
@@ -1817,17 +1818,17 @@ export const CASE_STUDIES: CaseStudy[] = [
           "VectorCraft and PhotoCraft over MCP, for vector and image work.",
           "xAI's image API and ChatGPT, for generated imagery.",
           "Goldie, for App Store screenshots from a real build.",
-          "Remotion, for the header video and the promo film.",
-          "Playwright and ffmpeg, for the iPhone Duo animation.",
+          "Remotion, for the header video and the product promo.",
+          "Playwright and ffmpeg, for the iPhone Duo promo.",
           "Pinterest, for references.",
         ],
       },
       {
         id: "logo",
         kind: "prose",
-        heading: "A logo for Aux Affair",
+        heading: "A redesign for Aux Affair",
         body: [
-          "Aux Affair is a gathering built around music, food and conversation. The brief was a rounded lowercase a whose tail becomes an aux cable ending in a plug. The first version looked like a q, so the stroke was turned upward.",
+          "A redesign, not a new mark from nothing. Aux Affair is an event around music, food and conversation, and I had drawn its previous logo myself. I supplied that mark with the brief: a rounded lowercase a whose tail becomes an aux cable ending in a plug. Suggestions came back. The first read as a q, so the stroke turned upward. Drawn as vectors, not generated as an image.",
         ],
       },
       {
@@ -1861,9 +1862,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "store",
         kind: "prose",
-        heading: "An App Store page",
+        heading: "An App Store header",
         body: [
-          "For InSpiritInTruth: App Store screenshots from a release build, checked against Apple's specifications, with headlines on features competitors don't have, plus a 12-second header video built in Remotion.",
+          "For InSpiritInTruth: screenshots from a release build, checked against Apple's specifications, with headlines on features competitors don't have, plus a 12-second video for Apple's product-page header. The header sits above the listing. It is not the page. Built in Remotion.",
         ],
       },
       {
@@ -1876,9 +1877,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "promo",
         kind: "prose",
-        heading: "A 25-second promo film",
+        heading: "A 25-second product promo",
         body: [
-          "Built in Remotion with a motion kit that scored every draft against eight criteria; the final version scored 8 or higher on each. My notes shaped version two: real app screens at the start, bigger captions and the whole phone in frame.",
+          "I supplied the app screens, the copy and the visual direction, then assembled it in Remotion. A motion kit scored every draft against eight criteria; the final version scored 8 or higher on each. Version two came from my notes: real screens at the start, bigger captions, the whole phone in frame.",
         ],
       },
       {
@@ -1892,9 +1893,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "duo",
         kind: "prose",
-        heading: "An iPhone Duo animation",
+        heading: "An iPhone Duo promo",
         body: [
-          "Made without a video editor. Claude built the folding animation as a 3D web page around my captures from the Duo simulator, rendered it frame by frame in a browser and encoded it to video. I set the captions and the order, and asked for real screens instead of mock-ups.",
+          "I supplied the captures, the copy and the order, then assembled it. No video editor. The fold was built as a 3D page around those captures, rendered frame by frame and encoded to video. Real screens, not mock-ups.",
         ],
       },
       {
@@ -1907,15 +1908,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "posters",
         kind: "prose",
-        heading: "Story highlights for Culcha",
+        heading: "Instagram highlights for Culcha",
         body: [
-          "Made in ChatGPT from a Pinterest reference board. Each cover uses one palette, one type treatment and one idea. I directed the look and approved each cover.",
+          "Made in ChatGPT from a Pinterest reference board. Each highlight uses one palette, one type treatment and one idea. I directed the look and approved each one.",
         ],
       },
       {
         id: "posters",
         kind: "gallery",
-        heading: "The four covers",
+        heading: "Four highlights",
         stories: true,
         shots: [
           {
@@ -1940,7 +1941,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "Making content agentically | Alroy Ndhlovu",
       description:
-        "How Alroy Ndhlovu made a logo, an App Store page, a promo film and story highlights by directing Claude through real design software over MCP.",
+        "A logo redesign, an App Store header, two product promos and Instagram highlights, assembled with AI tools from briefs, assets and craft Alroy already had.",
     },
   },
   {
@@ -1954,10 +1955,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       video: "/media/case-studies/isit-iphone-duo-duo-unfold.mp4",
     },
     summary:
-      "I tested my devotional app against the five poses of Apple's foldable iPhone and redesigned the layouts that broke.",
+      "I adapted my devotional app for iPhone Duo, with a layout system for how the phone opens.",
     description:
-      "I researched Apple's foldable iPhone Duo, mocked up every pose at true size and redesigned my devotional app for it. The update ships in version 1.8.",
-    tags: ["UX research", "Adaptive layout", "Foldables", "iOS"],
+      "I researched the new poses, designed the layouts, and shipped them in version 1.8.",
+    tags: ["UX research", "Product management", "Adaptive layout", "Foldables"],
     focus: ["product"],
     meta: ["Own product · InSpiritInTruth", "Research, design and build", "Oct 2026"],
     strip: [
@@ -2065,7 +2066,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     seo: {
       title: "ISIT on iPhone Duo case study | Alroy Ndhlovu",
       description:
-        "Adapting the InSpiritInTruth devotional app for Apple's foldable iPhone Duo: the research, what would break, and the layouts shipping in 1.8.",
+        "Adapting the InSpiritInTruth devotional app for Apple's iPhone Duo: the research, the layout system, and the update shipping in version 1.8.",
     },
   },
 ];
