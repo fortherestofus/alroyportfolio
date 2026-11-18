@@ -253,6 +253,14 @@ export const CASE_STUDIES: CaseStudy[] = [
         ],
       },
       {
+        id: "product",
+        kind: "video",
+        src: "/media/case-studies/social-sweep.mp4",
+        poster: "social-sweep/demo-poster.webp",
+        alt: "A full Social Sweep run: a plain-language question about South African car brands, the platforms it chooses, a live trends radar, then a report leading with net sentiment, comments analysed and the evidence behind each claim.",
+        footnote: "The live tool, from one question to a sourced report.",
+      },
+      {
         id: "worth",
         kind: "metrics",
         heading: "Savings and revenue",
@@ -1777,7 +1785,11 @@ export const CASE_STUDIES: CaseStudy[] = [
       "I had done this by hand. I brought the brief and the assets, ran the tools, and judged every round.",
     tags: ["Agentic workflow", "MCP", "Branding", "Motion", "Content"],
     focus: ["brand", "marketing"],
-    meta: ["Aux Affair, InSpiritInTruth, Culcha", "Solo: brief, assembly and review", "Sep – Oct 2026"],
+    meta: [
+      "Aux Affair, InSpiritInTruth, Culcha",
+      "Solo: brief, assembly and review",
+      "Sep – Oct 2026",
+    ],
     strip: [
       { image: "agentic-content/strip-aux.webp", alt: "Aux Affair logo." },
       { image: "agentic-content/strip-afro-culcha.webp", alt: "Afro Culcha highlight." },
