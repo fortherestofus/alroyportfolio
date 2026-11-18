@@ -66,6 +66,13 @@ export type Block =
       /** Web captures rather than square social slides: fewer, larger. */
       wide?: boolean;
       /**
+       * Fit captures into a fixed two-, three- or four-up grid instead of
+       * one per row. For a set that is evidence rather than the argument:
+       * three full-width screenshots cost a screen and a half of scroll
+       * to say what a row of three says in one.
+       */
+      columns?: 2 | 3 | 4;
+      /**
        * One per row at the image's own proportions, never cropped. For
        * artwork whose edges matter, like a logo lockup: `wide` frames
        * everything to a screen ratio and trims what does not fit.
@@ -288,7 +295,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         id: "screens",
         kind: "gallery",
-        wide: true,
+        columns: 3,
         shots: [
           {
             image: "innovatr/social_sweep_landing.jpg",

@@ -19,7 +19,7 @@
  * it still works with JS off.
  */
 import { Image, getImage } from "astro:assets";
-import { ArrowLeft, ArrowUpRight, CircleCheck } from "@lucide/astro";
+import { ArrowLeft, ArrowUpRight, CircleCheck, X } from "@lucide/astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Placeholder from "./Placeholder.astro";
 import LogoFrame from "./LogoFrame.astro";
@@ -104,6 +104,31 @@ for (const block of study.blocks) {
     format: "webp",
   });
   blockPosters.set(block.poster, optimised.src);
+}
+
+/*
+ * Gallery shots open in a lightbox, so each needs a source large
+ * enough to justify the click. Generated up front but only requested
+ * when the dialog opens: a hidden image in a closed dialog is never
+ * fetched. The dialog shows the image near full-window, so this is
+ * deliberately past 2x of a desktop tile; capped at the source width
+ * so nothing is upscaled.
+ */
+const LIGHTBOX_WIDTH = 2400;
+const lightboxSources = new Map<string, string>();
+for (const block of study.blocks) {
+  if (block.kind !== "gallery") continue;
+  for (const shot of block.shots) {
+    const still = caseImage(shot.image);
+    if (!still) continue;
+    const optimised = await getImage({
+      src: still,
+      width: Math.min(LIGHTBOX_WIDTH, still.width),
+      quality: SHOT_QUALITY,
+      format: "webp",
+    });
+    lightboxSources.set(shot.image, optimised.src);
+  }
 }
 
 /*
@@ -395,6 +420,7 @@ const schema = [
                 class:list={[
                   "cs__gallery",
                   block.wide && "cs__gallery--wide",
+                  block.columns && `cs__gallery--cols-${block.columns}`,
                   block.natural && "cs__gallery--natural",
                   block.stories && "cs__gallery--stories",
                   block.pair && "cs__gallery--pair",
@@ -406,22 +432,32 @@ const schema = [
                   return (
                     <li class="cs__shot" data-reveal-item>
                       {image ? (
-                        <Image
-                          src={image}
-                          alt={shot.alt}
-                          width={
-                            block.pair
-                              ? PAIR_SHOT_WIDTH
-                              : block.wide || block.natural
-                                ? WIDE_SHOT_WIDTH
-                                : SHOT_WIDTH
-                          }
-                          quality={SHOT_QUALITY}
-                          densities={[1]}
-                          loading="lazy"
-                        />
+                        <button
+                          type="button"
+                          class="cs__shot-button"
+                          data-lightbox={lightboxSources.get(shot.image)}
+                          data-lightbox-alt={shot.alt}
+                        >
+                          <Image
+                            src={image}
+                            alt={shot.alt}
+                            width={
+                              block.pair || block.columns === 2
+                                ? PAIR_SHOT_WIDTH
+                                : block.wide || block.natural
+                                  ? WIDE_SHOT_WIDTH
+                                  : SHOT_WIDTH
+                            }
+                            quality={SHOT_QUALITY}
+                            densities={[1]}
+                            loading="lazy"
+                          />
+                        </button>
                       ) : (
-                        <Placeholder label={shot.image} ratio={block.wide ? "16/10" : "1/1"} />
+                        <Placeholder
+                          label={shot.image}
+                          ratio={block.wide || block.columns ? "16/10" : "1/1"}
+                        />
                       )}
                     </li>
                   );
@@ -459,6 +495,13 @@ const schema = [
       }
     </div>
 
+    <dialog class="cs__lightbox" data-lightbox-dialog aria-label="Enlarged image">
+      <button type="button" class="cs__lightbox-close" data-lightbox-close aria-label="Close image">
+        <X class="cs__lightbox-icon" aria-hidden="true" />
+      </button>
+      <img class="cs__lightbox-image" data-lightbox-image alt="" />
+    </dialog>
+
     {
       product && (
         <section class="cs__built" aria-labelledby="built-with">
@@ -494,6 +537,40 @@ const schema = [
 
 <script>
   import "../scripts/journey";
+
+  const lightbox = document.querySelector<HTMLDialogElement>("[data-lightbox-dialog]");
+
+  if (lightbox) {
+    const image = lightbox.querySelector<HTMLImageElement>("[data-lightbox-image]");
+    let opener: HTMLButtonElement | null = null;
+
+    document.querySelectorAll<HTMLButtonElement>(".cs__shot-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const src = button.dataset.lightbox;
+        if (!src || !image) return;
+        opener = button;
+        image.src = src;
+        image.alt = button.dataset.lightboxAlt ?? "";
+        lightbox.showModal();
+      });
+    });
+
+    lightbox.querySelector("[data-lightbox-close]")?.addEventListener("click", () => {
+      lightbox.close();
+    });
+
+    // The dialog fills the viewport, so the padding around the image is
+    // its backdrop: a click that lands on the dialog itself closes it.
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+
+    lightbox.addEventListener("close", () => {
+      if (image) image.alt = "";
+      opener?.focus();
+      opener = null;
+    });
+  }
 </script>
 
 <style>
@@ -1095,6 +1172,35 @@ const schema = [
     margin-inline: auto;
   }
 
+  /*
+   * Evidence shots, packed. The auto-fill grid would fit four at
+   * desktop width and leave a lone shot in a half-empty row for three,
+   * so each count gets its own grid: one up on a phone; two, or three
+   * for a set of three, from tablet; four only where four fit.
+   */
+  .cs__gallery--cols-2,
+  .cs__gallery--cols-3,
+  .cs__gallery--cols-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (width >= 768px) {
+    .cs__gallery--cols-2,
+    .cs__gallery--cols-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cs__gallery--cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 1100px) {
+    .cs__gallery--cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
   .cs__gallery--stories {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1116,12 +1222,98 @@ const schema = [
     border-radius: var(--radius-card);
     overflow: hidden;
     background-color: var(--color-surface-sunken);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .cs__shot:hover {
+    border-color: var(--color-accent);
   }
 
   .cs__shot :global(img) {
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  /* A shot is a button, so the whole frame is the hit area and the
+     browser announces it as something that opens. */
+  .cs__shot-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+
+  .cs__shot-button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  /*
+   * The lightbox. Native <dialog> so Escape, the focus trap and the
+   * top layer come from the browser rather than from a script. The
+   * dialog fills the viewport and the image sits in the middle: the
+   * space around it is the backdrop, and a click there closes.
+   */
+  .cs__lightbox {
+    width: 100vw;
+    max-width: none;
+    height: 100vh;
+    /* dvh so a phone's collapsing toolbar cannot push the image off the
+       bottom of the screen the way 100vh does. */
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: var(--space-5);
+    border: 0;
+    background: transparent;
+  }
+
+  .cs__lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .cs__lightbox::backdrop {
+    background-color: rgb(0 0 0 / 0.86);
+  }
+
+  .cs__lightbox-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 94vw;
+    max-height: 88vh;
+    max-height: 88dvh;
+    border-radius: var(--radius-card);
+  }
+
+  .cs__lightbox-close {
+    position: fixed;
+    top: var(--space-4);
+    right: var(--space-4);
+    display: grid;
+    place-items: center;
+    width: var(--control-md);
+    height: var(--control-md);
+    border: 1px solid rgb(255 255 255 / 0.24);
+    border-radius: 50%;
+    background-color: rgb(0 0 0 / 0.5);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .cs__lightbox-close:hover,
+  .cs__lightbox-close:focus-visible {
+    background-color: rgb(255 255 255 / 0.16);
+  }
+
+  .cs__lightbox-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
   }
 
   /*
@@ -1140,6 +1332,32 @@ const schema = [
   }
 
   .cs__gallery--wide .cs__shot :global(.placeholder) {
+    height: 100%;
+  }
+
+  /*
+   * The packed grid gets the same deal: one frame ratio for every card,
+   * filled from the top. Captures in a set rarely share an aspect ratio,
+   * and left to their own heights the odd one out leaves a band of empty
+   * card under it while its neighbours fill theirs.
+   */
+  .cs__gallery--cols-2 .cs__shot,
+  .cs__gallery--cols-3 .cs__shot,
+  .cs__gallery--cols-4 .cs__shot {
+    aspect-ratio: var(--shot-screen-ratio);
+  }
+
+  .cs__gallery--cols-2 .cs__shot :global(img),
+  .cs__gallery--cols-3 .cs__shot :global(img),
+  .cs__gallery--cols-4 .cs__shot :global(img) {
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .cs__gallery--cols-2 .cs__shot :global(.placeholder),
+  .cs__gallery--cols-3 .cs__shot :global(.placeholder),
+  .cs__gallery--cols-4 .cs__shot :global(.placeholder) {
     height: 100%;
   }
 
