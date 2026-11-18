@@ -4,8 +4,10 @@
  * Rows stagger in on scroll via the shared reveal mechanism.
  */
 import { ArrowUpRight } from "@lucide/astro";
+import { Image } from "astro:assets";
 import LogoFrame from "./LogoFrame.astro";
 import { EXPERIENCE } from "../data/experience";
+import { logo } from "../data/logos";
 ---
 
 <ol class="roles" data-reveal>
@@ -53,6 +55,26 @@ import { EXPERIENCE } from "../data/experience";
             </ul>
           )}
         </div>
+
+        {role.events && (
+          <div class="roles__events">
+            <p class="roles__events-label">Events marketed</p>
+            <ul class="roles__events-list" aria-label={`Events marketed at ${role.company}`}>
+              {role.events.map((event) => {
+                const mark = logo(event.logoFile);
+                return (
+                  <li class:list={["roles__event", event.onDark && "roles__event--dark"]}>
+                    {mark ? (
+                      <Image src={mark} alt={event.name} width={320} loading="lazy" />
+                    ) : (
+                      <span class="roles__event-name">{event.name}</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
 
         <p class="roles__dates">{role.dates}</p>
       </li>
@@ -165,6 +187,66 @@ import { EXPERIENCE } from "../data/experience";
   }
 
   /*
+   * The events a role ran campaigns for, as their marks. Small and one
+   * row: evidence of range, not a second résumé. The name is in the alt
+   * text because the marks are either an abbreviation or a lockup that
+   * only reads at full size.
+   */
+  .roles__events {
+    grid-column: 2;
+    margin-top: var(--space-3);
+  }
+
+  .roles__events-label {
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .roles__events-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles__event {
+    display: grid;
+    place-items: center;
+    /* One width for every mark: the lockups arrive at different ratios,
+       and letting each card hug its own made the row read as four
+       unrelated objects. */
+    width: 110px;
+    height: 52px;
+    padding-inline: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-frame-light);
+  }
+
+  /* Same reasoning as LogoFrame: white ink on transparency disappears. */
+  .roles__event--dark {
+    background-color: var(--color-frame-dark);
+  }
+
+  .roles__event :global(img) {
+    display: block;
+    width: 100%;
+    height: 30px;
+    /* The widest lockup fills the card; the rest keep their height and
+       centre rather than stretching. */
+    object-fit: contain;
+  }
+
+  .roles__event-name {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /*
    * Small type, full-size targets: each link keeps the 44px control
    * height so a thumb can hit it, without looking like a button row.
    */
@@ -221,6 +303,12 @@ import { EXPERIENCE } from "../data/experience";
       grid-column: 3;
       margin-top: 0;
       text-align: right;
+    }
+
+    /* The marks run on past the text column, which is what lets four of
+       them sit in one row instead of wrapping into a ragged second. */
+    .roles__events {
+      grid-column: 2 / -1;
     }
   }
 </style>

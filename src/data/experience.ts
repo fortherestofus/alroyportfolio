@@ -49,6 +49,22 @@ export interface Role {
    * each other. An absolute URL opens in a new tab.
    */
   work?: { label: string; href: string }[];
+  /**
+   * The named things the role worked on, where the brand marks carry more
+   * than another line of prose: the events behind an events marketing
+   * job. Cropped to the mark alone, so a date on the original lockup does
+   * not date the role.
+   */
+  events?: RoleEvent[];
+}
+
+export interface RoleEvent {
+  /** Written out, because the mark alone is an abbreviation or a lockup. */
+  name: string;
+  /** A file in src/assets/logos/, cropped to the mark. */
+  logoFile: string;
+  /** Marks inked white on transparency need the dark plate to be seen. */
+  onDark?: boolean;
 }
 
 export const EXPERIENCE: Role[] = [
@@ -219,6 +235,16 @@ export const EXPERIENCE: Role[] = [
       "Facebook Ads",
       "PR training",
       "Campaign reporting",
+    ],
+    events: [
+      { name: "Invest in African Energy", logoFile: "event-invest-in-african-energy.png" },
+      { name: "Libya Energy & Economic Summit", logoFile: "event-libya-energy-summit.png" },
+      { name: "MSGBC Oil, Gas & Power", logoFile: "event-msgbc.png" },
+      {
+        name: "South Sudan Oil & Power",
+        logoFile: "event-south-sudan-oil-power.png",
+        onDark: true,
+      },
     ],
   },
   {
